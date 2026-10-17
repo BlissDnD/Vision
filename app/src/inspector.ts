@@ -14,6 +14,7 @@ import { commit, scheduleSave } from './history';
 import { renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { showCode } from './modals';
+import { childVariantSection, linkSection, variantSection } from './variantsui';
 
 export function renderInsp(){
   {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'));}
@@ -32,6 +33,7 @@ export function renderInsp(){
     P.appendChild(placement(L,'Elhelyezés (az egész csoport)'));
     P.appendChild(section('Rétegek','grp',true,h('p',{class:'small'},`${L.children.length} réteg van benne. Nyisd ki a rétegfában, és bármelyiket finomhangolhatod.`),
       h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>{L.open=!L.open;renderLayers();renderInsp();}},L.open?'Rétegek elrejtése':'Rétegek mutatása'),h('button',{class:'btn',onclick:()=>ungroup(L)},'Csoport felbontása'))));
+    P.appendChild(variantSection(L));P.appendChild(linkSection(L));
     return;}
   P.appendChild(h('p',{class:'desc'},d.desc));
   {const er=progError(L);if(er&&L.type!=='custom')P.appendChild(h('div',{class:'errbox'},'Ez az effekt nem fordult le ezen a gépen, ezért üres marad. Másold ki az alábbi hibát, és küldd el, hogy javítsam.',h('pre',null,er)));}
@@ -80,6 +82,8 @@ export function renderInsp(){
   const detKids=d.params.filter(p=>!mainKeys.includes(p.k)).map(pd=>ctlParam(L,pd));
   if(L.type!=='custom')detKids.push(h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása')));
   P.appendChild(section('Részletek','details',false,...detKids));
+  const vs=childVariantSection(L);if(vs)P.appendChild(vs);
+  P.appendChild(linkSection(L));
 }
 export function timingSection(L){
   // defaults are shown but only written into the layer on the first edit (opening the panel must not change the project)

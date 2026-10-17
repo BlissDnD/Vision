@@ -102,6 +102,7 @@ export function newVariant(variantId: string, name?: string) {
   const added = d.added.map((a: any) => { const c = clone(a); c.id = uid(); (c.fx || []).forEach((f: any) => { f.id = uid(); }); return c; });
   rematerialize(N, { values: d.values, added, removed: d.removed });
   r.list.splice(r.i + 1, 0, N);
+  V.vis = false; N.vis = true; // one canvas: show the new poster, hide its source (eye icon switches)
   return N.id;
 }
 const nextName = (n: string) => { const m = /^(.*?)(\d+)$/.exec(n); return m ? m[1] + (+m[2] + 1) : n + ' 2'; };

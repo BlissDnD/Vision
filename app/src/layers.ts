@@ -6,6 +6,7 @@ import { itemCost, itemError } from './cost';
 import { addFromLib, attachFx, moveItemTo } from './itemops';
 import { renderInsp } from './inspector';
 import { commit } from './history';
+import { variantBadge } from './variantsui';
 
 export function renderLayers(){
   const ul=$('#ltree');ul.innerHTML='';let n=0;
@@ -15,7 +16,7 @@ export function renderLayers(){
     if(isG){const ch=h('button',{class:'chev'+(it.open?' open':''),'aria-label':it.open?'Összecsukás':'Kinyitás',html:SVG_CHEV});ch.onclick=e=>{e.stopPropagation();it.open=!it.open;renderLayers();};li.appendChild(ch);}
     else li.appendChild(h('span',{class:'clip',title:it.clip?'Az alatta lévő rétegbe vágva':''},it.clip?'↳':''));
     li.appendChild(h('span',{class:'lic',html:iconKind(k)}));
-    const sub=it.maskOnly?'maszk':(it.fx&&it.fx.length?`+${it.fx.length} effekt`:'');
+    const sub=variantBadge(it)||(it.maskOnly?'maszk':(it.fx&&it.fx.length?`+${it.fx.length} effekt`:''));
     li.appendChild(h('span',{class:'ln'},it.name,sub?h('span',{class:'lk'},'  '+sub):null));
     if(itemError(it))li.appendChild(h('span',{class:'errdot',title:'Ez a réteg nem tudott lefordulni ezen a gépen, ezért üres. Kattints rá a részletekért.'},'!'));
     const cst=itemCost(it);if(cst>=3){const lv=cst>=8?3:cst>=5?2:1;li.appendChild(h('span',{class:'cost',title:'Gépigény: '+['','közepes','nagy','nagyon nagy'][lv]},...[4,7,10].map((hh,i)=>h('i',{style:`height:${hh}px;opacity:${i<lv?1:.25}`}))));}

@@ -2,7 +2,12 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
-## Állapot: 2026-10-17 este — M2 első lépcső: vörös gerincfelület látványpróba KÉSZ, kreatív értékelésre vár
+## Állapot: 2026-10-17 este — M2 (Csoport / Közös alap / Változat / Kapcsolat) KÉSZ
+
+Verzió 0.15.0-m2, projektformátum v4 (`state.bases`, `group.variant`, `state.links`; régi fájlok: üres). Részletek: `HANDOFF.md` „M2 állapota”. Teszt: `tests/m2_variants.js` (3 változat; egyben átírt cím csak ott; Átadás az alapra és kijelölteknek; helyi törlés túléli az alapváltozást; Kapcsolat kiértékelés; mentés→újranyitás bitre azonos; visszavonás; leválasztás; árva alap törlődik). 15/15 zöld.
+**Felhasználói próba (2 perc):** jelölj ki egy csoportot → Közös alap és változatok → „Közös alappá alakítás” → „Új változat” kétszer → egy változatban írd át a címet → a rétegfában „1 helyi” látszik, a többi nem változik → „Átadás a kijelölteknek”.
+
+## (félretett, M6-ban folytatódik) Vörös gerincfelület látványpróba: vörös gerincfelület látványpróba KÉSZ, kreatív értékelésre vár
 
 Hely: `prototypes/red-ribbon-webgl/` (önálló, a Vel apphoz nem nyúl). Részletek, mérés és hiánylista: annak `README.md`-je.
 - Three.js r170 (indoklás a README-ben), szerkeszthető 9 pontos gerinc = felső él, erről lelógó lekerekített lap; 8 fő vezérlő + Továbbiak; gerincpont-húzás gizmóval; geometriai padló-összeolvadás (exp-leülés) + analitikus kontaktárnyék; PMREM-környezet a fényekből, csíkmozgatásra újraépül; valódi síktükör padló.
@@ -58,6 +63,4 @@ Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.g
 - Az `R.time` továbbra is a jelenetidő (Loopnál a frame() tekeri vissza). Az export az `sceneT()`-n keresztül képez le. Így a meglévő effektkód érintetlen.
 
 ## Következő lépés
-1. Felhasználói kreatív értékelés a látványpróbáról (forma, anyag, fény). Ha irányában jó: pontminta + öntükrözés, majd
-2. M2 második lépcső: mért összevetés a Vel SDF-ágával (ugyanez a forma SDF smooth-union padlóval vs. mesh), döntési feljegyzés, integráció szerkeszthető eszközként.
-3. Utána M3 (terv szerint): könyvtár/réteg/motion/text integrált szerkesztési szelet.
+Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M3** (könyvtár és rétegek UX), utána M4 tipográfia, M5 mozgásblokkok. A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.

@@ -20,7 +20,7 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 
 ## Környezet (Mac, helyben)
 - Repo: `~/Desktop/melo/CLAUDE/muchdesigner/vel` (git, `main`). Az app az `app/` mappában van.
-- `cd app && npm install`, `npm run typecheck`, `npm run build` (→ `dist/index.html`). Tesztek: `node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py`. A `.venv`-ben Playwright és Chromium van; kb. 2 perc; jelenleg 14/14 zöld.
+- `cd app && npm install`, `npm run typecheck`, `npm run build` (→ `dist/index.html`). Tesztek: `node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py`. A `.venv`-ben Playwright és Chromium van; kb. 2 perc; jelenleg 15/15 zöld.
 - Dev szerver: a Code fül `preview_start` „vel” konfigja (port 5180) és „ribbon” konfigja (5181). Ezek a **Mindspace** projekt `.claude/launch.json` fájljában vannak (`~/Documents/claudecoding`), ott commitolatlanul. A 5173-on a régi `latomas-src` fut, ahhoz ne nyúlj.
 - Tesztírás: `tests/*.js` a `window.__L` (minden modul exportja) kontextusában fut; a minta a `tests/m1_close.js`. Hibát a `bad` listába tegyél.
 
@@ -31,5 +31,9 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 - [x] Kapcsolat (Link) kiértékelés + teszt (`ev()` → `n._lk`, nem mentődik; `attachLinks` minden commit/restore/betöltéskor)
   - Működés: a Változat gyerekei az alap másolatai (`id = <változat>.<alapgyerek>`, `bid` = alapgyerek). A helyi eltérést a `localDiff()` számolja (változat vs. alap), a felületnek nem kell nyilvántartania. Az alapváltozás csak `transfer()` („Átadás”) útján jut el máshova, és a célok saját értékei nyernek.
   - Javítva: az inspector időzítés-szekciója a megnyitáskor nem ír többé `tm`-et a rétegbe (hamis helyi eltérést okozott volna).
-- [ ] Minimális UI: létrehozás, új változat, Átadás, leválasztás, Kapcsolatok lista
-- [ ] PROGRESS + próbalista a felhasználónak
+- [x] UI (`src/variantsui.ts`): csoport inspector → „Közös alap és változatok” / „Változat · <alap>” (helyi eltérések olvasható listája, Új változat, Átadás a közös alapnak, Átadás a kijelölteknek, Leválasztás); gyerekelemen „Csak ezt: a közös alapnak”; minden elemen „Kapcsolatok” (lista be/ki/törlés + új kapcsolat: forrás elem/param → ennek a paramétere, mód hozzáad/vezérli). Rétegfa: `◇ <alap> · N helyi` jel. Az új változat a forrást elrejti (egy vászon, szem ikonnal váltás).
+- [x] Böngészőben kipróbálva (5180): valódi csúszka → „1 helyi”, Átadás csak a kijelölt változatnak; konzolhiba nincs. 15/15 teszt zöld, verzió 0.15.0-m2.
+- **M2 KÉSZ.** Ismert korlát: Átadás előtti „előnézet a vásznon” még nincs (csak név szerinti lista); a Kapcsolat erőssége a listában még nem állítható (alapból 1); hozzáadott/törölt gyerek nem adható át, csak értékek.
+
+## M3 állapota
+- [ ] (következő)
