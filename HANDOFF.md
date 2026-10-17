@@ -3,16 +3,21 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
-Verzió **0.22.0-m7b**, a teljes tesztkör (24 teszt) zöld, minden commitolva. Az M7b (Felhő + Lufi) kész és élőben ellenőrizve, a felhasználó még nem próbálta ki (próbalista: `PROGRESS.md` legfelül). **A következő szelet jóváhagyásra vár.**
+Verzió **0.22.0-m7b**, a teljes tesztkör (24 teszt) zöld, minden commitolva. Az M7b (Felhő + Lufi) kész és élőben ellenőrizve, a felhasználó még nem próbálta ki (próbalista: `PROGRESS.md` legfelül). **A következő szelet (U1) jóváhagyásra vár.**
 
 ## Mire vár jóváhagyás (ne kezdd el nélküle)
-Két lehetőség, a felhasználó választ:
+A felhasználó 2026-10-17 éjjel kipróbált részeket, és új sorrendet kért (visszajelzés: `FUNKCIO-LELTAR.md` 8., 10., 19–22. sor). **Új sorrend:**
+1. **U1 / B – Animálás és jobb panel** (javasolva, lent).
+2. **U2 / B – Szövegsor és Eljátszás javítása:** a sort magát fogod meg, Cmd+húzással külön mozog, nem takarja ki a többit; az Eljátszásnál alakfelismerés (kör/egyenes/ív) és kevés pontú sima görbe; LFO hibátlan körbeérés a projekt hosszára.
+3. **S1 – Jelenetek + átmenetek + komponensek** (új termékszakasz, a Közös alap/Változat alapjaira; külön, részletes javaslat kell).
+4. Kicsik közben: könyvtár balra a rétegek fölé; videóexport memóriabiztonsága.
+5. A D-lista folytatása (Füst → anyag-Megjelenések + több fény → útvonal-prototípus → Térbeliség / szöveg 3D-n), majd az E (fizika).
 
-> **M7c / D – Füst** (a hátralévő D-lista következő eleme). A felhasználó behúz egy **Füst** Forrást: felszálló, gomolygó, áttetsző füstcsík egy forráspontból (mozgatható), állítja a sűrűséget, emelkedési tempót, szétterülést, színt (fehér gőz / szürke füst / színes), a látványbeli szelet (elhajlik), és a Jelenetfény átvilágítja. Ugyanaz a puha sűrűség-raymarch motor, mint a Felhőé (`soft3d.ts`), időben folyamatos áramlással.
-> **Nem:** fizikai szimuláció / ütközés (E), tűz (külön), füst szövegből. Kockázat: a raymarching ára 4K-n (a Felhő 29 ms); mérem, kell-e félfelbontású pass.
-> **Próba:** „füst” → Füst; lejátszás: felszáll és gomolyog; Szél jobbra → elhajlik; Jelenetfény iránya → átvilágítás; ugrás/export azonos.
-
-> **B – Könyvtár balra**, a rétegek fölé, húzható elválasztóval (kis szelet, külön).
+> **U1 / B – Animálás és jobb panel.**
+> **A felhasználó ezt tudja majd:** lerak egy szöveget, megnyomja az **Animálás** gombot (A), 0 mp-nél balra húzza, 2 mp-nél jobbra: két kulcs lesz kattintgatás nélkül, és a vásznon látszik a **mozgáspálya** húzható pontokkal. Az idővonalon (Sávok) a réteg kinyitható az animált paraméterekre; **húzással több kulcsot kijelöl**, együtt mozgatja, Alt-tal nyújtja, Delete-tel törli, jobb klikkre görbét választ (Lineáris, Lágy, Rugós, Pattanó…). Minden paraméternél egyértelmű jel mutatja, mi animált és hogyan: ◆ kulcs, ∿ hullám, ♪ hang/jel, ▭ mozgásblokk. A jobb panel tetején **ikonfülek** (Tartalom, Szín és megjelenés, Mozgás, Effektek, Elhelyezés), tömörebb sorokkal, a ritka beállítások lenyitva.
+> **Pontosan megépítem:** a kulcskocka-hibák feltárása és javítása (célzott tesztekkel); Animálás mód (bekapcsolva csúszka, szám és vászonhúzás is kulcsot ír; ha még nincs kulcs, a korábbi érték a 0 mp-re kerül); mozgáspálya-rajz a pozíciókulcsokból, húzható pontokkal; Sávok panel: kinyitható paramétersorok, téglalapos kijelölés, csoportos mozgatás/nyújtás/törlés/másolás, görbe-gyorsmenü; animáció-jelzések a paramétereknél; jobb panel átrendezése ikonfülekre.
+> **Ebben még nem:** Jelenetek (S1), Bezier-kezelők a pályán (csak pontok, sima görbével), új görbeszerkesztő (a meglévő marad), szövegsor- és Eljátszás-javítások (U2), könyvtár balra.
+> **Próba:** 1) Szöveg → Animálás (A) → 0 mp-nél húzd balra, 2 mp-nél jobbra → lejátszás; a pálya egy pontját húzd el. 2) Sávok: húzással jelölj ki kulcsokat, told el, jobb klikk → Rugós. 3) Jobb panel: a Mozgás fülön látszik, mi animált. Mérés: kattintásszám egy kétkulcsos mozgáshoz előtte/utána; tesztek a kulcsműveletekre, visszavonásra, mentés→újranyitásra.
 
 ## Mi történt legutóbb
 - M7b: Felhő (3 alak, gomolygás, látványbeli szél, Jelenetfény) és ráhúzható Lufi (Felfújtság, szín, fényesség, csillanás), célkompatibilitás-jelzéssel. Mérés és próbalista: `PROGRESS.md`.
