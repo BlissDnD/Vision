@@ -57,5 +57,12 @@ if (test) { fs.rmSync(entry); fs.mkdirSync(path.join(root, 'dist'), { recursive:
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(root, 'dist/latomas.html'), fragment);
 fs.writeFileSync(path.join(root, 'dist/index.html'), full);
+// P1: the preset format doc is generated from the code (src/presetfmt.ts), so it never goes stale
+{
+  const os = await import('node:os');
+  const r2 = await esbuild.build({ entryPoints: [path.join(root, 'src/presetfmt.ts')], bundle: true, format: 'esm', platform: 'node', write: false, outdir: 'out', logLevel: 'warning', loader: { '.css': 'empty' } });
+  const tmp = path.join(os.tmpdir(), `vel-presetfmt-${process.pid}.mjs`); fs.writeFileSync(tmp, r2.outputFiles[0].text);
+  try { const m = await import(tmp); fs.writeFileSync(path.join(root, '../docs/VEL-PRESET-FORMATUM.md'), m.presetDoc(JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version)); } finally { fs.rmSync(tmp, { force: true }); }
+}
 const kb = n => (n / 1024).toFixed(0) + ' KB';
 console.log(`built in ${Date.now() - t0} ms · js ${kb(js.length)} · css ${kb(css.length)} · dist/latomas.html ${kb(fragment.length)}`);

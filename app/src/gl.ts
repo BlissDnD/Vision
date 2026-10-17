@@ -1,6 +1,6 @@
 import { $ } from './dom';
 import { HEAD, HEAD_LINES, VS } from './glsl';
-import { EFFECTS } from './effects/index';
+import { EFFECTS, paramsOf } from './effects/index';
 import { sel } from './state';
 import { renderLayers } from './layers';
 import { renderInsp } from './inspector';
@@ -19,8 +19,10 @@ export function fragFor(def,code){const decl=def.params.map(p=>p.type==='color'?
 export const progCache=new Map(),errCache=new Map();
 export const codeOf=L=>L.type==='custom'?(L.code||''):EFFECTS[L.type].code;
 /** Program cache key: the type for library effects (their code never changes), type+code only for custom GLSL. Avoids hashing kilobytes of shader text per layer per frame. */
-export const progKey=L=>L.type==='custom'?'custom|'+(L.code||''):L.type;
-export function getProg(L){const def=EFFECTS[L.type];const key=progKey(L);if(progCache.has(key))return progCache.get(key);const code=codeOf(L);
+export const cpSig=L=>paramsOf(L).map(p=>p.k+(p.type==='color'?':c':'')).join(',');
+export const progKey=L=>L.type==='custom'?'custom|'+cpSig(L)+'|'+(L.code||''):L.type;
+const defOf=L=>{const d=EFFECTS[L.type];return L.type==='custom'?{params:paramsOf(L),lib:d.lib}:d;};
+export function getProg(L){const def=defOf(L);const key=progKey(L);if(progCache.has(key))return progCache.get(key);const code=codeOf(L);
   if(progCache.has(key))return progCache.get(key);if(errCache.has(key))return null;
   try{const p=link(fragFor(def,code));progCache.set(key,p);return p;}catch(e){errCache.set(key,fixLines(String(e.message||e),def));console.warn('Shader:',L.type,e.message);
     if(!(getProg as any).pending){(getProg as any).pending=1;setTimeout(()=>{(getProg as any).pending=0;try{renderLayers();if(sel())renderInsp();}catch(_){}},50);}return null;}}

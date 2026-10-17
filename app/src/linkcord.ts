@@ -6,7 +6,7 @@
  * Selected element: only its own cords are drawn; the ⇢ badge (layer row or cord midpoint) opens a mini-card. */
 import { R } from './runtime';
 import { $, h } from './dom';
-import { BASE, BASEK, EFFECTS, kindOf } from './effects/index';
+import { BASE, BASEK, EFFECTS, kindOf, paramsOf } from './effects/index';
 import { cv } from './gl';
 import { findItem, sel, st } from './state';
 import { curV, ev } from './evaluation';
@@ -41,7 +41,7 @@ function toPx(x: number, y: number) {
 const cordD = (x0: number, y0: number, x1: number, y1: number) => { const mx = (x0 + x1) / 2, my = (y0 + y1) / 2 + Math.min(60, Math.hypot(x1 - x0, y1 - y0) * .18); return `M${x0.toFixed(1)} ${y0.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
 
 /* ---------- what can A do to B? ---------- */
-const numParams = (L: any) => ((EFFECTS[L.type] && EFFECTS[L.type].params) || []).filter((d: any) => !d.type);
+const numParams = (L: any) => paramsOf(L).filter((d: any) => !d.type);
 /** The source quantity a "Vezérelje" link reads: the first animated parameter, else the horizontal position. */
 export function driverOf(A: any): { g: 'n' | 'p'; k: string; l: string } {
   for (const g of ['n', 'p'] as const) for (const k in A[g] || {}) { const n = A[g][k], d = paramDef(A, g, k); if (d && n && typeof n === 'object' && ((n.k && n.k.length) || n.a > 0 || n.s)) return { g, k, l: d.l }; }

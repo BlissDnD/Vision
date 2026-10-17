@@ -1,6 +1,6 @@
 import { R } from './runtime';
 import { $ } from './dom';
-import { BASEK, EFFECTS, kindOf } from './effects/index';
+import { BASEK, EFFECTS, kindOf, pdefOf } from './effects/index';
 import { cv } from './gl';
 import { findItem, sel, st } from './state';
 import { curV, ev, setVal } from './evaluation';
@@ -53,7 +53,7 @@ wrap.addEventListener('drop',e=>{e.preventDefault();$('#dropHint').hidden=true;c
   const L=sel();if(L&&L.type!=='group'&&EFFECTS[L.type].kind!=='fx'){const p=toAsp(e);L.n.x.v=p.x;L.n.y.v=p.y;commit();}});
 export const m3x=(a,v)=>{const c=Math.cos(a),s=Math.sin(a);return [v[0],c*v[1]-s*v[2],s*v[1]+c*v[2]];};
 export const m3y=(a,v)=>{const c=Math.cos(a),s=Math.sin(a);return [c*v[0]+s*v[2],v[1],-s*v[0]+c*v[2]];};
-export const PD=(L,k)=>EFFECTS[L.type].params.find(p=>p.k===k);
+export const PD=(L,k)=>pdefOf(L,k);
 export function sdfAngles(L,t){return [ev(L.p.rx,PD(L,'rx'),t)*Math.PI/180,ev(L.p.ry,PD(L,'ry'),t)*Math.PI/180+t*ev(L.p.spin,PD(L,'spin'),t)];}
 export function sdfProj(L,t){if(L.type!=='sdfscene'||!L.prims)return null;const o=L.prims[L.psel];if(!o)return null;const [ax,ay]=sdfAngles(L,t);const v=m3y(-ay,m3x(-ax,[o.x,o.y,o.z]));
   const k=1.8/Math.max(.3,3.5-v[2]),s=Math.max(.01,ev(L.n.s,BASEK.s,t));return {x:ev(L.n.x,BASEK.x,t)+v[0]*k*s,y:ev(L.n.y,BASEK.y,t)+v[1]*k*s,r:Math.max(o.sx,o.sy,o.sz)*k*s*.9,rot:o.ry};}

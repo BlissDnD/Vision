@@ -1,18 +1,16 @@
-# Vel – átadó a folytatáshoz (2026-10-18, U3+K1+S1 után)
+# Vel – átadó a folytatáshoz (2026-10-18, P1 után)
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
-Verzió **0.26.0-s1**, a teljes tesztkör (28 teszt) zöld, minden commitolva. A felhasználó 2026-10-18-án **egyben jóváhagyta az U3 → K1 → S1 sort**; mindhárom kész, headless tesztekkel demonstrálva. **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
+Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A **P1** (presetek kívülről ChatGPT-vel, tartós saját könyvtár, saját shader elnevezett csúszkákkal) kész, headless tesztekkel demonstrálva. **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
 
 ## Mire vár jóváhagyás (ne kezdd el nélküle)
-**JÓVÁHAGYVA (2026-10-18), ezt csináld most: P1 – Presetek kívülről (ChatGPT) + saját shader.** Utána jön az U2.
-> **Tudod majd:** Projekt menü → „Utasítás ChatGPT-nek”: a teljes formátumleírás a vágólapra (a meglévő `descPrompt`/`descCatalog` alapján, `src/describe.ts`; a mostani effektlistából és vászonméretből generálva). A ChatGPT csak JSON-t ad; „Preset beillesztése” mező (és .json fájl húzása): ellenőrzés (ismeretlen effekt/paraméter kimarad, a Vel megmondja, mi), előnézet, visszavonható beépítés a meglévő `buildFromSpec`-kel. „Mentés presetként” polcválasztással (Receptek, Világok, Mozgás …): a beépítettek mellett „saját” jellel, kattintható/húzható/kereshető, bélyegképpel; csak a saját törölhető/átnevezhető; böngészőben tárolva, fájlba ki/be, a projektfájlba a használt presetek is bekerülnek. A preset megadhat 2–4 nagy vezérlőt (csoport-makró, mint a gyári recepteknél). **Saját shader:** a formátum engedi a `custom` réteget `code`-dal (most `DESC_SKIP`-ben van); a leírás tartalmazza a shader-szerződést (`vec4 fx()`, `P()`, idő, paletta, zaj/SDF segédek, `IN(uv)`, `p_…`), a kódból generálva; **rétegenkénti elnevezett csúszkák** (név, tartomány, alapérték, szín), animálhatók mint a gyáriak; beillesztéskor fordítás (hiba megmutatva, visszamásolható a ChatGPT-nek) és próbarender gépigény-méréssel (túl nehéz shader jelzése). Ha belefér: ráhúzható Megjelenés-változat (saját fx-típus), különben a következő szelet. `docs/VEL-PRESET-FORMATUM.md` a buildből generálva.
-> **A felhasználó hangsúlya (2026-10-18):** a lényeg, hogy ezek egy **tartós saját könyvtárba** mentődjenek, mert később más is használja majd. Ezért általános, típusos könyvtártár kell (IndexedDB, nem csak localStorage; elemek: `{id, kind:'preset'|'shader'|…, cat, name, created, data, thumb}`), fájlba teljes export/import, és a projektfájl is vigye a használt elemeket. A polcok ebből olvasnak.
-> **Nem:** új beépített effekt, ChatGPT-hívás az appból, preset-megosztás online.
-> **Próba:** 1) Utasítás másolása → ChatGPT-ben preset kérése → beillesztés → a vásznon van, undo. 2) Mentés presetként a Receptek polcra → megjelenik „saját” jellel, húzható; fájlba ki, vissza. 3) Saját shaderes preset elnevezett csúszkákkal; egy szándékosan hibás kód → érthető hiba.
+**Következő: U2** – rövid javaslat és újbóli jóváhagyás kell indítás előtt (lásd lent).
 
-**Utána a sorban: U2** (szövegsor megfogása és Cmd-mozgatás, sorok nem takarják egymást; Eljátszásnál kör/egyenes/ív felismerés; LFO „Körbeér”). Indítás előtt rövid javaslat és jóváhagyás kell. Utána: videóexport memória, K2 Mozgás árnyéka, K3/K4, D-lista, E.
+**P1 nyitott korlátai / következő szeletre:** ráhúzható saját Megjelenés (fx-típusú saját shader, ami egy rétegre húzva csak arra hat) még nincs, a saját shader most önálló réteg (`IN(uv)`-vel az alatta lévőt szűrheti); a gépigény-mérés egyszeri, kis felbontású próbarender; a könyvtár más elemfajtái (paletta, mozgás) tárolhatók, de még nincs polcuk. Formátum: `docs/VEL-PRESET-FORMATUM.md` (a build generálja).
+
+**U2 tartalma:** (szövegsor megfogása és Cmd-mozgatás, sorok nem takarják egymást; Eljátszásnál kör/egyenes/ív felismerés; LFO „Körbeér”). Indítás előtt rövid javaslat és jóváhagyás kell. Utána: videóexport memória, K2 Mozgás árnyéka, K3/K4, D-lista, E.
 **Új, külön jóváhagyandó médiamérföldkő (a felhasználó tette be, 2026-10-18):** sokrétegű videó és reszponzív idővonal: `docs/spec/VEL-TOBBVIDEOS-TIMELINE-TELJESITMENY.md` (a terv 7. fejezetében hivatkozva). Még nincs ütemezve.
 **Token-takarékos munkarend (a felhasználó kérése):** minden szelet új beszélgetésben indul a HANDOFF-ból; több szelet egyszerre jóváhagyható; élő böngészős próba nincs (a felhasználó végzi); a teljes tesztkör csak a szelet végén; hosszú anyagot a felhasználó fájlként tesz a `docs/spec/`-be; rövid javaslatok és rövid dokumentációfrissítés.
 
@@ -22,6 +20,7 @@ Verzió **0.26.0-s1**, a teljes tesztkör (28 teszt) zöld, minden commitolva. A
 - **Szabály- és eseményvezérelt viselkedés** (`FUNKCIO-LELTAR.md` 23. sor): „kövesse ezt”, „lebegjen e körül”, „reagáljon a szélre”, „erősödjön a Glow érintkezéskor”. Nincs előre beírt kulcssoruk, szabály vagy esemény vezérli őket, és a Loop kikapcsolása után is élnek. Mielőtt bármi épül, külön végig kell gondolni a felhasználóval (kulcsokkal való viszony, jelölés, export, kapcsolat a Kapcsolatokkal és az E szakasszal).
 
 ## Mi történt legutóbb
+- P1: saját könyvtár + polcok, Mentés presetként (☆), Projekt → Utasítás ChatGPT-nek / Preset beillesztése, vezérlők a formátumban, saját shader elnevezett csúszkákkal. Technikai jegyzet: `app/README.md` „P1”.
 - U3: könyvtár balra a rétegek fölé, húzható elválasztó, rétegjelvények, kártyacímkék, egységes tooltip, gyorsbillentyű-panel (`workspace.ts`).
 - K1: Kapcsolat-zsinór ⇢ pontból, előnézetes választókártya, Napfény→Ég, Kövesse, mini-kártya (`linkcord.ts`, `variants.ts`).
 - S1: Jelenetek sáv, Jelenetsor-lejátszás/export, rétegenkénti átmenet párosítással (`scenes.ts`). Technikai jegyzet: `app/README.md` „U3 · K1 · S1”.
@@ -41,6 +40,7 @@ Verzió **0.26.0-s1**, a teljes tesztkör (28 teszt) zöld, minden commitolva. A
 | U3 | B | bal oszlop, jelvények, tooltip, gyorsbillentyűk (`workspace.ts`) | B részben (felhasználói próba hiányzik) |
 | K1 | A/B | Kapcsolat-zsinór, Napfény→Ég, Kövesse (`linkcord.ts`) | Kapcsolatok részben |
 | S1 | B | Jelenetek + átmenetek (`scenes.ts`, `frameAt`, `_toff`) | jelenetek első változat |
+| P1 | B/G | saját könyvtár (`userlib.ts`), polcok, ChatGPT-utasítás és beillesztés (`presets.ts`, `presetfmt.ts`), saját shader csúszkái (`paramsOf`) | presetek első változat |
 | M8–M10 | E/F/G | fizika és mezők; folyadék; receptcsalád, Random | nincs elkezdve |
 
 A modulonkénti technikai jegyzetek: `app/README.md` („Újabb modulok” szakasz). Mérések és próbalisták: `PROGRESS.md`.

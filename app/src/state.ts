@@ -1,5 +1,5 @@
 import { R } from './runtime';
-import { BASE, DEFAULT_CODE, DEF_PRIMS, EFFECTS, S } from './effects/index';
+import { BASE, DEFAULT_CODE, DEF_PRIMS, EFFECTS, S, paramsOf } from './effects/index';
 
 R.uidN=1;export const uid=()=>'L'+Date.now().toString(36)+(R.uidN++).toString(36);
 export const mkN=(v:any):NParam=>{if(!(v&&typeof v==='object'))return {v,a:0,f:.2,w:0,s:'',sa:.5};const o:NParam={v:v.v,a:v.a||0,f:v.f??.2,w:v.w||0,s:v.s||'',sa:v.sa??.5};if(v.k&&v.k.length)o.k=v.k.map(k=>({...k,bz:k.bz?[...k.bz]:undefined}));return o;};
@@ -7,7 +7,8 @@ export function makeLayer(type:string,o:any={}):Layer{
   const d=EFFECTS[type];
   const L:Layer={id:uid(),type,name:o.name||d.name,vis:true,blend:o.blend||'normal',pal:o.pal??(d.kind==='fx'?0:12),clip:!!o.clip,maskOnly:!!o.maskOnly,n:{},p:{},fx:(o.fx||[]).map(([t,oo])=>makeLayer(t,oo))};
   for(const b of BASE){let dv=b.def;if(type==='text'&&b.k==='s')dv=.16;if(type==='mtext'&&b.k==='s')dv=.2;if(type==='image'&&b.k==='s')dv=.8;L.n[b.k]=mkN(o[b.k]??dv);}
-  for(const p of d.params)L.p[p.k]=mkN(o.p?.[p.k]??p.def);
+  if(type==='custom'&&Array.isArray(o.cp)&&o.cp.length)L.cp=o.cp.map(c=>({...c}));
+  for(const p of paramsOf(L))L.p[p.k]=mkN(o.p?.[p.k]??p.def);
   if(type==='text')L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12,...(o.text||{})};
   if(type==='mtext')L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01,...(o.text||{})};
   if(type==='sdfscene'){L.prims=JSON.parse(JSON.stringify(o.prims||DEF_PRIMS));L.psel=0;}
@@ -25,7 +26,7 @@ export function normalize(L:any):Layer{
   if(!L.id)L.id=uid();L.n=L.n||{};L.fx=(L.fx||[]).filter(f=>EFFECTS[f.type]).map(normalize);
   for(const b of BASE)if(!L.n[b.k])L.n[b.k]=mkN(b.def);
   if(L.type==='group'){L.children=(L.children||[]).filter(c=>c.type!=='group'&&EFFECTS[c.type]).map(normalize);L.macros=L.macros||[];return L;}
-  const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of d.params)if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);
+  const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of paramsOf(L))if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);
   if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
 export const SIZES:[string,string[][]][]=[['Képernyő',[['1920x1080','16:9 · 1920 × 1080'],['1080x1080','1:1 · 1080 × 1080'],['1080x1350','4:5 · 1080 × 1350'],['1080x1920','9:16 · 1080 × 1920'],['3840x2160','4K · 3840 × 2160']]],
  ['Bannerek',[['300x250','300 × 250'],['300x600','300 × 600'],['728x90','728 × 90'],['970x250','970 × 250'],['160x600','160 × 600']]]];

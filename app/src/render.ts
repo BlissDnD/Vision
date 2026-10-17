@@ -2,7 +2,7 @@ import type { Camera } from './types';
 import { R } from './runtime';
 import { $, h } from './dom';
 import { EASE_NAMES, PALS, hexRGB, v3 } from './palettes';
-import { BASEK, BENTO, BLEND_IDX, EFFECTS, S, kindOf } from './effects/index';
+import { BASEK, BENTO, BLEND_IDX, EFFECTS, S, kindOf, paramsOf } from './effects/index';
 import { BLANK, COMP, COPY, MIX, DOWN, NULLP, PLACEHOLDER, POST, U, UPS, XFORM, clearTarget, compile, cv, errCache, freeCtx, freeTarget, getProg, gl, mkCtx, mkSet, mkTarget } from './gl';
 import { LIGHTP, imgTex, makeLayer, mkN, st } from './state';
 import { ev, hasK } from './evaluation';
@@ -174,7 +174,7 @@ export function drawFx(L,target,ctx,t,inTex,prevTex,pass){
   gl.bindFramebuffer(gl.FRAMEBUFFER,target.f);gl.viewport(0,0,ctx.w,ctx.h);gl.useProgram(p);
   gl.uniform2f(U(p,'uRes'),ctx.w,ctx.h);gl.uniform1f(U(p,'uTime'),t);gl.uniform1f(U(p,'uPass'),pass||0);setXform(p,L,t);
   setPal(p,L.pal||0);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
-  for(const d of def.params){const v=L.p[d.k];if(d.type==='color'){const c=hexRGB(v?v.v:d.def);gl.uniform3f(U(p,'p_'+d.k),c[0],c[1],c[2]);}
+  for(const d of paramsOf(L)){const v=L.p[d.k];if(d.type==='color'){const c=hexRGB(v?v.v:d.def);gl.uniform3f(U(p,'p_'+d.k),c[0],c[1],c[2]);}
     else gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
   const m=mediaFor(L,t);bindTex(0,inTex);bindTex(1,prevTex);bindTex(2,m&&m.tex);
   gl.uniform1i(U(p,'uInput'),0);gl.uniform1i(U(p,'uPrev'),1);gl.uniform1i(U(p,'uImage'),2);gl.uniform2f(U(p,'uImgSize'),m?m.w:1,m?m.h:1);

@@ -8,7 +8,7 @@
  *   only in the previous scene: fades and shrinks out (keeps running); only in the new one: fades and grows in. */
 import { R } from './runtime';
 import { $, h } from './dom';
-import { BASEK, EFFECTS } from './effects/index';
+import { BASEK, EFFECTS, pdefOf } from './effects/index';
 import { EASE_NAMES, hexRGB } from './palettes';
 import { normalize, st } from './state';
 export { setScenes } from './history';
@@ -61,7 +61,7 @@ const mixHex = (x: string, y: string, e: number) => '#' + hexRGB(x).map((c, i) =
 const stat = (v: any) => ({ v, a: 0, f: .2, w: 0 });
 /** Copy of a node whose value is multiplied by m (keeps keys, waves and Kapcsolat of the original). */
 function scaled(n: any, m: number) { const c = { ...n }, prev = n._lk && n._lk.f; Object.defineProperty(c, '_lk', { value: { f: (t: number, v: number) => (prev ? prev(t, v) : v) * m }, enumerable: false }); return c; }
-const pdef = (L: any, k: string) => EFFECTS[L.type] && EFFECTS[L.type].params.find((d: any) => d.k === k);
+const pdef = (L: any, k: string) => EFFECTS[L.type] && pdefOf(L, k);
 function mixGroup(gA: any, gB: any, a: any, b: any, tA: number, tB: number, e: number, isN: boolean) {
   const out: any = {};
   for (const k in b) {

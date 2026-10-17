@@ -1,4 +1,4 @@
-# Vel – funkcióleltár a teljes funkcióátadó ellen (2026-10-18, 0.26.0-s1)
+# Vel – funkcióleltár a teljes funkcióátadó ellen (2026-10-18, 0.27.0-p1)
 
 Forrás: `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md` (elsődleges funkcióátadó). Ez a fájl a kódbeli tényállapot. Minden mérföldkő után frissítendő.
 
@@ -38,6 +38,7 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 | 25 | **Mozgás árnyéka** (4.) | **R** | U1: teljes mozgáspálya húzható kulcspontokkal (csak kulcsolt pozíciónál). | Legfeljebb két szellemkép (előző/következő állapot) időcímkével; tér és idő külön fogantyún; sebesség megtartása; Beúszásra, Eljátszásra, követésre is. **Eltérés az U1-től:** a spec szerint a teljes pálya csak kérésre látszik; az U1 most mindig mutatja. A Mozgás árnyéka szeletben ezt át kell állítani. |
 | 26 | **Mozgás átadása (Ritmus / Út / Teljes) és Sorrend festése** (5–6.) | **T** | Részben rokon: mozgásblokk-retime (M5), Közös alap/Változat (M2, de nem ez a fogalom). | Átadás előnézettel, sorrend/stagger; festéssel terjedési blokk az idővonalon, újrafesthető, szövegcsere után újrakötés. |
 | 27 | **Szerepérzékeny jelenetmozgás** (7.) | **T** | Receptek, Random hangulatok (nem szerepalapú). | Javasolt, átállítható szerepek (Háttér, Főcím, Kísérő szöveg, Fő forma, Díszítő, Kép, Részecske, Kamera/Fény); egy jelenetmozgás-blokk Mérték/Ritmus/Hangsúly vezérlőkkel, szerepsúlyok, lenyitható alkotórészek; első profil egy 9:16 tipográfiai jeleneten. |
+| 28 | **Presetek kívülről (ChatGPT) + saját könyvtár + saját shader** (P1) | **D (P1)** | Tartós saját könyvtár (IndexedDB, `userlib.ts`, általános elemtípus), fájlba ki/be, a projektfájl viszi a használt elemeket; saját elemek a polcokon „saját” jellel (átnevezés/polc/törlés); Mentés presetként (☆); Projekt → Utasítás ChatGPT-nek (generált formátum + shader-szerződés), Preset beillesztése / .json húzása: ellenőrzés, kimaradt elemek listája, előnézet, gépigény-próbarender, undo; vezérlők (makrók) a formátumban; saját shader elnevezett, animálható csúszkákkal, érthető fordítási hibával. `docs/VEL-PRESET-FORMATUM.md` a buildből. | Ráhúzható saját Megjelenés (fx-típusú shader); online megosztás; más elemfajták (paletta, mozgás) polca. |
 | 28 | „Itt legyen ekkor” célállapot (8.) | **Felhasználói döntésre vár** | – | Csak külön prototípus és jóváhagyás után; önálló „rendezd meg” mód nem épül. |
 
 ## Ami az A–B szakaszból tényleg működik (D, nem K)

@@ -1,6 +1,6 @@
 import { R } from './runtime';
 import { $, h } from './dom';
-import { BASEK, BENTO, EFFECTS } from './effects/index';
+import { BASEK, BENTO, EFFECTS, pdefOf } from './effects/index';
 import { findItem, sel, st } from './state';
 import { ANIM_SYM, ANIM_TIP, KEY_EASES, KEY_EPS, animKinds, delKey, hasK, keyIdx, seekTo, setKey } from './evaluation';
 import { textCache } from './text';
@@ -28,9 +28,9 @@ export function layerSegs(L){const out=[];const add=(a,b,cls,f)=>{if(b>a)out.pus
 /** Every animatable param of an item: own placement (n), own params (p) and its Megjelenések (f<i>.p / f<i>.n). path = 'n.x', 'p.size', 'f0.p.amt'. */
 export function paramList(L){const out=[];if(!L)return out;
   const add=(g,obj,defs,pre,lblPre)=>{for(const k in obj||{}){const o=obj[k];if(!o||typeof o!=='object'||typeof o.v!=='number')continue;const d=defs(k);out.push({path:pre+g+'.'+k,o,label:lblPre+(d?d.l:k),d});}};
-  const pd=ty=>k=>(EFFECTS[ty]&&EFFECTS[ty].params.find(p=>p.k===k))||null;
-  add('n',L.n,k=>L===st.cam?null:BASEK[k],'','');if(L.p)add('p',L.p,L===st.cam?(()=>null):pd(L.type),'','');
-  (L.fx||[]).forEach((F,i)=>{const nm=(EFFECTS[F.type]||{name:F.type}).name+' · ';add('p',F.p,pd(F.type),'f'+i+'.',nm);add('n',F.n,k=>k==='opacity'?{...BASEK.opacity,l:'Erősség'}:BASEK[k],'f'+i+'.',nm);});
+  const pd=X=>k=>pdefOf(X,k);
+  add('n',L.n,k=>L===st.cam?null:BASEK[k],'','');if(L.p)add('p',L.p,L===st.cam?(()=>null):pd(L),'','');
+  (L.fx||[]).forEach((F,i)=>{const nm=(EFFECTS[F.type]||{name:F.type}).name+' · ';add('p',F.p,pd(F),'f'+i+'.',nm);add('n',F.n,k=>k==='opacity'?{...BASEK.opacity,l:'Erősség'}:BASEK[k],'f'+i+'.',nm);});
   return out;}
 export function objAt(L,path){const a=path.split('.');let o=L;if(a[0][0]==='f'&&a.length===3){o=(L.fx||[])[+a[0].slice(1)];a.shift();}return o&&o[a[0]]?o[a[0]][a[1]]:null;}
 export function layerKeyTimes(L,path?){const m=new Map();for(const q of paramList(L)){if(path&&q.path!==path)continue;const o=q.o;if(hasK(o))o.k.forEach(x=>{const t=Math.round(x.t*1000)/1000;m.set(t,(m.get(t)||0)+1);});}return m;}

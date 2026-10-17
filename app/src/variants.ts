@@ -10,7 +10,7 @@
  *  - Kapcsolat: `st.links = [{id, from:{id,g,k}, to:{id,g,k}, mode, amt, on}]`: one element's parameter drives another's.
  *    Evaluated in ev() through a non-enumerable `_lk` hook on the target NParam (never saved, never diffed).
  */
-import { BASE, EFFECTS } from './effects/index';
+import { BASE, EFFECTS, pdefOf } from './effects/index';
 import { findItem, normalize, st, uid, walk } from './state';
 
 export interface Base { id: string; name: string; children: any[] }
@@ -144,7 +144,7 @@ export function gcBases() { if (!st.bases) return; for (const id of Object.keys(
 
 /* ---------------- Kapcsolat ---------------- */
 const BASED = Object.fromEntries(BASE.map((b: any) => [b.k, b]));
-export function paramDef(L: any, g: 'n' | 'p', k: string) { return g === 'n' ? BASED[k] : EFFECTS[L.type] && EFFECTS[L.type].params.find((d: any) => d.k === k); }
+export function paramDef(L: any, g: 'n' | 'p', k: string) { return g === 'n' ? BASED[k] : pdefOf(L, k); }
 let depth = 0;
 /** (Re)attach all link hooks. Called after every commit/restore/load; cheap. */
 export function attachLinks(evFn: (n: any, d: any, t: number) => number) {

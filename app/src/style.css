@@ -426,3 +426,17 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .scempty{align-self:center;padding:0 6px}
 .scard{min-width:280px;max-width:min(360px,calc(100vw - 32px))}
 .scard .pc select{max-width:170px}
+/* P1: own library items, preset paste */
+.item .ftag.own{color:var(--accent);display:flex;justify-content:space-between;align-items:center}
+.item .omenu{font-style:normal;padding:0 5px;border-radius:4px;color:var(--fg2);cursor:pointer}
+.item .omenu:hover{background:var(--fill2);color:var(--fg)}
+.pv{display:flex;gap:12px;align-items:flex-start;margin:8px 0}
+.pv canvas{width:240px;height:150px;border-radius:9px;background:#000;box-shadow:0 0 0 1px var(--sep);flex:none}
+.pv .rep{flex:1;min-width:0;font-size:12.5px;color:var(--fg2)}
+.pv .rep ul{margin:4px 0;padding-left:18px;max-height:110px;overflow:auto}
+.pv .rep .ok{color:var(--fg)}
+.pv .rep .warn{color:var(--warn,#e8b04a)}
+.dropzone.over{box-shadow:0 0 0 2px var(--accent)}
+.cpgrid{display:grid;grid-template-columns:1.4fr 1fr .8fr .8fr .8fr auto;gap:4px;align-items:center;font-size:11.5px}
+.cpgrid input{min-width:0;width:100%;padding:3px 5px;font-size:12px}
+.cpgrid b{font-weight:500;color:var(--fg3)}

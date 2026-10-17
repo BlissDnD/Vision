@@ -9,7 +9,7 @@ import { motionText } from './motionText';
 import { motionDesign } from './motionDesign';
 import { particles } from './particles';
 import { soft3d } from './soft3d';
-import { S } from './helpers';
+import { S, COL } from './helpers';
 export * from './helpers';
 
 /** All layer types. Key = layer.type. Each: kind, name, desc, params, main, code (GLSL `vec4 fx()`), optional lib/passes/feedback/points/setU. */
@@ -34,6 +34,21 @@ vec4 fx(){
   return vec4(col, 1.0);
 }`;
 EFFECTS.custom.code=DEFAULT_CODE;
+/** P1: a 'custom' layer may carry its own named sliders in L.cp = [{k,l,min,max,def} | {k,l,color:true,def:'#rrggbb'}] (max 8).
+ *  They become uniforms p_<k> and animate like built-in params. Without L.cp the fixed p_a … p_d stay. */
+export const CP_MAX=8;
+export const CP_KEY=/^[a-z][a-z0-9_]{0,19}$/i;
+export function cpDefs(cp:any[]):any[]{const out=[];const seen=new Set();for(const c of (Array.isArray(cp)?cp:[])){if(!c||!CP_KEY.test(String(c.k))||seen.has(c.k)||out.length>=CP_MAX)continue;seen.add(c.k);
+  const l=String(c.l||c.k).slice(0,40);
+  if(c.color||c.type==='color'){out.push(COL(c.k,l,/^#[0-9a-f]{6}$/i.test(String(c.def))?String(c.def):'#ffffff'));continue;}
+  let mn=isFinite(+c.min)?+c.min:0,mx=isFinite(+c.max)?+c.max:1;if(!(mx>mn))mx=mn+1;const df=isFinite(+c.def)?Math.min(mx,Math.max(mn,+c.def)):(mn+mx)/2;
+  out.push(S(c.k,l,mn,mx,df,c.step>0?+c.step:undefined));}
+  return out;}
+const cpMemo=new WeakMap();
+/** Param definitions of one layer: the type's list, or the layer's own sliders for a custom shader (L.cp is replaced, never mutated, on edit). */
+export function paramsOf(L:any):any[]{const d=L&&EFFECTS[L.type];if(!d)return [];if(L.type!=='custom'||!Array.isArray(L.cp)||!L.cp.length)return d.params;
+  let r=cpMemo.get(L.cp);if(!r){r=cpDefs(L.cp);cpMemo.set(L.cp,r);}return r;}
+export const pdefOf=(L:any,k:string)=>paramsOf(L).find(p=>p.k===k)||null;
 export const SDF_MAP=`uniform vec4 uA[8]; uniform vec4 uB[8]; uniform vec4 uC[8]; uniform float uN;
 float sdPrim(vec3 l,float ty,vec3 s){
   if(ty<0.5){float k0=length(l/s); float k1=length(l/(s*s)); return k0*(k0-1.0)/max(k1,1e-4);}

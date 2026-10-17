@@ -5,7 +5,7 @@
 import { EFFECTS } from './effects/index';
 
 export const PROJECT_VER = 4;
-export interface Migrated { state: any; assets: Record<string, any>; from: number; dropped: string[] }
+export interface Migrated { state: any; assets: Record<string, any>; from: number; dropped: string[]; ulib: any[] }
 
 export function migrateProject(obj: any): Migrated {
   if (!obj || typeof obj !== 'object') throw new Error('Ez nem Vel / Látomás projekt.');
@@ -36,5 +36,7 @@ export function migrateProject(obj: any): Migrated {
   // v1/v2 had no explicit loop flag in very early files: missing = loop on (old default)
   if (state.loop === undefined) state.loop = true;
   state.ver = PROJECT_VER;
-  return { state, assets: obj.assets || {}, from, dropped };
+  // P1: library items the project uses (optional; older files: none). Merged into the user library, never overwriting.
+  const ulib = Array.isArray(obj.ulib) ? obj.ulib.filter((x: any) => x && typeof x.id === 'string' && x.data != null) : [];
+  return { state, assets: obj.assets || {}, from, dropped, ulib };
 }

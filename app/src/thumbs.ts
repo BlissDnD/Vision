@@ -7,9 +7,10 @@ import { textCache } from './text';
 import { present, renderScene } from './render';
 
 export const TW=192,TH=120;R.thumbCtx=null;R.thumbOut=null;export const thumbCache={};
-export function renderThumb(c0,i){
-  if(!R.thumbCtx){R.thumbCtx=mkCtx(TW,TH);R.thumbCtx.noCam=true;R.thumbOut=mkTarget(TW,TH,gl.RGBA8,gl.UNSIGNED_BYTE);}
-  const it=LIB[c0][i].make();const ik=it.type==='group'?'':EFFECTS[it.type].kind;const host=it.type!=='group'&&EFFECTS[it.type].host;const items=host?[makeLayer(host[0],{p:{billow:0},fx:[[it.type,{}]]})]:(ik==='fx'||it.type==='particles')?[makeLayer('sacred',{pal:1,p:{width:1.4}}),makeLayer('shape',{pal:5,p:{kind:4,sides:5,size:.32}}),it]:[it];
+export function renderThumb(c0,i){return thumbOf(LIB[c0][i].make());}
+/** Thumbnail canvas of any item (a fresh copy: its text cache is dropped afterwards). Appearances get a backdrop to act on. */
+export function thumbOf(it){
+  if(!R.thumbCtx){R.thumbCtx=mkCtx(TW,TH);R.thumbCtx.noCam=true;R.thumbOut=mkTarget(TW,TH,gl.RGBA8,gl.UNSIGNED_BYTE);}const ik=it.type==='group'?'':EFFECTS[it.type].kind;const host=it.type!=='group'&&EFFECTS[it.type].host;const items=host?[makeLayer(host[0],{p:{billow:0},fx:[[it.type,{}]]})]:(ik==='fx'||it.type==='particles')?[makeLayer('sacred',{pal:1,p:{width:1.4}}),makeLayer('shape',{pal:5,p:{kind:4,sides:5,size:.32}}),it]:[it];
   const thT=it.type==='reveal'?it.p.at.v+it.p.dur.v*.5:3;
   if(JSON.stringify(it).includes('"feedback"'))for(let k=0;k<16;k++)renderScene(items,R.thumbCtx,2.2+k*.05,'#06050b');
   const out=renderScene(items,R.thumbCtx,thT,'#06050b');present(R.thumbCtx,out.t,R.thumbOut.f,TW,TH,thT);

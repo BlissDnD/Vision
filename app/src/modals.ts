@@ -36,7 +36,7 @@ export function projModal(){const list=savedList();const name=h('input',{class:'
     h('button',{class:'btn',onclick:()=>{const l=savedList();l.splice(i,1);try{localStorage.setItem('latomas2.saved',JSON.stringify(l));}catch(_){}projModal();}},'Törlés'))):[h('li',null,h('span',{class:'small'},'Még nincs mentett projekt.'))]));
   openModal(h('h2',null,'Projekt'),h('div',{class:'btnrow'},name,h('button',{class:'btn accent',onclick:()=>{const n=name.value.trim()||'Névtelen látomás';const l=savedList();l.unshift({name:n,t:Date.now(),data:projectJSON()});
       try{localStorage.setItem('latomas2.saved',JSON.stringify(l.slice(0,30)));toast('Mentve: '+n);projModal();}catch(_){toast('Nem fért el a böngészőben (a képek sok helyet foglalnak). Mentsd fájlba.');}}},'Mentés a böngészőbe')),ul,
-    h('p',null,'Projektfájl: mentsd le, vagy illessz be egyet a betöltéshez.'),ta,
+    R.projExtra?R.projExtra():null,h('p',null,'Projektfájl: mentsd le, vagy illessz be egyet a betöltéshez.'),ta,
     h('div',{class:'bar2'},h('button',{class:'btn',onclick:()=>$('#fileJson').click()},'Fájl megnyitása…'),h('button',{class:'btn',onclick:()=>{try{loadProject(JSON.parse(ta.value));closeModal();toast(loadMsg());}catch(e){toast('Nem sikerült: '+e.message);}}},'Betöltés a mezőből'),
       h('button',{class:'btn',onclick:()=>saveFile(`latomas-projekt-${Date.now()}.json`,projectJSON())},'Mentés fájlba'),closeBtn()));}
 $('#fileJson').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{loadProject(JSON.parse(t));closeModal();toast(loadMsg());}).catch(err=>toast('Hibás fájl: '+err.message));e.target.value='';};

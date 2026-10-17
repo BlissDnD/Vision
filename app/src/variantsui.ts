@@ -1,7 +1,7 @@
 /* Inspector sections for Közös alap / Változat and Kapcsolat. Every action is one commit (undoable) and says what it did. */
 import { R } from './runtime';
 import { h } from './dom';
-import { BASE, EFFECTS } from './effects/index';
+import { BASE, EFFECTS, paramsOf } from './effects/index';
 import { findItem, st, walk } from './state';
 import { section } from './controls';
 import { commit, renderAll } from './history';
@@ -50,7 +50,7 @@ export function childVariantSection(L: any) {
 }
 
 const numParams = (L: any) => [...BASE.filter((b: any) => b.k !== 'blend').map((b: any) => ['n', b.k, b.l]),
-  ...((EFFECTS[L.type] && EFFECTS[L.type].params) || []).filter((d: any) => !d.type).map((d: any) => ['p', d.k, d.l])];
+  ...paramsOf(L).filter((d: any) => !d.type).map((d: any) => ['p', d.k, d.l])];
 const nameOf = (id: string) => { const r = findItem(id); return r ? r.it.name : '(törölve)'; };
 
 /** Kapcsolatok of this element (incoming, outgoing) + a compact „new link” row targeting this element. */
