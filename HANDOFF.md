@@ -5,6 +5,8 @@ Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl c
 ## Állapot egy mondatban
 Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A **P1** (presetek kívülről ChatGPT-vel, tartós saját könyvtár, saját shader elnevezett csúszkákkal) kész, headless tesztekkel demonstrálva. **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
 
+**CodePen-könyvtári integráció (2026-10-18):** a Liquid Glass a Megjelenések között ráhúzható effekt; a Szélben lobogó láng a Források között van. Két új szerkeszthető recept is készült. A shaderfordítás, könyvtári beillesztés, rétegre húzás és mentés–újranyitás célzott böngészős tesztje zöld; a felhasználói látványpróba még hátra van. Az eredeti portfájlok megmaradtak. A láng műterméke és a licenc kérdése nyitott.
+
 **CodePen-port kiegészítés (2026-10-18):** a két megnyitható Vel-mintaprojekt és a forrás/korlátjegyzet a `presets/egyedi/` mappában van (`EREDETI-PORTOK.md`). A Liquid Glass eredeti képlete és fotója működik; a láng eredeti zajtextúráját a saját shader `asset` → `uImage` útja használja, de vékony függőleges műtermék maradt (`BUGS.md`). Ez nem zárja le a nagyobb Megjelenés-/shader-katalógus fejlesztést. A CodePen-kódok jogi eredete és a 4K-teljesítmény nyitott ellenőrzés.
 
 **Betöltési UX-javítás (2026-10-18):** a Preset beillesztése ablakba adott teljes Vel-projektet a felület felismeri, és külön „Projekt megnyitása (a jelenlegit lecseréli)” gombot ad; a célzott P1 böngészős teszt zöld. A vászonra ejtett projektfájl is erre az útvonalra jut. A felhasználónál a friss `app/dist/index.html` újratöltése után próbálandó.

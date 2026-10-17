@@ -1,9 +1,16 @@
 import { R } from './runtime';
-import { makeGroup, makeLayer } from './state';
+import { makeGroup, makeLayer, assets } from './state';
+import { GLASS_PHOTO_ID, GLASS_PHOTO } from './referenceAssets';
 import { macroRead } from './macros';
 
 export const PLA={ptype:1,seed:7,radius:.3,ring:.8,ringtilt:16,sunang:35,clouds:.55,lights:.6,atmocol:'#6fb2ff'};
 export const RECIPES=[
+ {n:'Liquid Glass · fénykép',desc:'A CodePen referencia üveglencséje egy teljes képes fotón. A Megjelenést az alapképre húzva bármely saját fotóval is használhatod.',layers:[
+   ['image',{name:'Háttérfotó · cserélhető',asset:GLASS_PHOTO_ID,s:1.25,fx:[['liquidglass',{p:{size:1,blur:1,quality:1}}]]}]],
+  macros:[]},
+ {n:'Láng · szélben',desc:'Textúrával rajzolt lángforrás és visszafogott ragyogás; az elemek külön szerkeszthetők.',layers:[
+   ['windflame',{name:'Szélben lobogó láng',fx:[['glow',{p:{amount:.35,radius:1.2,thresh:.25}}]]}]],
+  macros:[{l:'Sebesség',t:[[0,'p.speed',0,3]]},{l:'Szélesség',t:[[0,'p.width',.2,2]]}]},
  {n:'Portál',desc:'Csavarodó téridő-alagút egy körmaszkban, szent geometriával és lencsehatással.',layers:[
    ['shape',{name:'Portál-maszk',maskOnly:true,p:{kind:0,size:.34,soft:.05}}],
    ['tunnel',{name:'Alagút',clip:true,pal:12,p:{twist:1.4,glow:1.4}}],
@@ -326,5 +333,5 @@ export const RECIPES=[
    ['bokeh',{name:'Előtér-fények',blend:'screen',z:-1.1,s:1.4,pal:15,opacity:.8,p:{count:14,size:1.6,bright:.9}}]],
   macros:[{l:'Előtér',t:[[4,'n.opacity',0,1]]},{l:'Köd',t:[[2,'n.opacity',0,1]]}]}
 ];
-export function makeRecipe(R){const kids=R.layers.map(([t,o])=>makeLayer(t,o));const g=makeGroup(R.n,kids,{});g.recipe=R.n;
+export function makeRecipe(R){if(R.n==='Liquid Glass · fénykép'){assets[GLASS_PHOTO_ID]=GLASS_PHOTO;}const kids=R.layers.map(([t,o])=>makeLayer(t,o));const g=makeGroup(R.n,kids,{});g.recipe=R.n;
   g.macros=(R.macros||[]).map(m=>{const mm={l:m.l,t:m.t.map(([i,path,a,b])=>[kids[i].id,path,a,b]),v:0};mm.v=macroRead(g,mm);return mm;});return g;}

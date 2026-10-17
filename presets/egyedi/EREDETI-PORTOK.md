@@ -1,3 +1,11 @@
+## Beépítve a Vel könyvtárába (2026-10-18)
+
+- **Megjelenések → Liquid Glass:** meglévő képre vagy más rétegre húzható. Kattintva önálló, alatta lévő jelenetet törő rétegként is felvehető. A Méret, Elmosás és Minőség állítható; „Gyors” módban a 9×9 mintavétel tényleg kimarad. A pozícióval a lencse középpontja mozgatható.
+- **Források → Szélben lobogó láng:** a saját, csomagolt zajtextúrájával működik, ezért a Vel egyetlen HTML-fájlként is használható. Sebesség, szélesség és fény állítható.
+- **Receptek → Liquid Glass · fénykép / Láng · szélben:** szerkeszthető kiindulópontok. Az üveg recept beágyazott mintafotót használ; a fotó cserélhető.
+
+Ez a két egyedi portot nem változtatja meg; a láng korábban feljegyzett függőleges műterméke és a Shadertoy-eredet felhasználási feltételeinek kérdése továbbra is nyitott. A 4K-s sebességet ez az integráció nem igazolja.
+
 # Két CodePen-effekt átültetése a Velbe
 
 ## Liquid Glass — használható port

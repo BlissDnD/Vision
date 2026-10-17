@@ -25,8 +25,8 @@ export const LIB={
    L3('Tóruszcsomó',{pal:0,p:{shape:6,material:7,rx:30,spin:.4}}),L3('Toon dodekaéder',{pal:8,p:{shape:7,material:8,rx:20}}),L3('Üveg ikozaéder',{pal:9,p:{shape:8,material:6,rx:15}}),L3('Metagömbök',{pal:5,p:{shape:9,material:0}}),L3('Normál-tórusz',{pal:0,p:{shape:1,material:7,rx:60}}),L3('Agyagszobor',{pal:12,p:{shape:7,material:9,rough:.8,detail:.4,floor:.7}}),L3('Gyöngy',{pal:17,p:{shape:0,material:10,env:3,floor:.5}}),L3('Bársonytórusz',{pal:12,p:{shape:1,material:11,rx:55,floor:.5}}),L3('Krómcsomó',{pal:7,p:{shape:6,material:4,rough:.15,floor:.6}}),LG('gyroid')],
  shapes:[LS('Kör',{kind:0}),LS('Gyűrű',{kind:1}),LS('Lekerekített négyzet',{kind:2,round:.3}),LS('Háromszög',{kind:3,sides:3}),LS('Hatszög',{kind:3,sides:6}),
    LS('Csillag',{kind:4,sides:5}),LS('Félhold',{kind:5,inner:.35}),LS('Vesica',{kind:6,inner:.5}),LS('Szív',{kind:7}),LS('Virág',{kind:8,sides:6,inner:.6}),LS('Spirál',{kind:9,inner:.3,thick:.02}),LS('Szem',{kind:10,thick:.02}),LS('Kereszt',{kind:11,inner:.2}),LS('Végtelen',{kind:12,thick:.02}),LS('Fénykör',{kind:0,soft:.8},{pal:8})],
- gen:[...['plasma','fire','aurora','galaxy','waves','lava','cells','nebula','liquid','tunnel','sacred','kali','julia','moire','hyper','grid','blackhole','gradient'].map(LG),{name:'Lencsefény',make:()=>makeLayer('flare',{blend:'add',pal:1})}],
- fx:['blob','texture','blur','glow','lens','warp','edge','radial','kaleido','feedback','swirl','ripple','ascii','halftone','pixelart','mirror','polar','chroma','psycolor','grade','glitch','film','pdisp','balloon'].map(LG),
+ gen:[...['plasma','fire','windflame','aurora','galaxy','waves','lava','cells','nebula','liquid','tunnel','sacred','kali','julia','moire','hyper','grid','blackhole','gradient'].map(LG),{name:'Lencsefény',make:()=>makeLayer('flare',{blend:'add',pal:1})}],
+ fx:['liquidglass','blob','texture','blur','glow','lens','warp','edge','radial','kaleido','feedback','swirl','ripple','ascii','halftone','pixelart','mirror','polar','chroma','psycolor','grade','glitch','film','pdisp','balloon'].map(LG),
  world:[
   ...RECIPES.filter(R=>R.cat==='world').map(R=>({name:R.n,make:()=>makeRecipe(R)})),
   {head:'Darabok'},

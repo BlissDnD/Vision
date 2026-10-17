@@ -2,6 +2,12 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## 2026-10-18 — CodePen-portok a könyvtárban
+
+- Liquid Glass a Megjelenésekben: ráhúzható rétegre, elmozdítható lencse, eredeti 9×9 mintavétel vagy valóban olcsóbb Gyors mód. Szélben lobogó láng a Forrásokban, beágyazott zajtextúrával. Két új recept: Liquid Glass · fénykép és Láng · szélben.
+- Typecheck és build sikeres. Célzott böngészős könyvtárteszt és a meglévő P1 teszt `bad: []`. Valós GPU-s 4K-teljesítmény és a láng vizuális egyezése nem igazolt; a láng korábbi műterméke nyitott.
+- Felhasználói próba: 1) Könyvtár → Receptek → Liquid Glass · fénykép; 2) Megjelenések → Liquid Glass egy saját képre húzva; 3) Források → Szélben lobogó láng. A beállítások a kijelölt elemnél módosíthatók.
+
 ## 2026-10-18 — projektfájl a presetablakban
 
 - A Preset beillesztése ablak felismeri a teljes Vel-projektet, és külön, a jelenlegi projekt cseréjét kimondó megnyitógombot ad. A vászonra ejtett `.vel.json` ugyanoda jut. Ez a két CodePen-mintaprojekt beillesztésekor jelentkező félrevezető `layers` hibát javítja.

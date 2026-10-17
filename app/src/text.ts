@@ -2,6 +2,7 @@ import { ASCII_ATLAS, PLACEHOLDER, gl, texFromCanvas } from './gl';
 import { assets, imgTex } from './state';
 import { blobState } from './blob';
 import { markDirty } from './loop';
+import { WIND_NOISE_ID, WIND_NOISE } from './referenceAssets';
 import { altText } from './partfx';
 
 export const textCache=new Map(),fontReq=new Set();
@@ -49,5 +50,6 @@ export function auxTex(data,w,old,hgt=1){const t=old||gl.createTexture();gl.bind
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,hgt,0,gl.RGBA,gl.UNSIGNED_BYTE,data);gl.pixelStorei(gl.UNPACK_ALIGNMENT,4);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t;}
-export function mediaFor(L,t=null){if(L.type==='text'||L.type==='mtext'){const a=t==null?null:altText(L,t);return textTex(L,a);}if(L.type==='ascii')return ASCII_ATLAS;if(L.type==='blob'){const B=blobState.get(L.id);return B&&B.ovTex?{tex:B.ovTex,w:B.ow,h:B.oh}:null;}if(L.type==='image')return (L.asset&&imgTex.get(L.asset))||PLACEHOLDER;if(L.type==='custom'&&L.asset)return imgTex.get(L.asset)||null;return null;}
-export function loadAsset(id){if(imgTex.has(id)||!assets[id])return;const im=new Image();im.onload=()=>{imgTex.set(id,{tex:texFromCanvas(im),w:im.naturalWidth,h:im.naturalHeight});markDirty();};im.src=assets[id];}
+export function mediaFor(L,t=null){if(L.type==='text'||L.type==='mtext'){const a=t==null?null:altText(L,t);return textTex(L,a);}if(L.type==='ascii')return ASCII_ATLAS;if(L.type==='blob'){const B=blobState.get(L.id);return B&&B.ovTex?{tex:B.ovTex,w:B.ow,h:B.oh}:null;}if(L.type==='image'){if(L.asset)loadAsset(L.asset);return (L.asset&&imgTex.get(L.asset))||PLACEHOLDER;}if(L.type==='custom'&&L.asset)return imgTex.get(L.asset)||null;if(L.type==='windflame'){if(!assets[WIND_NOISE_ID])assets[WIND_NOISE_ID]=WIND_NOISE;loadAsset(WIND_NOISE_ID);return imgTex.get(WIND_NOISE_ID)||null;}return null;}
+const loadingAssets=new Set<string>();
+export function loadAsset(id){if(imgTex.has(id)||loadingAssets.has(id)||!assets[id])return;loadingAssets.add(id);const im=new Image();im.onload=()=>{imgTex.set(id,{tex:texFromCanvas(im),w:im.naturalWidth,h:im.naturalHeight});loadingAssets.delete(id);markDirty();};im.onerror=()=>loadingAssets.delete(id);im.src=assets[id];}
