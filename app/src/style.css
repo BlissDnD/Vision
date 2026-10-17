@@ -318,3 +318,4 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .tlx-bend{position:absolute;right:-4px;top:0;height:23px;width:8px;z-index:2;cursor:ew-resize;border-radius:3px;background:var(--accent);opacity:.7}
 .tlx-cues{min-height:14px}
 .tlx-cue{position:absolute;top:1px;bottom:1px;width:3px;margin-left:-1.5px;background:#f5b942;border-radius:2px;cursor:pointer}
+#perfSmooth{width:70px;accent-color:var(--accent);margin:0 4px}

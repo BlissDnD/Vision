@@ -14,13 +14,13 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 | ✅ M2 | Típusos **Csoport / Közös alap / Változat / Kapcsolat** + mentés | 3 posztváltozatból egyben átírt cím csak ott változik; az „Átadás” működik |
 | ✅ M3 | Könyvtár és rétegek UX (új kategóriák, kattintás alatti találatlista, csoportkijelölés, tömör effektlánc) | takart rétegek gyors kiválasztása |
 | ✅ M4 | Tipográfia: soronkénti fogantyúk, vegyes stílus, soronkénti/szavas/betűnkénti animáció | 4. kép ihlette szerkeszthető poszt |
-| M5 | Mozgásblokkok és retime, Eljátszás simítással, kézi Jelzések sáv | 10 perces 9:16 reel próba, exporttal |
+| ✅ M5 | Mozgásblokkok és retime, Eljátszás simítással, kézi Jelzések sáv | 10 perces 9:16 reel próba, exporttal |
 | M6 | Látványkapu: render/anyag audit, a vörös felület folytatása | mért kép a célgépen, hiánylista |
 | M7–M10 | Építőelemek és részecskék → fizika → folyadék (előbb kutatás) → receptek, Random, polírozás | lásd a terv 7. fejezetét |
 
 ## Környezet (Mac, helyben)
 - Repo: `~/Desktop/melo/CLAUDE/muchdesigner/vel` (git, `main`). Az app az `app/` mappában van.
-- `cd app && npm install`, `npm run typecheck`, `npm run build` (→ `dist/index.html`). Tesztek: `node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py`. A `.venv`-ben Playwright és Chromium van; kb. 2 perc; jelenleg 18/18 zöld.
+- `cd app && npm install`, `npm run typecheck`, `npm run build` (→ `dist/index.html`). Tesztek: `node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py`. A `.venv`-ben Playwright és Chromium van; kb. 2 perc; jelenleg 19/19 zöld.
 - Dev szerver: a Code fül `preview_start` „vel” konfigja (port 5180) és „ribbon” konfigja (5181). Ezek a **Mindspace** projekt `.claude/launch.json` fájljában vannak (`~/Documents/claudecoding`), ott commitolatlanul. A 5173-on a régi `latomas-src` fut, ahhoz ne nyúlj.
 - Tesztírás: `tests/*.js` a `window.__L` (minden modul exportja) kontextusában fut; a minta a `tests/m1_close.js`. Hibát a `bad` listába tegyél.
 
@@ -51,13 +51,15 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 - Teszt: `tests/m4_type.js`. Böngészőben kipróbálva: a fogantyú-húzás behúz és térközt ad, konzolhiba nincs.
 - Nem készült el / korlát: vegyes stílus egy soron belül (szavanként) még nincs, csak soronként; a sorfogantyú forgatott rétegen nincs külön ellenőrizve; betűtípus soronként csak az adatmodellben van (`font`), az inspectorban még nincs választó; a változó sormagasságú soranimáció pixelre nincs mérve (csak GL-hiba nélküli render, és a sortábla adatai).
 
-## M5 állapota (folyamatban) — blokkok, retime, jelzések KÉSZ, 18/18 teszt zöld
+## M5 állapota — KÉSZ (0.18.0-m5), 19/19 teszt zöld
 - [x] **Mozgásblokk** (`src/retime.ts`): egy réteg minden időzített eleme egy blokk (a `tm` be/ki, az `mtext` start/outAt, a `bento` start/morphAt/outAt, a `reveal` at/outAt és az összes kulcskocka). Fázisai: beúszás, rugalmas közép, zárás.
   - `shiftBlock`: minden együtt tolódik. `stretchBlock(...,'hold')`: a közép nyúlik, a beúszás érintetlen, a zárás azonos sebességgel későbbre kerül. `'close'`: zárás lassítása (a `tm.outDur` és a záró kulcsok nyúlnak).
 - [x] **UI a Sávok panelen** (`timeline.ts` `blockDrag`): a sáv tetején vékony blokkcsík (húzva tol), a végén teljes magasságú fogó (nyújt, Alttal a zárást lassítja). Shift+kattintással több blokk jelölhető ki, és a művelet mindegyikre hat. Illeszt a kulcsokra, a lejátszófejre és a jelzésekre. Ha nincs mit nyújtani, megmondja, mit tegyél. A szakaszok (fázisok) alatta külön is húzhatók maradtak.
 - [x] **Jelzések** (`st.cues`, mentve): lejátszás közben **J** = koppintás az ütemre; a Sávok panel „Jelzések” sorában dupla kattintás = új jelzés, Alt+kattintás = törlés, kattintás = ugrás. A jelzésen álló kulcskocka **horgony**: retime-kor helyben marad, és az üzenet megmondja, hány maradt (Shift-húzás: horgony nélkül).
 - Teszt: `tests/m5_retime.js`. Böngészőben: a blokkcsík húzása eltolja a szöveg-animációt.
-- [ ] **Hátra van az M5-ből:** Eljátszás simítással (egérmozdulat felvétele kulcskockákká, simítással); több *kulcs* együtt nyújtása (most blokkonként megy); a jelzés mint jel (pl. Glow-impulzus a jelzéseknél).
+- [x] **Eljátszás simítással** (`src/perform.ts`): a vászon feletti sávon „Eljátszás” gomb (E billentyű). Bekapcsolva a kijelölt réteg húzása elindítja a lejátszást, és a mozdulatot felveszi. Elengedéskor Gauss-simítás (a végeken szűkülő ablakkal) és RDP-ritkítás jön, majd lineáris kulcskockák az x és y paraméterre, csak a felvétel idősávjában. A „Simítás” csúszka a nyers felvételből utólag újraépíti a kulcsokat. Élő előnézet: nem mentett `_pv` felülírás az `ev()`-ben. Teszt: `tests/m5_perform.js` (121 minta → 17 kulcs, legnagyobb eltérés 0,032).
+  - **Nem ellenőrizve valódi húzással:** a Code fül böngészőpaneljében háttérben nincs rAF, így ott a lejátszási idő nem halad. Macen élőben kell kipróbálni.
+- [ ] M5-maradék (később): több kijelölt *kulcs* együtt nyújtása (most blokkonként megy); a jelzés mint jel (pl. Glow-impulzus a jelzéseknél); az eljátszás más paraméterekre is (most csak elhelyezés).
 
 ## Az M5 kiindulópontja (eredeti leírás)
 Terv §5 „Idővonal”: egy Mozgás = szerkeszthető blokk fázisokkal (beúszás, rugalmas közép, zárás). Középről húzva minden együtt tolódik; a jobb széle a középső részt nyújtja (a beúszás sebessége marad); „Zárás lassítása”; több réteg vagy kulcs együtt nyújtható; Eljátszás simítással; kézi Jelzések sáv (ütemre koppintás), a hangjelzéshez kötött időhorgonyok ne csússzanak. Kiindulás: `src/timeline.ts` (idővonal és Sávok, többes kijelölés, kulcsmozgatás), `Timing` (`tm`: in/inAt/inDur/out/outAt/outDur) és a `mtext` start/dur/stagger. Próba: 10 perces 9:16 reel exporttal.

@@ -32,6 +32,7 @@ document.addEventListener('keydown',e=>{
   if(e.key===' '){e.preventDefault();setPlay(!R.playing);}
   else if(k==='v')setTool('move');else if(k==='o')setTool('orbit');else if(k==='r')runRandom(true);
   else if(k==='g')$('#gizmoBtn').click();else if(k==='f')toggleFS();
+  else if(k==='e'){import('./perform').then(m=>m.setPerform(!R.perform));}
   else if(k==='j'){const c=addCue(R.time);if(c){commit();renderTracks();toast(`Jelzés @ ${fmtT(R.time)} · a kulcskockák ide tapadnak`);}}
   else if(k==='h'){const L=sel();if(L){L.vis=!L.vis;commit();renderLayers();}}
   else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();if(R.tlxSels.length){const n=deleteSelKeys();commit();renderInsp();toast(`${n} kulcskocka törölve`);}else delSel();}

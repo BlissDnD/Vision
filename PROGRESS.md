@@ -2,6 +2,11 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
+## Állapot: 2026-10-17 este — M5 (mozgásblokkok, retime, jelzések, eljátszás) KÉSZ
+
+Verzió 0.18.0-m5, 19/19 teszt zöld. Részletek: `HANDOFF.md` „M5 állapota”.
+**Felhasználói próba (3 perc):** nyisd meg a Sávok panelt (az idővonal bal oldali ikonja) → a rétegsáv tetején lévő csíkot húzd: az egész mozgás tolódik; a végén lévő fogót húzd: a közép nyúlik (Alttal a zárás lassul) → lejátszás közben nyomd a J-t ütemre: jelzések → E (Eljátszás) → húzd a réteget lejátszás közben → csúszkával simíts.
+
 ## Állapot: 2026-10-17 este — M4 (soronkénti tipográfia) KÉSZ
 
 Verzió 0.17.0-m4, 17/17 teszt zöld. Részletek és korlátok: `HANDOFF.md` „M4 állapota”.
@@ -73,4 +78,4 @@ Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.g
 - Az `R.time` továbbra is a jelenetidő (Loopnál a frame() tekeri vissza). Az export az `sceneT()`-n keresztül képez le. Így a meglévő effektkód érintetlen.
 
 ## Következő lépés
-Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M5** mozgásblokkok és retime (lásd `HANDOFF.md` „Következő: M5”). A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.
+Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M6** látványkapu (render/anyag audit, a vörös felület folytatása), lásd `HANDOFF.md`. A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.
