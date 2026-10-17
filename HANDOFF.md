@@ -45,7 +45,7 @@ npm run dev -- --port 5180 --strictPort   # Vite dev szerver
 | M9 | F | folyadék: előbb mért kutatási prototípus |
 | M10 | G | receptcsalád, Random hatókörök, polírozás |
 
-Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, `m4_type`, `m5_retime`, `m5_perform`, `m6_mesh`), plusz a régiek. Az egyes M-ek részletes korlátai a `PROGRESS.md`-ben vannak.
+Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, `m4_type`, `m5_retime`, `m5_perform`, `m6_mesh`, `m6_spine`), plusz a régiek. Az egyes M-ek részletes korlátai a `PROGRESS.md`-ben vannak.
 
 ## 5. Ahol tartunk: M6 (C szakasz, látványkapu)
 - **Döntés (mérve, `prototypes/red-ribbon-webgl/README.md` vége):** a jó minőségű 3D a Velben **mesh-alapú** legyen. Ugyanaz a forma SDF raymarchinggal 183 ms, mesh-ként 3–5 ms 2048×1536-on, M1 Maxon; az SDF ráadásul csíkos. Az SDF csak a meglévő procedurális formákra marad.
@@ -56,10 +56,9 @@ Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, 
   - Paraméterek (`effects/objects3d.ts` `surface3d`): Fő, Forma, Anyag, Fény, Padló és háttér, Kamera csoport. Mind animálható; a kamera (ry/rx/dist/fov/cél) is. A 3D forgatás eszköz (O) működik.
   - Bekötve: `render.ts` (`EFFECTS[type].mesh` → `drawMesh`), `state.ts` (`d.spine` alapérték), `stage.ts` (orbit), `library.ts`, `cost.ts`.
   - Teszt: `tests/m6_mesh.js` (GL-hiba nélkül, vörös pixelek, a szélesség hat, gyorsítótár, animált kamera, gerinc mentése).
-  - Ellenőrizve valódi GPU-n (5180): „Filmes” és „Tiszta” kinézettel is jó. Az alapértékeket úgy hangoltam, hogy „Filmes” alatt ne égjen ki (sky 0,95, backI 0,8, expo 0,72, a hátsó fény glóriája 0,18).
+  - Ellenőrizve valódi GPU-n (5180; ha foglalt, a launch.json „vel” más portra kerül, pl. 5182): „Filmes” és „Tiszta” kinézettel is jó. Az alapértékeket úgy hangoltam, hogy „Filmes” alatt ne égjen ki (sky 0,95, backI 0,8, expo 0,72, a hátsó fény glóriája 0,18).
+- **Kész (0.19.1-m6b):** `src/spinegrips.ts`: gerincpont-fogók a vásznon (a réteg kamerájával vetítve; húzás a kamerával szemközti síkban, Shift: vízszintes sík), üres húzás = kamera cél pásztázása, görgő = kamera távolság (`stage.ts` `pan` mód). A 2D gizmó rejtve mesh-rétegnél (`isSurf`), az inspectorban „Gerinc” szekció (`spineSection`, a `d.groups` ágban). Nem mentett kijelölt pont: `R.spSel`. Teszt: `tests/m6_spine.js`. 21/21 zöld.
 - **Hiányzik az M6-ból (következő lépések, sorrendben):**
-  1. A gerincpontok **vásznon húzható** szerkesztése (most csak az alapgerinc + paraméterek; a prototípus `main.js`-ében van TransformControls-minta).
-  2. A réteg 2D transzformja (x/y/s) most nem hat a 3D képre. Vagy kössük a kamerára, vagy rejtsük el a gizmót ennél a típusnál.
   3. Halvány cián pont a gerinc csúcsán „Filmes” alatt: a Lencsehiba (chroma) fényes csillanáson. Ez apróság.
   4. Kimutatni a célgépen: 4K export ideje ezzel a réteggel (exportnál a réteg minden képkockán renderel).
   5. A terv C pontja szerint: „közvetlen csillanás-húzás” (a csillanásra kattintva a fénycsík helyét állítani), új fény- és anyagvezérlés más 3D formákra is (obj3d/sdfscene audit).

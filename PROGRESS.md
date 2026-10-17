@@ -2,6 +2,14 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
+## Állapot: 2026-10-17 este — M6 (Gerincfelület) folyamatban: 0.19.1-m6b
+
+- 0.19.0-m6a: mesh-alapú 3D réteg „Gerincfelület” (MSAA, tükröző padló, analitikus stúdió). Döntés és mérés: `prototypes/red-ribbon-webgl/README.md`.
+- 0.19.1-m6b: **a gerinc a vásznon szerkeszthető** (`src/spinegrips.ts`). A gerincpontok a réteg saját 3D kamerájával vetített fogók, szaggatott vonallal. Húzás: a pont a kamerával szemközti síkban mozog és az egér alatt marad; Shift: vízszintesen (a magasság marad). Üres helyen húzva a kamera célpontja mozog, görgővel a kamera távolsága. A 2D gizmó és az „Elhelyezés” ennél a rétegnél rejtve (a 2D x/y/s egy valódi 3D rétegnél értelmetlen volt). Inspector: „Gerinc” szekció (új pont utána, pont törlése, alapgerinc).
+- Teszt: `tests/m6_spine.js` (vetítés↔egér eltérés < 0,2 px, Shift-sík, pásztázás, görgő, gizmó rejtve, szekció gombjai, újranyitás). 21/21 zöld. Élőben kipróbálva a beépített böngészőben, konzolhiba nincs.
+- **Felhasználói próba (1 perc):** könyvtár keresőjébe „gerinc” → kattints → húzd a kék pontokat (Shifttel vízszintesen) → üres helyen húzva és görgetve a kamera mozog → Ctrl/Cmd+Z visszavon.
+- Korlát: a gerinc nem kulcskockázható (statikus forma; a kamera és a formaparaméterek animálhatók). A vásznon kívül eső pontok nem látszanak.
+
 ## Állapot: 2026-10-17 este — M5 (mozgásblokkok, retime, jelzések, eljátszás) KÉSZ
 
 Verzió 0.18.0-m5, 19/19 teszt zöld. Részletek: `HANDOFF.md` „M5 állapota”.

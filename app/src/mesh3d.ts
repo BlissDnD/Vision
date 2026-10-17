@@ -218,7 +218,7 @@ export function camOf(L: any, t: number, def: any, asp: number) {
   const P = (k: string) => ev(L.p[k], def.params.find((x: any) => x.k === k), t);
   const yaw = P('ry') * Math.PI / 180, pit = P('rx') * Math.PI / 180, d = P('dist'), c: V3 = [P('tx'), P('ty'), P('tz')];
   const e: V3 = [c[0] + d * Math.cos(pit) * Math.sin(yaw), c[1] + d * Math.sin(pit), c[2] + d * Math.cos(pit) * Math.cos(yaw)]; // rx > 0: camera above the target
-  const VP = mm(persp(P('fov'), asp, 0.1, 400), lookAt(e, c)); return { VP, inv: inv(VP), eye: e };
+  const VP = mm(persp(P('fov'), asp, 0.1, 400), lookAt(e, c)); return { VP, inv: inv(VP), eye: e, c, fov: P('fov'), dist: d };
 }
 
 /** Draw the surface layer into `target` (premultiplied linear RGBA). */

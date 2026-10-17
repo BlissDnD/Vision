@@ -16,9 +16,10 @@ import { markDirty } from './loop';
 import { showCode } from './modals';
 import { childVariantSection, linkSection, variantSection } from './variantsui';
 import { linesSection } from './textlines';
+import { spineSection } from './spinegrips';
 
 export function renderInsp(){
-  {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'));}
+  {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'||L0.type==='surface3d'));}
   renderTimeline();const P=$('#insp');P.innerHTML='';R.liveCtl=[];R.liveFields=[];R.liveKed=[];
   const L=sel();
   if(!L){P.appendChild(h('div',{class:'empty'},'Válassz ki egy réteget, vagy kezdj egy recepttel a lenti könyvtárból.'));return;}
@@ -43,10 +44,11 @@ export function renderInsp(){
       if(gr.text){const ti=h('input',{class:'txt',value:L.btext||'','aria-label':'Saját felirat-sablon'});ti.oninput=()=>{L.btext=ti.value;};ti.onchange=commit;
         kids.push(h('div',{class:'ctl'},h('div',{class:'top'},h('span',{class:'lab'},'Saját felirat-sablon')),ti,h('p',{class:'small'},'Helyettesítők: {id} {x} {y} {w} {h} {v}. Új sor: \\n')));}
       P.appendChild(section(gr.t,'g:'+gr.t,!!gr.open,...kids));});
+    if(d.mesh)P.appendChild(spineSection(L));
     if(d.usesPal)P.appendChild(section('Paletta (a Színezés módhoz)','color',false,palettePicker(L),ctlSlider(L.n.hue,BASEK.hue)));
     P.appendChild(section('Megjelenés','blend',true,ctlSlider(L.n.opacity,{...BASEK.opacity,l:'Erősség'}),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
     P.appendChild(section('Rétegeffektek','fx',L.fx.length>0,fxListUI(L)));
-    P.appendChild(section('Részletek','details',false,h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása'))));
+    if(!d.mesh)P.appendChild(section('Részletek','details',false,h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása'))));
     return;}
   const mainKeys=d.main||d.params.slice(0,3).map(p=>p.k);
   const mainKids=[];

@@ -14,6 +14,7 @@ import { tlHeadEl, tlxTick } from './timeline';
 import { autoQuality } from './adaptive';
 import { overrun } from './time';
 import { updLineHandles } from './textlines';
+import { updSpineGrips } from './spinegrips';
 
 R.snapping=false;R.dirty=3;R.refine=false;R.editT=0;export const markDirty=()=>{R.dirty=Math.max(R.dirty,2);R.refine=true;R.editT=performance.now();};
 document.addEventListener('input',markDirty,true);document.addEventListener('change',markDirty,true);document.addEventListener('pointerup',markDirty,true);document.addEventListener('keyup',markDirty,true);
@@ -33,7 +34,7 @@ export function frame(now){
   for(const f of R.liveFields){if(f.kbtn){const ks=keyState(f.obj);if(f.kbtn.dataset.k!==ks)f.kbtn.dataset.k=ks;}if(document.activeElement!==f.inp){const s=fmt(curV(f.obj),f.d);if(f.inp.value!==s)f.inp.value=s;}}
   for(const k of R.liveKed)k.tick();
   if(R.tlxOpen)tlxTick();
-  updGizmo(R.time);updLineHandles(R.time);
+  updGizmo(R.time);updLineHandles(R.time);updSpineGrips(R.time);
   if(need||!R.playing){R.fpsAcc+=dt;R.fpsN++;}if(now-R.fpsT>600){const fps=Math.round(R.fpsN/R.fpsAcc),ld=sceneLoad(),hud=$('#hud');const cap=R.aqCap?Math.round(R.aqCap):0;const col=fps>=50||(cap&&fps>=cap*.9)?'#30d158':fps>=28?'#ffd60a':'#ff453a';
     hud.innerHTML=R.playing?`<i style="background:${col}"></i>${fps}${cap?' / '+cap:''} fps · ${loadLabel(ld)} · ${cv.width}×${cv.height}${st.qMode==='auto'?' · auto':''}`:`<i style="background:var(--fg3)"></i>Szünet · ${loadLabel(ld)} · ${cv.width}×${cv.height}`;
     hud.title=`${cap?`A böngésző ${cap} képkocka/mp-re korlátozza a lejátszást (pl. Chrome Energiatakarékos mód vagy macOS Alacsony fogyasztású mód akkumulátoron). Ilyenkor a felbontást nem csökkentem tovább.\n`:''}Becsült terhelés: ${ld.toFixed(1)} egység.\nHa akad: Vászon → Előnézet 50%, kevesebb 3D réteg, kapcsold ki a 4× élsimítást.\nAz exportot ez nem érinti: a kép és a videó képkockánként, teljes minőségben renderelődik.`;R.fpsAcc=0;R.fpsN=0;R.fpsT=now;}
