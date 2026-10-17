@@ -2,6 +2,12 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## 2026-10-18 — CodePen-effektek eredeti képleteinek portpróbája
+
+- `presets/egyedi/liquid-glass-eredeti-demo.vel.json`: a Liquid Glass eredeti képleteivel és Pexels-fotójával kész, közvetlenül megnyitható Vel-projekt. Külön importálható shader: `liquid-glass-eredeti-port.json`. A 9×9 mintavétel 4K-sebessége még nincs mérve.
+- `presets/egyedi/lang-eredeti-demo.vel.json`: a CodePenben használt zajtextúrát a projektbe ágyazva futtatja az eredeti lángképlet portját. A saját shader képbemenetéhez `mediaFor()` most elfogad `asset` mezőt. A lángban még látszik egy függőleges műtermék; az eredeti Shadertoy-kód licence sem tisztázott. Részletek: `presets/egyedi/EREDETI-PORTOK.md` és `BUGS.md`.
+- Ellenőrzés: TypeScript typecheck és production build sikeres; mindkét projektnél böngészős shaderfordítás és betöltési próba hibamentes. Felhasználói, valós GPU-s összevetés még nincs.
+
 ## Állapot: 2026-10-18 — P1 „Presetek kívülről (ChatGPT) + saját shader”: 0.27.0-p1
 
 - **Saját könyvtár** (`src/userlib.ts`): általános, tartós tár (IndexedDB `vel-userlib`, memóriában is), elem: `{id, kind:'preset'|'shader'|…, cat, name, created, data, thumb}`; ismeretlen fajták megmaradnak (későbbi felhasználásra). Projekt menü: könyvtár mentése fájlba / betöltése (sosem ír felül, csak hozzáad); a projektfájl `ulib` mezője viszi a benne használt elemeket (v4 marad, régi fájl: nincs).

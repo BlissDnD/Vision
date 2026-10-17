@@ -1,0 +1,20 @@
+{
+  "name": "Liquid Glass – eredeti algoritmus portja",
+  "dur": 8,
+  "layers": [
+    {
+      "type": "custom",
+      "name": "Liquid Glass (shingidad CodePen port)",
+      "blend": "normal",
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "sliders": [
+        { "k": "size", "l": "Méret", "min": 0.5, "max": 3, "def": 1 },
+        { "k": "blur", "l": "Üveg elmosása", "min": 0, "max": 1, "def": 1 }
+      ],
+      "p": { "size": 1, "blur": 1 },
+      "code": "// Port of https://codepen.io/shingidad/pen/jEPxMgW (MIT via CodePen).\n// The original iChannel0 is Vel's IN(): the composited layers below.\n// Original iMouse center is Vel layer position (toUV(vec2(0))).\nvec4 fx(){\n  vec2 uv=vUv;\n  vec2 center=toUV(vec2(0.0));\n  vec2 m2=uv-center;\n  float roundedBox=pow(abs(m2.x*uRes.x/uRes.y),6.0)+pow(abs(m2.y),6.0);\n  float scale=pow(max(p_size,0.01),6.0);\n  roundedBox/=scale;\n  float rb1=clamp((1.0-roundedBox*10000.0)*8.0,0.0,1.0);\n  float rb2=clamp((0.95-roundedBox*9500.0)*16.0,0.0,1.0)-clamp((0.9-roundedBox*9500.0)*16.0,0.0,1.0);\n  float rb3=clamp((1.5-roundedBox*11000.0)*2.0,0.0,1.0)-clamp((1.0-roundedBox*11000.0)*2.0,0.0,1.0);\n  float transition=smoothstep(0.0,1.0,rb1+rb2);\n  vec4 base=IN(uv);\n  if(transition<=0.0)return base;\n  // The original lens formula is centered on the viewport, not the mouse.\n  vec2 lens=(uv-0.5)*(1.0-roundedBox*5000.0)+0.5;\n  vec4 glass=vec4(0.0); float total=0.0;\n  for(int x=-4;x<=4;x++){for(int y=-4;y<=4;y++){\n    vec2 offset=vec2(float(x),float(y))*0.5/uRes;\n    glass+=IN(clamp(lens+offset,vec2(0.0),vec2(1.0))); total+=1.0;\n  }}\n  glass=mix(IN(clamp(lens,vec2(0.0),vec2(1.0))),glass/total,p_blur);\n  float gradient=clamp((clamp(m2.y,0.0,0.2)+0.1)/2.0,0.0,1.0)+clamp((clamp(-m2.y,-1000.0,0.2)*rb3+0.1)/2.0,0.0,1.0);\n  vec4 lighting=clamp(glass+vec4(rb1)*gradient+vec4(rb2)*0.3,0.0,1.0);\n  return mix(base,lighting,transition);\n}"
+    }
+  ]
+}
