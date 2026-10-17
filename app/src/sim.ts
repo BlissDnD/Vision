@@ -1,4 +1,4 @@
-/* Shared scene clock for stateful layers (feedback / "Visszhang" etc.).
+/* Shared scene clock for stateful layers (feedback / "Visszhang", blob tracking).
  *
  * Contract (Vel "egy közös idő"):
  *  - Stateless layers are a pure function of scene time t.
@@ -12,6 +12,7 @@
 import { EFFECTS } from './effects/index';
 import { clearTarget } from './gl';
 import { renderScene } from './render';
+import { resetBlobs } from './blob';
 
 export const SIM_HZ = 60;
 export const STEP = 1 / SIM_HZ;
@@ -20,11 +21,14 @@ const PREVIEW_CAP = 2;
 const EPS = 1e-7;
 export const tickOf = (t: number) => Math.floor(t * SIM_HZ + 1e-6);
 
+/** feedback ("Visszhang") and blob tracking keep history between frames */
+const stateful = (type: string) => !!(EFFECTS[type] && (EFFECTS[type].feedback || EFFECTS[type].blob));
+
 function hasState(items: any[]): boolean {
   for (const L of items) {
     if (!L || L.vis === false) continue;
-    if (EFFECTS[L.type] && EFFECTS[L.type].feedback) return true;
-    if ((L.fx || []).some((f: any) => f.vis !== false && EFFECTS[f.type] && EFFECTS[f.type].feedback)) return true;
+    if (stateful(L.type)) return true;
+    if ((L.fx || []).some((f: any) => f.vis !== false && stateful(f.type))) return true;
     if (L.type === 'group' && hasState(L.children || [])) return true;
   }
   return false;
@@ -35,6 +39,7 @@ export const sceneHasState = hasState;
 export function resetSim(ctx: any) {
   if (!ctx) return;
   for (const x of ctx.hist.values()) { clearTarget(x.cur); clearTarget(x.next); x.stepped = false; }
+  resetBlobs(ctx);
   ctx.simT = null;
 }
 

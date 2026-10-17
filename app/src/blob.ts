@@ -7,14 +7,21 @@ import { ev } from './evaluation';
 import { copyTo } from './render';
 
 export const blobState=new Map();R.smallT=null;
+/** Forget tracking history of a render context (seek, loop wrap, export start), like feedback history. */
+export function resetBlobs(ctx){for(const B of blobState.values())if(B.ctx===ctx){B.tracks=[];B.next=1;B.prev=null;B.stepped=false;}}
+/* deterministic per-tick noise instead of Math.random(): same t -> same jitter/flicker/scramble */
+const tickN=t=>Math.floor(t*60+1e-6);
 export function getSmall(w,hh){if(!R.smallT||R.smallT.w!==w||R.smallT.h!==hh){freeTarget(R.smallT);R.smallT=mkTarget(w,hh,gl.RGBA8,gl.UNSIGNED_BYTE);}return R.smallT;}
 export const hash1=x=>{const s=Math.sin(x*127.1)*43758.5453;return s-Math.floor(s);};
 export const BLOB_FONTS=['"SF Mono",Menlo,Consolas,monospace','-apple-system,"Segoe UI",system-ui,sans-serif','Orbitron,sans-serif','"Major Mono Display",monospace'];
 export function blobPrep(L,ctx,t,inTex){
   let B=blobState.get(L.id);
   if(!B){B={tracks:[],next:1,prev:null,ov:document.createElement('canvas'),mk:document.createElement('canvas'),ovTex:null,mkTex:null};blobState.set(L.id,B);}
-  B.last=performance.now();
+  B.last=performance.now();B.ctx=ctx;
   const P=k=>ev(L.p[k],BLOB_PD[k],t);const W=ctx.w,H=ctx.h;
+  // shared clock: tracking state only advances on sim ticks; a compose-only frame (paused, exact export) redraws it
+  if(ctx.advance===false&&B.stepped){drawBlobOverlay(L,B,W,H,t,P);return B;}
+  B.stepped=true;
   const src=Math.round(L.p.source.v);const count=Math.max(1,Math.round(P('count')));
   if(src===4){const sp=P('wander');B.tracks=[];
     for(let i=0;i<count;i++){const s1=hash1(i*7.13+1),s2=hash1(i*3.71+2),k=sp*(0.2+s1);
@@ -50,22 +57,23 @@ export function blobPrep(L,ctx,t,inTex){
     B.tracks=B.tracks.filter(tr=>tr.hit||(++tr.miss)<=persist);
   }
   drawBlobOverlay(L,B,W,H,t,P);return B;}
+export const rnd=(a,b,c)=>hash1(a*12.9898+b*78.233+c*37.719);
 export function blobLabel(L,mode,b){const tr=b.tr,f=n=>n.toFixed(3),id=String(tr.id).padStart(3,'0');
   switch(mode){case 1:return '#'+id;case 2:return `x ${f(tr.x)}  y ${f(1-tr.y)}`;case 3:return `${Math.round(tr.x*1000)}, ${Math.round(tr.y*1000)}`;
     case 4:return `${Math.round(b.bw)}×${Math.round(b.bh)}`;case 5:return '0x'+((tr.id*2654435761)>>>0).toString(16).toUpperCase().slice(0,6);
     case 6:return String(L.btext||'').replace(/\{id\}/g,id).replace(/\{x\}/g,f(tr.x)).replace(/\{y\}/g,f(1-tr.y)).replace(/\{w\}/g,String(Math.round(b.bw))).replace(/\{h\}/g,String(Math.round(b.bh))).replace(/\{v\}/g,(tr.v||0).toFixed(2)).replace(/\\n/g,'\n');
     default:return `#${id}\n${f(tr.x)}, ${f(1-tr.y)}`;}}
-export function scrambleTxt(s,p){const C='01ABCDEF#$%&*<>/=+';return [...s].map(c=>c!=='\n'&&c!==' '&&Math.random()<p*.5?C[(Math.random()*C.length)|0]:c).join('');}
+export function scrambleTxt(s,p,seed=0){const C='01ABCDEF#$%&*<>/=+';return [...s].map((c,i)=>c!=='\n'&&c!==' '&&rnd(seed,i,4)<p*.5?C[(rnd(seed,i,5)*C.length)|0]:c).join('');}
 export function drawBlobOverlay(L,B,W,H,t,P){
   const os=Math.min(1,1600/W),cw=Math.max(2,Math.round(W*os)),ch=Math.max(2,Math.round(H*os)),mw=Math.max(2,cw>>1),mh=Math.max(2,ch>>1);
   if(B.ov.width!==cw||B.ov.height!==ch){B.ov.width=cw;B.ov.height=ch;}if(B.mk.width!==mw||B.mk.height!==mh){B.mk.width=mw;B.mk.height=mh;}
   const g=B.ov.getContext('2d'),m=B.mk.getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,cw,ch);m.setTransform(1,0,0,1,0,0);m.clearRect(0,0,mw,mh);m.setTransform(mw/cw,0,0,mh/ch,0,0);m.fillStyle='#fff';
   const u=ch/540,style=Math.round(L.p.style.v),cm=Math.round(L.p.colormode.v),link=Math.round(L.p.link.v),lab=Math.round(L.p.label.v),hue=ev(L.n.hue,BASEK.hue,t);
   const colFor=(tr,i)=>{if(cm===0)return L.p.color.v;const c=palJS(L.pal,cm===1?((tr.id*.618)%1)+hue:t*.15+i*.07+hue);return `rgb(${c.map(x=>Math.round(x*255))})`;};
-  const sizemode=Math.round(L.p.sizemode.v),fixed=P('box')*ch,mul=P('sizemul'),jit=P('jitter'),flick=P('flicker');
+  const tk=tickN(t),sizemode=Math.round(L.p.sizemode.v),fixed=P('box')*ch,mul=P('sizemul'),jit=P('jitter'),flick=P('flicker');
   const boxes=B.tracks.map((tr,i)=>{let bw,bh;if(sizemode===0&&tr.w>0){bw=tr.w*cw*mul;bh=tr.h*ch*mul;}else{bw=bh=fixed;}bw=Math.max(bw,4*u);bh=Math.max(bh,4*u);
-    let x=tr.x*cw,y=tr.y*ch;if(jit>0){x+=(Math.random()-.5)*jit*14*u;y+=(Math.random()-.5)*jit*14*u;}
-    return {tr,i,x,y,bw,bh,col:colFor(tr,i),on:!(flick>0&&Math.random()<flick*.5)};});
+    let x=tr.x*cw,y=tr.y*ch;if(jit>0){x+=(rnd(tk,tr.id,1)-.5)*jit*14*u;y+=(rnd(tk,tr.id,2)-.5)*jit*14*u;}
+    return {tr,i,x,y,bw,bh,col:colFor(tr,i),on:!(flick>0&&rnd(tk,tr.id,3)<flick*.5)};});
   const lw=Math.max(.5,P('width')*u);g.lineWidth=lw;g.lineCap='round';g.lineJoin='round';const dash=Math.round(L.p.dash.v)?[6*u,4*u]:[];g.setLineDash(dash);
   if(link>0&&boxes.length>1){const la=P('linkalpha'),curve=P('curve');
     const line=(a,b,al)=>{g.globalAlpha=Math.max(0,Math.min(1,la*al));g.strokeStyle=a.col;g.beginPath();g.moveTo(a.x,a.y);
@@ -91,9 +99,10 @@ export function drawBlobOverlay(L,B,W,H,t,P){
     else if(style===4){g.arc(x,y,Math.max(2*u,lw*1.6),0,TAU);g.fill();}
     else if(style===5){g.moveTo(x,y-bh/2);g.lineTo(x+bw/2,y);g.lineTo(x,y+bh/2);g.lineTo(x-bw/2,y);g.closePath();}
     if(style<4||style===5)g.stroke();
-    if(lab>0){let txt=blobLabel(L,lab,b);if(scr>0)txt=scrambleTxt(txt,scr);const lx=(style===2||style===3)?x+rad*.75:x0;let ty=(style===2||style===3)?y-rad*.75:y0-3*u;
+    if(lab>0){let txt=blobLabel(L,lab,b);if(scr>0)txt=scrambleTxt(txt,scr,tk*131+b.tr.id);const lx=(style===2||style===3)?x+rad*.75:x0;let ty=(style===2||style===3)?y-rad*.75:y0-3*u;
       for(const ln of txt.split('\n').reverse()){if(tag){const tw=g.measureText(ln).width;g.fillStyle=col;g.fillRect(lx-u,ty-fsz-u,tw+4*u,fsz+3*u);g.fillStyle='#000';g.fillText(ln,lx+u,ty+u);ty-=fsz+5*u;}
         else{g.fillStyle=col;g.fillText(ln,lx,ty);ty-=fsz*1.15;}}}}
   B.ovTex=texFromCanvas(B.ov,B.ovTex);B.mkTex=texFromCanvas(B.mk,B.mkTex);B.ow=cw;B.oh=ch;}
-export function gcBlobs(){const now=performance.now();for(const [id,B] of blobState)if(now-B.last>4000){if(B.ovTex)gl.deleteTexture(B.ovTex);if(B.mkTex)gl.deleteTexture(B.mkTex);blobState.delete(id);}}
+// the main preview keeps its tracking while paused (shared clock); other contexts (thumbs, resized-away) are collected
+export function gcBlobs(){const now=performance.now();for(const [id,B] of blobState)if(B.ctx!==R.main&&now-B.last>4000){if(B.ovTex)gl.deleteTexture(B.ovTex);if(B.mkTex)gl.deleteTexture(B.mkTex);blobState.delete(id);}}
 setInterval(gcBlobs,5000);

@@ -34,7 +34,7 @@ export function renderTimeline(){const segs=$('#tlSegs');if(!segs)return;segs.in
   if((AUD.buf||AUD.stems.length)&&st.bpm){const bar=240/st.bpm;if(D/bar<400)for(let x=st.bpmOff;x<D;x+=bar)segs.appendChild(h('i',{class:'tl-beat',style:`left:${x/D*100}%`}));}
   const L=sel();if(L){for(const t of layerKeyTimes(L).keys())if(t<=D)segs.appendChild(h('i',{class:'tl-key',style:`left:${t/D*100}%`,title:'Kulcskocka '+fmtT(t)}));
     for(const s of layerSegs(L)){const l=Math.max(0,s.a/D),r=Math.min(1,s.b/D);if(r>l)segs.appendChild(h('i',{class:'tl-seg'+(s.cls?' '+s.cls:''),style:`left:${l*100}%;width:${(r-l)*100}%`}));}}
-  const di=$('#tlDur');if(di&&document.activeElement!==di)di.value=(+st.dur).toFixed(1);$('#loopBtn').setAttribute('aria-pressed',String(!!st.loop));$('#camBtn').setAttribute('aria-pressed',String(!!(st.cam&&st.cam.on)));
+  const di=$('#tlDur');if(di&&document.activeElement!==di)di.value=(+st.dur).toFixed(1);{const lb=$('#loopBtn'),on=!!st.loop;lb.setAttribute('aria-pressed',String(on));lb.title=on?'Ismétlés: be · a tartomány végén vissza az elejére (kattints: kikapcsolás)':'Ismétlés: ki · a jelenet a tartomány után is fut tovább (kattints: bekapcsolás)';}$('#camBtn').setAttribute('aria-pressed',String(!!(st.cam&&st.cam.on)));
   renderTracks();}
 R.keyClip=null;R.tlxSels=[];R.tlxView=null;
 export const itemById=id=>id==='__cam'?st.cam:(findItem(id)||{}).it;

@@ -7,7 +7,7 @@ import { LOOKP, LOOKS, SIZES, mkLook, st } from './state';
 import { copyTo, outSize, renderScene, resizeMain } from './render';
 import { ctlSelect, ctlSlider } from './controls';
 import { FPS_OPTS, fpsObj } from './inspector';
-import { commit, renderAll } from './history';
+import { commit, renderAll, scheduleSave } from './history';
 import { audioRestart } from './signals';
 import { markDirty } from './loop';
 import { renderVideo, snapPNG, startRec } from './output';
@@ -29,7 +29,13 @@ $('#canvasBtn').onclick=e=>{
   openPop(e.currentTarget,h('div',{class:'pl'},'Vászon'),h('div',{class:'pc'},h('div',{class:'row2'},h('span',null,'Formátum'),h('div',{class:'pop'},sz)),h('div',{class:'row2'},h('span',null,'Előnézet'),h('div',{class:'pop'},qs)),
     h('div',{class:'row2'},h('span',null,'Háttér'),bg),h('div',{class:'row2'},h('span',null,'Tempó'),h('div',{class:'pop'},sp)),
     h('p',{class:'small'},'Takarékos: szünetben csak akkor renderel, ha változtatsz valamit. Az előnézeti minőség az exportot nem érinti.')));};
-export const EXP:{res:string;fps:number;dur:string|number;mb:number;sh:number;from:string}={res:'1',fps:30,dur:'tl',mb:0,sh:180,from:'0'};
+export const EXP_DEF:{res:string;fps:number;dur:string|number;mb:number;sh:number;from:string}={res:'1',fps:30,dur:'tl',mb:0,sh:180,from:'0'};
+/** Export settings live in the project (state.exp), so a 15 s / from-playhead export is the same after reopening. */
+export const EXP:typeof EXP_DEF={...EXP_DEF};
+export function applyExp(o:any){Object.assign(EXP,EXP_DEF);if(!o||typeof o!=='object')return;
+  if(o.res==='1'||o.res==='4k')EXP.res=o.res;if(o.fps===30||o.fps===60)EXP.fps=o.fps;
+  if(o.dur==='tl'||(typeof o.dur==='number'&&o.dur>0&&o.dur<=600))EXP.dur=o.dur;if(o.from==='0'||o.from==='head')EXP.from=o.from;
+  if([0,8,16,32].includes(o.mb))EXP.mb=o.mb;if([90,180,270,360].includes(o.sh))EXP.sh=o.sh;}
 /* motion blur: average N sub-frames inside the shutter interval (premultiplied, float accumulation) */
 export function renderMB(ctx,t,fps,N,shDeg){if(!N||N<2)return renderAt(st.layers,ctx,t,st.bg,true);
   if(!ctx.mb||ctx.mb.w!==ctx.w||ctx.mb.h!==ctx.h){if(ctx.mb)freeTarget(ctx.mb);ctx.mb=mkTarget(ctx.w,ctx.h);}
@@ -40,7 +46,7 @@ export function renderMB(ctx,t,fps,N,shDeg){if(!N||N<2)return renderAt(st.layers
 export function dimsFor(mode){const {W,H}=outSize();const q=mode==='4k'?3840/Math.max(W,H):1;return {q,w:Math.round(W*q/2)*2,h:Math.round(H*q/2)*2};}
 $('#exportBtn').onclick=e=>{
   const d1=dimsFor('1'),d4=dimsFor('4k');
-  const sel=(label,opts,get,set)=>{const s=h('select',{'aria-label':label},...opts.map(([v,t])=>{const o=h('option',{value:v},t);if(String(get())===String(v))o.selected=true;return o;}));s.onchange=()=>set(s.value);return h('div',{class:'row2'},h('span',null,label),h('div',{class:'pop'},s));};
+  const sel=(label,opts,get,set)=>{const s=h('select',{'aria-label':label},...opts.map(([v,t])=>{const o=h('option',{value:v},t);if(String(get())===String(v))o.selected=true;return o;}));s.onchange=()=>{set(s.value);scheduleSave();};return h('div',{class:'row2'},h('span',null,label),h('div',{class:'pop'},s));};
   const can=!!window.VideoEncoder;
   openPop(e.currentTarget,'wide',h('div',{class:'pl'},'Kép (PNG)'),
     mi(`Teljes méret`,`${d1.w} × ${d1.h}`,()=>snapPNG('1')),mi('4K',`${d4.w} × ${d4.h}`,()=>snapPNG('4k')),h('hr'),

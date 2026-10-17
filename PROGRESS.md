@@ -2,7 +2,23 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
-## Állapot: 2026-10-17 18:30 — M1 („Alapok: közös idő, régi projekt”) ellenőrzőpont, NEM lezárt mérföldkő
+## Állapot: 2026-10-17 este — M1 („Alapok: közös idő, régi projekt”) LEZÁRVA, Macen ellenőrizve
+
+Verzió: `app/package.json` 0.14.0-m1. Helyi gépen futott: `npm install`, `npm run typecheck` (0 hiba), `npm run build` (294 KB JS), `npm test`: **14/14 zöld** (Playwright Chromium, kb. 2 perc). Dev szerver: `npm run dev` (Vite) működik, http://localhost:5180 (`.claude/launch.json` „vel”, a régi `latomas-src` a 5173-on fut, azt nem érintettük).
+
+### Az M1 lezárásához most elkészült
+- **Export-beállítás a projektben**: `state.exp` = hossz, kezdés (0 / lejátszófej), fps, felbontás, mozgási elmosás, zárszög. Mentés, automatikus mentés és újranyitás után visszajön; régi vagy hiányos fájlnál alapérték, hibás érték nem megy át (`applyExp`). A formátum v3 marad (új, opcionális mező).
+- **Blob-követés a közös órán**: állapottartó rétegnek számít (`sim.ts` `stateful`). Csak rácslépésnél követ, a csak-összeállító képkocka (szünet, pontos export) újrarajzolja a meglévő követést. Ugrás/reset törli az előzményt (`resetBlobs`). A remegés/villogás/betűkeverés `Math.random` helyett lépésenkénti hash, így determinisztikus. A fő előnézet követése szünetben nem törlődik (gc csak más kontextusokra).
+  - Mérés (`tests/m1_close.js`, t = 2,5 mp): ismételt ugrás 0, 30 vs 24 fps export 0, export vs ugrás 0, szünet stabil 0.
+- **Mozgási elmosás teszt**: álló tartalom változatlan (0), mozgó tartalom elmosódik (3,2/255), ismételt render 0 eltérés; Visszhanggal a részképek nem léptetik vissza az órát, az export ismételhető (0).
+- **Loop gomb**: a tooltip kimondja az állapotot és a következményt („Ismétlés: ki · a jelenet a tartomány után is fut tovább …”).
+
+### Ismert korlát (M1 után is)
+- Valódi GPU-n FPS-mérés nincs (a felhasználó a kézi próbát kihagyta, fejlesztés mehet tovább).
+- WARM = 3 mp: a blob-követés és a nagyon lassan lecsengő Visszhang 3 mp-nél későbbi ugrásnál az exporttól eltérhet (a követés azonosítói másképp számozódnak). Állapot-ellenőrzőpontok a fizikánál jönnek.
+- Teszteléshez Macen: `app/.venv` (Playwright), `.venv/bin/python tests/run_all.py`, vagy `npm test` olyan python3-mal, amiben van playwright.
+
+## Előző ellenőrzőpont: 2026-10-17 18:30 — M1 („Alapok: közös idő, régi projekt”) ellenőrzőpont, NEM lezárt mérföldkő
 
 Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.git`), két commit: alap pillanatkép + M1 ellenőrzőpont.
 
@@ -33,6 +49,4 @@ Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.g
 - Az `R.time` továbbra is a jelenetidő (Loopnál a frame() tekeri vissza). Az export az `sceneT()`-n keresztül képez le. Így a meglévő effektkód érintetlen.
 
 ## Következő lépés
-1. Felhasználói próba a fenti 3 ponton, `app/dist/index.html` megnyitásával.
-2. M1 lezárása: export hossza/kezdete a projektben; a blob-követő a közös órán; MB-teszt; rövid UI-szöveg a Loop-gombon.
-3. Utána M2: a vörös gerincfelület prototípusa (`docs/vel-voros-felulet-webgl-prototipus-brief.md`), külön mappában (`prototypes/red-ribbon-webgl/`), mért összevetéssel az SDF-úttal.
+1. M2: a vörös gerincfelület prototípusa (`docs/vel-voros-felulet-webgl-prototipus-brief.md`), külön mappában (`prototypes/red-ribbon-webgl/`), mért összevetéssel az SDF-úttal.
