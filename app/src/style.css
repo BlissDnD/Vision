@@ -390,3 +390,25 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 /* tömörebb sorok a fülekben */
 .ipane .sec .content{gap:9px;padding-bottom:12px}
 .ipane .sec>summary{padding:9px 0}
+/* K1: Kapcsolat-zsinór */
+.gizmo .h.k{width:20px;height:20px;display:grid;place-items:center;font-size:12px;line-height:1;color:#04121c;background:#64d2ff;cursor:crosshair}
+.kcord-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;overflow:visible}
+.kcord{fill:none;stroke:#64d2ff;stroke-width:1.4;opacity:.75;filter:drop-shadow(0 0 1px rgba(0,0,0,.7))}
+.kcord.live{stroke-dasharray:4 4;opacity:.9}.kcord.live.hot{stroke-dasharray:none;stroke-width:2;opacity:1}
+.kcord.fx{stroke:#ffd27a}
+.kmid{fill:#64d2ff;stroke:rgba(0,0,0,.5);stroke-width:1;pointer-events:auto;cursor:pointer}
+.kring{fill:rgba(100,210,255,.08);stroke:#64d2ff;stroke-width:1.2;stroke-dasharray:3 3;opacity:.7}
+.kring.rec{stroke:#ffd27a;fill:rgba(255,210,122,.1)}
+.kring.hot{stroke-dasharray:none;stroke-width:2.4;opacity:1}
+.kchips{position:absolute;left:50%;top:56px;transform:translateX(-50%);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:80%;z-index:4}
+.kchip{padding:4px 10px;border-radius:999px;font-size:11.5px;background:var(--chrome);border:1px dashed #64d2ff;color:var(--fg)}
+.kchip.rec{border-color:#ffd27a}.kchip.hot{border-style:solid;border-width:2px;background:var(--accent-soft)}
+.lr.kc-ok{box-shadow:inset 0 0 0 1px #64d2ff}.lr.kc-hot{box-shadow:inset 0 0 0 2px #64d2ff;background:var(--hover)}
+.kcard{display:flex;flex-direction:column;gap:6px;padding:10px;min-width:250px}
+.khead{display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:12.5px;gap:8px}
+.kopt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid var(--sep);background:var(--fill2);border-radius:9px;padding:7px 10px;color:var(--fg)}
+.kopt small{color:var(--fg2);font-size:11px}.kopt:hover,.kopt:focus-visible{border-color:#64d2ff}
+.kopt.rec{border-color:#ffd27a}
+.kparam{display:flex;flex-direction:column;gap:4px;padding:6px 2px 0}.kparam small{color:var(--fg2)}
+.klink{display:flex;flex-direction:column;gap:4px;padding:6px 0;border-top:1px solid var(--sep)}.klink b{font-size:12px;font-weight:600}
+.bdg.lnk{cursor:pointer}

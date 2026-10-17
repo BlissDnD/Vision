@@ -6,7 +6,7 @@ import { findItem, st, walk } from './state';
 import { section } from './controls';
 import { commit, renderAll } from './history';
 import { toast } from './modals';
-import { addLink, detach, diffCount, isVariant, linksOf, localDiff, makeBase, newVariant, paramDef, removeLink, transfer, variantsOf } from './variants';
+import { addLink, describeLink, detach, diffCount, isVariant, linksOf, localDiff, makeBase, newVariant, paramDef, removeLink, transfer, variantsOf } from './variants';
 
 const PATH_HU: Record<string, string> = { text: 'szöveg', str: 'tartalom', font: 'betűtípus', n: '', p: '', v: 'érték', k: 'kulcskockák', pal: 'paletta', name: 'név', vis: 'láthatóság', fx: 'effektlánc', tm: 'időzítés', blend: 'keverés' };
 function pathLabel(V: any, e: any) {
@@ -56,10 +56,8 @@ const nameOf = (id: string) => { const r = findItem(id); return r ? r.it.name : 
 /** Kapcsolatok of this element (incoming, outgoing) + a compact „new link” row targeting this element. */
 export function linkSection(L: any) {
   const rows = linksOf(L.id).map((lk: any) => {
-    const a = findItem(lk.from.id), b = findItem(lk.to.id);
-    const pl = (x: any, g: string, k: string) => { const d = x && paramDef(x.it, g as any, k); return d ? d.l : k; };
     const on = h('input', { type: 'checkbox', checked: lk.on, 'aria-label': 'Kapcsolat be' }) as HTMLInputElement; on.onchange = () => { lk.on = on.checked; commit(); };
-    return h('div', { class: 'row2 linkrow' }, h('span', { class: 'small' }, `${nameOf(lk.from.id)} · ${pl(a, lk.from.g, lk.from.k)} → ${nameOf(lk.to.id)} · ${pl(b, lk.to.g, lk.to.k)} (${lk.mode === 'set' ? 'vezérli' : 'hozzáad'} ${lk.amt})`),
+    return h('div', { class: 'row2 linkrow' }, h('span', { class: 'small' }, `${describeLink(lk)} (${lk.kind === 'sunsky' ? 'fény' : lk.kind === 'follow' ? `követés, ${(lk.lag || 0).toFixed(2)} mp késés` : lk.mode === 'set' ? 'vezérli' : 'hozzáad'} ${lk.amt})`),
       on, h('button', { class: 'ib', 'aria-label': 'Kapcsolat törlése', title: 'Törlés', onclick: () => { removeLink(lk.id); commit(); renderAll(); } }, '×'));
   });
   const srcs: any[] = []; walk(st.layers, (it: any) => { if (it.type !== 'group' && it.id !== L.id) srcs.push(it); });
@@ -72,7 +70,7 @@ export function linkSection(L: any) {
   const add = () => { if (!ss.value) return; const [fg, fk] = sp.value.split(':'), [tg, tk] = tp.value.split(':');
     addLink({ id: ss.value, g: fg as any, k: fk }, { id: L.id, g: tg as any, k: tk }, md.value as any, 1); commit(); renderAll(); toast('Kapcsolat kész. Az erősség a listában kapcsolható.'); };
   return section('Kapcsolatok', 'links', rows.length > 0,
-    rows.length ? h('div', null, ...rows) : h('p', { class: 'small' }, 'Nincs kapcsolat. Egy másik elem paramétere vezérelheti ennek az elemnek egy paraméterét.'),
+    rows.length ? h('div', null, ...rows) : h('p', { class: 'small' }, 'Nincs kapcsolat. A vásznon a kijelölt elem melletti ⇢ pontból zsinórt húzhatsz egy másik elemre; lent pontos paraméter-kapcsolat is készíthető.'),
     srcs.length ? h('div', { class: 'pc' }, h('div', { class: 'row2' }, h('span', null, 'Forrás'), h('div', { class: 'pop' }, ss)), h('div', { class: 'row2' }, h('span', null, '· paramétere'), h('div', { class: 'pop' }, sp)),
       h('div', { class: 'row2' }, h('span', null, 'Ide: ennek'), h('div', { class: 'pop' }, tp)), h('div', { class: 'row2' }, h('span', null, 'Mód'), h('div', { class: 'pop' }, md)),
       h('div', { class: 'btnrow' }, h('button', { class: 'btn', onclick: add }, 'Kapcsolat hozzáadása'))) : null);

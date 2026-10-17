@@ -189,6 +189,8 @@ Nem célszerű az egész terméket egyszerre újraépíteni. A látható eredmé
 
 Az A–C szakaszok részben párhuzamosítható kutatást igényelnek, de integrálni csak stabil közös idő- és adatszerződéssel szabad. A D–F egymásra épülő kockázat; a teljes 3D folyadékot nem ígérjük előre kis feladatként. A G receptcsalád első darabjai már B/C idején készülhetnek, hogy a minőséget valós munkafolyamaton mérjük. A célgépes GPU-próba és a videóexport tesztje minden szakaszban kötelező, nem csak a végén.
 
+**Későbbi, külön jóváhagyandó médiamérföldkő:** importált videók vágása és sokrétegű kompozíciója a folyamatosan kezelhető idővonallal, adaptív/proxy előnézettel és eredeti forrásból számolt 4K exporttal. A pontos UX, architektúra és mérhető stresszpróbák: [Sokrétegű videó és reszponzív idővonal](VEL-TOBBVIDEOS-TIMELINE-TELJESITMENY.md). Ez nem jelenti, hogy a jelenlegi app már tud videót importálni.
+
 ### Keresztmetszeti elfogadási próbák
 
 - **Egyetlen mozdulat, egyértelmű hatókör:** a felhasználó mindig látja, melyik réteget, Csoportot, Változatot vagy Kapcsolatot szerkeszti; a módosítás visszavonható.
