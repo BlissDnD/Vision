@@ -1,8 +1,19 @@
-import { S, SEL } from './helpers';
+import { COL, S, SEL } from './helpers';
 
 /** 3D */
 import type { EffectDef } from '../types';
 export const objects3d:Record<string,EffectDef>={
+surface3d:{kind:'3d',name:'Gerincfelület',mesh:true,desc:'Valódi 3D felület egy szerkeszthető gerincgörbéből: széles, vékony, ívelt lap lekerekített éllel, fényes lakk/fém anyaggal, stúdiófénnyel, tükröző padlóval és a padlóba simulással. Háromszöghálóként renderelődik (gyors, élsimított), a kamera animálható; a 3D forgatás eszközzel (O) körbejárható.',
+ main:['arch','width','thick','color','rough','metal','coat','refl'],
+ groups:[{t:'Fő beállítások',keys:['arch','width','thick','color','rough','metal','coat','refl','expo'],open:true},{t:'Forma',keys:['taper','bend','lean','leanEnd','twist','fillet']},{t:'Anyag',keys:['tint','silver','dot','dotS']},{t:'Fény',keys:['stripPos','stripSize','stripI','backI','sky']},{t:'Padló és háttér',keys:['floor','bg','blur','ao']},{t:'Kamera',keys:['ry','rx','dist','fov','tx','ty','tz']}],
+ spine:[[-6.4,4.4,0.6],[-4.2,3.0,-0.5],[-2.6,1.2,-1.4],[-1.0,0.14,-2.0],[0.7,0.7,-2.6],[2.4,1.9,-2.2],[3.9,3.1,-1.2],[5.0,4.4,0.6],[5.8,5.8,3.0]],
+ params:[S('arch','Ív',0.4,1.6,1),S('width','Szélesség',2,12,7),S('thick','Vastagság',0.02,0.6,0.09),COL('color','Szín','#8e0c14'),S('rough','Érdesség',0.02,0.8,0.18),S('metal','Fémesség',0,1,0.85),S('coat','Lakkréteg',0,1,0.35),S('refl','Padlóreflexió',0,1.6,0.9),S('expo','Expozíció (réteg)',0.1,2,0.72),
+  S('taper','Elvékonyodás',-0.9,0.9,0),S('bend','Keresztirányú hajlítás',-0.5,0.5,0.12),S('lean','Lelógás eleje',-2.5,2.5,0.9),S('leanEnd','Lelógás vége',-2.5,2.5,-1.2),S('twist','Csavarodás',-3,3,0),S('fillet','Padlóba simulás',0,1.2,0.35),
+  S('tint','Vörös tükröződés',0,1,0.92),S('silver','Ezüst perem',0,1,0.9),S('dot','Pontminta',0,1,0.8),S('dotS','Pontsűrűség (m)',0.01,0.15,0.035),
+  S('stripPos','Fénycsík helye',-6,6,0.6),S('stripSize','Fénycsík mérete',0.2,2.5,1),S('stripI','Fénycsík ereje',0,8,2.5),S('backI','Hátsó fény',0,4,0.8),S('sky','Stúdió fényereje',0.3,2,0.95),
+  SEL('floor','Padló',['Nincs','Tükröző padló'],1),SEL('bg','Háttér',['Átlátszó','Stúdió'],1),S('blur','Tükör elmosása',0,4,1),S('ao','Kontaktárnyék',0,2,1),
+  S('ry','Kamera: körbe (°)',-180,180,-11),S('rx','Kamera: magasság (°)',-80,80,-6),S('dist','Kamera: távolság',2,30,8.4),S('fov','Látószög (°)',15,100,62),S('tx','Cél X',-10,10,1),S('ty','Cél Y',-2,8,1.35),S('tz','Cél Z',-12,6,-3)],
+ code:`vec4 fx(){return vec4(0.0);}`},
 obj3d:{kind:'3d',name:'3D objektum',desc:'Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.',
  main:['shape','material','env','rough','metal','detail','floor','glow'],
  params:[SEL('shape','Forma',['Gömb','Tórusz','Kocka','Oktaéder','Merkaba','Giroid gömb','Tóruszcsomó','Dodekaéder','Ikozaéder','Metagömbök'],0),

@@ -16,6 +16,7 @@ export function makeLayer(type:string,o:any={}):Layer{
   if(type==='custom')L.code=o.code||DEFAULT_CODE;
   if(type==='image')L.asset=o.asset||null;
   if(type==='blob')L.btext=o.btext??'{id} · {x}, {y}';
+  if(d.spine)L.spine=JSON.parse(JSON.stringify(o.spine||d.spine));
   return L;
 }
 export function makeGroup(name:string,children:Layer[],o:any={}):Layer{const g:Layer={id:uid(),type:'group',name,vis:true,open:o.open??false,blend:o.blend||'normal',clip:!!o.clip,n:{},fx:[],children,macros:[]};for(const b of BASE)g.n[b.k]=mkN(b.def);return g;}
@@ -24,7 +25,7 @@ export function normalize(L:any):Layer{
   for(const b of BASE)if(!L.n[b.k])L.n[b.k]=mkN(b.def);
   if(L.type==='group'){L.children=(L.children||[]).filter(c=>c.type!=='group'&&EFFECTS[c.type]).map(normalize);L.macros=L.macros||[];return L;}
   const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of d.params)if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);
-  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';return L;}
+  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
 export const SIZES:[string,string[][]][]=[['Képernyő',[['1920x1080','16:9 · 1920 × 1080'],['1080x1080','1:1 · 1080 × 1080'],['1080x1350','4:5 · 1080 × 1350'],['1080x1920','9:16 · 1080 × 1920'],['3840x2160','4K · 3840 × 2160']]],
  ['Bannerek',[['300x250','300 × 250'],['300x600','300 × 600'],['728x90','728 × 90'],['970x250','970 × 250'],['160x600','160 × 600']]]];
 export const LOOKP=[S('exposure','Expozíció',-2,2,0),S('bloom','Bloom',0,2,.5),S('radius','Bloom-sugár',0,1,.6),S('thresh','Bloom-küszöb',0,2,.8),S('hal','Halation (filmes vörös derengés)',0,1.5,.3),

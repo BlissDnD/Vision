@@ -10,6 +10,7 @@ export const LIB={
  recipes:RECIPES.map(R=>({name:R.n,make:()=>makeRecipe(R)})),
  '3d':[{head:'Szerkeszthető jelenet'},
    {name:'Szerkeszthető 3D jelenet',make:()=>makeLayer('sdfscene',{pal:12})},
+   {name:'Gerincfelület (vörös stúdió)',make:()=>makeLayer('surface3d')},
    ...['SDF-szobor','Kristálytorony'].map(n=>({name:n,make:()=>makeRecipe(RECIPES.find(R=>R.n===n))})),
    {name:'Hóember',make:()=>makeLayer('sdfscene',{name:'Hóember',pal:9,p:{material:1,floor:.7},prims:[{t:0,op:0,x:0,y:-.45,z:0,sx:.42,sy:.4,sz:.42,rx:0,ry:0,k:.12,c:.9},{t:0,op:0,x:0,y:.07,z:0,sx:.3,sy:.3,sz:.3,rx:0,ry:0,k:.12,c:.9},{t:0,op:0,x:0,y:.47,z:0,sx:.2,sy:.2,sz:.2,rx:0,ry:0,k:.08,c:.9},{t:4,op:0,x:0,y:.48,z:.24,sx:.06,sy:.09,sz:.06,rx:90,ry:0,k:.02,c:.05}]})},
    {name:'CSG-kocka',make:()=>makeLayer('sdfscene',{name:'CSG-kocka',pal:13,p:{material:3,rough:.25,rx:25,ry:35,spin:.2},prims:[{t:1,op:0,x:0,y:0,z:0,sx:.5,sy:.5,sz:.5,rx:0,ry:0,k:.02,c:.3},{t:0,op:2,x:0,y:0,z:0,sx:.68,sy:.68,sz:.68,rx:0,ry:0,k:.02,c:.6},{t:3,op:1,x:0,y:0,z:0,sx:.26,sy:.9,sz:.26,rx:0,ry:0,k:.02,c:.1},{t:3,op:1,x:0,y:0,z:0,sx:.26,sy:.9,sz:.26,rx:90,ry:0,k:.02,c:.1}]})},
