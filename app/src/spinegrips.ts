@@ -10,7 +10,7 @@ import { cv } from './gl';
 import { sel } from './state';
 import { ev, setVal } from './evaluation';
 import { outSize } from './render';
-import { DEF_SPINE, camOf } from './mesh3d';
+import { DEF_SPINE, camOf, meshFor } from './mesh3d';
 import { section } from './controls';
 import { commit } from './history';
 import { markDirty } from './loop';
@@ -83,6 +83,34 @@ function down(e0: PointerEvent) {
   g.onpointerup = up; g.onpointercancel = up;
 }
 
+/** Ray → nearest surface hit (CPU, on the cached geometry): point + interpolated normal facing the ray. */
+export function hitSurface(L: any, ray: { o: V3, d: V3 }, t = R.time) {
+  const M = meshFor(L, t, EFFECTS[L.type]), V = M.V, I = M.idx, o = ray.o, d = ray.d; let best = 1e9, bi = -1, bu = 0, bv = 0;
+  for (let k = 0; k < I.length; k += 3) {
+    const a = I[k] * 10, b = I[k + 1] * 10, c = I[k + 2] * 10;
+    const e1x = V[b] - V[a], e1y = V[b + 1] - V[a + 1], e1z = V[b + 2] - V[a + 2], e2x = V[c] - V[a], e2y = V[c + 1] - V[a + 1], e2z = V[c + 2] - V[a + 2];
+    const px = d[1] * e2z - d[2] * e2y, py = d[2] * e2x - d[0] * e2z, pz = d[0] * e2y - d[1] * e2x, det = e1x * px + e1y * py + e1z * pz;
+    if (Math.abs(det) < 1e-9) continue; const inv = 1 / det, tx = o[0] - V[a], ty = o[1] - V[a + 1], tz = o[2] - V[a + 2], u = (tx * px + ty * py + tz * pz) * inv; if (u < 0 || u > 1) continue;
+    const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x, v = (d[0] * qx + d[1] * qy + d[2] * qz) * inv; if (v < 0 || u + v > 1) continue;
+    const s = (e2x * qx + e2y * qy + e2z * qz) * inv; if (s > 1e-4 && s < best) { best = s; bi = k; bu = u; bv = v; }
+  }
+  if (bi < 0) return null;
+  const w = [1 - bu - bv, bu, bv], n: V3 = [0, 0, 0]; for (let j = 0; j < 3; j++) { const q = I[bi + j] * 10; n[0] += V[q + 3] * w[j]; n[1] += V[q + 4] * w[j]; n[2] += V[q + 5] * w[j]; }
+  const nl = Math.hypot(n[0], n[1], n[2]) || 1, sg = (n[0] * d[0] + n[1] * d[1] + n[2] * d[2]) > 0 ? -1 / nl : 1 / nl;
+  return { p: [o[0] + d[0] * best, o[1] + d[1] * best, o[2] + d[2] * best] as V3, n: [n[0] * sg, n[1] * sg, n[2] * sg] as V3 };
+}
+/** Glint drag: put a ceiling light strip where the mirror direction of the clicked surface point meets the ceiling,
+ * so the highlight appears under the mouse. Keeps the strip nearest to the current setting (3 strips, 2.6 apart). */
+export function glintDrag(L: any, clientX: number, clientY: number, t = R.time) {
+  const C = camOf(L, t, EFFECTS[L.type], asp()), ray = rayAt(C, clientX, clientY), hit = hitSurface(L, ray, t); if (!hit) return false;
+  const d = ray.d, n = hit.n, k = 2 * (d[0] * n[0] + d[1] * n[1] + d[2] * n[2]), rf = [d[0] - k * n[0], d[1] - k * n[1], d[2] - k * n[2]];
+  if (rf[1] < 0.03) return false;                       // the point looks down / sideways: no ceiling strip can light it
+  const hx = hit.p[0] + rf[0] * (7.8 - hit.p[1]) / rf[1], cur = P(L, 'stripPos', t), def = EFFECTS[L.type].params.find((x: any) => x.k === 'stripPos');
+  const opts = [-1, 0, 1].map(i => hx - i * 2.6).filter(v => v >= def.min && v <= def.max); if (!opts.length) return false;
+  const v = opts.reduce((a, b) => (Math.abs(b - cur) < Math.abs(a - cur) ? b : a)); setVal(L.p.stripPos, Math.round(v * 100) / 100); markDirty(); return true;
+}
+R.glint = false;
+
 /** Empty-canvas drag on the surface layer: pan the camera target in the view plane. */
 export function panStart(L: any) { return { tx: P(L, 'tx', R.time), ty: P(L, 'ty', R.time), tz: P(L, 'tz', R.time) }; }
 export function panDrag(L: any, s0: any, dx: number, dy: number) {   // dx/dy in canvas-height units (toAsp)
@@ -106,5 +134,7 @@ export function spineSection(L: any) {
     h('div', { class: 'btnrow' },
       h('button', { class: 'btn', onclick: add }, 'Új pont utána'),
       h('button', { class: 'btn', disabled: S.length <= 3, onclick: del }, 'Pont törlése'),
-      h('button', { class: 'btn', onclick: reset }, 'Alapgerinc')));
+      h('button', { class: 'btn', onclick: reset }, 'Alapgerinc')),
+    h('div', { class: 'btnrow' }, h('button', { class: 'btn' + (R.glint ? ' accent' : ''), 'aria-pressed': String(!!R.glint), title: 'Bekapcsolva a felületen húzva a mennyezeti fénycsík oda kerül, hogy a csillanás az egér alatt legyen.',
+      onclick: () => { R.glint = !R.glint; import('./inspector').then(m => m.renderInsp()); } }, R.glint ? 'Csillanás húzása: be' : 'Csillanás húzása a vásznon')));
 }

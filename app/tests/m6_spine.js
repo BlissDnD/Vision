@@ -18,6 +18,15 @@
  const n0=L.spine.length,btn=t=>[...document.querySelectorAll('#insp button')].find(b=>b.textContent===t);
  btn('Új pont utána').click();if(st.layers[0].spine.length!==n0+1)bad.push('új pont');
  renderInsp();btn('Pont törlése').click();if(st.layers[0].spine.length!==n0)bad.push('pont törlése');
+ // csillanás-húzás: a felület egy pontjára húzva a fénycsík úgy áll, hogy ott fényesebb legyen
+ L.p.dist.v=d0;L.p.tx.v=tx0;L.p.ty.v=ty0;L.spine[i]=[...s0];
+ const cr=cv.getBoundingClientRect(),lum=(X,Y)=>{const out=renderScene(st.layers,R.main,R.time,st.bg);present(R.main,out.t,null,cv.width,cv.height,R.time);const b=new Uint8Array(4);
+   gl.readPixels(Math.round((X-cr.left)/cr.width*cv.width),Math.round((1-(Y-cr.top)/cr.height)*cv.height),1,1,gl.RGBA,gl.UNSIGNED_BYTE,b);return b[0]+b[1]+b[2];};
+ let tried=0,gain=-999,hits=0;
+ for(let gy=.35;gy<.9&&tried<6;gy+=.08)for(let gx=.25;gx<.8&&tried<6;gx+=.08){const X=cr.left+cr.width*gx,Y=cr.top+cr.height*gy;
+   L.p.stripPos.v=-6;if(!glintDrag(L,X,Y))continue;hits++;const sp=L.p.stripPos.v;if(Math.abs(sp+6)<1.5)continue;tried++;
+   L.p.stripPos.v=sp<0?6:-6;const l0=lum(X,Y);L.p.stripPos.v=sp;const l1=lum(X,Y);gain=Math.max(gain,l1-l0);}
+ info.glint={hits,tried,gain};if(!hits)bad.push('csillanás: nincs találat a felületen');else if(gain<15)bad.push('csillanás: nem lett fényesebb ('+gain+')');
  const snap=snapshot();loadProject(JSON.parse(projectJSON()));if(snapshot()!==snap)bad.push('újranyitás');
  st.layers=[];commit();
  return {bad,info};})()

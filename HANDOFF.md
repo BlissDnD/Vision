@@ -59,9 +59,10 @@ Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, 
   - Ellenőrizve valódi GPU-n (5180; ha foglalt, a launch.json „vel” más portra kerül, pl. 5182): „Filmes” és „Tiszta” kinézettel is jó. Az alapértékeket úgy hangoltam, hogy „Filmes” alatt ne égjen ki (sky 0,95, backI 0,8, expo 0,72, a hátsó fény glóriája 0,18).
 - **Kész (0.19.1-m6b):** `src/spinegrips.ts`: gerincpont-fogók a vásznon (a réteg kamerájával vetítve; húzás a kamerával szemközti síkban, Shift: vízszintes sík), üres húzás = kamera cél pásztázása, görgő = kamera távolság (`stage.ts` `pan` mód). A 2D gizmó rejtve mesh-rétegnél (`isSurf`), az inspectorban „Gerinc” szekció (`spineSection`, a `d.groups` ágban). Nem mentett kijelölt pont: `R.spSel`. Teszt: `tests/m6_spine.js`. 21/21 zöld.
 - **Hiányzik az M6-ból (következő lépések, sorrendben):**
-  3. Halvány cián pont a gerinc csúcsán „Filmes” alatt: a Lencsehiba (chroma) fényes csillanáson. Ez apróság.
-  4. Kimutatni a célgépen: 4K export ideje ezzel a réteggel (exportnál a réteg minden képkockán renderel).
-  5. A terv C pontja szerint: „közvetlen csillanás-húzás” (a csillanásra kattintva a fénycsík helyét állítani), új fény- és anyagvezérlés más 3D formákra is (obj3d/sdfscene audit).
+- **Kész (0.19.2-m6c):** csillanás-húzás (`glintDrag`, `hitSurface` a `spinegrips.ts`-ben; `R.glint` kapcsoló, `stage.ts` `glint` mód; a `meshFor` a CPU-n tartja a `V`/`idx`-et). Lencsehiba HDR-csillanáson kikapcsol (`gl.ts` POST). 4K mérés: 6,3 ms/kép (animált formával 9 ms), részletek `PROGRESS.md`.
+- **Hiányzik az M6-ból:**
+  1. Új fény- és anyagvezérlés a többi 3D formára (obj3d/sdfscene audit) a terv C pontja szerint.
+  2. A cián pont javítását headlessben nem lehetett előidézni; a felhasználói próbán „Filmes” alatt nézd meg.
 - Ezután M7 (D szakasz).
 
 ## 6. Fontos tudnivalók, csapdák

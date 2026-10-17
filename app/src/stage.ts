@@ -12,7 +12,7 @@ import { syncCtl } from './transport';
 import { renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { toast } from './modals';
-import { isSurf, panDrag, panStart, wheelDist } from './spinegrips';
+import { glintDrag, isSurf, panDrag, panStart, wheelDist } from './spinegrips';
 
 export const wrap=$('#wrap');
 export function fitCanvas(){markDirty();const r=wrap.getBoundingClientRect();const {W,H}=outSize();const pad=40;const s=Math.max(.01,Math.min((r.width-pad)/W,(r.height-pad)/H));cv.style.width=W*s+'px';cv.style.height=H*s+'px';}
@@ -27,19 +27,21 @@ export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElemen
 export function toAsp(e){const r=cv.getBoundingClientRect();const {W,H}=outSize();return {x:((e.clientX-r.left)/r.width-.5)*(W/H),y:.5-(e.clientY-r.top)/r.height};}
 R.drag=null;
 wrap.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('.hudbar,.hud,.tl'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
-  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?'pan':'move');
+  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):'move');
   R.drag={mode,p0:toAsp(e),c0:[e.clientX,e.clientY],x:curV(L.n.x),y:curV(L.n.y),s:curV(L.n.s),rx:L.p&&L.p.rx?curV(L.p.rx):0,ry:L.p&&L.p.ry?curV(L.p.ry):0,m:1};
   {if(st.cam.on&&L.type!=='group'&&kindOf(L)!=='fx'){const sv=R.CAMON;R.CAMON=true;const r=camApply(L,R.time,R.drag.x,R.drag.y,1,0);R.CAMON=sv;R.drag.m=Math.max(.01,r[2]);R.drag.scx=r[0];R.drag.scy=r[1];}}
   if(mode==='pan')R.drag.cam=panStart(L);
+  if(mode==='glint'){R.drag.gok=glintDrag(L,e.clientX,e.clientY);syncCtl();}
   if(L.type==='sdfscene'&&mode!=='orbit'&&L.prims&&L.prims[L.psel]){const o=L.prims[L.psel];R.drag.prim=true;R.drag.o={...o};const [ax,ay]=sdfAngles(L,R.time);R.drag.vz=m3y(-ay,m3x(-ax,[o.x,o.y,o.z]))[2];}});
 wrap.addEventListener('pointermove',e=>{if(!R.drag)return;markDirty();const L=sel();if(!L)return;const p=toAsp(e);const cx=R.drag.scx??R.drag.x,cy=R.drag.scy??R.drag.y;
   if(R.drag.prim){primDrag(L,R.drag,p,e);return;}
+  if(R.drag.mode==='glint'){if(glintDrag(L,e.clientX,e.clientY))R.drag.gok=true;syncCtl();return;}
   if(R.drag.mode==='pan'){panDrag(L,R.drag.cam,p.x-R.drag.p0.x,p.y-R.drag.p0.y);syncCtl();return;}
   if(R.drag.mode==='move'){setVal(L.n.x,R.drag.x+(p.x-R.drag.p0.x)/R.drag.m);setVal(L.n.y,R.drag.y+(p.y-R.drag.p0.y)/R.drag.m);}
   else if(R.drag.mode==='s'){const d0=Math.hypot(R.drag.p0.x-cx,R.drag.p0.y-cy)||.01;setVal(L.n.s,Math.max(.02,R.drag.s*Math.hypot(p.x-cx,p.y-cy)/d0));}
   else if(R.drag.mode==='r'){let r=90-Math.atan2(p.y-cy,p.x-cx)*180/Math.PI;r=((r+180)%360+360)%360-180;if(e.shiftKey)r=Math.round(r/15)*15;setVal(L.n.r,r);}
   else if(R.drag.mode==='orbit'){setVal(L.p.ry,((R.drag.ry+(e.clientX-R.drag.c0[0])*.5+180)%360+360)%360-180);setVal(L.p.rx,Math.max(-180,Math.min(180,R.drag.rx+(e.clientY-R.drag.c0[1])*.5)));syncCtl();}});
-export const endDrag=()=>{if(R.drag){R.drag=null;commit();renderTimeline();}};wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
+export const endDrag=()=>{if(R.drag){if(R.drag.mode==='glint'&&!R.drag.gok)toast('Ide a mennyezeti fénycsík nem tud csillanást tenni (ez a rész lefelé vagy oldalra néz). Próbáld a felület egy felfelé forduló részén.');R.drag=null;commit();renderTimeline();}};wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
 R.wheelT=undefined;wrap.addEventListener('wheel',e=>{const L=sel();if(!L)return;e.preventDefault();markDirty();if(isSurf(L)){wheelDist(L,e.deltaY);syncCtl();clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);return;}setVal(L.n.s,Math.max(.02,Math.min(20,curV(L.n.s)*Math.exp(-e.deltaY*.0012))));clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);},{passive:false});
 wrap.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('text/x-latomas-lib')){e.preventDefault();$('#dropHint').hidden=false;}});
 wrap.addEventListener('dragleave',e=>{if(!wrap.contains(e.relatedTarget))$('#dropHint').hidden=true;});

@@ -198,7 +198,7 @@ export function meshFor(L: any, t: number, def: any) {
   gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 40, 0); gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 40, 12);
   gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2, 4, gl.FLOAT, false, 40, 24);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, M.ibo); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, G.idx, gl.DYNAMIC_DRAW); gl.bindVertexArray(null);
-  Object.assign(M, { key, count: G.idx.length, contacts: G.contacts, tris: G.tris }); return M;
+  Object.assign(M, { key, count: G.idx.length, contacts: G.contacts, tris: G.tris, V: G.V, idx: G.idx }); return M;   // V/idx kept on the CPU for picking (glint drag)
 }
 
 /* ---------------- camera ---------------- */

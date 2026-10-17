@@ -2,12 +2,15 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
-## Állapot: 2026-10-17 este — M6 (Gerincfelület) folyamatban: 0.19.1-m6b
+## Állapot: 2026-10-17 este — M6 (Gerincfelület) folyamatban: 0.19.2-m6c
 
 - 0.19.0-m6a: mesh-alapú 3D réteg „Gerincfelület” (MSAA, tükröző padló, analitikus stúdió). Döntés és mérés: `prototypes/red-ribbon-webgl/README.md`.
 - 0.19.1-m6b: **a gerinc a vásznon szerkeszthető** (`src/spinegrips.ts`). A gerincpontok a réteg saját 3D kamerájával vetített fogók, szaggatott vonallal. Húzás: a pont a kamerával szemközti síkban mozog és az egér alatt marad; Shift: vízszintesen (a magasság marad). Üres helyen húzva a kamera célpontja mozog, görgővel a kamera távolsága. A 2D gizmó és az „Elhelyezés” ennél a rétegnél rejtve (a 2D x/y/s egy valódi 3D rétegnél értelmetlen volt). Inspector: „Gerinc” szekció (új pont utána, pont törlése, alapgerinc).
 - Teszt: `tests/m6_spine.js` (vetítés↔egér eltérés < 0,2 px, Shift-sík, pásztázás, görgő, gizmó rejtve, szekció gombjai, újranyitás). 21/21 zöld. Élőben kipróbálva a beépített böngészőben, konzolhiba nincs.
-- **Felhasználói próba (1 perc):** könyvtár keresőjébe „gerinc” → kattints → húzd a kék pontokat (Shifttel vízszintesen) → üres helyen húzva és görgetve a kamera mozog → Ctrl/Cmd+Z visszavon.
+- 0.19.2-m6c: **csillanás-húzás**: a „Gerinc” szekcióban „Csillanás húzása a vásznon” kapcsoló; bekapcsolva a felületen húzva a mennyezeti fénycsík oda áll, hogy a csillanás az egér alatt legyen (CPU sugár–háromszög találat a gyorsítótárazott hálón, tükörirány → mennyezet metszése; a 3 csík közül a jelenlegihez legközelebbi). Lefelé néző résznél toast mondja el, miért nem megy. Teszt: a kattintott pont fényereje +119 (m6_spine).
+- Lencsehiba (Kinézet „chroma”): HDR-csillanásnál nincs színszél (a fényes pontból nem lesz cián/vörös pötty); normál tartományban a kép bitre azonos (mérve).
+- **4K mérés (M1 Max, valódi GPU, böngészőpanel):** csak Gerincfelület, render + kinézet: 1080p 2,8 ms, 4K 6,3 ms/kép; animált formával (háló újraépítés kockánként) 1080p 5,7, 4K 9 ms. Üres jelenet 4K-n 2,4 ms. Egy 10 mp-es 30 fps-es 4K export renderelése ≈ 2–3 mp + kódolás.
+- **Felhasználói próba (1 perc):** könyvtár keresőjébe „gerinc” → kattints → húzd a kék pontokat (Shifttel vízszintesen) → üres helyen húzva és görgetve a kamera mozog → Ctrl/Cmd+Z visszavon → „Csillanás húzása a vásznon”, majd húzz a felület bal, felfelé néző részén.
 - Korlát: a gerinc nem kulcskockázható (statikus forma; a kamera és a formaparaméterek animálhatók). A vásznon kívül eső pontok nem látszanak.
 
 ## Állapot: 2026-10-17 este — M5 (mozgásblokkok, retime, jelzések, eljátszás) KÉSZ

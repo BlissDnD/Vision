@@ -80,7 +80,9 @@ vec3 agx(vec3 c){
 float hsh(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 void main(){
   vec2 q=vUv-0.5; vec2 off=q*uChroma*0.012;
-  vec3 c=vec3(texture(uSrc,vUv+off).r,texture(uSrc,vUv).g,texture(uSrc,vUv-off).b);
+  vec3 c0=texture(uSrc,vUv).rgb,cr=texture(uSrc,vUv+off).rgb,cb=texture(uSrc,vUv-off).rgb;
+  float hi=max(max(max(c0.r,c0.g),c0.b),max(max(cr.r,cr.g),max(cb.b,cb.g)));   // HDR highlights (specular glints): no fringe, else a 1-px glint turns into a cyan/red dot
+  vec3 c=mix(c0,vec3(cr.r,c0.g,cb.b),1.0/(1.0+3.0*max(hi-1.0,0.0)));
   if(uSharpen>0.0){vec2 px=1.0/uRes; vec3 b=(texture(uSrc,vUv+vec2(px.x,0.0)).rgb+texture(uSrc,vUv-vec2(px.x,0.0)).rgb+texture(uSrc,vUv+vec2(0.0,px.y)).rgb+texture(uSrc,vUv-vec2(0.0,px.y)).rgb)*0.25; c+=(c-b)*uSharpen;}
   vec3 lin=pow(max(c,0.0),vec3(2.2))*exp2(uExp);
   vec3 bl=texture(uBloom,vUv).rgb; lin+=bl*uBloomAmt*0.35+bl*vec3(1.0,0.28,0.1)*uHal*0.5;
