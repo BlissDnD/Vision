@@ -1,6 +1,6 @@
 {
   "name": "latomas-studio",
-  "version": "0.15.0-m2",
+  "version": "0.16.0-m3",
   "private": true,
   "description": "Látomás Stúdió – rétegalapú WebGL2 vizuális és motion editor (egyetlen HTML-be fordul).",
   "type": "module",

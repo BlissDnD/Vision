@@ -69,11 +69,16 @@ export function fxListUI(L){
     const tog=h('button',{class:'chev',html:SVG_CHEV,'aria-label':d.name+' beállításai'});
     const eye=h('button',{class:'eye','aria-label':'Be/ki',html:F.vis?SVG_EYE:SVG_EYEOFF});eye.onclick=()=>{F.vis=!F.vis;eye.innerHTML=F.vis?SVG_EYE:SVG_EYEOFF;commit();};
     const del=h('button',{class:'eye','aria-label':'Eltávolítás',html:SVG_X});del.onclick=()=>{L.fx.splice(i,1);commit();renderInsp();renderLayers();};
-    const nm=h('span',{class:'ln'},d.name);const hd=h('header',null,tog,nm,eye,del);
+    const nm=h('span',{class:'ln'},h('span',{class:'fxn'},(i+1)+'.'),' ',d.name);
+    // order matters (top = applied first): move up / down in the chain
+    const mv=(dir)=>{const j=i+dir;if(j<0||j>=L.fx.length)return;[L.fx[i],L.fx[j]]=[L.fx[j],L.fx[i]];commit();renderInsp();renderLayers();};
+    const up=L.fx.length>1?h('button',{class:'eye','aria-label':'Előrébb a láncban',title:'Előrébb',disabled:i===0},'▲'):null;if(up)up.onclick=()=>mv(-1);
+    const dn=L.fx.length>1?h('button',{class:'eye','aria-label':'Hátrébb a láncban',title:'Hátrébb',disabled:i===L.fx.length-1},'▼'):null;if(dn)dn.onclick=()=>mv(1);
+    const hd=h('header',null,tog,nm,up,dn,eye,del);
     const toggle=()=>{open=!open;body.hidden=!open;tog.classList.toggle('open',open);if(open&&!body.childElementCount){for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}};
     tog.onclick=toggle;nm.onclick=toggle;
     list.appendChild(h('div',{class:'fxi'},hd,body));});
-  const s=h('select',{'aria-label':'Effekt hozzáadása'},h('option',{value:''},'Effekt hozzáadása…'),...LIB.fx.map((it,i)=>h('option',{value:i},it.name)));
+  const s=h('select',{'aria-label':'Megjelenés hozzáadása'},h('option',{value:''},'Megjelenés hozzáadása…'),...LIB.fx.map((it,i)=>h('option',{value:i},it.name)));
   s.onchange=()=>{if(s.value==='')return;L.fx.push(LIB.fx[+s.value].make());commit();renderInsp();renderLayers();};
   list.appendChild(h('div',{class:'addfx'},h('div',{class:'pop'},s)));
-  list.appendChild(h('p',{class:'small'},'Tipp: húzz egy szűrőt a könyvtárból közvetlenül erre a rétegre.'));return list;}
+  list.appendChild(h('p',{class:'small'},'A lánc felülről lefelé hat. Tipp: húzz egy Megjelenést a könyvtárból közvetlenül erre a rétegre.'));return list;}

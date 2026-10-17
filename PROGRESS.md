@@ -2,6 +2,11 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
+## Állapot: 2026-10-17 este — M3 (könyvtár és rétegek UX) KÉSZ
+
+Verzió 0.16.0-m3, 16/16 teszt zöld. Részletek és maradék: `HANDOFF.md` „M3 állapota”.
+**Felhasználói próba (1 perc):** jobb gomb a vásznon egy pontra → lista a pont alatti rétegekről, előnézettel → kattints egyre. Alt+kattintás: a legfelső. A könyvtár fölött írd be: „felho”.
+
 ## Állapot: 2026-10-17 este — M2 (Csoport / Közös alap / Változat / Kapcsolat) KÉSZ
 
 Verzió 0.15.0-m2, projektformátum v4 (`state.bases`, `group.variant`, `state.links`; régi fájlok: üres). Részletek: `HANDOFF.md` „M2 állapota”. Teszt: `tests/m2_variants.js` (3 változat; egyben átírt cím csak ott; Átadás az alapra és kijelölteknek; helyi törlés túléli az alapváltozást; Kapcsolat kiértékelés; mentés→újranyitás bitre azonos; visszavonás; leválasztás; árva alap törlődik). 15/15 zöld.
@@ -63,4 +68,4 @@ Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.g
 - Az `R.time` továbbra is a jelenetidő (Loopnál a frame() tekeri vissza). Az export az `sceneT()`-n keresztül képez le. Így a meglévő effektkód érintetlen.
 
 ## Következő lépés
-Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M3** (könyvtár és rétegek UX), utána M4 tipográfia, M5 mozgásblokkok. A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.
+Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M4** tipográfia, utána M5 mozgásblokkok. A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.

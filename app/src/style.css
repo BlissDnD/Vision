@@ -297,3 +297,12 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 
 .tl-over{flex:none;height:22px;padding:0 8px;border-radius:6px;border:1px dashed var(--accent);background:transparent;color:var(--accent);font:inherit;font-size:11px;font-variant-numeric:tabular-nums;cursor:pointer;white-space:nowrap}
 .tl.over .tl-head{background:repeating-linear-gradient(var(--accent) 0 3px,transparent 3px 6px)}
+
+/* M3: rétegek a kattintás alatt */
+.pickmenu .pickrow{justify-content:flex-start;gap:9px}
+.pickmenu .pickrow.cur{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.pickmenu .pickrow small{color:var(--fg2,#999);font-size:11px}
+.pickprev{width:52px;height:auto;border-radius:4px;flex:none;box-shadow:0 0 0 1px var(--sep)}
+.difflist{margin:4px 0 6px;padding-left:18px}
+#libSearch{flex:0 1 190px;min-width:120px;font:inherit;font-size:12px;padding:5px 9px;border-radius:7px;border:1px solid var(--sep);background:transparent;color:inherit;margin-right:8px}
+.fxi .fxn{opacity:.55;font-variant-numeric:tabular-nums}

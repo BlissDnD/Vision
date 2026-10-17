@@ -21,6 +21,7 @@ import './controls';
 import './inspector';
 import './history';
 import './stage';
+import './pick';
 import './transport';
 import './signals';
 import './timeline';
