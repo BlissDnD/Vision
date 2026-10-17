@@ -51,7 +51,7 @@ export const SDF_RENDER=`vec4 render(vec2 p){
   vec3 ro=vec3(0.0,0.0,3.5); vec3 rd=normalize(vec3(p,-1.8));
   float tt=0.0; float md=1e9; float hit=-1.0;
   for(int i=0;i<128;i++){vec3 pos=ro+rd*tt; float d=map(pos).x; md=min(md,d); if(d<0.0007*(1.0+tt)){hit=tt;break;} tt+=d*0.8; if(tt>10.0) break;}
-  vec3 L=normalize(vec3(-0.5,0.8,0.6));
+  vec3 L=uLDir;
   if(hit<0.0){vec4 res=vec4(0.0);
     if(p_floor>0.001&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; float sh=softShadow(fp+vec3(0.0,0.002,0.0),L); float ao=clamp(map(fp).x*1.2,0.0,1.0);
       res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0);}

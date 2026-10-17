@@ -4,7 +4,7 @@ import { $, h } from './dom';
 import { EASE_NAMES, PALS, hexRGB, v3 } from './palettes';
 import { BASEK, BENTO, BLEND_IDX, EFFECTS, S, kindOf } from './effects/index';
 import { BLANK, COMP, COPY, DOWN, NULLP, PLACEHOLDER, POST, U, UPS, XFORM, clearTarget, compile, cv, errCache, freeCtx, freeTarget, getProg, gl, mkCtx, mkSet, mkTarget } from './gl';
-import { imgTex, makeLayer, mkN, st } from './state';
+import { LIGHTP, imgTex, makeLayer, mkN, st } from './state';
 import { ev, hasK } from './evaluation';
 import { mediaFor } from './text';
 import { blobPrep } from './blob';
@@ -98,7 +98,20 @@ export function bentoU(p,L,t){const B=bentoBoxes(L,t);const R=new Float32Array(3
   B.forEach((b,i)=>{R.set(b.slice(0,4),i*4);S2[i*4]=b[4];});
   gl.uniform4fv(U(p,'uBR'),R);gl.uniform4fv(U(p,'uBS'),S2);gl.uniform1f(U(p,'uBN'),B.length);}
 EFFECTS.bento.setU=bentoU;
-EFFECTS.sdfscene.setU=(p,L)=>{const P=(L.prims||[]).slice(0,8);const A=new Float32Array(32),B=new Float32Array(32),C=new Float32Array(32);
+/** Scene light → obj3d / sdfscene uniforms. Light off (globally or for the layer): the old fixed studio key. */
+const LDEF={az:-39.81,el:45.58,soft:.5,size:0,warm:0,pow:1};
+const dirAE=(az,el)=>{const a=az*Math.PI/180,e=el*Math.PI/180;return [Math.cos(e)*Math.sin(a),Math.sin(e),Math.cos(e)*Math.cos(a)];};
+export function lightVals(L,t){const on=st.light&&st.light.on&&(!L.p.sceneL||Math.round(L.p.sceneL.v)>0);if(!on)return {...LDEF};
+  const o:any={};for(const d of LIGHTP)o[d.k]=ev(st.light.p[d.k],d,t);return o;}
+export function lightU(p,L,t){const v=lightVals(L,t),off=v.az===LDEF.az&&v.el===LDEF.el;
+  const d=off?[-0.447214,0.715542,0.536656]:dirAE(v.az,v.el);
+  const e0=[-0.6,0.6,0.55],el0=Math.asin(e0[1]/Math.hypot(...e0))*180/Math.PI,az0=Math.atan2(e0[0],e0[2])*180/Math.PI;   // studio glint keeps its offset from the key
+  const e=off?e0.map(x=>x/Math.hypot(...e0)):dirAE(az0+v.az-LDEF.az,Math.max(-10,Math.min(89,el0+v.el-LDEF.el)));
+  const w=v.warm,c=[1+Math.max(-w,0)*-.2,.97+Math.max(w,0)*-.12+Math.max(-w,0)*-.03,.92+Math.max(w,0)*-.3+Math.max(-w,0)*.08].map(x=>x*v.pow);
+  gl.uniform3f(U(p,'uLDir'),d[0],d[1],d[2]);gl.uniform3f(U(p,'uLEnv'),e[0],e[1],e[2]);gl.uniform3f(U(p,'uLCol'),c[0],c[1],c[2]);
+  gl.uniform1f(U(p,'uLSoftK'),v.soft<=.5?16-12*v.soft:10-16*(v.soft-.5));gl.uniform1f(U(p,'uLWrap'),Math.max(0,v.soft-.5)*1.6);gl.uniform1f(U(p,'uLSize'),v.size);}
+EFFECTS.obj3d.setU=lightU;
+EFFECTS.sdfscene.setU=(p,L,t)=>{lightU(p,L,t);const P=(L.prims||[]).slice(0,8);const A=new Float32Array(32),B=new Float32Array(32),C=new Float32Array(32);
   P.forEach((o,i)=>{A.set([o.x,o.y,o.z,o.t],i*4);B.set([o.sx,o.sy,o.sz,o.op],i*4);C.set([o.ry*Math.PI/180,o.rx*Math.PI/180,o.k,o.c],i*4);});
   gl.uniform4fv(U(p,'uA'),A);gl.uniform4fv(U(p,'uB'),B);gl.uniform4fv(U(p,'uC'),C);gl.uniform1f(U(p,'uN'),P.length);};
 /* ----- particles: GL points sampled from a texture ----- */

@@ -39,13 +39,13 @@ npm run dev -- --port 5180 --strictPort   # Vite dev szerver
 | M3 | B | ✅ jobb gombos találatlista a vásznon (`pick.ts`), Alt+katt; könyvtári kategóriák és keresés (`shelf.ts`, `library.ts`); effektlánc-átrendezés |
 | M4 | B | ✅ soronkénti tipográfia (`text.ts` `lines[]`, `textlines.ts` fogantyúk és „Sorok” szekció, sortábla az `mtext` shaderben), „Szerkesztői címlap” recept |
 | M5 | B | ✅ mozgásblokk + retime (`retime.ts`, Sávok panel `blockDrag`), kézi Jelzések (J), horgonyok, Eljátszás simítással (`perform.ts`, E) |
-| **M6** | **C** | **folyamatban**, lásd 5. pont |
-| M7 | D | építőelemek (Bolygó/Felhő/Füst/Virág), 2D↔3D, szöveg–forma kapcsolatok, első Részecske Forrás/Megjelenés |
+| M6 | C | ✅ Gerincfelület (mesh), vásznon szerkeszthető gerinc, csillanás-húzás, Jelenetfény az obj3d/sdfscene-en |
+| **M7** | **D** | **következik**: építőelemek (Bolygó/Felhő/Füst/Virág), 2D↔3D, szöveg–forma kapcsolatok, első Részecske Forrás/Megjelenés |
 | M8 | E | fizika, mezők, reprodukálható seek/export |
 | M9 | F | folyadék: előbb mért kutatási prototípus |
 | M10 | G | receptcsalád, Random hatókörök, polírozás |
 
-Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, `m4_type`, `m5_retime`, `m5_perform`, `m6_mesh`, `m6_spine`), plusz a régiek. Az egyes M-ek részletes korlátai a `PROGRESS.md`-ben vannak.
+Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, `m4_type`, `m5_retime`, `m5_perform`, `m6_mesh`, `m6_spine`, `m6_light`), plusz a régiek. Az egyes M-ek részletes korlátai a `PROGRESS.md`-ben vannak.
 
 ## 5. Ahol tartunk: M6 (C szakasz, látványkapu)
 - **Döntés (mérve, `prototypes/red-ribbon-webgl/README.md` vége):** a jó minőségű 3D a Velben **mesh-alapú** legyen. Ugyanaz a forma SDF raymarchinggal 183 ms, mesh-ként 3–5 ms 2048×1536-on, M1 Maxon; az SDF ráadásul csíkos. Az SDF csak a meglévő procedurális formákra marad.
@@ -59,9 +59,8 @@ Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, 
   - Ellenőrizve valódi GPU-n (5180; ha foglalt, a launch.json „vel” más portra kerül, pl. 5182): „Filmes” és „Tiszta” kinézettel is jó. Az alapértékeket úgy hangoltam, hogy „Filmes” alatt ne égjen ki (sky 0,95, backI 0,8, expo 0,72, a hátsó fény glóriája 0,18).
 - **Kész (0.19.1-m6b):** `src/spinegrips.ts`: gerincpont-fogók a vásznon (a réteg kamerájával vetítve; húzás a kamerával szemközti síkban, Shift: vízszintes sík), üres húzás = kamera cél pásztázása, görgő = kamera távolság (`stage.ts` `pan` mód). A 2D gizmó rejtve mesh-rétegnél (`isSurf`), az inspectorban „Gerinc” szekció (`spineSection`, a `d.groups` ágban). Nem mentett kijelölt pont: `R.spSel`. Teszt: `tests/m6_spine.js`. 21/21 zöld.
 - **Kész (0.19.2-m6c):** csillanás-húzás (`glintDrag`, `hitSurface` a `spinegrips.ts`-ben; `R.glint` kapcsoló, `stage.ts` `glint` mód; a `meshFor` a CPU-n tartja a `V`/`idx`-et). Lencsehiba HDR-csillanáson kikapcsol (`gl.ts` POST). 4K mérés: 6,3 ms/kép (animált formával 9 ms), részletek `PROGRESS.md`.
-- **Hiányzik az M6-ból:**
-  1. Új fény- és anyagvezérlés a többi 3D formára (obj3d/sdfscene audit) a terv C pontja szerint.
-  2. A cián pont javítását headlessben nem lehetett előidézni; a felhasználói próbán „Filmes” alatt nézd meg.
+- **Kész (0.20.0-m6, M6 LEZÁRVA):** Jelenetfény (`st.light`, `LIGHTP`/`normLight` a `state.ts`-ben, `lightU`/`lightVals` a `render.ts`-ben mint `setU` az obj3d-n és sdfscene-en; shader uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap` az `obj3d` kód elején). UI: `src/lightui.ts` (`lightSection`, `glint3`, `lightFromGlint`), `stage.ts` `glint3` mód. Alapértéken bitre a régi kép. Teszt: `m6_light`.
+  - Nyitott (később): a cián pont javítását headlessben nem lehetett előidézni, felhasználói próbán nézd; több fény/fényforma; padlótükör más 3D típusokra.
 - Ezután M7 (D szakasz).
 
 ## 6. Fontos tudnivalók, csapdák

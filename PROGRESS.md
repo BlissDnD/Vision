@@ -2,7 +2,15 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
-## Állapot: 2026-10-17 este — M6 (Gerincfelület) folyamatban: 0.19.2-m6c
+## Állapot: 2026-10-17 este — M6 (C szakasz, látványkapu) LEZÁRVA: 0.20.0-m6
+
+- 0.20.0-m6: **Jelenetfény** a 3D tárgyakon és 3D jeleneteken (`obj3d`, `sdfscene`): egy közös, animálható fény (`st.light`, projektben mentve; régi projektnél alapérték). Inspector „Jelenetfény” szekció: globális kapcsoló, rétegenkénti „Jelenetfény hat rá”, közvetlen vezérlők elöl: Lágyabb árnyék (árnyékél + körbeforduló fény), Nagyobb csillanás, Melegebb↔hidegebb, Erősség, majd Irány/Magasság. „Csillanás húzása a vásznon”: a tárgyra kattintva a fény úgy fordul, hogy a csúcsfény az egér alatt legyen (gömbközelítés: L = 2(n·v)n − v). A stúdió-környezet fő csillanása a fénnyel együtt fordul.
+- Alapértéken a kép **bitre azonos** a korábbival (mérve), így a régi projektek nem változnak. A Gerincfelületnek saját stúdiófénye marad (Fény csoport + saját csillanás-húzás).
+- Teszt: `tests/m6_light.js` (alap = régi 0 eltérés; irány 11,6; lágyság 0,69; melegség R−B 13→56; rétegenként ki; csillanás-húzás után a pont 0→765; 3D jelenet 32,7; újranyitás kulcskockával; régi projekt). 22/22 zöld. Élőben (Irizáló gömb) a csillanás a kattintás helyére ugrott.
+- **Felhasználói próba (1 perc):** könyvtár: „gömb” → Irizáló gömb → Jelenetfény szekció → „Csillanás húzása a vásznon” → kattints/húzz a gömbön → próbáld a Lágyabb / Nagyobb csillanás / Melegebb csúszkát.
+- Hiánylista a referenciához (1. kép): tükröződő padló és csíkos stúdió csak a Gerincfelületen van; obj3d/sdfscene üvegtörése továbbra is környezetminta; több fény / fényformák még nincsenek.
+
+## M6 korábbi szeletei: 0.19.2-m6c
 
 - 0.19.0-m6a: mesh-alapú 3D réteg „Gerincfelület” (MSAA, tükröző padló, analitikus stúdió). Döntés és mérés: `prototypes/red-ribbon-webgl/README.md`.
 - 0.19.1-m6b: **a gerinc a vásznon szerkeszthető** (`src/spinegrips.ts`). A gerincpontok a réteg saját 3D kamerájával vetített fogók, szaggatott vonallal. Húzás: a pont a kamerával szemközti síkban mozog és az egér alatt marad; Shift: vízszintesen (a magasság marad). Üres helyen húzva a kamera célpontja mozog, görgővel a kamera távolsága. A 2D gizmó és az „Elhelyezés” ennél a rétegnél rejtve (a 2D x/y/s egy valódi 3D rétegnél értelmetlen volt). Inspector: „Gerinc” szekció (új pont utána, pont törlése, alapgerinc).

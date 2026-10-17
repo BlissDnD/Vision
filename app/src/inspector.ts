@@ -17,6 +17,7 @@ import { showCode } from './modals';
 import { childVariantSection, linkSection, variantSection } from './variantsui';
 import { linesSection } from './textlines';
 import { spineSection } from './spinegrips';
+import { lightSection, usesLight } from './lightui';
 
 export function renderInsp(){
   {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'||L0.type==='surface3d'));}
@@ -72,6 +73,7 @@ export function renderInsp(){
   for(const key of mainKeys){const pd=d.params.find(p=>p.k===key);if(pd)mainKids.push(ctlParam(L,pd,true));}
   if(L.type==='sdfscene')P.appendChild(sdfObjectsSection(L));
   P.appendChild(section(k==='fx'?'Szűrő':'Fő beállítások','main',true,...mainKids));
+  if(usesLight(L))P.appendChild(lightSection(L));
   if((k!=='fx'&&!d.noPal)||d.usesPal)P.appendChild(section('Szín','color',true,palettePicker(L),ctlSlider(L.n.hue,BASEK.hue)));
   const blendKids=k==='fx'?[ctlSlider(L.n.opacity,{...BASEK.opacity,l:'Erősség'})]:[blendRow(L),ctlSlider(L.n.opacity,BASEK.opacity),ctlSlider(L.n.key,BASEK.key)];
   P.appendChild(section('Megjelenés','blend',true,...blendKids));

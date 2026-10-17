@@ -13,6 +13,7 @@ import { renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { toast } from './modals';
 import { glintDrag, isSurf, panDrag, panStart, wheelDist } from './spinegrips';
+import { glint3, usesLight } from './lightui';
 
 export const wrap=$('#wrap');
 export function fitCanvas(){markDirty();const r=wrap.getBoundingClientRect();const {W,H}=outSize();const pad=40;const s=Math.max(.01,Math.min((r.width-pad)/W,(r.height-pad)/H));cv.style.width=W*s+'px';cv.style.height=H*s+'px';}
@@ -27,13 +28,15 @@ export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElemen
 export function toAsp(e){const r=cv.getBoundingClientRect();const {W,H}=outSize();return {x:((e.clientX-r.left)/r.width-.5)*(W/H),y:.5-(e.clientY-r.top)/r.height};}
 R.drag=null;
 wrap.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('.hudbar,.hud,.tl'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
-  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):'move');
+  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):(R.glint&&usesLight(L)&&!hnd?'glint3':'move'));
   R.drag={mode,p0:toAsp(e),c0:[e.clientX,e.clientY],x:curV(L.n.x),y:curV(L.n.y),s:curV(L.n.s),rx:L.p&&L.p.rx?curV(L.p.rx):0,ry:L.p&&L.p.ry?curV(L.p.ry):0,m:1};
   {if(st.cam.on&&L.type!=='group'&&kindOf(L)!=='fx'){const sv=R.CAMON;R.CAMON=true;const r=camApply(L,R.time,R.drag.x,R.drag.y,1,0);R.CAMON=sv;R.drag.m=Math.max(.01,r[2]);R.drag.scx=r[0];R.drag.scy=r[1];}}
   if(mode==='pan')R.drag.cam=panStart(L);
+  if(mode==='glint3'){glint3(L,R.drag.p0);syncCtl();}
   if(mode==='glint'){R.drag.gok=glintDrag(L,e.clientX,e.clientY);syncCtl();}
   if(L.type==='sdfscene'&&mode!=='orbit'&&L.prims&&L.prims[L.psel]){const o=L.prims[L.psel];R.drag.prim=true;R.drag.o={...o};const [ax,ay]=sdfAngles(L,R.time);R.drag.vz=m3y(-ay,m3x(-ax,[o.x,o.y,o.z]))[2];}});
 wrap.addEventListener('pointermove',e=>{if(!R.drag)return;markDirty();const L=sel();if(!L)return;const p=toAsp(e);const cx=R.drag.scx??R.drag.x,cy=R.drag.scy??R.drag.y;
+  if(R.drag.mode==='glint3'){glint3(L,p);syncCtl();return;}
   if(R.drag.prim){primDrag(L,R.drag,p,e);return;}
   if(R.drag.mode==='glint'){if(glintDrag(L,e.clientX,e.clientY))R.drag.gok=true;syncCtl();return;}
   if(R.drag.mode==='pan'){panDrag(L,R.drag.cam,p.x-R.drag.p0.x,p.y-R.drag.p0.y);syncCtl();return;}

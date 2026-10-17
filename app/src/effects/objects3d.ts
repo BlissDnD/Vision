@@ -20,8 +20,9 @@ obj3d:{kind:'3d',name:'3D objektum',desc:'Fizikai alapú (PBR) 3D test: környez
   SEL('material','Anyag',['Irizáló','Plazma','Bolygó','Hologram','Króm','Láva','Üveg','Normál-színek','Toon','Agyag','Gyöngyház','Bársony'],0),
   SEL('env','Környezet',['Stúdió','Naplemente','Kozmikus','Neon'],0),S('rough','Érdesség',0,1,.4),S('metal','Fémesség',0,1,0),S('detail','Felületi textúra',0,1,.15),S('floor','Árnyék a talajon',0,1,0),S('glow','Peremfény',0,3,.6),
   SEL('aa','Élsimítás',['Gyors','4× (lassabb)'],0),
-  S('displace','Torzítás',0,1,.15),S('spin','Forgás',-2,2,.3),S('rx','Dőlés °',-180,180,20),S('ry','Fordulat °',-180,180,0),S('twist','Csavarás',-3,3,0),S('ring','Gyűrű',0,1,0),S('speed','Anyag tempója',0,3,.5)],
- code:`mat3 gM;
+  S('displace','Torzítás',0,1,.15),S('spin','Forgás',-2,2,.3),S('rx','Dőlés °',-180,180,20),S('ry','Fordulat °',-180,180,0),S('twist','Csavarás',-3,3,0),S('ring','Gyűrű',0,1,0),S('speed','Anyag tempója',0,3,.5),SEL('sceneL','Jelenetfény hat rá',['Nem','Igen'],1)],
+ code:`uniform vec3 uLDir; uniform vec3 uLEnv; uniform vec3 uLCol; uniform float uLSoftK; uniform float uLSize; uniform float uLWrap;   // scene light (render.ts lightU)
+mat3 gM;
 mat3 rX(float a){float c=cos(a),s=sin(a);return mat3(1.0,0.0,0.0,0.0,c,s,0.0,-s,c);}
 mat3 rY(float a){float c=cos(a),s=sin(a);return mat3(c,0.0,-s,0.0,1.0,0.0,s,0.0,c);}
 float tet(vec3 p,float s){return (max(max(-p.x-p.y-p.z,p.x+p.y-p.z),max(-p.x+p.y+p.z,p.x-p.y+p.z))-s)*0.57735;}
@@ -53,7 +54,7 @@ float fbm3(vec3 p){return n3(p)*0.6+n3(p*2.1+3.1)*0.3+n3(p*4.3+7.7)*0.1;}
 vec3 envMap(vec3 d,float rough){
   float sharp=mix(70.0,2.5,rough); float y=d.y; vec3 col; int e=int(p_env+0.5);
   if(e==0){col=mix(vec3(0.015),vec3(0.11),smoothstep(-0.6,1.0,y));
-    col+=vec3(1.0,0.98,0.95)*2.4*pow(max(dot(d,normalize(vec3(-0.6,0.6,0.55))),0.0),sharp);
+    col+=vec3(1.0,0.98,0.95)*(uLCol/vec3(1.0,0.97,0.92))*2.4*pow(max(dot(d,uLEnv),0.0),mix(70.0,2.5,mix(rough,1.0,uLSize*0.6)));
     col+=vec3(0.85,0.92,1.0)*1.3*pow(max(dot(d,normalize(vec3(0.75,0.25,-0.45))),0.0),sharp*0.7);
     col+=vec3(0.9)*0.5*smoothstep(0.55,1.0,y);}
   else if(e==1){col=mix(vec3(0.95,0.45,0.22),vec3(0.12,0.16,0.38),smoothstep(-0.1,0.7,y))*mix(0.2,1.0,smoothstep(-0.6,0.05,y));
@@ -63,7 +64,7 @@ vec3 envMap(vec3 d,float rough){
   else {float az=atan(d.z,d.x); float band=smoothstep(-0.35,0.2,y)*(1.0-smoothstep(0.5,0.9,y)); float w=0.08+rough*0.6;
     col=vec3(0.012)+vec3(1.0,0.22,0.6)*2.4*exp(-pow((az-1.2)/w,2.0))*band+vec3(0.2,0.75,1.0)*2.4*exp(-pow((az+1.9)/w,2.0))*band+vec3(0.6,0.4,1.0)*0.6*smoothstep(0.7,1.0,y);}
   return col;}
-float softShadow(vec3 ro,vec3 rd){float res=1.0,tt=0.02;for(int i=0;i<32;i++){float hh=map(ro+rd*tt).x;res=min(res,10.0*hh/tt);tt+=clamp(hh,0.02,0.25);if(res<0.004||tt>5.0)break;}return clamp(res,0.0,1.0);}
+float softShadow(vec3 ro,vec3 rd){float res=1.0,tt=0.02;for(int i=0;i<32;i++){float hh=map(ro+rd*tt).x;res=min(res,uLSoftK*hh/tt);tt+=clamp(hh,0.02,0.25);if(res<0.004||tt>5.0)break;}return clamp(res,0.0,1.0);}
 float calcAO(vec3 pos,vec3 n){float occ=0.0,sca=1.0;for(int i=0;i<5;i++){float hh=0.02+0.11*float(i);float d=map(pos+n*hh).x;occ+=(hh-d)*sca;sca*=0.9;}return clamp(1.0-2.5*occ,0.0,1.0);}
 vec3 shadePBR(vec3 n,vec3 rd,vec3 alb,float rough,float metal,float ao,float sh){
   vec3 v=-rd; float nv=max(dot(n,v),0.0); vec3 F0=mix(vec3(0.04),alb,metal);
@@ -71,16 +72,16 @@ vec3 shadePBR(vec3 n,vec3 rd,vec3 alb,float rough,float metal,float ao,float sh)
   vec3 spec=envMap(reflect(rd,n),rough)*F;
   vec3 irr=envMap(n,1.0)*0.9+0.03;
   vec3 diff=alb*irr*(1.0-metal);
-  vec3 L=normalize(vec3(-0.5,0.8,0.6)); vec3 H=normalize(L+v); float nl=max(dot(n,L),0.0); float nh=max(dot(n,H),0.0);
-  float a2=pow(max(rough,0.05),4.0); float dd=nh*nh*(a2-1.0)+1.0; float D=a2/(PI*dd*dd);
-  vec3 key=(alb*(1.0-metal)*0.6+F*D*0.25)*nl*sh*vec3(1.0,0.97,0.92)*1.6;
+  vec3 L=uLDir; vec3 H=normalize(L+v); float nl=max((dot(n,L)+uLWrap)/(1.0+uLWrap),0.0); float nh=max(dot(n,H),0.0);
+  float a2=pow(max(mix(rough,1.0,uLSize),0.05),4.0); float dd=nh*nh*(a2-1.0)+1.0; float D=a2/(PI*dd*dd);
+  vec3 key=(alb*(1.0-metal)*0.6+F*D*0.25)*nl*mix(sh,1.0,uLWrap*0.6)*uLCol*1.6;
   return (diff+spec)*mix(0.35,1.0,ao)*mix(0.55,1.0,sh)+key;}
 vec4 render(vec2 p){
   float t=uTime*p_speed;
   vec3 ro=vec3(0.0,0.0,3.5); vec3 rd=normalize(vec3(p,-1.8));
   float tt=0.0; float md=1e9; vec2 hit=vec2(0.0,-1.0);
   for(int i=0;i<110;i++){vec3 pos=ro+rd*tt; vec2 m=map(pos); md=min(md,m.x); if(m.x<0.0007*(1.0+tt)){hit=vec2(tt,m.y);break;} tt+=m.x*0.75; if(tt>9.0) break;}
-  vec3 L=normalize(vec3(-0.5,0.8,0.6));
+  vec3 L=uLDir;
   if(hit.y<-0.5){
     vec4 res=vec4(0.0);
     if(p_floor>0.001&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; float sh=softShadow(fp+vec3(0.0,0.002,0.0),L); float ao=clamp(map(fp).x*1.2,0.0,1.0);

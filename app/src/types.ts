@@ -83,6 +83,7 @@ export interface Project {
   q: number;
   qMode: 'auto' | 'fixed' | string;
   look: Look;
+  light?: any;
   cam?: Camera;
   dur: number;
   loop: boolean;

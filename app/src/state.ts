@@ -41,7 +41,11 @@ export const LOOKS={
 export function mkLook(name){const L=LOOKS[name]||LOOKS.Filmes;const o={preset:LOOKS[name]?name:'Filmes',tone:L.tone,fps:0,p:{}};for(const d of LOOKP)o.p[d.k]={v:L[d.k]??d.def,a:0,f:.2,w:0};return o;}
 export function normLook(o){if(!o||!o.p)return mkLook('Filmes');const b=mkLook(LOOKS[o.preset]?o.preset:'Filmes');b.preset=o.preset||b.preset;b.tone=o.tone??b.tone;b.fps=+o.fps||0;for(const d of LOOKP)if(o.p[d.k]&&isFinite(o.p[d.k].v))b.p[d.k]={v:+o.p[d.k].v,a:0,f:.2,w:0};return b;}
 import type { Project, Layer, NParam } from './types';
-export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[]};
+/** Global scene light (C / M6): drives the key light, its shadow and the studio glint of obj3d / sdfscene layers.
+ * Defaults reproduce the old fixed light (dir normalize(-0.5,0.8,0.6), shadow k 10, colour (1,.97,.92)). */
+export const LIGHTP=[S('az','Irány (körbe, °)',-180,180,-39.81),S('el','Magasság (°)',-10,90,45.58),S('soft','Lágyabb árnyék',0,1,.5),S('size','Nagyobb csillanás',0,1,0),S('warm','Melegebb ↔ hidegebb',-1,1,0),S('pow','Erősség',0,3,1)];
+export function normLight(o){const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}return b;}
+export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),light:normLight(null),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[]};
 R.selId=null;export const assets={};export const imgTex=new Map();
 
 export function walk(list,fn,parent=null){for(const it of list){fn(it,list,parent);if(it.type==='group')walk(it.children,fn,it);}}
