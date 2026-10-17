@@ -49,5 +49,10 @@ A modulonkénti technikai jegyzetek: `app/README.md` („Újabb modulok” szaka
 ## Hátralévő D-lista (M7)
 ~~Felhő + Lufi~~ (kész, M7b) → Füst (javasolva) → Virág/ornament → a Bolygó feljavítása → szöveg gömbön/hengeren (élő szöveg) → Térbeliség első próba → Részecske Forrás saját emitterrel → érthető kapcsolatok (javaslat, panel). A teljes, nem D-hez tartozó hiánylista: `FUNKCIO-LELTAR.md`.
 
+## Ismert hibák (a felhasználó jelezte, még nincs javítva)
+- **BUG (2026-10-18), K1 zsinór „Vezérelje”:** a forrásparamétert észrevétlenül találgatja (az első animált értéket veszi): a felhasználó a Virág méretmozgását akarta a Szem méretére kötni, de a kapcsolat **Virág X → Szem méret** lett. A Virág látható lüktetése a forma `p.size`-án van (hullám), nem a réteg `n.s`-én. Javítás: létrehozás előtt egyértelműen mutassa: „Virág X → Szem méret”, és ott helyben lehessen cserélni (pl. „Virág forma-méret”); az animált/hullámos paraméter legyen az első javaslat.
+- **BUG, kulcsok a Loop tartományán kívül:** a projekt Loopja 20 mp-nél újraindít, a Virág pozíciókulcsai 22–99 mp-nél vannak, ezért Loop bekapcsolva ezek sosem játszódnak le (Loop nélkül igen, ezért másnak tűnik a mozgás). Jelezze láthatóan az idővonal/inspector a tartományon kívüli kulcsokat (vö. 29. sor: rétegenkénti Loop).
+- **BUG, árva kapcsolat:** a projektfájlban maradt egy régi Kapcsolat, amelynek mindkét eleme hiányzik. Nem hat a képre, de betöltéskor/törléskor takarítani kellene (`st.links`).
+
 ## Ismert apróság
 - A „Filmes” lencsehiba okozta cián pontot (fényes csillanáson) headlessben nem lehetett előidézni; a javítás után a felhasználói próbán érdemes megnézni.
