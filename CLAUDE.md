@@ -10,15 +10,17 @@
 1. **Minden mérföldkő előtt** írd le magyarul a `docs/spec/VEL-TELJES-…` 13. fejezetének mintája szerint: mit tud majd a felhasználó (konkrét gesztusokkal), mit építesz pontosan, mit **nem**, hogyan próbáljuk ki (2–4 lépés + mérés), és hogyan változik a hátralévő lista.
 2. **Várd meg a kifejezett jóváhagyást.** Utána a rutin műszaki döntéseket önállóan hozd meg; ha a vállalt funkció lényegesen változna, kérdezz újra.
 3. Ne nevezz késznek egy A–G termékszakaszt egy M-szelet miatt. Állapotjelölés: **tervezett / részben / demonstrálva / felhasználóval kipróbálva** (`FUNKCIO-LELTAR.md`).
-4. Mérföldkő végén: rövid átadó (mi próbálható, 2–4 lépés, hány teszt ment át, korlát, build útvonala `app/dist/index.html`), majd `PROGRESS.md`, `FUNKCIO-LELTAR.md`, `HANDOFF.md` frissítése és commit.
+4. Jelzett hibát mindig a `BUGS.md`-be írj. Ha a javítás kérdéses vagy drága, és nem akadályozza a folytatást, ne javítsd azonnal, csak jegyezd fel.
+5. Mérföldkő végén: rövid átadó (mi próbálható, 2–4 lépés, hány teszt ment át, korlát, build útvonala `app/dist/index.html`), majd `PROGRESS.md`, `FUNKCIO-LELTAR.md`, `HANDOFF.md` frissítése és commit.
 
 ## Olvasási sorrend
 1. `HANDOFF.md`: **hol tartunk, mi a következő lépés**, mire vár jóváhagyás.
-2. `FUNKCIO-LELTAR.md`: minden kért funkció tényleges állapota (a 18 soros hiánylista).
-3. `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md`: **elsődleges követelmény** (mit akar a felhasználó, próbák, 14. fejezet: linklista).
-4. `docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md`: mozgás- és Kapcsolat-UX iránya (2026-10-18), a 3. kiegészítése.
-5. `docs/spec/vel-fejlesztesi-terv-jovahagyasra.md`: A–G szakaszok (7. fejezet), termékszabályok.
-6. Csak ha kell: `docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md` (E/F, 4K), `docs/spec/vel-voros-felulet-webgl-prototipus-brief.md` (1. kép), `app/README.md` (kódfelépítés, modulok).
+2. `BUGS.md`: nyitott hibák (érintett területen dolgozva nézd meg).
+3. `FUNKCIO-LELTAR.md`: minden kért funkció tényleges állapota (a 18 soros hiánylista).
+4. `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md`: **elsődleges követelmény** (mit akar a felhasználó, próbák, 14. fejezet: linklista).
+5. `docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md`: mozgás- és Kapcsolat-UX iránya (2026-10-18), a 4. kiegészítése.
+6. `docs/spec/vel-fejlesztesi-terv-jovahagyasra.md`: A–G szakaszok (7. fejezet), termékszabályok.
+7. Csak ha kell: `docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md` (E/F, 4K), `docs/spec/vel-voros-felulet-webgl-prototipus-brief.md` (1. kép), `app/README.md` (kódfelépítés, modulok).
 
 ## Mappatérkép
 ```
@@ -27,6 +29,7 @@ vel/                     git repo (master, helyi, nincs remote)
   HANDOFF.md             aktuális állapot + következő lépés (minden szelet után frissül)
   PROGRESS.md            mérföldkőnapló, mérések, próbalisták (legújabb felül)
   FUNKCIO-LELTAR.md      funkciónkénti állapot a teljes átadó ellen
+  BUGS.md                jelzett hibák állapottal (nem mind azonnal javítandó)
   app/                   a Vel forrása: src/, tests/, scripts/build.mjs, dist/index.html (build)
   docs/spec/             a felhasználó követelményei és terve (ELSŐDLEGES)
   docs/referenciak/      külső minták (CodePen stb.) + kepek/01–09.png referenciaképek

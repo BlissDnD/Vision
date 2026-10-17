@@ -1,0 +1,16 @@
+# Vel – hibalista
+
+Minden jelzett hiba ide kerül (a felhasználótól vagy tesztből). **Nem kell mindent azonnal javítani:** ha a javítás kérdéses, sokba kerülne, és nem akadályozza a folytatást, csak ide írd, és a következő alkalmas szeletben vedd elő. Ami a munkát blokkolja vagy adatot ront, azt javítsd rögtön.
+
+Állapot: **nyitott** / **javítva (verzió, commit)** / **elvetve (miért)**. A legújabb felül.
+
+## Nyitott
+
+- **[nyitott · 2026-10-18 · K1]** **K1 zsinór „Vezérelje”:** a forrásparamétert észrevétlenül találgatja (az első animált értéket veszi): a felhasználó a Virág méretmozgását akarta a Szem méretére kötni, de a kapcsolat **Virág X → Szem méret** lett. A Virág látható lüktetése a forma `p.size`-án van (hullám), nem a réteg `n.s`-én. Javítás: létrehozás előtt egyértelműen mutassa: „Virág X → Szem méret”, és ott helyben lehessen cserélni (pl. „Virág forma-méret”); az animált/hullámos paraméter legyen az első javaslat.
+- **[nyitott · 2026-10-18 · idővonal/Loop]** **Kulcsok a Loop tartományán kívül:** a projekt Loopja 20 mp-nél újraindít, a Virág pozíciókulcsai 22–99 mp-nél vannak, ezért Loop bekapcsolva ezek sosem játszódnak le (Loop nélkül igen, ezért másnak tűnik a mozgás). Jelezze láthatóan az idővonal/inspector a tartományon kívüli kulcsokat (vö. 29. sor: rétegenkénti Loop).
+- **[nyitott · 2026-10-18 · Kapcsolatok]** **Árva kapcsolat:** a projektfájlban maradt egy régi Kapcsolat, amelynek mindkét eleme hiányzik. Nem hat a képre, de betöltéskor/törléskor takarítani kellene (`st.links`).
+- **[nyitott · 2026-10-17 · utófeldolgozás]** A „Filmes” lencsehiba okozta cián pontot (fényes csillanáson) headlessben nem lehetett előidézni; a javítás után a felhasználói próbán érdemes megnézni.
+
+## Javítva
+
+(még nincs bejegyzés)
