@@ -92,6 +92,8 @@ export interface Project {
   bases?: Record<string, { id: string; name: string; children: Layer[] }>;
   /** Kapcsolatok: parameter links between elements. */
   links?: any[];
+  /** Jelzések: manual cue taps {id, t, label}. */
+  cues?: { id: string; t: number; label: string }[];
 }
 
 /** A recipe: layer list + macro sliders (+ optional camera / duration). */

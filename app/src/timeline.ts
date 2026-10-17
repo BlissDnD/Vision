@@ -12,6 +12,7 @@ import { fmtT, resetFeedback } from './transport';
 import { AUD, audioRestart } from './signals';
 import { markDirty } from './loop';
 import { toast } from './modals';
+import { addCue, blockOf, removeCue, shiftBlock, stretchBlock } from './retime';
 
 export const tlHeadEl=$('#tlHead'),tlTrack=$('#tlTrack');
 /* timing segments of a layer: [{a,b,cls,f:[[group,key],…]}] – f = fields that shift together when the bar is dragged */
@@ -62,10 +63,21 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
   for(let x=Math.ceil(va/step)*step;x<=vb+1e-6;x+=step)rl.appendChild(h('span',{class:'tlx-tick',style:`left:${X(x)}%`},(Math.round(x*100)/100)+'s'));
   rl.onpointerdown=ev=>{const r=rl.getBoundingClientRect();seekTo(va+Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width))*VW);};
   body.appendChild(ruler);
+  // Jelzések: manual cues (J while playing, double-click here); keys on a cue are anchors during retime
+  const cl=h('div',{class:'tlx-lane tlx-cues',title:'Jelzések: lejátszás közben J = koppintás az ütemre · dupla katt: új jelzés · Alt+katt a jelzésen: törlés'});
+  for(const c of st.cues||[]){if(!inV(c.t))continue;const m=h('i',{class:'tlx-cue',style:`left:${X(c.t)}%`,title:`Jelzés @ ${fmtT(c.t)} · Alt+katt: törlés`});
+    m.onpointerdown=ev=>{ev.stopPropagation();if(ev.altKey){removeCue(c.id);commit();renderTracks();}else seekTo(c.t);};cl.appendChild(m);}
+  cl.ondblclick=ev=>{const r=cl.getBoundingClientRect();addCue(va+Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width))*VW);commit();renderTracks();};
+  body.appendChild(h('div',{class:'tlx-row'},h('div',{class:'tlx-name'},'Jelzések'),cl));
   const rows=trackRows();if(!rows.length)body.appendChild(h('p',{class:'small',style:'padding:8px 10px'},'Még nincs réteg.'));
   for(const {L,d} of rows){const isSel=L.id===R.selId;
     const name=h('div',{class:'tlx-name'+(L===st.cam?' cam':''),style:`padding-left:${8+d*14}px`,title:L.name},L.name);name.onclick=()=>{if(L===st.cam){openCam(name);return;}R.selId=L.id;renderAll();};
     const lane=h('div',{class:'tlx-lane','data-id':L.id});
+    const B=L===st.cam?null:blockOf(L);
+    if(B&&B.b>B.a&&!(B.b<va||B.a>vb)){const l=Math.max(0,X(B.a)),r=Math.min(100,X(B.b));
+      const blk=h('i',{class:'tlx-block'+(R.blockSel.has(L.id)?' on':''),style:`left:${l}%;width:${Math.max(.4,r-l)}%`,title:'Mozgásblokk · húzás: egészben eltolás · Shift+katt: több blokk · jobb szél: középrész nyújtása (Alt: zárás lassítása)'});
+      const end=h('b',{class:'tlx-bend',title:'Húzd: a rugalmas közép nyúlik, a beúszás sebessége marad · Alt+húzás: zárás lassítása'});blk.appendChild(end);
+      blk.onpointerdown=ev=>blockDrag(ev,L,lane,ev.target===end?(ev.altKey?'close':'hold'):'move');lane.appendChild(blk);}
     for(const s of layerSegs(L)){if(s.b<va||s.a>vb)continue;const l=Math.max(0,X(s.a)),r=Math.min(100,X(s.b));if(r<=l)continue;
       const e=h('i',{class:'tlx-seg'+(s.cls?' '+s.cls:''),style:`left:${l}%;width:${r-l}%`,title:'Húzd az időzítés eltolásához'});e.onpointerdown=ev=>segDrag(ev,L,s,lane);lane.appendChild(e);}
     for(const [t,n] of layerKeyTimes(L)){if(!inV(t))continue;
@@ -90,7 +102,7 @@ export function laneDown(ev,L,lane){const body=$('#tlxBody');const br=body.getBo
       for(const t of layerKeyTimes(it).keys())if(t>=ta-KEY_EPS&&t<=tb+KEY_EPS&&!isSelK(it.id,t))R.tlxSels.push({id:it.id,t});}
     renderTracks();if(R.tlxSels.length)toast(`${R.tlxSels.length} kulcskocka-időpont kijelölve`);};}
 export function snapT(t,lane,ex?){const [va,vb]=viewAB(),px=lane.getBoundingClientRect().width||1,tol=7/px*(vb-va);let best=null,bd=tol;
-  const cands=[R.time,0,st.dur];for(const r of trackRows())for(const k of layerKeyTimes(r.L).keys())if(!isSelK(r.L.id,k)&&(ex==null||Math.abs(k-ex)>KEY_EPS))cands.push(k);
+  const cands=[R.time,0,st.dur,...(st.cues||[]).map(c=>c.t)];for(const r of trackRows())for(const k of layerKeyTimes(r.L).keys())if(!isSelK(r.L.id,k)&&(ex==null||Math.abs(k-ex)>KEY_EPS))cands.push(k);
   if((AUD.buf||AUD.stems.length)&&st.bpm){const b=60/st.bpm;cands.push(Math.round((t-st.bpmOff)/b)*b+st.bpmOff);}
   for(const c of cands){const d=Math.abs(c-t);if(d<bd){bd=d;best=c;}}return best!=null?best:Math.round(t*30)/30;}
 export function keyDrag(ev,L,t0,lane){ev.stopPropagation();ev.preventDefault();const tgt=ev.currentTarget;tgt.setPointerCapture(ev.pointerId);
@@ -110,6 +122,24 @@ export function segDrag(ev,L,s,lane){ev.stopPropagation();ev.preventDefault();co
   tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);if(!e.shiftKey){const sn=snapT(orig[0]+dt,lane);dt=sn-orig[0];}
     s.f.forEach(([g,k],i)=>{const v=Math.max(0,Math.round((orig[i]+dt)*100)/100);if(g==='tm')L.tm[k]=v;else L.p[k].v=v;});markDirty();tgt.style.left=(l0+dt/(vb-va)*100)+'%';};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(moved){commit();renderInsp();}else{seekTo(s.a);}};}
+R.blockSel=new Set();
+/** Drag a motion block: move / stretch the middle / slow the close. Shift+click adds blocks; the op hits every selected block. */
+export function blockDrag(ev,L,lane,mode){ev.stopPropagation();ev.preventDefault();
+  if(ev.shiftKey&&mode==='move'){R.blockSel.has(L.id)?R.blockSel.delete(L.id):R.blockSel.add(L.id);renderTracks();return;}
+  if(!R.blockSel.has(L.id))R.blockSel=new Set([L.id]);
+  const tgt=ev.currentTarget;tgt.setPointerCapture(ev.pointerId);const [va,vb]=viewAB();const ids=[...R.blockSel];
+  const snap0=ids.map(id=>{const it=itemById(id);return it?[it,JSON.stringify({tm:it.tm,p:it.p,n:it.n}),blockOf(it)]:null;}).filter(Boolean);
+  const restore=()=>{for(const [it,js] of snap0){const o=JSON.parse(js);if(o.tm)it.tm=o.tm;if(o.p)it.p=o.p;it.n=o.n;}};
+  let moved=false,kept=0;const B0=blockOf(L);
+  tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);
+    const ref=mode==='move'?B0.a:B0.b;if(!e.shiftKey)dt=snapT(ref+dt,lane)-ref;restore();kept=0;
+    for(const [it,,B] of snap0){if(!B)continue;kept+=mode==='move'?shiftBlock(it,dt,!e.shiftKey):stretchBlock(it,B.b+dt,mode,!e.shiftKey);}
+    markDirty();renderTimeline();};
+  tgt.onpointercancel=()=>tgt.onpointerup&&tgt.onpointerup();
+  tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=tgt.onpointercancel=null;if(!moved){R.selId=L.id;renderAll();renderTracks();return;}
+    const B1=blockOf(L);if(mode!=='move'&&B1&&Math.abs(B1.b-B0.b)<1e-3){restore();renderTimeline();renderTracks();toast(mode==='close'?'Ennek a rétegnek nincs kilépése, így nincs mit lassítani. Az Időzítésben adhatsz neki.':'Nincs rugalmas középrész és kilépés: a blokk vége a beúszás vége. Adj kilépést az Időzítésben, vagy kulcskockát a végére.');return;}
+    commit();renderInsp();renderTracks();const what=mode==='move'?'Eltolva':mode==='hold'?'Középrész nyújtva':'Zárás lassítva';
+    toast(`${what}: ${ids.length} blokk.${kept?` ${kept} kulcskocka a jelzésén maradt (horgony; Shift: horgony nélkül).`:''}`);};}
 R.tlDrag=false;export const tlSeek=e=>{const r=tlTrack.getBoundingClientRect();const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));R.time=f*st.dur;resetFeedback();markDirty();if(R.playing)audioRestart();};
 tlTrack.onpointerdown=e=>{R.tlDrag=true;tlTrack.setPointerCapture(e.pointerId);tlSeek(e);};tlTrack.onpointermove=e=>{if(R.tlDrag)tlSeek(e);};tlTrack.onpointerup=()=>{R.tlDrag=false;};
 $('#tlDur').onchange=e=>{const v=parseFloat(String(e.target.value).replace(',','.'));if(isFinite(v)&&v>.2){st.dur=Math.min(600,v);commit();}renderTimeline();};

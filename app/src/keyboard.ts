@@ -14,6 +14,7 @@ import { markDirty } from './loop';
 import { closePop } from './popovers';
 import { runRandom } from './random';
 import { closeModal, toast } from './modals';
+import { addCue } from './retime';
 
 document.addEventListener('keydown',e=>{
   if(!$('#modal').hidden){if(e.key==='Escape')closeModal();return;}
@@ -31,6 +32,7 @@ document.addEventListener('keydown',e=>{
   if(e.key===' '){e.preventDefault();setPlay(!R.playing);}
   else if(k==='v')setTool('move');else if(k==='o')setTool('orbit');else if(k==='r')runRandom(true);
   else if(k==='g')$('#gizmoBtn').click();else if(k==='f')toggleFS();
+  else if(k==='j'){const c=addCue(R.time);if(c){commit();renderTracks();toast(`Jelzés @ ${fmtT(R.time)} · a kulcskockák ide tapadnak`);}}
   else if(k==='h'){const L=sel();if(L){L.vis=!L.vis;commit();renderLayers();}}
   else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();if(R.tlxSels.length){const n=deleteSelKeys();commit();renderInsp();toast(`${n} kulcskocka törölve`);}else delSel();}
   else if(e.key===']')moveSel(1);else if(e.key==='[')moveSel(-1);

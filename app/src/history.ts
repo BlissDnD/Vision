@@ -13,7 +13,7 @@ import { markDirty } from './loop';
 import { EXP, applyExp, updLookLbl } from './popovers';
 
 R.hist=[];R.hi=-1;
-export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,cam:st.cam,dur:st.dur,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff,bases:st.bases,links:st.links});
+export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,cam:st.cam,dur:st.dur,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff,bases:st.bases,links:st.links,cues:st.cues});
 export function commit(){gcBases();attachLinks(ev);markDirty();const s=snapshot();if(R.hist[R.hi]!==s){R.hist.splice(R.hi+1);R.hist.push(s);if(R.hist.length>100)R.hist.shift();R.hi=R.hist.length-1;}updUndo();scheduleSave();}
 export function restore(s){const o=JSON.parse(s);st.layers=o.layers;st.cam=normCam(o.cam);st.bg=o.bg;st.size=o.size;st.look=normLook(o.look);updLookLbl();setTL(o);setShared(o);if(!findItem(R.selId))R.selId=(st.layers[st.layers.length-1]||{}).id||null;resizeMain();renderAll();}
 export function undo(){if(R.hi>0){R.hi--;restore(R.hist[R.hi]);updUndo();scheduleSave();}}
@@ -36,5 +36,6 @@ export function loadMsg(){const m=R.lastLoad;if(!m)return 'Betöltve.';const old
 export function renderAll(){renderLayers();renderInsp();}
 /** bases + links (v4). Missing in older files = none. */
 export function setShared(o){o=o||{};st.bases={};for(const id in (o.bases||{})){const b=o.bases[id];if(b&&Array.isArray(b.children))st.bases[id]={id,name:b.name||'Közös alap',children:b.children.map(normalize)};}
-  st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to):[];attachLinks(ev);}
+  st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to):[];attachLinks(ev);
+  st.cues=Array.isArray(o.cues)?o.cues.filter(c=>c&&isFinite(c.t)).map(c=>({id:c.id||'C'+Math.random().toString(36).slice(2,8),t:+c.t,label:c.label||''})):[];}
 export function setTL(o){o=o||{};st.dur=o.dur>0?o.dur:10;st.loop=o.loop!==false;st.bpm=o.bpm>0?o.bpm:120;st.bpmOff=o.bpmOff||0;}

@@ -20,7 +20,7 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 
 ## Környezet (Mac, helyben)
 - Repo: `~/Desktop/melo/CLAUDE/muchdesigner/vel` (git, `main`). Az app az `app/` mappában van.
-- `cd app && npm install`, `npm run typecheck`, `npm run build` (→ `dist/index.html`). Tesztek: `node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py`. A `.venv`-ben Playwright és Chromium van; kb. 2 perc; jelenleg 17/17 zöld.
+- `cd app && npm install`, `npm run typecheck`, `npm run build` (→ `dist/index.html`). Tesztek: `node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py`. A `.venv`-ben Playwright és Chromium van; kb. 2 perc; jelenleg 18/18 zöld.
 - Dev szerver: a Code fül `preview_start` „vel” konfigja (port 5180) és „ribbon” konfigja (5181). Ezek a **Mindspace** projekt `.claude/launch.json` fájljában vannak (`~/Documents/claudecoding`), ott commitolatlanul. A 5173-on a régi `latomas-src` fut, ahhoz ne nyúlj.
 - Tesztírás: `tests/*.js` a `window.__L` (minden modul exportja) kontextusában fut; a minta a `tests/m1_close.js`. Hibát a `bad` listába tegyél.
 
@@ -51,5 +51,13 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 - Teszt: `tests/m4_type.js`. Böngészőben kipróbálva: a fogantyú-húzás behúz és térközt ad, konzolhiba nincs.
 - Nem készült el / korlát: vegyes stílus egy soron belül (szavanként) még nincs, csak soronként; a sorfogantyú forgatott rétegen nincs külön ellenőrizve; betűtípus soronként csak az adatmodellben van (`font`), az inspectorban még nincs választó; a változó sormagasságú soranimáció pixelre nincs mérve (csak GL-hiba nélküli render, és a sortábla adatai).
 
-## Következő: M5 (Mozgásblokkok és retime)
+## M5 állapota (folyamatban) — blokkok, retime, jelzések KÉSZ, 18/18 teszt zöld
+- [x] **Mozgásblokk** (`src/retime.ts`): egy réteg minden időzített eleme egy blokk (a `tm` be/ki, az `mtext` start/outAt, a `bento` start/morphAt/outAt, a `reveal` at/outAt és az összes kulcskocka). Fázisai: beúszás, rugalmas közép, zárás.
+  - `shiftBlock`: minden együtt tolódik. `stretchBlock(...,'hold')`: a közép nyúlik, a beúszás érintetlen, a zárás azonos sebességgel későbbre kerül. `'close'`: zárás lassítása (a `tm.outDur` és a záró kulcsok nyúlnak).
+- [x] **UI a Sávok panelen** (`timeline.ts` `blockDrag`): a sáv tetején vékony blokkcsík (húzva tol), a végén teljes magasságú fogó (nyújt, Alttal a zárást lassítja). Shift+kattintással több blokk jelölhető ki, és a művelet mindegyikre hat. Illeszt a kulcsokra, a lejátszófejre és a jelzésekre. Ha nincs mit nyújtani, megmondja, mit tegyél. A szakaszok (fázisok) alatta külön is húzhatók maradtak.
+- [x] **Jelzések** (`st.cues`, mentve): lejátszás közben **J** = koppintás az ütemre; a Sávok panel „Jelzések” sorában dupla kattintás = új jelzés, Alt+kattintás = törlés, kattintás = ugrás. A jelzésen álló kulcskocka **horgony**: retime-kor helyben marad, és az üzenet megmondja, hány maradt (Shift-húzás: horgony nélkül).
+- Teszt: `tests/m5_retime.js`. Böngészőben: a blokkcsík húzása eltolja a szöveg-animációt.
+- [ ] **Hátra van az M5-ből:** Eljátszás simítással (egérmozdulat felvétele kulcskockákká, simítással); több *kulcs* együtt nyújtása (most blokkonként megy); a jelzés mint jel (pl. Glow-impulzus a jelzéseknél).
+
+## Az M5 kiindulópontja (eredeti leírás)
 Terv §5 „Idővonal”: egy Mozgás = szerkeszthető blokk fázisokkal (beúszás, rugalmas közép, zárás). Középről húzva minden együtt tolódik; a jobb széle a középső részt nyújtja (a beúszás sebessége marad); „Zárás lassítása”; több réteg vagy kulcs együtt nyújtható; Eljátszás simítással; kézi Jelzések sáv (ütemre koppintás), a hangjelzéshez kötött időhorgonyok ne csússzanak. Kiindulás: `src/timeline.ts` (idővonal és Sávok, többes kijelölés, kulcsmozgatás), `Timing` (`tm`: in/inAt/inDur/out/outAt/outDur) és a `mtext` start/dur/stagger. Próba: 10 perces 9:16 reel exporttal.
