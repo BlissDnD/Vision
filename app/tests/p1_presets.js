@@ -69,5 +69,10 @@
  if(descPrompt('x',8).includes('custom [gen]'))bad.push('a Claude-leírás ne kínáljon saját shadert');
  projModal();if(!/Utasítás ChatGPT-nek/.test(document.querySelector('#dlg').textContent))bad.push('Projekt menü gomb');closeModal();
  pasteModal();if(!document.querySelector('#dlg textarea.dropzone'))bad.push('beillesztő ablak');closeModal();
+ // A full Vel project mistakenly pasted into the preset dialog must offer a project-open action.
+ const projectBefore=projectJSON();pasteModal(projectBefore);await new Promise(r=>setTimeout(r,40));
+ const openProject=[...document.querySelectorAll('#dlg button')].find(b=>b.textContent.includes('Projekt megnyitása'));
+ if(!openProject||openProject.disabled||document.querySelector('#dlg').textContent.includes('nincs rétegleírás'))bad.push('projektfájl a presetablakban');
+ if(openProject){openProject.click();if(!st.layers.length||st.layers[0].type!=='custom')bad.push('projekt megnyitása a presetablakból');}
  }catch(e){bad.push('ERR '+e.message+' '+(e.stack||'').slice(0,300));}
  return {bad,info};})()

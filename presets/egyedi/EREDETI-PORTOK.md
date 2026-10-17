@@ -4,7 +4,7 @@
 
 Forrás: https://codepen.io/shingidad/pen/jEPxMgW . A `liquid-glass-eredeti-port.json` az eredeti fragment shader kerekített doboz-maszkját, lencsekoordinátáját, 9×9-es mintavételét és fénygradiensét használja. A bemeneti `iChannel0` helyén a Velben az alatta lévő rétegek képe (`IN`) van; az egér helyén a réteg pozíciója. A „Méret” és az elmosás két hozzáadott Vel-vezérlő. Ez egy **szerkeszthető Vel-port**, nem az eredeti CodePen futtatókörnyezetének változtatás nélküli beágyazása.
 
-**Azonnali próba:** A Velben kattints **Projekt → Mentés és megnyitás… → Fájl megnyitása…**, és válaszd a `liquid-glass-eredeti-demo.vel.json` fájlt. A fotó már benne van a projektben. A shader önálló rétegként olvassa az alatta lévő képet; új fotót vagy videót is tehetsz alá. A sima `liquid-glass-eredeti-port.json` fájl külön a **Preset beillesztése…** ablakba való. A teljes `.vel.json` projektet oda téve „A válaszban nincs rétegleírás (layers)” hiba jelenik meg.
+**Azonnali próba:** A Velben kattints **Projekt → Mentés és megnyitás… → Fájl megnyitása…**, és válaszd a `liquid-glass-eredeti-demo.vel.json` fájlt. A fotó már benne van a projektben. A shader önálló rétegként olvassa az alatta lévő képet; új fotót vagy videót is tehetsz alá. A sima `liquid-glass-eredeti-port.json` fájl külön a **Preset beillesztése…** ablakba való. A friss Vel a teljes `.vel.json` fájlt ebben az ablakban is felismeri, és külön **Projekt megnyitása** gombot mutat; ez lecseréli a jelenlegi projektet.
 
 A mintafotó: https://www.pexels.com/photo/tree-on-body-of-water-268533/ , a CodePenben használt Pexels-kép. Pexels-licenc: https://www.pexels.com/license/ .
 

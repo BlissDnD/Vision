@@ -14,7 +14,7 @@ import { cv, getProg, gl, mkCtx, progError } from './gl';
 import { normCam, outSize, present, renderScene } from './render';
 import { loadAsset } from './text';
 import { insertItem } from './itemops';
-import { commit, renderAll } from './history';
+import { commit, loadMsg, loadProject, renderAll } from './history';
 import { closeBtn, closeModal, openModal, toast } from './modals';
 import { saveFile } from './output';
 import { markDirty } from './loop';
@@ -138,10 +138,16 @@ export function pasteModal(initial?: string) {
   const pv = h('canvas', { width: TW, height: TH }); const rep = h('div', { class: 'rep' }, 'Még nincs mit ellenőrizni.');
   const nm = h('input', { class: 'txt', 'aria-label': 'Név a könyvtárban', placeholder: 'Név' }); const cs = catSelect('recipes');
   const ins = h('button', { class: 'btn accent', disabled: true }, 'Beillesztés a jelenetbe'); const sv = h('button', { class: 'btn', disabled: true }, 'Mentés a könyvtárba');
-  let cur: any = null, tmo: any;
+  let cur: any = null, curProject: any = null, tmo: any;
   const run = () => {
-    cur = null; ins.disabled = sv.disabled = true; const txt = ta.value.trim(); if (!txt) { rep.textContent = 'Még nincs mit ellenőrizni.'; return; }
+    cur = curProject = null; ins.disabled = sv.disabled = true; ins.textContent = 'Beillesztés a jelenetbe'; const txt = ta.value.trim(); if (!txt) { rep.textContent = 'Még nincs mit ellenőrizni.'; return; }
     try {
+      const obj = extractJSON(txt);
+      if (obj.app === 'vel' && obj.state && Array.isArray(obj.state.layers)) {
+        curProject = obj; ins.disabled = false; ins.textContent = 'Projekt megnyitása (a jelenlegit lecseréli)';
+        rep.innerHTML = ''; rep.appendChild(h('div', { class: 'ok' }, `Vel-projektfájl · ${obj.state.layers.length} réteg. A megnyitás lecseréli a jelenlegi projektet.`));
+        return;
+      }
       const r = checkPreset(txt); cur = r; ins.disabled = sv.disabled = false;
       nm.value = r.name; cs.value = defaultCat(r.items[r.items.length - 1]);
       try { pv.getContext('2d')!.drawImage(thumbOf(cloneItem(r.items[r.items.length - 1])), 0, 0); } catch (_) { /* preview only */ }
@@ -163,7 +169,8 @@ export function pasteModal(initial?: string) {
   ta.ondragleave = () => ta.classList.remove('over');
   ta.ondrop = (e: DragEvent) => { ta.classList.remove('over'); const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) { e.preventDefault(); readFile(f); } };
   const fi = h('input', { type: 'file', accept: '.json,application/json,text/plain', hidden: true }); fi.onchange = () => { const f = fi.files && fi.files[0]; if (f) readFile(f); fi.value = ''; };
-  ins.onclick = () => { if (!cur) return; const r = cur; insertPreset(r); closeModal(); toast(`Beillesztve: ${r.name}${r.dropped.length ? ` · ${r.dropped.length} elem kimaradt` : ''} · ⌘Z visszavonja`); };
+  ins.onclick = () => { if (curProject) { try { loadProject(curProject); closeModal(); toast(loadMsg()); } catch (e: any) { rep.innerHTML = ''; rep.appendChild(h('div', { class: 'errbox' }, e.message || String(e))); } return; }
+    if (!cur) return; const r = cur; insertPreset(r); closeModal(); toast(`Beillesztve: ${r.name}${r.dropped.length ? ` · ${r.dropped.length} elem kimaradt` : ''} · ⌘Z visszavonja`); };
   sv.onclick = async () => { if (!cur) return; const r = checkPreset(ta.value, { noCost: true });
     const w = collect(cur.items).map(L => L.cw); collect(r.items).forEach((L, i) => { if (w[i]) L.cw = w[i]; }); const it = oneItem(r);
     const x = await saveAsPreset(it, nm.value.trim() || r.name, cs.value, r.cam ? { cam: r.cam, dur: r.dur } : {});
@@ -180,7 +187,7 @@ window.addEventListener('drop', e => {
   const f = e.dataTransfer && e.dataTransfer.files[0]; if (!f || (e.target as any).closest?.('#dlg') || !/\.json$/i.test(f.name)) return; e.preventDefault();
   f.text().then(t => { let o: any = null; try { o = JSON.parse(t); } catch (_) { /* maybe a ChatGPT answer with prose */ }
     if (o && o.kind === 'userlib') return ulibImport(t).then(n => toast(n ? `${n} új elem került a saját könyvtárba.` : 'Nem volt új elem (mind megvolt már).'));
-    if (o && o.state) { toast('Ez projektfájl: a Projekt menüben nyisd meg.'); return; }
+    if (o && o.state) { pasteModal(t); return; }
     pasteModal(t); }).catch(err => toast(err.message || 'A fájlt nem tudtam beolvasni.'));
 });
 const collect = (items: any[]) => { const o: any[] = []; walk(items, (L: any) => { if (L.type === 'custom') o.push(L); }); return o; };

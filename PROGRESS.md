@@ -2,6 +2,11 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## 2026-10-18 — projektfájl a presetablakban
+
+- A Preset beillesztése ablak felismeri a teljes Vel-projektet, és külön, a jelenlegi projekt cseréjét kimondó megnyitógombot ad. A vászonra ejtett `.vel.json` ugyanoda jut. Ez a két CodePen-mintaprojekt beillesztésekor jelentkező félrevezető `layers` hibát javítja.
+- Typecheck és célzott böngészős P1 teszt sikeres (`bad: []`), benne a teljes projekt presetablakból való megnyitásával.
+
 ## 2026-10-18 — CodePen-effektek eredeti képleteinek portpróbája
 
 - `presets/egyedi/liquid-glass-eredeti-demo.vel.json`: a Liquid Glass eredeti képleteivel és Pexels-fotójával kész, közvetlenül megnyitható Vel-projekt. Külön importálható shader: `liquid-glass-eredeti-port.json`. A 9×9 mintavétel 4K-sebessége még nincs mérve.

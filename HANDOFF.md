@@ -7,6 +7,8 @@ Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A
 
 **CodePen-port kiegészítés (2026-10-18):** a két megnyitható Vel-mintaprojekt és a forrás/korlátjegyzet a `presets/egyedi/` mappában van (`EREDETI-PORTOK.md`). A Liquid Glass eredeti képlete és fotója működik; a láng eredeti zajtextúráját a saját shader `asset` → `uImage` útja használja, de vékony függőleges műtermék maradt (`BUGS.md`). Ez nem zárja le a nagyobb Megjelenés-/shader-katalógus fejlesztést. A CodePen-kódok jogi eredete és a 4K-teljesítmény nyitott ellenőrzés.
 
+**Betöltési UX-javítás (2026-10-18):** a Preset beillesztése ablakba adott teljes Vel-projektet a felület felismeri, és külön „Projekt megnyitása (a jelenlegit lecseréli)” gombot ad; a célzott P1 böngészős teszt zöld. A vászonra ejtett projektfájl is erre az útvonalra jut. A felhasználónál a friss `app/dist/index.html` újratöltése után próbálandó.
+
 ## Mire vár jóváhagyás (ne kezdd el nélküle)
 **Következő: U2** – rövid javaslat és újbóli jóváhagyás kell indítás előtt (lásd lent).
 

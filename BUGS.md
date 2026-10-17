@@ -14,4 +14,4 @@ Minden jelzett hiba ide kerül (a felhasználótól vagy tesztből). **Nem kell 
 
 ## Javítva
 
-(még nincs bejegyzés)
+- **[javítva · 2026-10-18 · projekt/preset betöltés]** A teljes `.vel.json` projektet a Preset beillesztése ablak korábban „A válaszban nincs rétegleírás (layers)” hibával utasította el. Most projektként felismeri, és külön „Projekt megnyitása (a jelenlegit lecseréli)” gombot mutat. A vászonra ejtett projektfájl is ebbe az egyértelmű nézetbe kerül.
