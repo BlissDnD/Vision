@@ -1,5 +1,6 @@
 import './dom';
 import './style.css';
+import './workspace';
 import './palettes';
 import './glsl';
 import './effects';

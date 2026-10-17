@@ -1,3 +1,4 @@
+import { SHORTCUTS } from './workspace';
 import { R } from './runtime';
 import { $, h } from './dom';
 import { ff, hexRGB } from './palettes';
@@ -26,7 +27,7 @@ $('#helpBtn').onclick=()=>openModal(h('h2',null,'Így működik'),
   h('p',null,'Maszk: tegyél be egy alakzatot, fölé egy forrást, és annál kapcsold be a „Vágás az alatta lévő rétegbe” opciót. Az alakzat „Csak maszkként” láthatatlan marad.'),
   h('p',null,'Rétegeffekt: húzz egy szűrőt (pl. Elmosás, Organikus torzítás) a könyvtárból egy rétegre, és csak arra hat. Egy alakzatra húzott elmosás puha maszkot ad.'),
   h('p',null,'A csúszkák hullám-ikonja animációt kapcsol rá. A kijelölt réteget a vásznon húzással mozgatod, a négyzet fogantyúval méretezed, a színes pöttyel forgatod.'),
-  h('table',null,...[['R','Véletlen látomás'],['Hang gomb','Hangfájl, stem-ek; a jelet húzd rá egy csúszkára'],['Idővonal','Kattintás vagy húzás: ugrás; ⟲ ismétlés; jobbra a hossz'],['Szóköz','Lejátszás / szünet'],['V / O','Mozgatás / 3D forgatás'],['Görgő','Méretezés'],['⌘D','Duplikálás'],['⌘G','Csoportba foglalás'],['Del','Törlés'],['[ ]','Réteg le / fel'],['H','Elrejtés'],['⌘Z / ⇧⌘Z','Visszavonás / újra'],['G / F','Fogantyúk / teljes képernyő']].map(([a,b])=>h('tr',null,h('td',null,a),h('td',null,b)))),
+  h('table',null,...[['Hang gomb','Hangfájl, stem-ek; a jelet húzd rá egy csúszkára'],['Idővonal','Kattintás vagy húzás: ugrás; ⟲ ismétlés; jobbra a hossz'],...SHORTCUTS.flatMap(g=>g[1])].map(([a,b])=>h('tr',null,h('td',null,a),h('td',null,b)))),
   h('div',{class:'bar2'},closeBtn()));
 export const savedList=()=>{try{return JSON.parse(localStorage.getItem('latomas2.saved')||'[]');}catch(_){return [];}};
 export function projModal(){const list=savedList();const name=h('input',{class:'txt',placeholder:'Projekt neve','aria-label':'Projekt neve'});const ta=h('textarea',{class:'code',style:'min-height:120px','aria-label':'Projektfájl'});ta.value=projectJSON();

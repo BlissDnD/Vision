@@ -7,7 +7,18 @@ import { addFromLib, attachFx, moveItemTo } from './itemops';
 import { renderInsp } from './inspector';
 import { commit } from './history';
 import { variantBadge } from './variantsui';
+import { animKinds } from './evaluation';
+import { isVariant, linksOf } from './variants';
 
+/** U3: what is on a layer, as small badges: ◆ animated, ✦ Megjelenés, ⇢ Kapcsolat, ⧉ Változat. */
+export function layerBadges(it){const out=[];
+  const nodes=[];for(const g of ['n','p'])for(const k in it[g]||{})nodes.push(it[g][k]);for(const f of it.fx||[])for(const k in f.p||{})nodes.push(f.p[k]);
+  let kf=0,live=0;for(const o of nodes){const a=animKinds(o);if(a.includes('k'))kf++;if(/[ws]/.test(a))live++;}
+  if(kf||live)out.push({c:'anim',s:'◆',tip:'Animált: '+[kf?`${kf} paraméter kulcskockákkal`:'',live?`${live} hullámmal vagy jellel`:''].filter(Boolean).join(', ')});
+  const nf=(it.fx||[]).length;if(nf)out.push({c:'fxb',s:nf>1?'✦'+nf:'✦',tip:'Megjelenés: '+it.fx.map(f=>f.name||f.type).join(', ')});
+  const nl=linksOf(it.id).length;if(nl)out.push({c:'lnk',s:nl>1?'⇢'+nl:'⇢',tip:`Kapcsolat: ${nl} (a Kapcsolatok fülön)`});
+  if(isVariant(it)){const vb=variantBadge(it);out.push({c:'var',s:'⧉',tip:'Változat: '+vb.replace(/^◇ /,'')});}
+  return out;}
 export function renderLayers(){
   const ul=$('#ltree');ul.innerHTML='';let n=0;
   const row=(it,depth)=>{
@@ -16,8 +27,9 @@ export function renderLayers(){
     if(isG){const ch=h('button',{class:'chev'+(it.open?' open':''),'aria-label':it.open?'Összecsukás':'Kinyitás',html:SVG_CHEV});ch.onclick=e=>{e.stopPropagation();it.open=!it.open;renderLayers();};li.appendChild(ch);}
     else li.appendChild(h('span',{class:'clip',title:it.clip?'Az alatta lévő rétegbe vágva':''},it.clip?'↳':''));
     li.appendChild(h('span',{class:'lic',html:iconKind(k)}));
-    const sub=variantBadge(it)||(it.maskOnly?'maszk':(it.fx&&it.fx.length?`+${it.fx.length} effekt`:''));
+    const sub=it.maskOnly?'maszk':'';
     li.appendChild(h('span',{class:'ln'},it.name,sub?h('span',{class:'lk'},'  '+sub):null));
+    const bd=layerBadges(it);if(bd.length)li.appendChild(h('span',{class:'bdgs'},...bd.map(b=>h('span',{class:'bdg '+b.c,title:b.tip},b.s))));
     if(itemError(it))li.appendChild(h('span',{class:'errdot',title:'Ez a réteg nem tudott lefordulni ezen a gépen, ezért üres. Kattints rá a részletekért.'},'!'));
     const cst=itemCost(it);if(cst>=3){const lv=cst>=8?3:cst>=5?2:1;li.appendChild(h('span',{class:'cost',title:'Gépigény: '+['','közepes','nagy','nagyon nagy'][lv]},...[4,7,10].map((hh,i)=>h('i',{style:`height:${hh}px;opacity:${i<lv?1:.25}`}))));}
     const eye=h('button',{class:'eye','aria-label':'Láthatóság',html:it.vis?SVG_EYE:SVG_EYEOFF});eye.onclick=e=>{e.stopPropagation();it.vis=!it.vis;commit();renderLayers();};li.appendChild(eye);

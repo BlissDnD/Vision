@@ -5,12 +5,20 @@ import { TH, TW, renderThumb, thumbCache } from './thumbs';
 import { addFromLib } from './itemops';
 import { markDirty } from './loop';
 import { thumbGet, thumbPut } from './thumbstore';
+import { EFFECTS } from './effects/index';
 
 R.cat='recipes';R.thumbJob=0;R.libQ='';
 const fold=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 /** Search across every shelf by name (accent-insensitive): [cat, index] pairs. */
 export function libSearch(q){const f=fold(q.trim());if(!f)return [];const r=[];for(const [c] of CATS)LIB[c].forEach((it,i)=>{if(!it.head&&fold(it.name).includes(f))r.push([c,i]);});return r;}
 $('#libSearch').oninput=e=>{R.libQ=e.target.value;buildCats();buildShelf();};
+const tagCache={};
+/** U3: what a library card can be dropped on (Megjelenések only), e.g. „csak Felhő”. null = a normal standalone element. */
+export function dropTag(cat,i){if(cat!=='fx'&&cat!=='particles')return null;const key=cat+':'+i;
+  if(!(key in tagCache)){let t=null;try{const d=EFFECTS[LIB[cat][i].make().type];
+    if(d&&d.host)t={only:true,s:'csak '+d.host.map(x=>EFFECTS[x].name).join(', '),tip:`Csak ${d.host.map(x=>EFFECTS[x].name).join(', ')} rétegre húzható`};
+    else if(d&&(cat==='fx'||d.kind==='fx'))t={only:false,s:'rétegre is',tip:'Rétegre húzva csak arra hat; kattintva önálló szűrőréteg'};}catch(_){}tagCache[key]=t;}
+  return tagCache[key];}
 export function buildCats(){const s=$('#cats');s.innerHTML='';for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';$('#libSearch').value='';buildCats();buildShelf();}},l));}
 export function buildShelf(){
   const box=$('#items');box.innerHTML='';const found=R.libQ?libSearch(R.libQ):null;
@@ -18,7 +26,7 @@ export function buildShelf(){
   const job=++R.thumbJob;const todo=[];
   (found||LIB[R.cat].map((_,i)=>[R.cat,i])).forEach(([cat,i])=>{const item=LIB[cat][i];
     if(item.head){box.appendChild(h('div',{class:'shsep','aria-hidden':'true'},item.head));return;}
-    const c=h('canvas',{width:TW,height:TH});const b=h('button',{class:'item',draggable:'true',title:item.name},c,h('span',null,item.name));
+    const c=h('canvas',{width:TW,height:TH});const tg=dropTag(cat,i);const b=h('button',{class:'item',draggable:'true',title:tg?`${item.name} · ${tg.tip}`:item.name},c,h('span',null,item.name),tg?h('span',{class:'ftag'+(tg.only?' only':'')},tg.s):null);
     const key=cat+':'+i;if(thumbCache[key])c.getContext('2d').drawImage(thumbCache[key],0,0);else todo.push([i,c,key,cat]);
     const cc=cat;
     b.onmouseenter=()=>setAudition(cc,i);b.onmouseleave=()=>setAudition(null);b.onfocus=()=>setAudition(cc,i);b.onblur=()=>setAudition(null);

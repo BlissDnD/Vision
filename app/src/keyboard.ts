@@ -15,6 +15,7 @@ import { closePop } from './popovers';
 import { runRandom } from './random';
 import { closeModal, toast } from './modals';
 import { addCue } from './retime';
+import { keyHelpOn, setKeyHelp } from './workspace';
 
 document.addEventListener('keydown',e=>{
   if(!$('#modal').hidden){if(e.key==='Escape')closeModal();return;}
@@ -29,6 +30,7 @@ document.addEventListener('keydown',e=>{
   if(mod&&k==='v'){const L=sel();if(L&&R.keyClip){e.preventDefault();const n=pasteKeys(L,R.time);if(n){commit();renderInsp();toast(`${n} kulcskocka beillesztve @ ${fmtT(R.time)}`);}}return;}
   if(mod&&k==='a'&&R.tlxOpen){e.preventDefault();R.tlxSels=[];const L=sel();for(const r of trackRows())if(!L||r.L.id===L.id)for(const t of layerKeyTimes(r.L).keys())R.tlxSels.push({id:r.L.id,t});renderTracks();toast(`${R.tlxSels.length} kulcskocka-időpont kijelölve`);return;}
   if(mod)return;
+  if(e.key==='?'){setKeyHelp(!keyHelpOn());return;}
   if(e.key===' '){e.preventDefault();setPlay(!R.playing);}
   else if(k==='v')setTool('move');else if(k==='o')setTool('orbit');else if(k==='r')runRandom(true);
   else if(k==='g')$('#gizmoBtn').click();else if(k==='f')toggleFS();
