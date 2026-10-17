@@ -98,7 +98,7 @@ let floor = null;
 function makeFloorNow() {
   if (floor) { scene.remove(floor); floor.getRenderTarget().dispose(); floor.material.dispose(); }
   const s = renderer.getDrawingBufferSize(new THREE.Vector2());
-  floor = makeFloor(P, Math.max(256, Math.round(s.x * 0.5)), Math.max(256, Math.round(s.y * 0.5))); scene.add(floor);
+  floor = makeFloor(P, Math.max(256, Math.round(s.x * 0.35)), Math.max(256, Math.round(s.y * 0.35))); // blurred anyway: 0.35× is enough scene.add(floor);
   if (info.contacts) setContacts(floor, info.contacts);
   floor.camera.layers.enable(1); // the mirror always sees the light strips
   floor.layers.set(4); camera.layers.enable(4); // the cube camera must not render the mirror (it uses the env floor)
@@ -109,6 +109,7 @@ const info = { tris: 0, contacts: null };
 const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 }));
 const renderPass = new RenderPass(scene, camera); composer.addPass(renderPass);
 const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), P.bloom, 0.45, 1.6); composer.addPass(bloom);
+{ const bs = bloom.setSize.bind(bloom); bloom.setSize = (w, h) => bs(Math.max(1, w >> 1), Math.max(1, h >> 1)); } // glow is soft: half resolution is enough (was the costliest pass)
 composer.addPass(new OutputPass());
 
 function resize() {

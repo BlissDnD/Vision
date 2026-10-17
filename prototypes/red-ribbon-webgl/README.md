@@ -77,4 +77,6 @@ A cél nem a referencia pixelpontos másolása, hanem annak eldöntése, hogyan 
   Az SDF kb. 25–45-ször lassabb, és szakaszos csíkhibákat ad súroló szögben (a gerinc egyenes darabokból áll). Előnye: valódi sima összeolvadás a padlóval.
   A Vel mostani SDF-ága legfeljebb 8 primitívet kezel, nincs benne valódi tükrözés, és ilyen formához új primitív kellene.
 
+**Optimalizálás:** a glow fél felbontásról indul, a tükör 0,35× felbontású. Teljes képkocka 2048×1536-on: 4–7 ms helyett **3,0–4,8 ms** (glow nélkül 1,6–1,9 ms).
+
 **Döntés:** a Vel jó minőségű 3D-je **mesh-alapú** legyen: PBR anyag, előszűrt környezet, síktükör, MSAA, tónusleképezés. Ez egy saját réteg, amely textúrába renderel, és a meglévő rétegláncba kerül. Az SDF megmarad a meglévő procedurális formákra és helyi „összeolvadás” hatásokra (hibrid). A prototípus kódja (`src/ribbon.js`, `studio.js`, `floor.js`) az integráció kiindulópontja.
