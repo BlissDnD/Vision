@@ -8,12 +8,16 @@ import { worldBlocks } from './worldBlocks';
 import { motionText } from './motionText';
 import { motionDesign } from './motionDesign';
 import { particles } from './particles';
+import { soft3d } from './soft3d';
 import { S } from './helpers';
 export * from './helpers';
 
 /** All layer types. Key = layer.type. Each: kind, name, desc, params, main, code (GLSL `vec4 fx()`), optional lib/passes/feedback/points/setU. */
 import type { EffectDef } from '../types';
-export const EFFECTS:Record<string,EffectDef>={...objects3d,...shapes,...generators,...media,...filters,...worlds,...worldBlocks,...motionText,...motionDesign,...particles};
+export const EFFECTS:Record<string,EffectDef>={...objects3d,...shapes,...generators,...media,...filters,...worlds,...worldBlocks,...motionText,...motionDesign,...particles,...soft3d};
+/** Can appearance `fxType` act on layer L? Ordinary appearances: always. Host appearances: only on their listed types. */
+export const fxFits = (fxType:string, L:any) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return !h || (!!L && h.includes(L.type)); };
+export const fxHostNote = (fxType:string) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return h ? 'csak ' + h.map((t:string) => EFFECTS[t].name).join(', ') + ' rétegen hat' : ''; };
 export const BLOB_PD=Object.fromEntries(EFFECTS.blob.params.map(p=>[p.k,p]));
 export const DEFAULT_CODE=`// Saját effekt. Elérhető: P() koordináta, uTime, pal(t) paletta,
 // fbm(), noise(), hash(), rot(a), IN(uv) = az alatta lévő kép,

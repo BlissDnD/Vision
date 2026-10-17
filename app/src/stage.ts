@@ -20,7 +20,7 @@ export function fitCanvas(){markDirty();const r=wrap.getBoundingClientRect();con
 new ResizeObserver(fitCanvas).observe(wrap);
 R.tool='move';R.gizmoOn=true;
 export function setTool(t){R.tool=t;document.querySelectorAll<HTMLElement>('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===t)));
-  if(t==='orbit'){const L=sel();if(!L||(L.type!=='obj3d'&&L.type!=='sdfscene'&&L.type!=='surface3d'))toast('Válassz ki egy 3D objektumot vagy 3D jelenetet, majd húzd a vásznon a forgatáshoz.');}}
+  if(t==='orbit'){const L=sel();if(!L||(L.type!=='obj3d'&&L.type!=='sdfscene'&&L.type!=='surface3d'&&L.type!=='cloud3d'))toast('Válassz ki egy 3D objektumot vagy 3D jelenetet, majd húzd a vásznon a forgatáshoz.');}}
 document.querySelectorAll<HTMLElement>('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
 $('#gizmoBtn').onclick=()=>{R.gizmoOn=!R.gizmoOn;$('#gizmoBtn').setAttribute('aria-pressed',String(R.gizmoOn));};
 $('#fsBtn').onclick=toggleFS;
@@ -28,7 +28,7 @@ export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElemen
 export function toAsp(e){const r=cv.getBoundingClientRect();const {W,H}=outSize();return {x:((e.clientX-r.left)/r.width-.5)*(W/H),y:.5-(e.clientY-r.top)/r.height};}
 R.drag=null;
 wrap.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('.hudbar,.hud,.tl'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
-  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):(R.glint&&usesLight(L)&&!hnd?'glint3':'move'));
+  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d'||L.type==='cloud3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):(R.glint&&usesLight(L)&&!hnd?'glint3':'move'));
   R.drag={mode,p0:toAsp(e),c0:[e.clientX,e.clientY],x:curV(L.n.x),y:curV(L.n.y),s:curV(L.n.s),rx:L.p&&L.p.rx?curV(L.p.rx):0,ry:L.p&&L.p.ry?curV(L.p.ry):0,m:1};
   {if(st.cam.on&&L.type!=='group'&&kindOf(L)!=='fx'){const sv=R.CAMON;R.CAMON=true;const r=camApply(L,R.time,R.drag.x,R.drag.y,1,0);R.CAMON=sv;R.drag.m=Math.max(.01,r[2]);R.drag.scx=r[0];R.drag.scy=r[1];}}
   if(mode==='pan')R.drag.cam=panStart(L);

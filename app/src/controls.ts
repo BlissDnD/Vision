@@ -1,7 +1,7 @@
 import { R } from './runtime';
 import { h } from './dom';
 import { PALS, PAL_ORDER, palCSS } from './palettes';
-import { BASEK, BLENDS, EFFECTS, SVG_CHEV, SVG_EYE, SVG_EYEOFF, SVG_WAVE, SVG_X, WAVES } from './effects/index';
+import { fxFits, fxHostNote, BASEK, BLENDS, EFFECTS, SVG_CHEV, SVG_EYE, SVG_EYEOFF, SVG_WAVE, SVG_X, WAVES } from './effects/index';
 import { LIB } from './library';
 import { st } from './state';
 import { SVG_CURVE, curV, hasK, keyButton, keyEditor, setVal } from './evaluation';
@@ -76,10 +76,10 @@ export function fxListUI(L){
     const up=L.fx.length>1?h('button',{class:'eye','aria-label':'Előrébb a láncban',title:'Előrébb',disabled:i===0},'▲'):null;if(up)up.onclick=()=>mv(-1);
     const dn=L.fx.length>1?h('button',{class:'eye','aria-label':'Hátrébb a láncban',title:'Hátrébb',disabled:i===L.fx.length-1},'▼'):null;if(dn)dn.onclick=()=>mv(1);
     const hd=h('header',null,tog,nm,up,dn,eye,del);
-    const toggle=()=>{open=!open;body.hidden=!open;tog.classList.toggle('open',open);if(open&&!body.childElementCount){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}};
+    const toggle=()=>{open=!open;body.hidden=!open;tog.classList.toggle('open',open);if(open&&!body.childElementCount){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));if(!fxFits(F.type,L))body.appendChild(h('p',{class:'small warn'},'Ezen a rétegen nem hat: '+fxHostNote(F.type)+'.'));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}};
     tog.onclick=toggle;nm.onclick=toggle;
     list.appendChild(h('div',{class:'fxi'},hd,body));});
-  const s=h('select',{'aria-label':'Megjelenés hozzáadása'},h('option',{value:''},'Megjelenés hozzáadása…'),...LIB.fx.map((it,i)=>h('option',{value:i},it.name)));
+  const s=h('select',{'aria-label':'Megjelenés hozzáadása'},h('option',{value:''},'Megjelenés hozzáadása…'),...LIB.fx.map((it,i)=>{const ty=it.make().type,ok=fxFits(ty,L);return h('option',{value:i,disabled:!ok},ok?it.name:it.name+' ('+fxHostNote(ty)+')');}));
   s.onchange=()=>{if(s.value==='')return;L.fx.push(LIB.fx[+s.value].make());commit();renderInsp();renderLayers();};
   list.appendChild(h('div',{class:'addfx'},h('div',{class:'pop'},s)));
   list.appendChild(h('p',{class:'small'},'A lánc felülről lefelé hat. Tipp: húzz egy Megjelenést a könyvtárból közvetlenül erre a rétegre.'));return list;}

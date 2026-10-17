@@ -8,6 +8,7 @@ import { renderLayers } from './layers';
 import { SECOPEN } from './controls';
 import { commit, renderAll } from './history';
 import { toast } from './modals';
+import { EFFECTS, fxFits, fxHostNote } from './effects/index';
 
 export function insertItem(obj,refId){
   const r=refId?findItem(refId):(R.selId?findItem(R.selId):null);
@@ -16,8 +17,11 @@ export function insertItem(obj,refId){
   else if(obj.type==='group'&&r.parent){const pr=findItem(r.parent.id);pr.list.splice(pr.i+1,0,obj);}
   else r.list.splice(r.i+1,0,obj);
   R.selId=obj.id;}
-export function addFromLib(c,i,refId){const it=LIB[c][i].make();insertItem(it,refId);const R=it.recipe&&RECIPES.find(r=>r.n===it.recipe);if(R&&R.cam){st.cam=normCam(R.cam);if(R.dur)st.dur=R.dur;}commit();renderAll();toast(R&&R.cam?`Hozzáadva: ${it.name} · a kamera bekapcsolva`:`Hozzáadva: ${it.name}`);if(it.type==='image')$('#fileImg').click();}
-export function attachFx(c,i,targetId){const r=findItem(targetId);if(!r)return;const f=LIB[c][i].make();r.it.fx.push(f);R.selId=r.it.id;SECOPEN.fx=true;commit();renderAll();toast(`${f.name} → ${r.it.name}`);}
+const hostTarget=refId=>refId?findItem(refId):(R.selId?findItem(R.selId):null);
+export function addFromLib(c,i,refId){const it=LIB[c][i].make();
+  if(EFFECTS[it.type]&&EFFECTS[it.type].host){const r=hostTarget(refId);if(r&&fxFits(it.type,r.it)){attachFx(c,i,r.it.id);return;}toast(`${it.name}: ${fxHostNote(it.type)}. Húzd egy ilyen rétegre, vagy jelöld ki, és kattints újra.`);return;}
+  insertItem(it,refId);const R=it.recipe&&RECIPES.find(r=>r.n===it.recipe);if(R&&R.cam){st.cam=normCam(R.cam);if(R.dur)st.dur=R.dur;}commit();renderAll();toast(R&&R.cam?`Hozzáadva: ${it.name} · a kamera bekapcsolva`:`Hozzáadva: ${it.name}`);if(it.type==='image')$('#fileImg').click();}
+export function attachFx(c,i,targetId){const r=findItem(targetId);if(!r)return;const f=LIB[c][i].make();if(!fxFits(f.type,r.it)){toast(`${f.name} nem került rá: ${fxHostNote(f.type)}.`);return;}r.it.fx.push(f);R.selId=r.it.id;SECOPEN.fx=true;commit();renderAll();toast(`${f.name} → ${r.it.name}`);}
 export function removeItem(id){const r=findItem(id);if(!r)return;r.list.splice(r.i,1);const nx=r.list[Math.min(r.i,r.list.length-1)]||r.parent;R.selId=nx?nx.id:((st.layers[st.layers.length-1]||{}).id||null);}
 export function delSel(){if(!R.selId)return;removeItem(R.selId);commit();renderAll();}
 export function dupSel(){const r=R.selId&&findItem(R.selId);if(!r)return;const c=cloneItem(r.it);c.name=r.it.name+' másolat';r.list.splice(r.i+1,0,c);R.selId=c.id;commit();renderAll();}

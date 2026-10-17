@@ -13,6 +13,7 @@ import './text';
 import './blob';
 import './cost';
 import './render';
+import './cloud';
 import './thumbs';
 import './shelf';
 import './itemops';

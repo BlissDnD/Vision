@@ -186,7 +186,8 @@ export function histFor(ctx,id){let x=ctx.hist.get(id);if(!x){x={cur:mkTarget(ct
 export const freeW=(set,ex)=>set.W.find(w=>!ex.includes(w));
 export function runChain(list,inTex,inTarget,set,ctx,t){
   let cur=inTarget,curTex=inTex;
-  for(const F of list){if(!F.vis)continue;const def=EFFECTS[F.type];const out=freeW(set,[cur]);
+  for(const F of list){if(!F.vis)continue;const def=EFFECTS[F.type];if(def.host)continue;   // host appearance (Lufi): read by its source's setU, no pass of its own
+    const out=freeW(set,[cur]);
     if(def.feedback){const x=histFor(ctx,F.id);if(ctx.advance!==false||!x.stepped){drawFx(F,x.next,ctx,t,curTex,x.cur.t,0);const s=x.cur;x.cur=x.next;x.next=s;x.stepped=true;}copyTo(x.cur.t,out);}
     else if(def.points&&F.type==='pdisp'){const k=pdMix(F,t);   // at rest: the crisp original; points take over as the scatter starts
       if(k<=0)copyTo(curTex,out);else if(k>=1)drawPoints(F,out,ctx,t,curTex);

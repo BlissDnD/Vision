@@ -86,7 +86,7 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 
   Valódi GPU-n az arányok mások, de az irány ugyanez.
 
-## Újabb modulok (M1–M7a, 2026-10-17)
+## Újabb modulok (M1–M7b, 2026-10-17)
 
 - `sim.ts`, `time.ts`: közös óra, 60 Hz-es rögzített lépés az állapottartó rétegeknek (feedback, blob), 3 mp előfuttatás ugráskor (`WARM`); `sceneT()` az exporthoz; Loop nélküli továbbfutás.
 - `migrate.ts`: minden betöltés ezen megy át; régi `app:'latomas'` v1/v2 fájlok; az ismeretlen elemeket toast sorolja fel.
@@ -97,3 +97,4 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `mesh3d.ts`: Gerincfelület (`surface3d`): Catmull–Rom gerinc → lap, MSAA, félfelbontású tükör, analitikus stúdió (`ENV`). `spinegrips.ts`: gerincpont-fogók, kamera-pásztázás/görgő, csillanás-húzás (`glintDrag`, CPU sugár–háromszög). Mesh-réteg: `EFFECTS[type].mesh` → `drawMesh`.
 - Jelenetfény: `st.light` (`LIGHTP`/`normLight`, `state.ts`), `lightU` a `render.ts`-ben (`setU` az obj3d/sdfscene-en, uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap`); alapértéken bitre a régi kép. UI és csillanás-húzás: `lightui.ts`.
 - `partfx.ts`: Részecske Megjelenés `pdisp` (fx-ként futó részecske-shader, `runChain` `def.points` ág; nyugalomban másolás, közben `MIX` átúsztatás); események: kézi / `st.cues` / ismétlődés; `altText` = szövegváltás a szétesés csúcsán (külön textúra-gyorsítótár `id#alt`).
+- `effects/soft3d.ts`, `cloud.ts`: Felhő (`cloud3d`): blob-unió + zaj, puha sűrűséghéj raymarch, önárnyék a fény felé vett SDF-különbségből; a blobok a `cloudBlobs`-ból (Alak + Változat, determinisztikus, a képbe illesztve). Lufi (`balloon`) **host-Megjelenés**: `EffectDef.host` = célrétegtípusok; a `runChain` kihagyja, a forrás `setU`-ja olvassa (`balloonVals`); `fxFits`/`fxHostNote` (`effects/index.ts`) szűri a ráhúzást (`attachFx`, `addFromLib`, lánc-lista).

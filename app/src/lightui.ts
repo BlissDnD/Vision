@@ -10,7 +10,7 @@ import { ctlParam, ctlSlider, ctlSwitch, section } from './controls';
 import { commit } from './history';
 import { markDirty } from './loop';
 
-export const usesLight = (L: any) => !!(L && (L.type === 'obj3d' || L.type === 'sdfscene'));
+export const usesLight = (L: any) => !!(L && (L.type === 'obj3d' || L.type === 'sdfscene' || L.type === 'cloud3d'));
 const D = (k: string) => LIGHTP.find(d => d.k === k)!;
 
 /** Glint drag for a raymarched object: treat the object as a sphere around its screen centre (radius r, canvas-height units).
