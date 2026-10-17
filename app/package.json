@@ -1,0 +1,26 @@
+{
+  "name": "latomas-studio",
+  "version": "0.13.0",
+  "private": true,
+  "description": "Látomás Stúdió – rétegalapú WebGL2 vizuális és motion editor (egyetlen HTML-be fordul).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/build.mjs",
+    "build:dev": "node scripts/build.mjs --dev",
+    "build:vite": "vite build",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node scripts/build.mjs --test --dev && python3 tests/run_all.py",
+    "check": "npm run typecheck && npm run build && npm test"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vite-plugin-singlefile": "^2.0.3"
+  },
+  "allowScripts": {
+    "esbuild@0.24.2": true,
+    "esbuild@0.21.5": true
+  }
+}

@@ -1,0 +1,81 @@
+# Vel — részecskék, fizika, folyadék, teljesítmény és 4K export
+
+2026-10-17. A termékterv 3–4. blokkjának részletes melléklete. Termékdöntések és mérendő célok, nem a jelenlegi program kész funkcióinak leírása.
+
+## Alapelv: ugyanaz a jelenet, három eltérő munka
+
+Az **Előnézet** azonnal reagál a húzásra és csökkentheti a részletet. A **Lejátszás** időben stabil, a kiválasztott géphez igazított minőséget használ. Az **Export** meghatározott képkockákat számol ki a kért felbontáson; lassabb lehet, de nem hagyhat ki fizikai lépést vagy változtathatja meg a kompozíciót. Az előnézeti felbontás csökkentése nem csökkentheti önkényesen a kibocsátott részecskék élettartamát, az ütközések eredményét vagy az időzítést. Ahol közelítés kell, a Vel jelezze a különbséget.
+
+Minden dinamikus rendszer ugyanazt a jelenetórát, azonosítókat, seedeket, eseményeket és rögzített szimulációs lépést használja. A képkocka renderelése nem maga lépteti a szimulációt. A seek a legközelebbi ellenőrzőpontból újraszámol, a kész szakasz gyorsítótárazható. Paraméterváltozás csak az érintett rendszer megfelelő időszakának cache-ét érvényteleníti. Így a timeline, Loop, Loop nélküli továbbfutás, Eljátszás, visszatekerés és export ugyanazt a történetet látja. A pusztán matematikai/procedurális mozgás közvetlenül időből számolódik, nem tart fenn felesleges állapotot.
+
+## 1. Részecskék: vászonműveletek
+
+**Forrás létrehozása:** a Részecskék könyvtárból Szóróelemet húzok a vászonra. A kiindulási pont vagy felület azonnal látható. A kibocsátás helyét a vásznon húzom; lehet pont, rajzolt vonal, zárt terület, 2D/3D forma felülete vagy kijelölt objektum. A kibocsátási irányt nyíl, a szórás szögét kinyitható kúp, a hatótávot és élettartamot ritka mintapályák mutatják. Az első vezérlők: **Mennyiség, Méret, Élettartam, Irány, Szórás, Ritmus**. A részletes panelben: méret-/szín-/átlátszóság-görbe élettartam szerint, kezdeti sebesség, variáció, örvény, zaj, térbeli mélység, célpont, ütközési válasz és anyag/fényreakció. A profilok (szikra, por, eső, festékcsepp) ezeket értelmes alapokra állítják, de ugyanaz a szerkesztő marad.
+
+**Ráhúzott részecskés Megjelenés:** szövegre, formára vagy képre húzva a program az adott elem körvonalából/felületéből mintáz indulási pontokat. A szöveg szerkeszthető marad; átíráskor új ponteloszlást kap. A vásznon külön fogantyú mutatja a szétesés irányát és a visszaállás célját. Az idővonalon egyetlen szétesés–visszaállás blokk látszik, lenyitva fázisokkal. A szétbomló betűk részecskéi lehetnek pontok, kis lapok vagy miniatűr 3D elemek; utóbbi külön költségfokozat. A Részecske Forrás és a ráhúzott Megjelenés azonos motort használhat, de eltérő alkotói belépési pont marad.
+
+**Kölcsönhatás:** a szélmező, gravitáció, vonzás, taszítás és örvény csak akkor hat, ha a részecskerendszer feliratkozik rá; a közeli kompatibilis mezőt a Vel felajánlja. Ütközés három fokozatban: nincs; olcsó 2D/sík- vagy egyszerű 3D akadály; pontosabb, kiválasztott testekkel számolt ütközés. Minden részecskéhez általános merevtest-fizikát futtatni nem alapértelmezett. Kontaktusból új részecske vagy Glow-jelzés indítható, de eseményenkénti plafonnal, hogy ne keletkezzen végtelen kibocsátási lánc.
+
+**Idő és Random:** a kibocsátó sávján látszik a folyamatos szakasz, az impulzus és a jelzésre induló burst. Egy kézi koppintás, ütem, ütközés vagy másik réteg változása indíthatja. Seed zárolható; a Random külön alakot, mozgást vagy színt variálhat. A mintapályák csak szerkesztői segítségek, exportba nem kerülnek.
+
+**Motor:** a jelenlegi WebGL-pontkirajzolás jó alap gyors képpont-szóráshoz, de nem kibocsátó/élettartam/ütközés-rendszer. Először CPU-s referencia-szimuláció kell kis elemszámmal és determinisztikus tesztekkel; ez lesz a helyességi alap. A tömeges részecskékhez WebGL2 GPU-bufferes/transform-feedback vagy textúrás állapotfrissítés mérhető prototípusa következik. Az egyszerű, nem ütköző rendszereket lehet közvetlenül időből kiértékelni. A részecskéket típus és Megjelenés szerint kötegelni kell, egyenkénti réteg/render-target nélkül. A konkrét GPU-útvonalat célgépes mérés választja ki; a GPU/CPU olvasgatást képkockánként kerülni kell.
+
+## 2. Fizika: vászonműveletek és kapcsolatok
+
+**Fizika ráhúzása:** egy 3D formánál a Vel ajánlhatja a részvételt; 2D elemnél csak kifejezett ráhúzás vagy kapcsoló aktiválja. A vásznon azonnal látszik az ütköző alak, és egy mozdulattal állítható a test **Rögzített / Mozgó / Mozgással vezetett** szerepe. A „Mozgó” itt fizikai szimulációban mozdítható test, nem automatikusan lefelé eső test: a globális gravitáció alapból ki van kapcsolva. A kiválasztott testet meg lehet lökni és elengedni; az előnézet mutatja a várható rövid pályát. A részletes panelben tömeg, rugalmasság, súrlódás, csillapítás, ütköző alak és kölcsönhatási csoport van. A bonyolult látható geometriához elsőként egyszerű, szerkeszthető ütköző alakot javasoljon a Vel, és jelezze, ha nem pontos mása.
+
+**Mező szerkesztése:** Gravitáció, Szél, Vonzás/Taszítás, Örvény külön Forrásként behúzható, vagy célzott tárgyra rakható. Pont-, vonal-, terület- és térfogatmező fogantyúkkal állítható; nyíl mutatja az irányt, áttetsző határ a hatókört. A mezőben látható jelzés mutatja, mely elemek reagálnak. A célon egyszerű „Hat rá / Nem hat rá” kapcsoló van; a Kapcsolatok nézet csak több tárgynál vagy különleges felülírásnál szükséges. Csoportba tett mező a csoporttal mozoghat, de hatása nem lesz automatikusan a csoport tagjaira korlátozva: ezt külön hatókör vezérli.
+
+**Ütközés és reakció:** a kompatibilis fizikai testek alapból érintkeznek; páronként kizárhatók. Kontaktus, közelség, nyomás, sebesség esemény- vagy folyamatos jel lehet. A felhasználó a vásznon két tárgy találkozási pontjára kattintva például „Kontaktus → Glow erőssége” kapcsolatot húzhat; a program előre felajánlhatja. A Glow helyileg erősödjön és lecsengjen; a jelérték simítását és maximumát a kapcsolatnál állítjuk. A kapcsolatok neve és iránya különbözik a Csoport/Közös alap/Változat rendszertől.
+
+**Animáció és fizika együtt:** a kulcskockás mozgás vezetheti a testet, miközben az akadályként működik. Egy látható **Átadás a fizikának** ponttól a szimuláció átveszi a mozgást, a kezdeti sebességet az animáció végéből kapja. Lehet visszavenni az animációhoz, vagy kontaktusra átadni. A timeline az átadást jelöli. Visszatekerésnél ugyanaz az állapot áll elő. Vászonból kirepült testet a képernyőszéli jelölőről vagy a rétegsorból a kiválasztott időpillanatban vissza lehet húzni; ez új szerkesztett esemény, az előző mozgáskulcsokat nem törli.
+
+**Számítási határ:** első körben merev 2D/3D testek, egyszerű ütköző alakok és lokális mezők. Puha test, hajló textil, törés és összetett alak pontos ütközése külön kutatási kapu. A látványos deformáció lehet először célzott eljárás, de a Vel ne nevezze fizikai szimulációnak, ha csak shaderes mozgás. A részecske- és folyadékmotor ugyanazokat a mezőket és kontaktusjeleket olvassa, de saját költségprofilja van.
+
+## 3. Liquid: két világosan elkülönített út
+
+**Gyors látvány-forrás:** behúzok egy Liquid elemet; azonnal kapok formálható víz/láva/krómfolyadék látványt. Fogantyúval beállítom az áramlás útját, kibocsátást, hullámot, cseppeket, vastagságot és színt. Ez időből számolt, jól seekelhető; a szél és ütem vizuálisan vezérelheti. Nem ígér edényből tényleges kifolyást vagy testekkel való térfogati ütközést. Külön 2D folyadékszerű Megjelenés bármilyen alakra ráhúzható.
+
+**Fizikai folyadék:** egy tartályt vagy kibocsátót jelölök ki, és bekapcsolom a **Fizikai áramlás** módot. A vásznon megrajzolhatom a kiömlés helyét/irányát, kijelölhetem a szilárd határokat és az üregeket. Kék/forró színű finom háló vagy szemcsés előnézet mutatja a számított folyadék térfogatát; a végső Megjelenés ettől külön állítható. A fontos kreatív vezérlők: mennyiség, kibocsátási tempó, viszkozitás, felületi feszültség/stilizálás, gravitáció/mezőhatás, akadályok, megtartás/kiömlés. A jég–króm–láva példában a szöveg körüli rés valódi határ; a láva csak akkor folyik benne, ha az üreg összefüggő és a beállított felbontás ezt meg tudja oldani. A Vel jelzi, ha túl keskeny rés eltűnne a szimulációs rácsban.
+
+**Technikai fokozatok:** első fizikai prototípus 2D síkban, valódi akadályreakcióval; utána korlátozott mélységű 2,5D (rétegelt/szűk tér) és csak célgépes eredmény után teljes 3D. A választandó solver lehet rácsos, szemcsés vagy hibrid; látványminőség, stabilitás, memória és visszatekerés dönt, nem a módszer neve. A renderelt felület simítása külön művelet: nem változtathatja meg észrevétlenül a szimulált mennyiséget. Valós idejű 3D folyadék minden projektméretnél és 4K-ban nem vállalható előzetes mérés nélkül. A fizikai folyadék export előtt előszámítható/cache-elhető; paraméter-, akadály- vagy kapcsolatmódosítás csak a szükséges részt számolja újra.
+
+## 4. Optimalizálás és fejleszthető architektúra
+
+**Rendszerhatárok:** külön jelenetadat és időkiértékelés; külön részecske-, merevtest- és folyadékmodul; közös mező-, kontaktus- és esemény-adat; külön rendergráf és export. Az eszközök közötti szerződés típusos legyen, verziózott projektformátummal és migrációval. A renderelő ne tárolja a szimuláció egyetlen igaz állapotát, a szimuláció ne függjön a kijelző pixelfelbontásától. A mérések és hibák modulhoz köthetők legyenek, hogy új Forrás/Megjelenés hozzáadása ne írja át a teljes motort.
+
+**Költségkezelés:** a mai egyszerű „jelenetterhelés” becslést tényleges CPU-idő, GPU-idő, renderpassok, render-target memória, részecskeszám, szimulációs rács, aktív ütközőpárok és exportkódoló-sor mérése egészítse ki. Profilozó nézet mutassa, mi lassít, és a vásznon az érintett réteget. Ne a gép egészére durván csökkentsen mindent: a távoli/kicsi/nem látható elemek ritkábban vagy alacsonyabb részlettel frissülhetnek, de az ütközésileg fontos objektumokat nem szabad pusztán látványbeli takarás miatt kikapcsolni. Köztes textúrák újrahasználata, csoportos rajzolás, fölösleges teljes képernyős passok elkerülése, csak változott részek újraszámítása és cache-élettartam kezelése alapfeladat. Felbontástól független szimuláció, felbontásfüggő render a fő elválasztás.
+
+**Adaptív minőség:** az előnézet előbb belső felbontást, mintavételezést, árnyék/reflexió- és volumetrikus részletet állít; utána a részecskék kirajzolási részletét. A szimulációs lépés és idő nem változik attól, hogy az ablak 30 vagy 60 fps-sel fut. Ha egy részlet csökkentése fizikai viselkedést is módosítana, azt külön „Szimulációs minőség” választóval és eltérésjelzéssel kell kezelni. Alapértelmezett profilok: Gyors szerkesztés, Kiegyensúlyozott, Minőségi előnézet, Export. A választás felülírható, de az export sosem örökli véletlenül a gyors előnézeti felbontást.
+
+**Memória és stabilitás:** GPU-képtextúrák, szimulációs állapotok és cache-ek külön keretet kapnak. A program a felbontás és effektek alapján export előtt becsül, erőforrásokat újrahasznál és elengedi a régi frame-eket. GPU-context-vesztés után a projektadatból és cache-ellenőrzőpontból helyreáll. A nagy videót nem egyetlen teljes memóriában összegyűjtött blobként kell tárolni: támogatott környezetben fokozatos kimenet kell, világos tárhely- és megszakításjelzéssel. A mai egyetlen HTML-es terjesztés kényelmes maradhat, de a forráskód és runtime modulokra bontása, a szükséges kódolócsomagok elérhetősége és offline működés külön tervezendő.
+
+## 5. 4K vászon és videóexport
+
+**A 4K vászon nem azt jelenti, hogy mindig 4K-ban kell előnézetet rajzolni.** A dokumentum felbontása lehet 3840×2160 (vagy álló 2160×3840), a kijelzőn megjelenő interaktív nézet ennél kisebb. A vektorok, szöveg, geometria, fény és szimuláció dokumentumkoordinátákban értékelődik ki. A raszteres forrásoknál a Vel jelzi a tényleges pixelsűrűséget; egy kicsi kép nem válik élessé attól, hogy 4K vászonra kerül.
+
+**Exportmenet:** előellenőrzés a dokumentumra, eszközlimitre, textúrákra, GPU-memóriára, kódoló által támogatott méret/fps/codec kombinációra és tárhelyre; szükséges fizikai szakasz előszámítása; képkockánként determinisztikus render, színkezelés és mozgási elmosás; WebCodecs/megfelelő platformkódoló; folyamatos muxolás/mentés. Egyetlen képkocka hibája ne készítsen néma, hibás videót. Az export külön folyamatjelzőt, hátralévő képkockaszámot, megszakítást és újraindítási lehetőséget kap. Hang és kép közös időalapot használ. Az export FPS-e nem befolyásolja a fizikai lépést; 24/30/60 fps csak külön mintavételezés ugyanabból a jelenetből.
+
+**Felbontási korlát:** indításkor és export előtt ellenőrizni kell a WebGL `MAX_TEXTURE_SIZE`, `MAX_RENDERBUFFER_SIZE`, viewport- és kódolólimitjét, valamint a gyakorlatban rendelkezésre álló memóriát. Ha a teljes 4K frame nem fér el, a tisztán képi passok csempézése lehetséges, de a bloom, blur, tükröződés, képernyőtéri hatások és mozgási elmosás átfedést vagy teljes képet igényelnek. Ezért a csempézett export külön fejlesztési/prototípuskapu, nem automatikus megoldás. A 4K H.264 támogatását nem lehet a WebCodecs API puszta meglétéből következtetni: konfigurációs próbával kell ellenőrizni, és szükség szerint más codec vagy képsorozat-alternatíva kell. A kész fájl színterét, áttetszőségét és a csúcsfények tónusát előnézettel egyeztetni kell.
+
+**Minőségi cél és kapu:** első cél a folyékony közvetlen szerkesztés középkategóriás célgépen tipikus 1080p dokumentummal; a konkrét fps- és memóriacélt mérőgépekkel kell rögzíteni, nem univerzális ígéretként. Második kapu: 4K állókép a vörös felület referenciajelenetből. Harmadik: 10 másodperc 4K/30 fps videó ugyanebből, majd részecskékkel és merevtesttel. Negyedik: 4K/30 fps hangos jelenet fizikai folyadékkal, előszámított állapottal. Minden kapun mérjük az előnézeti válaszidőt, frame- és exportidőt, GPU/CPU memóriacsúcsot, hő miatti lassulást, vizuális egyezést és azt, hogy a seek/export ugyanazt az állapotot adja. A 4K/60 fps későbbi, külön célgépes kapu.
+
+## Jelenlegi kódhoz kötött induló audit
+
+Az aktuális `src/effects/particles.ts` és `src/render.ts` képből/alsó rétegből mintázott GL-pontokat rajzol; nem általános emitter. `src/adaptive.ts` felbontást változtat az előnézet sebessége alapján; `src/cost.ts` egyszerű becslést ad. `src/output.ts` képkockánként használ `VideoEncoder`-t, és méretkorlátot vizsgál, de a muxolt MP4-et jelenleg memóriában gyűjti, a renderhez ugyanazt a fő vásznat átméretezi, és nincs állapottartó szimulációs cache. A 4K gomb vagy kódolópróba önmagában nem bizonyítja a fenti 4K célokat. Első mérés: jelenlegi 1080p/4K állókép és 10 s videó memória- és időprofilja különböző gépeken; ebből dönthető el, melyik exportarchitektúra szükséges.
+
+## Megvalósítási sorrend és elfogadás
+
+1. **Mérés és szerződések:** benchmark-jelenetek, modulhatárok, közös idő/seed/esemény/mező típusok, projektmigráció.
+2. **Részecske alkotói kör:** emitter-vászonfogantyúk, ráhúzott szöveg-szétesés, determinisztikus seek, CPU referencia; GPU-prototípus és költségmérés.
+3. **Merevtest és mezők:** egyszerű ütközők, kézi lökés, mező-UX, animációból fizikai átadás, kontaktus→Glow, kirepült test visszahozása.
+4. **4K render/export alap:** dokumentum/előnézet szétválasztása, render-target/memóriakeret, offline képkockaexport, folyamatos kimenet, célgépes kapuk.
+5. **Liquid fokozatok:** gyors vizuális Forrás, 2D fizikai folyadék, 2,5D próba, teljes 3D csak mért siker után; jég–króm–láva recept.
+
+Elfogadási próba: ugyanaz a szöveges részecske-burst, meglökött két test és szélre reagáló füst három véletlen időscrub, normál lejátszás és export után vizuálisan egyező állapotba jut. Egy 4K exportnál az eredmény ténylegesen 3840×2160, a hang szinkronban marad, a csúcsfények nem változnak meg váratlanul, és a program nem áll meg memóriafelhalmozódás miatt. A folyadék külön próbában akadály körül folyik és az üreg határát felismeri; ha az adott méreten ez nem működik, a Vel figyelmeztet, és nem állítja késznek a fizikai módot.
+
+## Külső technikai támpontok
+
+- [WebGL best practices és eszközlimitek](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices)
+- [WebGL2 transform feedback](https://developer.mozilla.org/en-US/docs/Web/API/WebGLTransformFeedback)
+- [WebCodecs kódolási munkafolyamat és VideoFrame-élettartam](https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API/Using_the_WebCodecs_API)
