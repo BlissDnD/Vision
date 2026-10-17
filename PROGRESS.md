@@ -13,7 +13,7 @@ Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagy
 - **Felhasználói próba (1 perc):** könyvtár: „felirat” → „Szétrobbanó és visszaálló felirat” → lejátszás: 3 mp-enként szétesik és új szövegként áll össze → a Megjelenés lenyitásával írj új szövegeket, vagy állítsd „Jelzésekre”, és lejátszás közben nyomd a J-t.
 - Korlát: a pontok a teljes képkocka rácsából jönnek (sűrűség-választó); 3D-s szétszórás a meglévő részecske-shaderrel, ütközés/fizika nincs (E szakasz).
 
-## Állapot: 2026-10-17 este — M6 (C szakasz, látványkapu) LEZÁRVA: 0.20.0-m6
+## Állapot: 2026-10-17 este — M6 technikai szelet kész (a C szakasz részben teljesül, lásd FUNKCIO-LELTAR.md): 0.20.0-m6
 
 - 0.20.0-m6: **Jelenetfény** a 3D tárgyakon és 3D jeleneteken (`obj3d`, `sdfscene`): egy közös, animálható fény (`st.light`, projektben mentve; régi projektnél alapérték). Inspector „Jelenetfény” szekció: globális kapcsoló, rétegenkénti „Jelenetfény hat rá”, közvetlen vezérlők elöl: Lágyabb árnyék (árnyékél + körbeforduló fény), Nagyobb csillanás, Melegebb↔hidegebb, Erősség, majd Irány/Magasság. „Csillanás húzása a vásznon”: a tárgyra kattintva a fény úgy fordul, hogy a csúcsfény az egér alatt legyen (gömbközelítés: L = 2(n·v)n − v). A stúdió-környezet fő csillanása a fénnyel együtt fordul.
 - Alapértéken a kép **bitre azonos** a korábbival (mérve), így a régi projektek nem változnak. A Gerincfelületnek saját stúdiófénye marad (Fény csoport + saját csillanás-húzás).

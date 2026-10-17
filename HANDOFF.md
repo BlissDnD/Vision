@@ -8,6 +8,11 @@ Neked nincs előzményed. Ez a fájl mindent tartalmaz, ami a folytatáshoz kell
 - A felhasználó célja: **a szoftver fejlesztései minél előbb bekerüljenek**. Kevés kézi tesztet szeretne, mérföldkövenként egy rövid, 2–4 lépéses próbát. Kerüld a hosszú csiszolást; „nem kell, hogy pixelpontosan azonos legyen a referenciával, jó minőségű renderelés a cél”.
 - Takarékosan dolgozz: minden lezárt szelet után commit, és frissítsd ezt a fájlt. A felhasználó szól, ha fogy a keret; ilyenkor tiszta ponton állj meg.
 
+## 1b. KÖTELEZŐ munkamenet (a felhasználó új döntése, 2026-10-17)
+- Elsődleges funkcióátadó: `../VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md`. A tényállapot: `FUNKCIO-LELTAR.md` (minden mérföldkő után frissítendő).
+- **Minden mérföldkő előtt** írd le magyarul a 13. fejezet mintája szerint: mit tud majd a felhasználó (konkrét gesztusokkal), mit építesz pontosan, mit nem, hogyan próbáljuk ki, és hogyan változik a hátralévő lista. **Utána várd meg a kifejezett jóváhagyást.** A jóváhagyott szeleten belül a rutin műszaki döntéseket önállóan hozd meg.
+- Ne nevezz késznek A–G szakaszt egy M-szelet miatt. Állapotjelölés: tervezett / részben / demonstrálva / felhasználóval kipróbálva.
+
 ## 2. Hol van minden (Mac)
 - Repo: `~/Desktop/melo/CLAUDE/muchdesigner/vel` (git, `master` ág, helyi; nincs remote).
 - `app/`: a Vel forrása (`app/src`), tesztek (`app/tests`), build (`app/dist/index.html` = önálló, dupla kattintással megnyitható).
@@ -40,7 +45,7 @@ npm run dev -- --port 5180 --strictPort   # Vite dev szerver
 | M3 | B | ✅ jobb gombos találatlista a vásznon (`pick.ts`), Alt+katt; könyvtári kategóriák és keresés (`shelf.ts`, `library.ts`); effektlánc-átrendezés |
 | M4 | B | ✅ soronkénti tipográfia (`text.ts` `lines[]`, `textlines.ts` fogantyúk és „Sorok” szekció, sortábla az `mtext` shaderben), „Szerkesztői címlap” recept |
 | M5 | B | ✅ mozgásblokk + retime (`retime.ts`, Sávok panel `blockDrag`), kézi Jelzések (J), horgonyok, Eljátszás simítással (`perform.ts`, E) |
-| M6 | C | ✅ Gerincfelület (mesh), vásznon szerkeszthető gerinc, csillanás-húzás, Jelenetfény az obj3d/sdfscene-en |
+| M6 | C | ✅ (technikai szelet; C részben) Gerincfelület (mesh), vásznon szerkeszthető gerinc, csillanás-húzás, Jelenetfény az obj3d/sdfscene-en |
 | **M7** | **D** | **következik**: építőelemek (Bolygó/Felhő/Füst/Virág), 2D↔3D, szöveg–forma kapcsolatok, első Részecske Forrás/Megjelenés |
 | M8 | E | fizika, mezők, reprodukálható seek/export |
 | M9 | F | folyadék: előbb mért kutatási prototípus |
@@ -60,7 +65,7 @@ Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, 
   - Ellenőrizve valódi GPU-n (5180; ha foglalt, a launch.json „vel” más portra kerül, pl. 5182): „Filmes” és „Tiszta” kinézettel is jó. Az alapértékeket úgy hangoltam, hogy „Filmes” alatt ne égjen ki (sky 0,95, backI 0,8, expo 0,72, a hátsó fény glóriája 0,18).
 - **Kész (0.19.1-m6b):** `src/spinegrips.ts`: gerincpont-fogók a vásznon (a réteg kamerájával vetítve; húzás a kamerával szemközti síkban, Shift: vízszintes sík), üres húzás = kamera cél pásztázása, görgő = kamera távolság (`stage.ts` `pan` mód). A 2D gizmó rejtve mesh-rétegnél (`isSurf`), az inspectorban „Gerinc” szekció (`spineSection`, a `d.groups` ágban). Nem mentett kijelölt pont: `R.spSel`. Teszt: `tests/m6_spine.js`. 21/21 zöld.
 - **Kész (0.19.2-m6c):** csillanás-húzás (`glintDrag`, `hitSurface` a `spinegrips.ts`-ben; `R.glint` kapcsoló, `stage.ts` `glint` mód; a `meshFor` a CPU-n tartja a `V`/`idx`-et). Lencsehiba HDR-csillanáson kikapcsol (`gl.ts` POST). 4K mérés: 6,3 ms/kép (animált formával 9 ms), részletek `PROGRESS.md`.
-- **Kész (0.20.0-m6, M6 LEZÁRVA):** Jelenetfény (`st.light`, `LIGHTP`/`normLight` a `state.ts`-ben, `lightU`/`lightVals` a `render.ts`-ben mint `setU` az obj3d-n és sdfscene-en; shader uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap` az `obj3d` kód elején). UI: `src/lightui.ts` (`lightSection`, `glint3`, `lightFromGlint`), `stage.ts` `glint3` mód. Alapértéken bitre a régi kép. Teszt: `m6_light`.
+- **Kész (0.20.0-m6, az M6 technikai szelet; a C szakasz csak részben, lásd `FUNKCIO-LELTAR.md`):** Jelenetfény (`st.light`, `LIGHTP`/`normLight` a `state.ts`-ben, `lightU`/`lightVals` a `render.ts`-ben mint `setU` az obj3d-n és sdfscene-en; shader uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap` az `obj3d` kód elején). UI: `src/lightui.ts` (`lightSection`, `glint3`, `lightFromGlint`), `stage.ts` `glint3` mód. Alapértéken bitre a régi kép. Teszt: `m6_light`.
   - Nyitott (később): a cián pont javítását headlessben nem lehetett előidézni, felhasználói próbán nézd; több fény/fényforma; padlótükör más 3D típusokra.
 - Ezután M7 (D szakasz).
 
