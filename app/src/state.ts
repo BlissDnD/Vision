@@ -40,7 +40,7 @@ export const LOOKS={
 export function mkLook(name){const L=LOOKS[name]||LOOKS.Filmes;const o={preset:LOOKS[name]?name:'Filmes',tone:L.tone,fps:0,p:{}};for(const d of LOOKP)o.p[d.k]={v:L[d.k]??d.def,a:0,f:.2,w:0};return o;}
 export function normLook(o){if(!o||!o.p)return mkLook('Filmes');const b=mkLook(LOOKS[o.preset]?o.preset:'Filmes');b.preset=o.preset||b.preset;b.tone=o.tone??b.tone;b.fps=+o.fps||0;for(const d of LOOKP)if(o.p[d.k]&&isFinite(o.p[d.k].v))b.p[d.k]={v:+o.p[d.k].v,a:0,f:.2,w:0};return b;}
 import type { Project, Layer, NParam } from './types';
-export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),dur:10,loop:true,bpm:120,bpmOff:0};
+export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[]};
 R.selId=null;export const assets={};export const imgTex=new Map();
 
 export function walk(list,fn,parent=null){for(const it of list){fn(it,list,parent);if(it.type==='group')walk(it.children,fn,it);}}

@@ -12,7 +12,7 @@ import { markDirty } from './loop';
 import { toast } from './modals';
 
 export function wave(w,ph){const fr=((ph%1)+1)%1;if(w===1)return 1-4*Math.abs(((ph+.25)%1+1)%1-.5);if(w===2)return 2*fr-1;if(w===3)return fr<.5?1:-1;return Math.sin(TAU*ph);}
-export function ev(n,def,t){let v=n.k&&n.k.length?keyVal(n.k,t):n.v;if(n.a)v+=wave(n.w,t*n.f)*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);return v;}
+export function ev(n,def,t){let v=n.k&&n.k.length?keyVal(n.k,t):n.v;if(n.a)v+=wave(n.w,t*n.f)*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
 
 /* ----- keyframes: n.k=[{t,v,e,z?,w?,bz?}] on any slider param; e = curve of the segment that starts at this key ----- */
 export const KEY_EASES=[...EASE_NAMES,'Egyedi rugó','Egyedi görbe (Bézier)'];

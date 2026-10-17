@@ -82,13 +82,14 @@ export function renderInsp(){
   P.appendChild(section('Részletek','details',false,...detKids));
 }
 export function timingSection(L){
-  const T=L.tm||(L.tm={in:0,inAt:0,inDur:.8,out:0,outAt:Math.max(0,(st.dur||10)-1),outDur:.8,ease:0});
-  const X=k=>({get v(){return T[k];},set v(x){T[k]=x;renderTimeline();}});const mx=Math.max(10,st.dur||10);
+  // defaults are shown but only written into the layer on the first edit (opening the panel must not change the project)
+  const T=L.tm||{in:0,inAt:0,inDur:.8,out:0,outAt:Math.max(0,(st.dur||10)-1),outDur:.8,ease:0};const own=()=>{if(!L.tm)L.tm=T;};
+  const X=k=>({get v(){return T[k];},set v(x){own();T[k]=x;renderTimeline();}});const mx=Math.max(10,st.dur||10);
   return section('Időzítés (belépés, kilépés, képkocka-ütem)','timing',!!(T.in||T.out||T.fps),
     ctlSelect(X('in'),SEL('in','Belépés',MOVES,0)),ctlSlider(X('inAt'),S('inAt','Belépés kezdete (mp)',0,mx,0),{noAnim:true}),ctlSlider(X('inDur'),S('inDur','Belépés hossza (mp)',.05,5,.8),{noAnim:true}),
     ctlSelect(X('out'),SEL('out','Kilépés',MOVES,0)),ctlSlider(X('outAt'),S('outAt','Kilépés kezdete (mp)',0,mx,0),{noAnim:true}),ctlSlider(X('outDur'),S('outDur','Kilépés hossza (mp)',.05,5,.8),{noAnim:true}),
     ctlSelect(X('ease'),SEL('ease','Görbe',EASES.map(e=>e[0]),0)),
-    ctlSelect(fpsObj(T,renderTimeline),SEL('fps','Képkocka-ütem (posterize time)',FPS_OPTS.map(o=>o[1]),0)),
+    ctlSelect(fpsObj(T,()=>{own();renderTimeline();}),SEL('fps','Képkocka-ütem (posterize time)',FPS_OPTS.map(o=>o[1]),0)),
     h('p',{class:'small'},'A belépés és a kilépés az idővonalon látszik, ha a réteg ki van jelölve. A Képkocka-ütem darabosabb, „mozis” mozgást ad: 12 vagy 8 kocka/mp kézzel rajzolt hatású.'));}
 export const FPS_OPTS=[[0,'Folyamatos'],[24,'24 kocka/mp (mozi)'],[15,'15 kocka/mp'],[12,'12 kocka/mp (animáció)'],[10,'10 kocka/mp'],[8,'8 kocka/mp (stop motion)'],[6,'6 kocka/mp']];
 export function fpsObj(T,after){return {get v(){const i=FPS_OPTS.findIndex(o=>o[0]===(T.fps||0));return i<0?0:i;},set v(x){T.fps=(FPS_OPTS[Math.round(x)]||FPS_OPTS[0])[0];after&&after();}};}

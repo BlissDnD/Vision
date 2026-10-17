@@ -87,6 +87,10 @@ export interface Project {
   loop: boolean;
   bpm: number;
   bpmOff: number;
+  /** Közös alapok (shared bases) by id; variants reference them. */
+  bases?: Record<string, { id: string; name: string; children: Layer[] }>;
+  /** Kapcsolatok: parameter links between elements. */
+  links?: any[];
 }
 
 /** A recipe: layer list + macro sliders (+ optional camera / duration). */

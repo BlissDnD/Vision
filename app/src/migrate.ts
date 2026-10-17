@@ -1,9 +1,10 @@
 /* Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old
  * project never loses layers silently: anything that cannot be kept is listed in `dropped`.
- * Versions:  v1/v2 = Látomás Stúdió (app:'latomas', ≤ v13) · v3 = Vel (app:'vel', shared scene clock). */
+ * Versions:  v1/v2 = Látomás Stúdió (app:'latomas', ≤ v13) · v3 = Vel (app:'vel', shared scene clock)
+ *            · v4 = + Közös alap / Változat (state.bases, group.variant) and Kapcsolat (state.links); older files: none. */
 import { EFFECTS } from './effects/index';
 
-export const PROJECT_VER = 3;
+export const PROJECT_VER = 4;
 export interface Migrated { state: any; assets: Record<string, any>; from: number; dropped: string[] }
 
 export function migrateProject(obj: any): Migrated {

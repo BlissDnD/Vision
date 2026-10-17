@@ -1,6 +1,8 @@
 import { R } from './runtime';
 import { $ } from './dom';
 import { migrateProject, PROJECT_VER } from './migrate';
+import { attachLinks, gcBases } from './variants';
+import { ev } from './evaluation';
 import { resetFeedback } from './transport';
 import { assets, findItem, normLook, normalize, st, walk } from './state';
 import { loadAsset } from './text';
@@ -11,9 +13,9 @@ import { markDirty } from './loop';
 import { EXP, applyExp, updLookLbl } from './popovers';
 
 R.hist=[];R.hi=-1;
-export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,cam:st.cam,dur:st.dur,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff});
-export function commit(){markDirty();const s=snapshot();if(R.hist[R.hi]!==s){R.hist.splice(R.hi+1);R.hist.push(s);if(R.hist.length>100)R.hist.shift();R.hi=R.hist.length-1;}updUndo();scheduleSave();}
-export function restore(s){const o=JSON.parse(s);st.layers=o.layers;st.cam=normCam(o.cam);st.bg=o.bg;st.size=o.size;st.look=normLook(o.look);updLookLbl();setTL(o);if(!findItem(R.selId))R.selId=(st.layers[st.layers.length-1]||{}).id||null;resizeMain();renderAll();}
+export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,cam:st.cam,dur:st.dur,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff,bases:st.bases,links:st.links});
+export function commit(){gcBases();attachLinks(ev);markDirty();const s=snapshot();if(R.hist[R.hi]!==s){R.hist.splice(R.hi+1);R.hist.push(s);if(R.hist.length>100)R.hist.shift();R.hi=R.hist.length-1;}updUndo();scheduleSave();}
+export function restore(s){const o=JSON.parse(s);st.layers=o.layers;st.cam=normCam(o.cam);st.bg=o.bg;st.size=o.size;st.look=normLook(o.look);updLookLbl();setTL(o);setShared(o);if(!findItem(R.selId))R.selId=(st.layers[st.layers.length-1]||{}).id||null;resizeMain();renderAll();}
 export function undo(){if(R.hi>0){R.hi--;restore(R.hist[R.hi]);updUndo();scheduleSave();}}
 export function redo(){if(R.hi<R.hist.length-1){R.hi++;restore(R.hist[R.hi]);updUndo();scheduleSave();}}
 export function updUndo(){$('#undoBtn').disabled=R.hi<=0;$('#redoBtn').disabled=R.hi>=R.hist.length-1;}
@@ -25,11 +27,14 @@ R.saveT=undefined;export function scheduleSave(){clearTimeout(R.saveT);R.saveT=s
 /** Apply a project object (file, autosave). Returns the migration report. */
 export function applyProject(obj){const m=migrateProject(obj);
   Object.assign(assets,m.assets);for(const id in m.assets)loadAsset(id);
-  st.layers=m.state.layers.map(normalize);st.bg=m.state.bg||st.bg;st.size=m.state.size||st.size;st.look=normLook(m.state.look);st.cam=normCam(m.state.cam);updLookLbl();setTL(m.state);applyExp(m.state.exp);
+  st.layers=m.state.layers.map(normalize);st.bg=m.state.bg||st.bg;st.size=m.state.size||st.size;st.look=normLook(m.state.look);st.cam=normCam(m.state.cam);updLookLbl();setTL(m.state);setShared(m.state);applyExp(m.state.exp);
   R.selId=(st.layers[st.layers.length-1]||{}).id||null;R.time=0;return m;}
 export function loadProject(obj){const m=applyProject(obj);resetFeedback();resizeMain();renderAll();commit();
   R.lastLoad=m;return m;}
 export function loadMsg(){const m=R.lastLoad;if(!m)return 'Betöltve.';const old=m.from<3?` (régi, v${m.from} formátum, átalakítva)`:'';
   return m.dropped.length?`Betöltve${old}. Nem ismert elem kimaradt: ${m.dropped.slice(0,4).join(', ')}${m.dropped.length>4?' …':''}`:`Betöltve${old}.`;}
 export function renderAll(){renderLayers();renderInsp();}
+/** bases + links (v4). Missing in older files = none. */
+export function setShared(o){o=o||{};st.bases={};for(const id in (o.bases||{})){const b=o.bases[id];if(b&&Array.isArray(b.children))st.bases[id]={id,name:b.name||'Közös alap',children:b.children.map(normalize)};}
+  st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to):[];attachLinks(ev);}
 export function setTL(o){o=o||{};st.dur=o.dur>0?o.dur:10;st.loop=o.loop!==false;st.bpm=o.bpm>0?o.bpm:120;st.bpmOff=o.bpmOff||0;}
