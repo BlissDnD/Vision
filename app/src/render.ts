@@ -3,12 +3,13 @@ import { R } from './runtime';
 import { $, h } from './dom';
 import { EASE_NAMES, PALS, hexRGB, v3 } from './palettes';
 import { BASEK, BENTO, BLEND_IDX, EFFECTS, S, kindOf } from './effects/index';
-import { BLANK, COMP, COPY, DOWN, NULLP, PLACEHOLDER, POST, U, UPS, XFORM, clearTarget, compile, cv, errCache, freeCtx, freeTarget, getProg, gl, mkCtx, mkSet, mkTarget } from './gl';
+import { BLANK, COMP, COPY, MIX, DOWN, NULLP, PLACEHOLDER, POST, U, UPS, XFORM, clearTarget, compile, cv, errCache, freeCtx, freeTarget, getProg, gl, mkCtx, mkSet, mkTarget } from './gl';
 import { LIGHTP, imgTex, makeLayer, mkN, st } from './state';
 import { ev, hasK } from './evaluation';
 import { mediaFor } from './text';
 import { blobPrep } from './blob';
 import { drawMesh } from './mesh3d';
+import { pdMix, pdUniforms } from './partfx';
 import { ctlSlider, ctlSwitch } from './controls';
 import { commit } from './history';
 import { fitCanvas } from './stage';
@@ -158,15 +159,15 @@ void main(){vec2 q=gl_PointCoord-0.5; float a=(1.0-smoothstep(0.25,0.5,length(q)
   try{R.PPROG=link2(VSP,FSP);}catch(e){console.warn('Shader: particles',e.message);R.PPROG='err';errCache.set('particles',String(e.message));return null;}
   return R.PPROG;}
 export function drawPoints(L,target,ctx,t,inTex){
-  clearTarget(target);const p=particleProg();if(!p)return;const def=EFFECTS[L.type];
+  clearTarget(target);const p=particleProg();if(!p)return;const def=EFFECTS[L.type];const PV=L.type==='pdisp'?pdUniforms(L,t):null;
   gl.bindFramebuffer(gl.FRAMEBUFFER,target.f);gl.viewport(0,0,ctx.w,ctx.h);gl.useProgram(p);
-  let tex,asp;if(Math.round(L.p.source.v)===1){const m=(L.asset&&imgTex.get(L.asset))||PLACEHOLDER;tex=m.tex;asp=m.w/m.h;}else{tex=inTex;asp=ctx.w/ctx.h;}
-  const N=[256,384,512][Math.round(L.p.density.v)]||256;const gx=Math.max(8,Math.round(N*Math.sqrt(asp))),gy=Math.max(8,Math.round(N/Math.sqrt(asp)));
-  gl.uniform2f(U(p,'uGrid'),gx,gy);gl.uniform2f(U(p,'uRes'),ctx.w,ctx.h);gl.uniform1f(U(p,'uTime'),t);gl.uniform1f(U(p,'uAspI'),asp);setXform(p,L,t);
+  let tex,asp;if(!PV&&Math.round(L.p.source.v)===1){const m=(L.asset&&imgTex.get(L.asset))||PLACEHOLDER;tex=m.tex;asp=m.w/m.h;}else{tex=inTex;asp=ctx.w/ctx.h;}
+  const N=[256,384,512][Math.round(PV?PV.density:L.p.density.v)]||256;const gx=Math.max(8,Math.round(N*Math.sqrt(asp))),gy=Math.max(8,Math.round(N/Math.sqrt(asp)));
+  gl.uniform2f(U(p,'uGrid'),gx,gy);gl.uniform2f(U(p,'uRes'),ctx.w,ctx.h);gl.uniform1f(U(p,'uTime'),t);gl.uniform1f(U(p,'uAspI'),asp);if(PV){gl.uniform2f(U(p,'uOff'),0,0);gl.uniform1f(U(p,'uScale'),1);gl.uniform1f(U(p,'uRot'),0);}else setXform(p,L,t);
   setPal(p,L.pal||0);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
-  for(const d of def.params){const v=L.p[d.k];gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
+  if(PV)for(const k in PV)gl.uniform1f(U(p,'p_'+k),PV[k]);else for(const d of def.params){const v=L.p[d.k];gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
   bindTex(0,tex);gl.uniform1i(U(p,'uSrc'),0);
-  gl.enable(gl.BLEND);if(Math.round(L.p.pblend.v)===0)gl.blendFunc(gl.ONE,gl.ONE);else gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+  gl.enable(gl.BLEND);if(Math.round(PV?PV.pblend:L.p.pblend.v)===0)gl.blendFunc(gl.ONE,gl.ONE);else gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
   gl.drawArrays(gl.POINTS,0,gx*gy);gl.disable(gl.BLEND);}
 export function drawFx(L,target,ctx,t,inTex,prevTex,pass){
   const def=EFFECTS[L.type];const p=getProg(L)||NULLP;
@@ -175,7 +176,7 @@ export function drawFx(L,target,ctx,t,inTex,prevTex,pass){
   setPal(p,L.pal||0);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
   for(const d of def.params){const v=L.p[d.k];if(d.type==='color'){const c=hexRGB(v?v.v:d.def);gl.uniform3f(U(p,'p_'+d.k),c[0],c[1],c[2]);}
     else gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
-  const m=mediaFor(L);bindTex(0,inTex);bindTex(1,prevTex);bindTex(2,m&&m.tex);
+  const m=mediaFor(L,t);bindTex(0,inTex);bindTex(1,prevTex);bindTex(2,m&&m.tex);
   gl.uniform1i(U(p,'uInput'),0);gl.uniform1i(U(p,'uPrev'),1);gl.uniform1i(U(p,'uImage'),2);gl.uniform2f(U(p,'uImgSize'),m?m.w:1,m?m.h:1);
   bindTex(3,m&&m.aux);gl.uniform1i(U(p,'uAux'),3);{const I=m&&m.info?m.info:[0,0,0,0],G=m&&m.geo?m.geo:[1,0,1,1];gl.uniform4f(U(p,'uAuxInfo'),I[0],I[1],I[2]||0,0);gl.uniform4f(U(p,'uAux2'),G[0],G[1],G[2],G[3]);}
   if(def.setU)def.setU(p,L,t);
@@ -187,6 +188,11 @@ export function runChain(list,inTex,inTarget,set,ctx,t){
   let cur=inTarget,curTex=inTex;
   for(const F of list){if(!F.vis)continue;const def=EFFECTS[F.type];const out=freeW(set,[cur]);
     if(def.feedback){const x=histFor(ctx,F.id);if(ctx.advance!==false||!x.stepped){drawFx(F,x.next,ctx,t,curTex,x.cur.t,0);const s=x.cur;x.cur=x.next;x.next=s;x.stepped=true;}copyTo(x.cur.t,out);}
+    else if(def.points&&F.type==='pdisp'){const k=pdMix(F,t);   // at rest: the crisp original; points take over as the scatter starts
+      if(k<=0)copyTo(curTex,out);else if(k>=1)drawPoints(F,out,ctx,t,curTex);
+      else{const mid=freeW(set,[cur,out]);drawPoints(F,mid,ctx,t,curTex);gl.bindFramebuffer(gl.FRAMEBUFFER,out.f);gl.viewport(0,0,ctx.w,ctx.h);gl.useProgram(MIX);
+        bindTex(0,curTex);bindTex(1,mid.t);gl.uniform1i(U(MIX,'uA'),0);gl.uniform1i(U(MIX,'uB'),1);gl.uniform1f(U(MIX,'uK'),k);gl.drawArrays(gl.TRIANGLES,0,3);}}
+    else if(def.points)drawPoints(F,out,ctx,t,curTex);
     else if(def.blob){const B=blobPrep(F,ctx,t,curTex);drawFx(F,out,ctx,t,curTex,B.mkTex,0);}
     else if(def.passes===2){const mid=freeW(set,[cur,out]);drawFx(F,mid,ctx,t,curTex,null,0);drawFx(F,out,ctx,t,mid.t,curTex,1);}
     else drawFx(F,out,ctx,t,curTex,null,0);

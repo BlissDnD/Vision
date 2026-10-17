@@ -2,6 +2,17 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
+## Állapot: 2026-10-17 este — M7 (D szakasz) első szelet: 0.21.0-m7a „részecskés szöveg visszaáll”
+
+- Új ráhúzható Megjelenés: **Részecskékre bontás** (`pdisp`, `src/partfx.ts`). Bármely rétegre (szöveg, forma, kép) a Megjelenés-láncban; a réteg pontokra esik szét, majd visszaáll. Indítás: Kézi csúszka / **Jelzésekre** (J) / Ismétlődve. Vezérlők: Szórás, Szétesés ideje, Szétszórva marad, Összeállás ideje, Örvény szétszóráskor, pontméret/sűrűség/szín.
+- Nyugalomban az **eredeti, éles réteg** látszik (bitre azonos), a szétesés elején átúszik pontokba (`MIX` pass), összeálláskor vissza.
+- Szövegrétegnél **Új szövegek összeálláskor** (soronként egy, `F.alts`): a szétesés csúcsán a következő szöveg jön, körbe; a réteg saját szövege közben szerkeszthető marad (`altText`, külön textúra-gyorsítótár `id#alt`).
+- Tisztán időfüggvény: ugrás, ismételt render és export azonos (mérve 0).
+- Könyvtár: Részecskék → „Szétrobbanó és visszaálló felirat” (3 mp-enként, két új szöveggel), „Részecskékre bontás (Megjelenés)”; Megjelenések → Részecskékre bontás.
+- Teszt: `tests/m7_partfx.js` (nyugalom = eredeti 0; szétesés 8,3; összeállás után az új szöveg 0 eltérés; szövegsorrend; burkoló; ugrás-ismételhetőség; ismétlődés 1,4,7; kézi mód; újranyitás; könyvtári elem). 23/23 zöld. Élőben ellenőrizve.
+- **Felhasználói próba (1 perc):** könyvtár: „felirat” → „Szétrobbanó és visszaálló felirat” → lejátszás: 3 mp-enként szétesik és új szövegként áll össze → a Megjelenés lenyitásával írj új szövegeket, vagy állítsd „Jelzésekre”, és lejátszás közben nyomd a J-t.
+- Korlát: a pontok a teljes képkocka rácsából jönnek (sűrűség-választó); 3D-s szétszórás a meglévő részecske-shaderrel, ütközés/fizika nincs (E szakasz).
+
 ## Állapot: 2026-10-17 este — M6 (C szakasz, látványkapu) LEZÁRVA: 0.20.0-m6
 
 - 0.20.0-m6: **Jelenetfény** a 3D tárgyakon és 3D jeleneteken (`obj3d`, `sdfscene`): egy közös, animálható fény (`st.light`, projektben mentve; régi projektnél alapérték). Inspector „Jelenetfény” szekció: globális kapcsoló, rétegenkénti „Jelenetfény hat rá”, közvetlen vezérlők elöl: Lágyabb árnyék (árnyékél + körbeforduló fény), Nagyobb csillanás, Melegebb↔hidegebb, Erősség, majd Irány/Magasság. „Csillanás húzása a vásznon”: a tárgyra kattintva a fény úgy fordul, hogy a csúcsfény az egér alatt legyen (gömbközelítés: L = 2(n·v)n − v). A stúdió-környezet fő csillanása a fénnyel együtt fordul.

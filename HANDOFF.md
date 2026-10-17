@@ -28,6 +28,7 @@ npm run dev -- --port 5180 --strictPort   # Vite dev szerver
 ```
 - Az `app/.venv` Python-környezet Playwrightot és Chromiumot tartalmaz. Ha hiányzik: `python3 -m venv .venv && .venv/bin/pip install playwright && .venv/bin/python -m playwright install chromium`.
 - Egy teszt: `.venv/bin/python tests/run.py dist/latomas.test.html tests/<nev>.js`. A teszt-JS a `window.__L` kontextusában fut (minden modul exportja elérhető); a hibákat a `bad` listába teszi. Minta: `tests/m6_mesh.js`. Képernyőkép: `SHOT=cv run.py html teszt.js "<JS-kód>"` (a 3. paraméter **kód**, nem fájlnév) → `shot0.png`.
+- A Vite dev oldalon `await import('/src/state.ts')` HMR után MÁSIK modulpéldányt adhat (üres `st`); élő ellenőrzéshez a felületet használd, vagy friss újratöltés után importálj.
 - Ha a Claude Code desktopban dolgozol: a böngészőpanel a háttérben nem futtat rAF-ot, ezért ott a lejátszási idő nem halad. Szinkron méréseknél kis N-nel dolgozz, mert az eszköznek időkorlátja van.
 - Konvenciók: a közös, változó állapot az `R`-en van (`src/runtime.ts`); a projekt a `st` (`src/state.ts`); minden változtatás után `commit()` (undo + automatikus mentés); `main.ts` importsorrend számít (modul felső szintje csak előtte importált modult használhat). Részletek: `app/README.md`.
 
@@ -45,7 +46,7 @@ npm run dev -- --port 5180 --strictPort   # Vite dev szerver
 | M9 | F | folyadék: előbb mért kutatási prototípus |
 | M10 | G | receptcsalád, Random hatókörök, polírozás |
 
-Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, `m4_type`, `m5_retime`, `m5_perform`, `m6_mesh`, `m6_spine`, `m6_light`), plusz a régiek. Az egyes M-ek részletes korlátai a `PROGRESS.md`-ben vannak.
+Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, `m4_type`, `m5_retime`, `m5_perform`, `m6_mesh`, `m6_spine`, `m6_light`, `m7_partfx`), plusz a régiek. Az egyes M-ek részletes korlátai a `PROGRESS.md`-ben vannak.
 
 ## 5. Ahol tartunk: M6 (C szakasz, látványkapu)
 - **Döntés (mérve, `prototypes/red-ribbon-webgl/README.md` vége):** a jó minőségű 3D a Velben **mesh-alapú** legyen. Ugyanaz a forma SDF raymarchinggal 183 ms, mesh-ként 3–5 ms 2048×1536-on, M1 Maxon; az SDF ráadásul csíkos. Az SDF csak a meglévő procedurális formákra marad.
@@ -62,6 +63,14 @@ Minden M-hez van teszt az `app/tests/`-ben (`m1_close`, `m2_variants`, `m3_ux`, 
 - **Kész (0.20.0-m6, M6 LEZÁRVA):** Jelenetfény (`st.light`, `LIGHTP`/`normLight` a `state.ts`-ben, `lightU`/`lightVals` a `render.ts`-ben mint `setU` az obj3d-n és sdfscene-en; shader uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap` az `obj3d` kód elején). UI: `src/lightui.ts` (`lightSection`, `glint3`, `lightFromGlint`), `stage.ts` `glint3` mód. Alapértéken bitre a régi kép. Teszt: `m6_light`.
   - Nyitott (később): a cián pont javítását headlessben nem lehetett előidézni, felhasználói próbán nézd; több fény/fényforma; padlótükör más 3D típusokra.
 - Ezután M7 (D szakasz).
+
+## 5b. M7 (D szakasz) állapota
+- **Kész (0.21.0-m7a):** Részecske Megjelenés `pdisp` (`src/partfx.ts`: `pdEvents`, `pdEnv`, `pdUniforms`, `pdMix`, `altText`). A meglévő részecske-shader (`render.ts` `particleProg`/`drawPoints`) fx-ként is fut: `runChain` `def.points` ág; `pdisp`-nél nyugalomban másolás, közben `MIX` (gl.ts) átúsztatás. `mediaFor(L,t)` az `altText`-tel választ szöveget. UI: `controls.ts` `pdispExtra` (új szövegek, jelzés-tipp). Teszt: `m7_partfx`.
+- **Következő M7 szeletek (sorrendben):**
+  1. Szöveg gömbön / felület–szöveg kapcsolat (terv D: „szöveg gömbön”, élő szöveg a 3D test felületén).
+  2. Felhő → Lufi Megjelenés (felhőforma megvilágítható, felfújt anyaggal) és a Bolygó/Felhő/Füst/Virág minőségi hangolása.
+  3. 2D↔3D „Térbeliség” első próba (vastagság kihúzása szövegre/formára, mesh-úton, a `mesh3d.ts` mintájára).
+  4. Részecske Forrás (szikra/por) „Honnan/Milyen/Merre/Mikor” vezérlőkkel.
 
 ## 6. Fontos tudnivalók, csapdák
 - **Ne módosíts csendben a projekten** (terv 0.4: „semmi rejtett frissülés”). Például az inspector ne írjon a rétegbe megnyitáskor; ezt egyszer már javítottam (`timingSection`).

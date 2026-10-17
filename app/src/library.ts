@@ -21,7 +21,7 @@ export const LIB={
  shapes:[LS('Kör',{kind:0}),LS('Gyűrű',{kind:1}),LS('Lekerekített négyzet',{kind:2,round:.3}),LS('Háromszög',{kind:3,sides:3}),LS('Hatszög',{kind:3,sides:6}),
    LS('Csillag',{kind:4,sides:5}),LS('Félhold',{kind:5,inner:.35}),LS('Vesica',{kind:6,inner:.5}),LS('Szív',{kind:7}),LS('Virág',{kind:8,sides:6,inner:.6}),LS('Spirál',{kind:9,inner:.3,thick:.02}),LS('Szem',{kind:10,thick:.02}),LS('Kereszt',{kind:11,inner:.2}),LS('Végtelen',{kind:12,thick:.02}),LS('Fénykör',{kind:0,soft:.8},{pal:8})],
  gen:[...['plasma','fire','aurora','galaxy','waves','lava','cells','nebula','liquid','tunnel','sacred','kali','julia','moire','hyper','grid','blackhole','gradient'].map(LG),{name:'Lencsefény',make:()=>makeLayer('flare',{blend:'add',pal:1})}],
- fx:['blob','texture','blur','glow','lens','warp','edge','radial','kaleido','feedback','swirl','ripple','ascii','halftone','pixelart','mirror','polar','chroma','psycolor','grade','glitch','film'].map(LG),
+ fx:['blob','texture','blur','glow','lens','warp','edge','radial','kaleido','feedback','swirl','ripple','ascii','halftone','pixelart','mirror','polar','chroma','psycolor','grade','glitch','film','pdisp'].map(LG),
  world:[
   ...RECIPES.filter(R=>R.cat==='world').map(R=>({name:R.n,make:()=>makeRecipe(R)})),
   {head:'Darabok'},
@@ -97,6 +97,8 @@ export const LIB={
   {name:'Fényszivárgás',make:()=>makeLayer('projector',{name:'Fényszivárgás',pal:15,p:{dust:0,weave:0,shake:0,leak:.9,grain:.15,flicker:.15,chroma:.1,vig:.2}})},
   {name:'Kameralebegés',make:()=>makeLayer('projector',{name:'Kameralebegés',p:{dust:0,leak:0,flicker:0,weave:.1,shake:.7,grain:0,vig:0,chroma:.15}})}],
  particles:[
+  {name:'Szétrobbanó és visszaálló felirat',make:()=>makeLayer('text',{name:'Részecskés felirat',text:{str:'SZÉTESIK',font:'Unbounded',weight:'700',track:.06},fx:[['pdisp',{p:{trig:2,every:3},alts:['ÚJRA ÖSSZEÁLL','ÉS MEGINT']}]]})},
+  {name:'Részecskékre bontás (Megjelenés)',make:()=>makeLayer('pdisp')},
   {name:'Részecskék (alatta lévő kép)',make:()=>makeLayer('particles',{pal:12})},
   {name:'Részecskék saját képből',make:()=>makeLayer('particles',{pal:12,p:{source:1,hidesrc:0,depth:.5}})},
   {name:'Ütemre robbanó',make:()=>makeLayer('particles',{name:'Ütemre robbanó',pal:13,p:{explode:{v:0,s:'b:beat',sa:.3},swirl:.4,color:1}})},

@@ -101,6 +101,9 @@ void main(){
 export const COPY=link(`#version 300 es
 precision highp float; in vec2 vUv; out vec4 o; uniform sampler2D uSrc;
 void main(){o=texture(uSrc,vUv);}`);
+export const MIX=link(`#version 300 es
+precision highp float; in vec2 vUv; out vec4 o; uniform sampler2D uA; uniform sampler2D uB; uniform float uK;
+void main(){o=mix(texture(uA,vUv),texture(uB,vUv),uK);}`);
 export const XFORM=link(fragFor({params:[]},`vec4 fx(){vec2 q=toQ(vUv); vec2 uv=q/ASP()+0.5; float inb=step(0.0,uv.x)*step(uv.x,1.0)*step(0.0,uv.y)*step(uv.y,1.0); return texture(uInput,uv)*inb;}`));
 export const NULLP=link(HEAD+'void main(){o=vec4(0.0);}');
 

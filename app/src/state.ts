@@ -16,6 +16,7 @@ export function makeLayer(type:string,o:any={}):Layer{
   if(type==='custom')L.code=o.code||DEFAULT_CODE;
   if(type==='image')L.asset=o.asset||null;
   if(type==='blob')L.btext=o.btext??'{id} · {x}, {y}';
+  if(type==='pdisp'&&Array.isArray(o.alts))L.alts=[...o.alts];
   if(d.spine)L.spine=JSON.parse(JSON.stringify(o.spine||d.spine));
   return L;
 }

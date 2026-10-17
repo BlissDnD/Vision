@@ -2,6 +2,7 @@ import { ASCII_ATLAS, PLACEHOLDER, gl, texFromCanvas } from './gl';
 import { assets, imgTex } from './state';
 import { blobState } from './blob';
 import { markDirty } from './loop';
+import { altText } from './partfx';
 
 export const textCache=new Map(),fontReq=new Set();
 export function textLines(T,x,fsz){const raw=String(T.str||' ').split(/\r?\n|\\n/);const wrap=+T.wrap||0;const out=[];
@@ -11,8 +12,8 @@ export function textLines(T,x,fsz){const raw=String(T.str||' ').split(/\r?\n|\\n
 /* Per-line typography (M4): T.lines[i] = {size?, dx?, gap?, weight?, font?, italic?}; size = × base size, dx = indent and
  * gap = extra space before the line, both in em of the base size. Without per-line values the layout is the old one. */
 export const lineSpec=(T,i)=>(T.lines&&T.lines[i])||{};
-export function textTex(L){const k=JSON.stringify(L.text);let e=textCache.get(L.id);if(e&&e.k===k)return e;
-  const T=L.text,fsz=200,fstr=`${T.weight} ${fsz}px "${T.font}", Georgia, serif`;
+export function textTex(L,alt=null){const T0=alt==null?L.text:{...L.text,str:alt},k=JSON.stringify(T0),ck=alt==null?L.id:L.id+'#alt';let e=textCache.get(ck);if(e&&e.k===k)return e;
+  const T=T0,fsz=200,fstr=`${T.weight} ${fsz}px "${T.font}", Georgia, serif`;
   const c=document.createElement('canvas');let x=c.getContext('2d');
   const lines=textLines(T,x,fsz),n=lines.length,lh=+T.lh||1.15,align=T.align||'center';
   const LS=lines.map((_,i)=>{const q=lineSpec(T,i),sz=Math.min(6,Math.max(.1,+q.size||1)),fs=fsz*sz;
@@ -43,10 +44,10 @@ export function textTex(L){const k=JSON.stringify(L.text);let e=textCache.get(L.
     aux=auxTex(data,cw,e&&e.aux,AH);info=[Math.max(1,ci),word+1,anchor,0];}
   else info=[0,0,anchor,0];
   const layout=lines.map((s,i)=>({str:s,top:tops[i],h:hs[i],left:lefts[i],w:widths[i]}));
-  e={k,tex:texFromCanvas(c,e&&e.tex),w:c.width,h:c.height,f:fstr,fs:LS.map(q=>q.f),aux,info,geo,layout,fsz,a0:anchor===1?0:anchor===2?1:.5};textCache.set(L.id,e);return e;}
+  e={k,tex:texFromCanvas(c,e&&e.tex),w:c.width,h:c.height,f:fstr,fs:LS.map(q=>q.f),aux,info,geo,layout,fsz,a0:anchor===1?0:anchor===2?1:.5};textCache.set(ck,e);return e;}
 export function auxTex(data,w,old,hgt=1){const t=old||gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,hgt,0,gl.RGBA,gl.UNSIGNED_BYTE,data);gl.pixelStorei(gl.UNPACK_ALIGNMENT,4);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t;}
-export function mediaFor(L){if(L.type==='text'||L.type==='mtext')return textTex(L);if(L.type==='ascii')return ASCII_ATLAS;if(L.type==='blob'){const B=blobState.get(L.id);return B&&B.ovTex?{tex:B.ovTex,w:B.ow,h:B.oh}:null;}if(L.type==='image')return (L.asset&&imgTex.get(L.asset))||PLACEHOLDER;return null;}
+export function mediaFor(L,t=null){if(L.type==='text'||L.type==='mtext'){const a=t==null?null:altText(L,t);return textTex(L,a);}if(L.type==='ascii')return ASCII_ATLAS;if(L.type==='blob'){const B=blobState.get(L.id);return B&&B.ovTex?{tex:B.ovTex,w:B.ow,h:B.oh}:null;}if(L.type==='image')return (L.asset&&imgTex.get(L.asset))||PLACEHOLDER;return null;}
 export function loadAsset(id){if(imgTex.has(id)||!assets[id])return;const im=new Image();im.onload=()=>{imgTex.set(id,{tex:texFromCanvas(im),w:im.naturalWidth,h:im.naturalHeight});markDirty();};im.src=assets[id];}

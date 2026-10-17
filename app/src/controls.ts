@@ -3,6 +3,7 @@ import { h } from './dom';
 import { PALS, PAL_ORDER, palCSS } from './palettes';
 import { BASEK, BLENDS, EFFECTS, SVG_CHEV, SVG_EYE, SVG_EYEOFF, SVG_WAVE, SVG_X, WAVES } from './effects/index';
 import { LIB } from './library';
+import { st } from './state';
 import { SVG_CURVE, curV, hasK, keyButton, keyEditor, setVal } from './evaluation';
 import { renderLayers } from './layers';
 import { renderInsp } from './inspector';
@@ -75,10 +76,18 @@ export function fxListUI(L){
     const up=L.fx.length>1?h('button',{class:'eye','aria-label':'Előrébb a láncban',title:'Előrébb',disabled:i===0},'▲'):null;if(up)up.onclick=()=>mv(-1);
     const dn=L.fx.length>1?h('button',{class:'eye','aria-label':'Hátrébb a láncban',title:'Hátrébb',disabled:i===L.fx.length-1},'▼'):null;if(dn)dn.onclick=()=>mv(1);
     const hd=h('header',null,tog,nm,up,dn,eye,del);
-    const toggle=()=>{open=!open;body.hidden=!open;tog.classList.toggle('open',open);if(open&&!body.childElementCount){for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}};
+    const toggle=()=>{open=!open;body.hidden=!open;tog.classList.toggle('open',open);if(open&&!body.childElementCount){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}};
     tog.onclick=toggle;nm.onclick=toggle;
     list.appendChild(h('div',{class:'fxi'},hd,body));});
   const s=h('select',{'aria-label':'Megjelenés hozzáadása'},h('option',{value:''},'Megjelenés hozzáadása…'),...LIB.fx.map((it,i)=>h('option',{value:i},it.name)));
   s.onchange=()=>{if(s.value==='')return;L.fx.push(LIB.fx[+s.value].make());commit();renderInsp();renderLayers();};
   list.appendChild(h('div',{class:'addfx'},h('div',{class:'pop'},s)));
   list.appendChild(h('p',{class:'small'},'A lánc felülről lefelé hat. Tipp: húzz egy Megjelenést a könyvtárból közvetlenül erre a rétegre.'));return list;}
+
+/** Részecskékre bontás: new texts for the scatter → reassemble cycle (text layers only) + a hint about cues. */
+function pdispExtra(L,F){const isT=L.text&&(L.type==='text'||L.type==='mtext');const kids=[];
+  if(Math.round(F.p.trig.v)===1&&!(st.cues&&st.cues.length))kids.push(h('p',{class:'small'},'Még nincs jelzés: lejátszás közben nyomd a J-t ütemre, vagy válaszd az „Ismétlődve” módot.'));
+  if(isT){const ta=h('textarea',{class:'code',rows:3,spellcheck:'false','aria-label':'Új szövegek összeálláskor',placeholder:'Soronként egy új szöveg (üres: ugyanaz a felirat áll vissza)'});ta.value=(F.alts||[]).join('\n');
+    ta.onchange=()=>{const a=ta.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(a.length)F.alts=a;else delete F.alts;commit();};
+    kids.push(h('div',{class:'ctl'},h('div',{class:'top'},h('span',{class:'lab'},'Új szövegek összeálláskor (soronként egy)')),ta,h('p',{class:'small'},'Szétesés után a következő szöveg áll össze, körbe. Az eredeti felirat a réteg szövege marad, bármikor átírható.')));}
+  return h('div',null,...kids);}
