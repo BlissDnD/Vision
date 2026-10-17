@@ -326,3 +326,45 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .tlx-cues{min-height:14px}
 .tlx-cue{position:absolute;top:1px;bottom:1px;width:3px;margin-left:-1.5px;background:#f5b942;border-radius:2px;cursor:pointer}
 #perfSmooth{width:70px;accent-color:var(--accent);margin:0 4px}
+
+/* ----- U1: Animálás mód, mozgáspálya, animáció-jelek ----- */
+.wrap.animon{box-shadow:inset 0 0 0 2px #ff453a}
+#animBtn[aria-pressed=true]{background:#ff453a;color:#fff}
+.mpath{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible}
+.mp-line{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-dasharray:5 4;filter:drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.mp-dot{fill:var(--fg);stroke:var(--accent);stroke-width:2;pointer-events:auto;cursor:move;touch-action:none}
+.mp-dot.on{fill:var(--accent);stroke:#fff}
+.mp-dot:hover{stroke-width:3}
+.abadge{font-size:10px;letter-spacing:.06em;color:var(--accent);white-space:nowrap;cursor:help}
+.abadge:empty{display:none}
+.scrub b .abadge{margin-left:4px;font-weight:600}
+.tlx-chev{border:0;background:none;color:var(--fg3);width:14px;padding:0;margin:0 3px 0 -4px;font:600 13px/1 var(--f);transition:transform .12s;flex:none}
+.tlx-chev.open{transform:rotate(90deg);color:var(--fg)}
+.tlx-sym{color:var(--accent);font-size:10px;margin-left:5px;letter-spacing:.05em;flex:none}
+.tlx-pname{font-size:11px;color:var(--fg3)}.tlx-pname .tlx-sym{margin:0 5px 0 0;min-width:10px}
+.tlx-prow{height:20px;background:color-mix(in srgb,var(--fill2) 50%,transparent)}
+.tlx-key.sub{top:5px;width:9px;height:9px;margin-left:-4.5px;background:color-mix(in srgb,var(--accent) 70%,var(--fg))}
+.tlx-wave{position:absolute;left:0;right:0;top:7px;height:6px;opacity:.55;pointer-events:auto;background:repeating-linear-gradient(90deg,transparent 0 3px,var(--accent) 3px 4px);-webkit-mask:radial-gradient(circle at 50% 50%,#000 60%,transparent 62%) 0 0/8px 6px repeat-x}
+.tlx-sig{position:absolute;left:0;right:0;top:8px;height:4px;border-radius:2px;background:repeating-linear-gradient(90deg,#f5b942 0 2px,transparent 2px 6px);opacity:.7}
+.tlx-link{position:absolute;left:0;right:0;top:9px;height:2px;background:var(--fg3);opacity:.6}
+.kmenu{position:fixed;z-index:60;min-width:150px;padding:4px;background:var(--card);border:1px solid var(--sep);border-radius:10px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.kmenu-h{font-size:10.5px;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;padding:4px 8px}
+.kmenu button{border:0;background:none;text-align:left;padding:5px 8px;border-radius:6px;font-size:12.5px}
+.kmenu button:hover{background:var(--fill2)}.kmenu button.on{color:var(--accent);font-weight:600}
+.kmenu hr{border:0;border-top:1px solid var(--sep);margin:3px 0}
+.itabs{position:sticky;top:0;z-index:3;display:flex;gap:2px;padding:4px 10px;background:var(--side);border-bottom:1px solid var(--sep)}
+.itab{flex:1;height:32px;border:0;border-radius:8px;background:none;color:var(--fg3);display:grid;place-items:center;position:relative;padding:0}
+.itab svg{width:17px;height:17px}.itab:hover{color:var(--fg);background:var(--fill2)}
+.itab[aria-selected=true]{color:var(--accent);background:var(--accent-soft)}
+.itab-dot{position:absolute;top:5px;right:calc(50% - 13px);width:6px;height:6px;border-radius:50%;background:#ff453a}
+.itab-n{position:absolute;top:3px;right:calc(50% - 16px);font:600 9px/12px var(--f);min-width:12px;height:12px;border-radius:6px;background:var(--fill);color:var(--fg2);font-style:normal}
+.itab-title{padding:9px 14px 0;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--fg3)}
+.ipane .sec:first-child{border-top:0}
+.ipane>.desc{margin:6px 14px 2px}
+.alist{display:flex;flex-direction:column;gap:2px}
+.arow{display:flex;align-items:center;gap:6px;min-height:24px;font-size:12.5px}
+.arow .asym{color:var(--accent);min-width:24px;font-size:11px}.arow .aname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn.rec{background:#ff453a;color:#fff;border-color:transparent}
+/* tömörebb sorok a fülekben */
+.ipane .sec .content{gap:9px;padding-bottom:12px}
+.ipane .sec>summary{padding:9px 0}

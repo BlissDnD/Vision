@@ -98,3 +98,11 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - Jelenetfény: `st.light` (`LIGHTP`/`normLight`, `state.ts`), `lightU` a `render.ts`-ben (`setU` az obj3d/sdfscene-en, uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap`); alapértéken bitre a régi kép. UI és csillanás-húzás: `lightui.ts`.
 - `partfx.ts`: Részecske Megjelenés `pdisp` (fx-ként futó részecske-shader, `runChain` `def.points` ág; nyugalomban másolás, közben `MIX` átúsztatás); események: kézi / `st.cues` / ismétlődés; `altText` = szövegváltás a szétesés csúcsán (külön textúra-gyorsítótár `id#alt`).
 - `effects/soft3d.ts`, `cloud.ts`: Felhő (`cloud3d`): blob-unió + zaj, puha sűrűséghéj raymarch, önárnyék a fény felé vett SDF-különbségből; a blobok a `cloudBlobs`-ból (Alak + Változat, determinisztikus, a képbe illesztve). Lufi (`balloon`) **host-Megjelenés**: `EffectDef.host` = célrétegtípusok; a `runChain` kihagyja, a forrás `setU`-ja olvassa (`balloonVals`); `fxFits`/`fxHostNote` (`effects/index.ts`) szűri a ráhúzást (`attachFx`, `addFromLib`, lánc-lista).
+
+## U1 (2026-10-18): Animálás, pálya, Sávok, fülek
+
+- `evaluation.ts`: `setVal` = az animálható szerkesztés egyetlen kapuja (Eljátszás-hook `R.perfHook` → kulcs, ha kulcsos vagy `R.animMode`; kulcsos értéknél megállítja a lejátszást). Nem animálható vezérlő (`noAnim` csúszka, `scrubField` `keyed` nélkül) közvetlenül `obj.v`-t ír. `animKinds(n)` = 'k' kulcs, 'w' LFO, 's' jel, 'l' Kapcsolat; `ANIM_SYM`/`ANIM_TIP`. Új kulcs görbéje `DEF_EASE=0` (Lágy); a görbe nélküli régi kulcs továbbra is 5.
+- `animate.ts`: Animálás mód (`setAnimMode`, A), mozgáspálya SVG (`updPath`, a `loop.ts` hívja), pont-húzás → `setKey` x+y.
+- `timeline.ts`: `paramList(L)` (n, p és `f<i>.p/n` útvonalak), `objAt`, `layerKeyTimes/keysAt(L,t,path?)`; kijelölés `R.tlxSels=[{id,t,p?}]` (p nélkül = a réteg minden paramétere az adott időben); `selKeyRefs`, `retimeSel(f,copy)` (mozgatás/nyújtás egyben), `easeSel`, `keyMenu` (jobb klikk), `R.tlxOpenIds` (kinyitott sorok, nem mentett), `queueTL` (összevont újrarajzolás).
+- `inspector.ts`: fülek (`ITABS`, `setITab`, `R.itab` a localStorage-ban `vel.itab`), `motionSummary` (Mozgás fül feje).
+- `perform.ts`: általános, többösszetevős felvétel (`applyTakeN`, `smoothTakeN`); az M5 API (`applyTake`, `smoothTake`) megmaradt.

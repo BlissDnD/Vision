@@ -2,6 +2,28 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — U1 (B szakasz) „Animálás és jobb panel”: 0.23.0-u1
+
+- **Animálás mód** (A, piros gomb a vászon eszköztárán, piros keret a vásznon): bekapcsolva minden animálható állítás (vászonhúzás: pozíció/méret/forgatás/3D forgatás, csúszka, szám) kulcskockát ír az aktuális időpontra. Ha a paraméternek még nincs kulcsa és nem 0 mp-nél állsz, a korábbi érték 0 mp-re kerül. A nem animálható vezérlők (Időzítés, sorbeállítások, hangerő stb.) soha nem írnak kulcsot.
+- **Mozgáspálya** a vásznon (`src/animate.ts`): a pozíciókulcsokból szaggatott pálya, kulcsonként egy húzható pont (x és y együtt mozog), a lejátszófej alatti pont kiemelve. Visszavonható.
+- **Sávok:** a réteg sora kinyitható (›) az animált paraméterekre, a Megjelenések paramétereit is beleértve; paramétersoronként saját kulcsok, ∿ hullám-, ♪ jel- és ⇢ Kapcsolat-csík. Téglalapos kijelölés réteg- és paramétersorban is; húzás = mozgatás, **Alt+húzás = nyújtás** (több kijelölt időpontnál; egy időpontnál másolás, mint eddig), ⌘/Ctrl+húzás = másolás, Delete = törlés, ⌘C/⌘V. **Jobb klikk a kulcson: görbe-gyorsmenü** (Lineáris, Lágy, Ki-be, Erős, Rugós, Pattanó, Visszalendülés, Gumi, Lépcsős, Törlés) a kijelölt kulcsokra.
+- **Animáció-jelek** minden csúszkán és Elhelyezés-mezőn: ◆ kulcs, ∿ hullám, ♪ hang/jel, ⇢ Kapcsolat (▭ mozgásblokk a Mozgás fülön); élőben frissülnek.
+- **Jobb panel ikonfülekkel:** Tartalom · Szín és megjelenés · Mozgás · Effektek · Elhelyezés (a választott fül megmarad). A Mozgás fül tetején „Animáció” lista: minden animált paraméter jelekkel, kulcsszám, „következő kulcs”, animáció eltávolítása; Animálás és Eljátszás gomb; alatta Időzítés és Kapcsolatok. A Mozgás fülön piros pont, ha a réteg animált; az Effektek fülön a lánc hossza. Tömörebb sorközök.
+- **Eljátszás új indítása:** élesítéskor (E) a lejátszás megáll; az első tényleges mozdulatra (vászonhúzás, bármely animálható csúszka vagy szám-húzás) indul a lejátszás és a felvétel, elengedéskor leáll, a lejátszófej visszaugrik a felvétel elejére. Bármely animálható paraméterrel megy; a mozdulat minden érintett paramétere ugyanannak a felvételnek az összetevője (x+y együtt simul). Simítás + pontritkítás tartományra normálva; a nyers felvétel megmarad, a Simítás csúszka utólag is hat.
+- **Feltárt és javított kulcskocka-hibák:**
+  1. Lejátszás közben kulcsos értéket állítva a kulcsok „elkenődtek” az idővonalon (minden képkockánál új kulcs). Most az állítás megállítja a lejátszást.
+  2. Egy csúszka meghúzása után (fókuszban maradt) a csúszka nem követte többé a kulcsokat lejátszáskor.
+  3. A Megjelenések (effektek) kulcsai egyáltalán nem látszottak az idővonalon, nem voltak kijelölhetők/mozgathatók, a „,”/„.” ugrás sem találta őket.
+  4. A Sávok panel üres részén húzva (téglalapos kijelölés) a vászon is elkezdte húzni a kijelölt réteget; a panelen görgetve a réteg mérete változott.
+  5. Kulcs húzásakor, ha még nem volt kijelölve, a régi kijelölés pontjai mozogtak a képernyőn.
+  6. Kijelölt kulcsokat egymáson át mozgatva kulcs veszhetett el (most a kijelöltek egyben emelődnek ki és kerülnek vissza).
+  7. Csúszkahúzás kulcsos paraméteren minden eseménynél újraépítette a teljes Sávok panelt (lassú reakció); most összevont frissítés.
+  8. Új kulcs alapgörbéje „Rugó – finom” volt (túllövés); most „Lágy”. A régi, görbe nélküli kulcsok változatlanul számolnak.
+- **Mérés (kattintásszám egy kétkulcsos mozgáshoz):** előtte: Elhelyezés lenyitása → ◆ X → ◆ Y → húzás → idő → húzás = 6 lépés (vagy K-val 4, ha ismert); most: A → húzás → idő → húzás = 4 lépés, gombkeresés nélkül.
+- Teszt: `tests/u1_anim.js` (Animálás 2 kulcs, 0 mp-es előző érték, nem animálható vezérlő nem kulcsol, lejátszás közbeni állítás megáll; pálya 2 pont, pont-húzás 2D-ben + visszavonás; Megjelenés-kulcs az idővonalon; paramétersorok, paraméter-szintű törlés, nyújtás 0..2→0..4, egymáson átmozgatás, görbe-gyorsmenü, téglalapos kijelölés paramétersorban; jelek, 5 fül, Mozgás fül; Eljátszás: élesítve áll, lenyomásra nem indul, első mozdulatra igen, 15 kulcs, eltérés 4,6%, visszaugrás, x+y egy felvétel, üres kattintás nem változtat; mentés→újranyitás; régi kulcs görbéje). **25/25 zöld.** Élő böngészős próba: a felhasználó végzi.
+- **Felhasználói próba (3 perc):** 1) Könyvtár: szöveg → A → 0 mp-nél húzd balra, 2 mp-nél jobbra → lejátszás; a pálya egy pontját húzd el. 2) E → semmi nem mozog → húzz meg egy csúszkát (pl. Ragyogás) → indul és felvesz; elengedés után lejátszva ugyanazt adja. 3) Sávok: a réteg melletti › → húzással jelölj ki kulcsokat, told el, Alt+húzás nyújt, jobb klikk → Rugós. 4) Jobb panel: Mozgás fül, látszik, mi animált.
+- Korlát: a pálya pontjai sima görbét adnak, Bezier-kezelő nincs; a Jelenetfény kulcsai nincsenek külön sávon; a csoporton belüli réteg pályája a saját koordinátáiban rajzolódik (mint a gizmó); a görbeszerkesztő a régi.
+
 ## Állapot: 2026-10-17 éjjel — M7 (D szakasz) második szelet: 0.22.0-m7b „Felhő + Lufi”
 
 - Új Forrás: **Felhő** (`cloud3d`, `src/effects/soft3d.ts`, `src/cloud.ts`): önálló, puha, megvilágított felhő (nem égbolt). Valódi 3D alak: 8 gömbből simított unió (`cloudBlobs`, Alak + Változat szerint determinisztikus), zajos gomolyokkal; puha sűrűséghéjként raymarcholva, önárnyékolással (fény felé vett SDF-különbség), ezüst peremmel. Vezérlők: Alak (Gomoly / Lapos / Tornyos), Sűrűség, Puhaság, Részletesség, Gomolygás (ki/be + tempó), Szél (látvány), Változat; Szín, Árnyékszín, Ezüst perem; Dőlés/Fordulat (az O eszközzel is). Mozgatás/méretezés a szokásos gizmóval.

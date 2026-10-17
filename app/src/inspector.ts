@@ -1,17 +1,17 @@
 import { R } from './runtime';
 import { $, h } from './dom';
-import { BASEK, EFFECTS, KIND_LABEL, PRIM_DEF, PRIM_OP, PRIM_T, S, SEL, iconKind, kindOf } from './effects/index';
+import { SVG_X, BASEK, EFFECTS, KIND_LABEL, PRIM_DEF, PRIM_OP, PRIM_T, S, SEL, iconKind, kindOf } from './effects/index';
 import { getProg, progError } from './gl';
 import { mkN, sel, st } from './state';
 import { macroApply } from './macros';
 import { RECIPES } from './recipes';
-import { hasK, keyEditor } from './evaluation';
+import { ANIM_SYM, ANIM_TIP, KEY_EPS, animKinds, hasK, keyEditor, keyVal, seekTo } from './evaluation';
 import { EASES, MOVES } from './render';
 import { ungroup } from './itemops';
 import { renderLayers } from './layers';
 import { blendRow, ctlParam, ctlSelect, ctlSlider, ctlSwitch, fxListUI, palettePicker, scrubField, section } from './controls';
 import { commit, scheduleSave } from './history';
-import { renderTimeline } from './timeline';
+import { paramList, renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { showCode } from './modals';
 import { childVariantSection, linkSection, variantSection } from './variantsui';
@@ -25,32 +25,34 @@ export function renderInsp(){
   const L=sel();
   if(!L){P.appendChild(h('div',{class:'empty'},'Válassz ki egy réteget, vagy kezdj egy recepttel a lenti könyvtárból.'));return;}
   const k=kindOf(L);const isG=L.type==='group';const d=isG?null:EFFECTS[L.type];
+  const TB={content:[],look:[],motion:[],fx:[],place:[]};const T=(tab,el)=>{if(el)TB[tab].push(el);};
   const nm=h('input',{class:'nm',value:L.name,'aria-label':'Réteg neve'});nm.onchange=()=>{L.name=nm.value||L.name;commit();renderLayers();};
   P.appendChild(h('div',{class:'ihead'},h('span',{class:'lic',html:iconKind(k)}),h('div',{class:'tt'},nm,h('small',null,isG?(L.macros.length?'Recept · csoport':'Csoport'):(KIND_LABEL[k]+(d.name!==L.name?' · '+d.name:''))))));
   if(isG){
-    const R=RECIPES.find(r=>r.n===L.recipe);if(R)P.appendChild(h('p',{class:'desc'},R.desc));
-    if(L.macros.length)P.appendChild(section('Vezérlők','macro',true,...L.macros.map(m=>{const o={v:m.v,a:0};return ctlSlider(o,{k:'m',l:m.l,min:0,max:1},{big:true,noAnim:true,onInput:()=>macroApply(L,m,o.v)});})));
-    P.appendChild(section('Megjelenés','blend',true,blendRow(L),ctlSlider(L.n.opacity,BASEK.opacity),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
-    P.appendChild(section('Csoporteffektek','fx',L.fx.length>0,fxListUI(L)));
-    P.appendChild(timingSection(L));
-    P.appendChild(placement(L,'Elhelyezés (az egész csoport)'));
-    P.appendChild(section('Rétegek','grp',true,h('p',{class:'small'},`${L.children.length} réteg van benne. Nyisd ki a rétegfában, és bármelyiket finomhangolhatod.`),
+    const Rc=RECIPES.find(r=>r.n===L.recipe);if(Rc)T('content',h('p',{class:'desc'},Rc.desc));
+    if(L.macros.length)T('content',section('Vezérlők','macro',true,...L.macros.map(m=>{const o={v:m.v,a:0};return ctlSlider(o,{k:'m',l:m.l,min:0,max:1},{big:true,noAnim:true,onInput:()=>macroApply(L,m,o.v)});})));
+    T('look',section('Megjelenés','blend',true,blendRow(L),ctlSlider(L.n.opacity,BASEK.opacity),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
+    T('fx',section('Csoporteffektek','fx',true,fxListUI(L)));
+    T('motion',motionSummary(L));T('motion',timingSection(L));
+    T('place',placement(L,'Elhelyezés (az egész csoport)'));
+    T('content',section('Rétegek','grp',true,h('p',{class:'small'},`${L.children.length} réteg van benne. Nyisd ki a rétegfában, és bármelyiket finomhangolhatod.`),
       h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>{L.open=!L.open;renderLayers();renderInsp();}},L.open?'Rétegek elrejtése':'Rétegek mutatása'),h('button',{class:'btn',onclick:()=>ungroup(L)},'Csoport felbontása'))));
-    P.appendChild(variantSection(L));P.appendChild(linkSection(L));
-    return;}
-  P.appendChild(h('p',{class:'desc'},d.desc));
-  {const er=progError(L);if(er&&L.type!=='custom')P.appendChild(h('div',{class:'errbox'},'Ez az effekt nem fordult le ezen a gépen, ezért üres marad. Másold ki az alábbi hibát, és küldd el, hogy javítsam.',h('pre',null,er)));}
+    T('content',variantSection(L));T('motion',linkSection(L));
+    tabbed(P,L,TB);return;}
+  T('content',h('p',{class:'desc'},d.desc));
+  {const er=progError(L);if(er&&L.type!=='custom')T('content',h('div',{class:'errbox'},'Ez az effekt nem fordult le ezen a gépen, ezért üres marad. Másold ki az alábbi hibát, és küldd el, hogy javítsam.',h('pre',null,er)));}
   if(d.groups){
     d.groups.forEach(gr=>{const kids=gr.keys.map(key=>{const pd=d.params.find(p=>p.k===key);return pd?ctlParam(L,pd):null;}).filter(Boolean);
       if(gr.text){const ti=h('input',{class:'txt',value:L.btext||'','aria-label':'Saját felirat-sablon'});ti.oninput=()=>{L.btext=ti.value;};ti.onchange=commit;
         kids.push(h('div',{class:'ctl'},h('div',{class:'top'},h('span',{class:'lab'},'Saját felirat-sablon')),ti,h('p',{class:'small'},'Helyettesítők: {id} {x} {y} {w} {h} {v}. Új sor: \\n')));}
-      P.appendChild(section(gr.t,'g:'+gr.t,!!gr.open,...kids));});
-    if(d.mesh)P.appendChild(spineSection(L));
-    if(d.usesPal)P.appendChild(section('Paletta (a Színezés módhoz)','color',false,palettePicker(L),ctlSlider(L.n.hue,BASEK.hue)));
-    P.appendChild(section('Megjelenés','blend',true,ctlSlider(L.n.opacity,{...BASEK.opacity,l:'Erősség'}),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
-    P.appendChild(section('Rétegeffektek','fx',L.fx.length>0,fxListUI(L)));
-    if(!d.mesh)P.appendChild(section('Részletek','details',false,h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása'))));
-    return;}
+      T(/(fény|anyag|szín|stúdió|tükör)/i.test(gr.t)?'look':'content',section(gr.t,'g:'+gr.t,!!gr.open,...kids));});
+    if(d.mesh)T('place',spineSection(L));
+    if(d.usesPal)T('look',section('Paletta (a Színezés módhoz)','color',false,palettePicker(L),ctlSlider(L.n.hue,BASEK.hue)));
+    T('look',section('Megjelenés','blend',true,ctlSlider(L.n.opacity,{...BASEK.opacity,l:'Erősség'}),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
+    T('fx',section('Rétegeffektek','fx',true,fxListUI(L)));
+    T('motion',motionSummary(L));T('motion',linkSection(L));
+    if(!d.mesh)T('content',section('Részletek','details',false,h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása'))));
+    tabbed(P,L,TB,true);return;}
   const mainKeys=d.main||d.params.slice(0,3).map(p=>p.k);
   const mainKids=[];
   if(L.type==='text'||L.type==='mtext'){const ti=h('textarea',{class:'txt',rows:String(Math.min(5,Math.max(1,String(L.text.str).split('\n').length))),'aria-label':'Felirat (Enter = új sor)'});ti.value=L.text.str;ti.oninput=()=>{L.text.str=ti.value;ti.rows=Math.min(5,Math.max(1,ti.value.split('\n').length));};ti.onchange=commit;
@@ -71,25 +73,26 @@ export function renderInsp(){
     ta.oninput=()=>{clearTimeout(tmo);tmo=setTimeout(()=>{L.code=ta.value;check();scheduleSave();},350);};ta.onchange=()=>{L.code=ta.value;commit();};
     ta.onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();ta.setRangeText('  ',ta.selectionStart,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input'));}};mainKids.push(ta,msg);setTimeout(check,0);}
   for(const key of mainKeys){const pd=d.params.find(p=>p.k===key);if(pd)mainKids.push(ctlParam(L,pd,true));}
-  if(L.type==='sdfscene')P.appendChild(sdfObjectsSection(L));
-  P.appendChild(section(k==='fx'?'Szűrő':'Fő beállítások','main',true,...mainKids));
-  if(usesLight(L))P.appendChild(lightSection(L));
-  if((k!=='fx'&&!d.noPal)||d.usesPal)P.appendChild(section('Szín','color',true,palettePicker(L),ctlSlider(L.n.hue,BASEK.hue)));
+  if(L.type==='sdfscene')T('content',sdfObjectsSection(L));
+  T('content',section(k==='fx'?'Szűrő':'Fő beállítások','main',true,...mainKids));
+  if(usesLight(L))T('look',lightSection(L));
+  if((k!=='fx'&&!d.noPal)||d.usesPal)T('look',section('Szín','color',true,palettePicker(L),ctlSlider(L.n.hue,BASEK.hue)));
   const blendKids=k==='fx'?[ctlSlider(L.n.opacity,{...BASEK.opacity,l:'Erősség'})]:[blendRow(L),ctlSlider(L.n.opacity,BASEK.opacity),ctlSlider(L.n.key,BASEK.key)];
-  P.appendChild(section('Megjelenés','blend',true,...blendKids));
+  T('look',section('Megjelenés','blend',true,...blendKids));
   const maskKids=[ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})];
   if(k==='shape')maskKids.push(ctlSwitch('Csak maszkként (láthatatlan)',L.maskOnly,v=>{L.maskOnly=v;commit();renderLayers();}));
   maskKids.push(h('p',{class:'small'},k==='shape'?'A fölötte lévő rétegeknél kapcsold be a vágást, és csak ebben a formában fognak látszani.':'Bekapcsolva csak az alatta lévő réteg (pl. egy alakzat) területén látszik.'));
-  P.appendChild(section('Maszk','mask',L.clip||L.maskOnly||k==='shape',...maskKids));
-  P.appendChild(section('Rétegeffektek','fx',L.fx.length>0,fxListUI(L)));
-  if(k!=='fx')P.appendChild(timingSection(L));
-  P.appendChild(placement(L,k==='fx'?'Középpont':'Elhelyezés'));
+  T('look',section('Maszk','mask',L.clip||L.maskOnly||k==='shape',...maskKids));
+  T('fx',section('Rétegeffektek','fx',true,fxListUI(L)));
+  T('motion',motionSummary(L));if(k!=='fx')T('motion',timingSection(L));
+  T('place',placement(L,k==='fx'?'Középpont':'Elhelyezés'));
   const detKids=d.params.filter(p=>!mainKeys.includes(p.k)).map(pd=>ctlParam(L,pd));
   if(L.type!=='custom')detKids.push(h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása')));
-  P.appendChild(section('Részletek','details',false,...detKids));
-  const ls=linesSection(L);if(ls)P.appendChild(ls);
-  const vs=childVariantSection(L);if(vs)P.appendChild(vs);
-  P.appendChild(linkSection(L));
+  const ls=linesSection(L);T('content',ls);
+  T('content',section('Részletek (ritkább beállítások)','details',false,...detKids));
+  T('content',childVariantSection(L));
+  T('motion',linkSection(L));
+  tabbed(P,L,TB);
 }
 export function timingSection(L){
   // defaults are shown but only written into the layer on the first edit (opening the panel must not change the project)
@@ -128,3 +131,40 @@ export function placement(L,title){
   const g=h('div',{class:'grid2'},scrubField('X',L.n.x,BASEK.x,.004,upd),scrubField('Y',L.n.y,BASEK.y,.004,upd),scrubField('Méret',L.n.s,BASEK.s,.006,upd),scrubField('Szög',L.n.r,BASEK.r,.5,upd),scrubField('Mélység',L.n.z,BASEK.z,.01,upd));upd();
   const reset=h('button',{class:'btn',onclick:()=>{for(const k of ['x','y','r','spin'])L.n[k]=mkN(0);delete L.n.s.k;L.n.s=mkN(L.type==='text'?.16:L.type==='image'?.8:1);commit();renderInsp();}},'Alaphelyzet');
   return section(title,'place',['x','y','s','r'].some(k=>hasK(L.n[k])),g,curves,h('p',{class:'small'},'◆ = kulcskocka az aktuális időpontra (K: mind a négyre). Kulcskockás értéknél a vásznon húzva is kulcskocka keletkezik.'),ctlSlider(L.n.spin,BASEK.spin),h('div',{class:'btnrow'},reset));}
+
+/* ----- U1: tabbed inspector ----- */
+export const ITABS:[string,string,string][]=[
+  ['content','Tartalom','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M12 6v13M9 19h6"/></svg>'],
+  ['look','Szín és megjelenés','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 0 1-12 0c0-3.1 2.5-6.3 6-10.5z"/></svg>'],
+  ['motion','Mozgás','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18c4 0 5-12 9-12s5 6 9 6"/><path d="M9 4.5 11 6.5 9 8.5 7 6.5z" fill="currentColor"/></svg>'],
+  ['fx','Effektek','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M10 3l1.7 4.6L16.5 9.3l-4.8 1.7L10 15.6l-1.7-4.6L3.5 9.3l4.8-1.7z"/><path d="M17.5 14l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></svg>'],
+  ['place','Elhelyezés','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M12 3l-2.5 2.5M12 3l2.5 2.5M12 21l-2.5-2.5M12 21l2.5-2.5M3 12l2.5-2.5M3 12l2.5 2.5M21 12l-2.5-2.5M21 12l-2.5 2.5"/></svg>']];
+R.itab=(()=>{try{return localStorage.getItem('vel.itab')||'content';}catch(_){return 'content';}})();
+export function setITab(t){R.itab=t;try{localStorage.setItem('vel.itab',t);}catch(_){}document.querySelectorAll('#insp .itab').forEach((b:any)=>b.setAttribute('aria-selected',String(b.dataset.tab===t)));
+  document.querySelectorAll('#insp .ipane').forEach((p:any)=>p.hidden=p.dataset.tab!==t);}
+/** Tab bar + one pane per tab. Empty tabs are hidden; the Mozgás tab carries a dot when anything animates, Effektek the chain length. */
+function tabbed(P,L,TB,_noTiming?){
+  const anim=layerAnimated(L);const fxN=(L.fx||[]).length;
+  const avail=ITABS.filter(([k])=>TB[k].length);if(!avail.some(([k])=>k===R.itab))R.itab=avail[0]?avail[0][0]:'content';
+  const bar=h('div',{class:'itabs',role:'tablist','aria-label':'Tulajdonságok'},...avail.map(([k,l,ic])=>{const b=h('button',{class:'itab',type:'button',role:'tab','data-tab':k,'aria-selected':String(k===R.itab),title:l,'aria-label':l,html:ic});
+    if(k==='motion'&&anim)b.appendChild(h('i',{class:'itab-dot',title:'Van animáció'}));if(k==='fx'&&fxN)b.appendChild(h('i',{class:'itab-n'},String(fxN)));b.onclick=()=>setITab(k);return b;}));
+  P.appendChild(bar);P.appendChild(h('div',{class:'itab-title'},(ITABS.find(t=>t[0]===R.itab)||ITABS[0])[1]));
+  for(const [k] of avail)P.appendChild(h('div',{class:'ipane','data-tab':k,role:'tabpanel',hidden:k!==R.itab},...TB[k]));
+  bar.addEventListener('click',()=>{const t=P.querySelector('.itab-title');if(t)t.textContent=(ITABS.find(x=>x[0]===R.itab)||ITABS[0])[1];});}
+export function layerAnimated(L){return paramList(L).some(q=>animKinds(q.o))||!!(L.tm&&(L.tm.in||L.tm.out));}
+/** Mozgás tab head: Animálás mode, Eljátszás, and every animated parameter of the layer with what drives it. */
+export function motionSummary(L){
+  const prs=paramList(L).map(q=>({...q,kinds:animKinds(q.o)})).filter(q=>q.kinds);const blk=!!(L.tm&&(L.tm.in||L.tm.out));
+  const am=h('button',{class:'btn'+(R.animMode?' rec':''),type:'button','aria-pressed':String(!!R.animMode),title:'A'},R.animMode?'● Animálás be (A)':'Animálás (A)');
+  am.onclick=()=>{import('./animate').then(m=>{m.setAnimMode(!R.animMode);renderInsp();});};
+  const pf=h('button',{class:'btn'+(R.perform?' rec':''),type:'button','aria-pressed':String(!!R.perform),title:'E'},R.perform?'● Eljátszás élesítve (E)':'Eljátszás (E)');
+  pf.onclick=()=>{import('./perform').then(m=>{m.setPerform(!R.perform);renderInsp();});};
+  const rows=prs.map(q=>{const o=q.o;const kids=[h('span',{class:'asym',title:[...q.kinds].map(c=>ANIM_TIP[c]).join(', ')},[...q.kinds].map(c=>ANIM_SYM[c]).join(' ')),h('span',{class:'aname'},q.label)];
+    if(hasK(o)){kids.push(h('span',{class:'small'},o.k.length+' kulcs'));
+      const nx=h('button',{class:'eye',type:'button',title:'Következő kulcs','aria-label':q.label+': következő kulcs'},'›');nx.onclick=()=>{const t=o.k.find(x=>x.t>R.time+KEY_EPS);seekTo(t?t.t:o.k[0].t);};kids.push(nx);}
+    const rm=h('button',{class:'eye',type:'button',title:'Animáció eltávolítása erről a paraméterről (visszavonható)','aria-label':q.label+': animáció eltávolítása',html:SVG_X});
+    rm.onclick=()=>{if(hasK(o)){o.v=keyVal(o.k,R.time);delete o.k;}o.a=0;o.s='';commit();renderInsp();};if(q.kinds!=='l')kids.push(rm);
+    return h('div',{class:'arow'},...kids);});
+  if(blk)rows.unshift(h('div',{class:'arow'},h('span',{class:'asym'},ANIM_SYM.b),h('span',{class:'aname'},'Belépés / kilépés'),h('span',{class:'small'},'Időzítés lent')));
+  return section('Animáció','anim',true,h('div',{class:'btnrow'},am,pf),
+    rows.length?h('div',{class:'alist'},...rows):h('p',{class:'small'},'Ezen a rétegen még nincs animáció. Kapcsold be az Animálást (A), és húzd a réteget vagy állíts egy csúszkát: kulcskocka lesz. Jelek: ◆ kulcs · ∿ hullám · ♪ hang/jel · ⇢ Kapcsolat · ▭ mozgásblokk.'));}

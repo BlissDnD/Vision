@@ -1,28 +1,19 @@
-# Vel – átadó a folytatáshoz (2026-10-17 éjjel)
+# Vel – átadó a folytatáshoz (2026-10-18)
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
-Verzió **0.22.0-m7b**, a teljes tesztkör (24 teszt) zöld, minden commitolva. Az M7b (Felhő + Lufi) kész és élőben ellenőrizve, a felhasználó még nem próbálta ki (próbalista: `PROGRESS.md` legfelül). **A következő szelet (U1) jóváhagyásra vár.**
+Verzió **0.23.0-u1**, a teljes tesztkör (25 teszt) zöld, minden commitolva. Az **U1 (Animálás és jobb panel)** kész, headless tesztekkel demonstrálva; **a felhasználó maga végzi az élő próbát** (próbalista: `PROGRESS.md` legfelül). A felhasználó kérése: élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
 
 ## Mire vár jóváhagyás (ne kezdd el nélküle)
-A felhasználó 2026-10-17 éjjel kipróbált részeket, és új sorrendet kért (visszajelzés: `FUNKCIO-LELTAR.md` 8., 10., 19–22. sor). **Új sorrend:**
-1. **U1 / B – Animálás és jobb panel** (javasolva, lent).
-2. **U2 / B – Szövegsor és Eljátszás-alakfelismerés:** a sort magát fogod meg, Cmd+húzással külön mozog, nem takarja ki a többit; az Eljátszásnál alakfelismerés (kör/egyenes/ív); LFO hibátlan körbeérés a projekt hosszára.
-3. **U3 / B – UI-frissítés a teljes munkatéren:** könyvtár balra a rétegek fölé, húzható elválasztóval; az U1-ben bevezetett ikonrendszer kiterjesztése (eszköztár, rétegpanel jelvényekkel: animált / Megjelenés / Kapcsolat / Változat, könyvtárkártyák célkompatibilitással), idővonal és Sávok elrendezése, tooltipek, kapcsolható súgó. **Miért itt:** az U1 a jobb panelen már lerakja az ikon- és fülrendszert (ott a legnagyobb a zsúfoltság, és az animáció-jelzések is oda kellenek), az U3 ezt viszi végig mindenhol. Az S1 előtt kell, mert a Jelenetek új sávot és nézetet hoznak, amit már a rendezett munkatérbe érdemes tenni, nem utólag átrakni.
-4. **S1 – Jelenetek + átmenetek + komponensek** (új termékszakasz, a Közös alap/Változat alapjaira; külön, részletes javaslat kell).
-5. Kicsi közben: videóexport memóriabiztonsága.
-6. A D-lista folytatása (Füst → anyag-Megjelenések + több fény → útvonal-prototípus → Térbeliség / szöveg 3D-n), majd az E (fizika).
+**Sorrend:** U1 ~~kész~~ → **U2** → U3 (UI-frissítés a teljes munkatéren) → S1 (Jelenetek + átmenetek + komponensek, külön javaslat) → videóexport memóriabiztonsága → D-lista (Füst …) → E.
 
-> **U1 / B – Animálás és jobb panel.**
-> **A felhasználó ezt tudja majd:** lerak egy szöveget, megnyomja az **Animálás** gombot (A), 0 mp-nél balra húzza, 2 mp-nél jobbra: két kulcs lesz kattintgatás nélkül, és a vásznon látszik a **mozgáspálya** húzható pontokkal. Az idővonalon (Sávok) a réteg kinyitható az animált paraméterekre; **húzással több kulcsot kijelöl**, együtt mozgatja, Alt-tal nyújtja, Delete-tel törli, jobb klikkre görbét választ (Lineáris, Lágy, Rugós, Pattanó…). Minden paraméternél egyértelmű jel mutatja, mi animált és hogyan: ◆ kulcs, ∿ hullám, ♪ hang/jel, ▭ mozgásblokk. **Eljátszás:** bekapcsolva a lejátszás megáll; amikor megmozdítasz valamit (vásznon húzás vagy bármelyik animálható csúszka/szám), onnan indul a lejátszás és a felvétel, elengedéskor leáll, és a lejátszófej visszaugrik a felvétel elejére. Bármely animálható paraméterrel működik, nem csak a pozícióval; a felvételből simított, kevés kulcs lesz, a nyers felvétel megmarad. A jobb panel tetején **ikonfülek** (Tartalom, Szín és megjelenés, Mozgás, Effektek, Elhelyezés), tömörebb sorokkal, a ritka beállítások lenyitva.
-> **Pontosan megépítem:** a kulcskocka-hibák feltárása és javítása (célzott tesztekkel); Animálás mód (bekapcsolva csúszka, szám és vászonhúzás is kulcsot ír; ha még nincs kulcs, a korábbi érték a 0 mp-re kerül); mozgáspálya-rajz a pozíciókulcsokból, húzható pontokkal; Sávok panel: kinyitható paramétersorok, téglalapos kijelölés, csoportos mozgatás/nyújtás/törlés/másolás, görbe-gyorsmenü; animáció-jelzések a paramétereknél; Eljátszás új indítása (élesítéskor megáll, első mozdulatra indul) és kiterjesztése minden animálható paraméterre (csúszka, szám, vászonhúzás: pozíció, méret, forgatás), a meglévő simítás + pontritkítás 1D-s változatával; jobb panel átrendezése ikonfülekre.
-> **Ebben még nem:** Jelenetek (S1), Bezier-kezelők a pályán (csak pontok, sima görbével), új görbeszerkesztő (a meglévő marad), szövegsor-javítás és az Eljátszás alakfelismerése (U2), a munkatér többi részének UI-frissítése és a könyvtár áthelyezése (U3).
-> **Próba:** 1) Szöveg → Animálás (A) → 0 mp-nél húzd balra, 2 mp-nél jobbra → lejátszás; a pálya egy pontját húzd el. 2) Eljátszás be → semmi nem mozog → húzz meg egy csúszkát (pl. Rajzolás) → elindul és felveszi; elengedés után lejátszva ugyanazt adja. 3) Sávok: húzással jelölj ki kulcsokat, told el, jobb klikk → Rugós. 4) Jobb panel: a Mozgás fülön látszik, mi animált. Mérés: kattintásszám egy kétkulcsos mozgáshoz előtte/utána; tesztek a kulcsműveletekre, visszavonásra, mentés→újranyitásra.
+> **U2 / B – Szövegsor és Eljátszás-alakfelismerés (javaslat, még részletezendő a 13. fejezet mintájára, mielőtt indul).**
+> **A felhasználó ezt tudja majd:** a szöveg egy sorát magát fogja meg és húzza (nincs külön fogantyú); Cmd+húzással a sor külön mozog; a sorok nem takarják ki egymást (a betűk egyszerűen egymás fölé/mögé kerülnek az eredeti sorrend szerint). Eljátszásnál a rajzolt körből tiszta kör, egyenesből egyenes, ívből ív lesz (alakfelismerés), máskor kevés pontú sima görbe. LFO-hullám körbeérése a projekt hosszára (varratmentes loop).
+> **Ebben még nem:** Jelenetek (S1), munkatér-átrendezés (U3).
 
 ## Mi történt legutóbb
-- M7b: Felhő (3 alak, gomolygás, látványbeli szél, Jelenetfény) és ráhúzható Lufi (Felfújtság, szín, fényesség, csillanás), célkompatibilitás-jelzéssel. Mérés és próbalista: `PROGRESS.md`.
-- Az új „host” Megjelenés-típus (`EffectDef.host`, `fxFits` az `effects/index.ts`-ben) a későbbi anyag-Megjelenésekhez (Chrome, lakk, Üveg) is használható.
+- U1: Animálás mód (A), mozgáspálya húzható pontokkal, Sávok paramétersorokkal / nyújtással / görbe-gyorsmenüvel, ◆ ∿ ♪ ⇢ ▭ jelek, jobb panel ikonfülekkel, Eljátszás első mozdulatra indul bármely paraméterrel; 8 kulcskocka-hiba javítva (lista: `PROGRESS.md`). Technikai jegyzet: `app/README.md` „U1”.
 
 ## M-szeletek és az A–G terv (technikai szeletek, nem kész termékszakaszok)
 | M | Terv | Technikai tartalom | Termékszakasz |
@@ -35,6 +26,7 @@ A felhasználó 2026-10-17 éjjel kipróbált részeket, és új sorrendet kért
 | M6 | C | Gerincfelület (`mesh3d.ts`, `spinegrips.ts`), Jelenetfény (`lightui.ts`, `render.ts` `lightU`) | anyagkatalógus, több fény hiányzik |
 | M7a | D | Részecske Megjelenés `pdisp` (`partfx.ts`) | a D többi része hátra |
 | M7b | D | Felhő Forrás `cloud3d` + Lufi host-Megjelenés `balloon` (`soft3d.ts`, `cloud.ts`) | a D többi része hátra |
+| U1 | B | Animálás mód, pálya (`animate.ts`), Sávok paramétersorok (`timeline.ts` `paramList`/`retimeSel`), fülek (`inspector.ts`), általános Eljátszás (`perform.ts`) | B részben (felhasználói próba hiányzik) |
 | M8–M10 | E/F/G | fizika és mezők; folyadék; receptcsalád, Random | nincs elkezdve |
 
 A modulonkénti technikai jegyzetek: `app/README.md` („Újabb modulok” szakasz). Mérések és próbalisták: `PROGRESS.md`.

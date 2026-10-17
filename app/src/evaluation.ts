@@ -5,7 +5,7 @@ import { S } from './effects/index';
 import { easeJ, easeSpringJ } from './render';
 import { ctlSlider } from './controls';
 import { commit } from './history';
-import { fmtT, resetFeedback } from './transport';
+import { fmtT, resetFeedback, setPlay } from './transport';
 import { audioRestart, sigVal } from './signals';
 import { renderTimeline } from './timeline';
 import { markDirty } from './loop';
@@ -25,9 +25,22 @@ export function keyEase(k,x){x=Math.min(1,Math.max(0,x));const e=k.e??5;if(e===1
 export function keyVal(K,t){const n=K.length;if(t<=K[0].t)return K[0].v;if(t>=K[n-1].t)return K[n-1].v;
   for(let i=0;i<n-1;i++){const a=K[i],b=K[i+1];if(t<=b.t){const x=(t-a.t)/Math.max(1e-6,b.t-a.t);return a.v+(b.v-a.v)*keyEase(a,x);}}return K[n-1].v;}
 export const curV=n=>hasK(n)?keyVal(n.k,R.time):n.v;
-export function setKey(n,t,v){if(!n.k)n.k=[];const i=keyIdx(n,t);if(i>=0)n.k[i].v=v;else{const prev=n.k.filter(k=>k.t<t).pop();n.k.push({t:Math.round(t*1000)/1000,v,e:prev?prev.e:5});n.k.sort((a,b)=>a.t-b.t);}n.v=v;}
+/** New keys start with 'Lágy' (0); a key inserted after another inherits that one's curve. Old keys without `e` keep the legacy default (5). */
+export const DEF_EASE=0;
+export function setKey(n,t,v){if(!n.k)n.k=[];const i=keyIdx(n,t);if(i>=0)n.k[i].v=v;else{const prev=n.k.filter(k=>k.t<t).pop();n.k.push({t:Math.round(t*1000)/1000,v,e:prev?(prev.e??5):DEF_EASE});n.k.sort((a,b)=>a.t-b.t);}n.v=v;}
 export function delKey(n,i){n.k.splice(i,1);if(!n.k.length)delete n.k;}
-export function setVal(n,v){if(hasK(n))setKey(n,R.time,v);else n.v=v;}
+/** Value edit of an animatable parameter (slider, number field, canvas drag).
+ * Eljátszás take running → the take records it (R.perfHook). Keyed param or Animálás mode → a key at the playhead; the first key of a
+ * param edited away from 0 s also keeps the previous value at 0 s. Editing a keyed value pauses playback, otherwise keys would smear
+ * along the timeline while the playhead moves. Non-animatable controls (noAnim sliders, proxies) never come through here. */
+R.animMode=false;
+export function setVal(n,v){if(R.perfHook&&R.perfHook(n,v))return;
+  if(hasK(n)||R.animMode){if(R.playing&&!R.perform)setPlay(false);if(!hasK(n)&&R.time>KEY_EPS&&typeof n.v==='number')setKey(n,0,n.v);setKey(n,R.time,v);R.keyEdit=(R.keyEdit||0)+1;}
+  else n.v=v;}
+/** What animates a param, for the badges: k = keys, w = wave (LFO), s = signal, l = Kapcsolat. */
+export function animKinds(n){if(!n||typeof n!=='object')return '';return (hasK(n)?'k':'')+(n.a>0?'w':'')+(n.s?'s':'')+(n._lk?'l':'');}
+export const ANIM_SYM={k:'◆',w:'∿',s:'♪',l:'⇢',b:'▭'};
+export const ANIM_TIP={k:'kulcskockák',w:'hullám (LFO)',s:'hang / jel',l:'Kapcsolat másik elemről',b:'mozgásblokk (belépés / kilépés)'};
 export function toggleKey(n){const i=keyIdx(n,R.time);if(i>=0){delKey(n,i);return false;}setKey(n,R.time,curV(n));return true;}
 export function seekTo(t){R.time=Math.max(0,t);resetFeedback();markDirty();if(R.playing)audioRestart();}
 export const SVG_KEY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3.5 20.5 12 12 20.5 3.5 12z"/></svg>';

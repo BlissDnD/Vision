@@ -24,6 +24,7 @@ import './history';
 import './stage';
 import './pick';
 import './perform';
+import './animate';
 import './transport';
 import './signals';
 import './timeline';
