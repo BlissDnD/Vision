@@ -60,3 +60,21 @@ Célgép: **Apple M1 Max**, Chrome-alapú beépített böngésző (ANGLE Metal).
 `src/main.js` (jelenet, panel, mérés) · `src/ribbon.js` (gerinc → felület) · `src/studio.js` (ég, fények, környezet) · `src/floor.js` (tükröző padló) · `shots/` (referencia-nézet, másik nézet, pontszerkesztés).
 
 Hibakereső kampó a konzolban: `__vel` (paraméterek, nézet, mérés).
+
+## M6 kiegészítés (2026-10-17): pontminta, öntükrözés, mesh vagy SDF — DÖNTÉS
+
+A cél nem a referencia pixelpontos másolása, hanem annak eldöntése, hogyan kap a Vel jó minőségű 3D renderelést.
+
+- **Pontminta**: kész (perforált hatszögrács méterben, pixel alatti méretnél átlagszínbe olvad). `shots/04-pontminta-kozeli.jpg`.
+- **Öntükrözés**: egyetlen pontból készülő kocka-kamera (`Öntükrözés` gomb, alapból ki). Egy frissítés 21 ms, csak változtatáskor fut. Ennél a formánál ellapítja a csillanásokat (parallaxishiba), `shots/05-ontukrozes-be.jpg`. Jó öntükrözéshez box-projected probe vagy képtérbeli tükrözés (SSR) kell.
+- **Mesh vagy SDF, mérve** (M1 Max, ugyanaz a forma, a fény és az utómunka):
+
+  | | 2048×1536 | 1024×768 |
+  |---|---|---|
+  | Mesh (háromszögháló) | 4–7 ms | 3,7 ms |
+  | SDF (raymarching, 47 szakaszos söpört lap + tükrözési pattanás) | **183 ms** | – (a mérés a böngészőeszköz időkorlátján elakadt) |
+
+  Az SDF kb. 25–45-ször lassabb, és szakaszos csíkhibákat ad súroló szögben (a gerinc egyenes darabokból áll). Előnye: valódi sima összeolvadás a padlóval.
+  A Vel mostani SDF-ága legfeljebb 8 primitívet kezel, nincs benne valódi tükrözés, és ilyen formához új primitív kellene.
+
+**Döntés:** a Vel jó minőségű 3D-je **mesh-alapú** legyen: PBR anyag, előszűrt környezet, síktükör, MSAA, tónusleképezés. Ez egy saját réteg, amely textúrába renderel, és a meglévő rétegláncba kerül. Az SDF megmarad a meglévő procedurális formákra és helyi „összeolvadás” hatásokra (hibrid). A prototípus kódja (`src/ribbon.js`, `studio.js`, `floor.js`) az integráció kiindulópontja.

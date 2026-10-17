@@ -45,7 +45,7 @@ export function makeBackLight(P) {
 
 /* The red floor as the env sees it: glossy lacquer with bright reflected streaks and a light pool under the back light.
  * Undersides of the ribbon mirror this, which is where their long pink highlights come from. */
-function envFloorMat(P) {
+export function envFloorMat(P) {
   return new THREE.ShaderMaterial({ uniforms: { uRed: { value: new THREE.Color(P.red) }, uI: { value: P.stripI / 2.5 } },
     vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix*vec4(position,1.); vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }',
     fragmentShader: `uniform vec3 uRed; uniform float uI; varying vec3 vW;

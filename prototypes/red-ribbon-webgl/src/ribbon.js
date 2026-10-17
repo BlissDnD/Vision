@@ -49,6 +49,7 @@ export function buildRibbon(geo, P, silver) {
   const NA = P.along || 320, NF = 28, NC = 8, ring = ringProfile(NF, NC), R = ring.length;
   const h = P.thick / 2, r = P.fillet;
   const pos = new Float32Array(NA * R * 3), col = new Float32Array(NA * R * 3), uv = new Float32Array(NA * R * 2);
+  const muv = new Float32Array(NA * R * 2), mpat = new Float32Array(NA * R), LEN = curve.getLength(); // pattern space in metres + where it shows
   const red = new THREE.Color(P.red), sil = new THREE.Color(0.86, 0.86, 0.9);
   const contacts = [];
   let prevW = null;
@@ -69,6 +70,8 @@ export function buildRibbon(geo, P, silver) {
       const up = F.b.y >= 0 ? q.side : 1 - q.side;                 // the sky-facing face of the sheet
       const m = up * silver * (1 - smooth(0.0, 0.09, uu));          // silver crest, red body // only the top side near the front edge turns silver
       col[k] = red.r + (sil.r - red.r) * m; col[k + 1] = red.g + (sil.g - red.g) * m; col[k + 2] = red.b + (sil.b - red.b) * m;
+      muv[(i * R + j) * 2] = s * LEN; muv[(i * R + j) * 2 + 1] = du - x0;
+      mpat[i * R + j] = smooth(0.12, 0.35, uu) * (1 - smooth(P.dotEnd - 0.1, P.dotEnd + 0.1, s)); // red faces of the wave, not the crest
       uv[(i * R + j) * 2] = s * 8; uv[(i * R + j) * 2 + 1] = q.cap === 0 ? (du - x0) / W : q.cap > 0 ? 1 : 0;
     }
     if (i % Math.ceil(NA / 21) === 0) for (const f of [0.08, 0.5, 0.92]) { // contact samples on the underside
@@ -85,6 +88,7 @@ export function buildRibbon(geo, P, silver) {
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  geo.setAttribute('muv', new THREE.BufferAttribute(muv, 2)); geo.setAttribute('mpat', new THREE.BufferAttribute(mpat, 1));
   geo.setIndex(new THREE.BufferAttribute(idx, 1));
   geo.computeVertexNormals();
   geo.computeBoundingSphere();

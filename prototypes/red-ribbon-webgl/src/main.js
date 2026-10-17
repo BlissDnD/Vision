@@ -9,16 +9,17 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { buildRibbon } from './ribbon.js';
-import { Env, makeBackLight, makeSky, makeStrips, layoutStrips } from './studio.js';
+import { Env, envFloorMat, makeBackLight, makeSky, makeStrips, layoutStrips } from './studio.js';
 import { makeFloor, setContacts } from './floor.js';
+import { makeSdfScene, updSdf } from './sdf.js';
 
 // ---------- parameters (defaults = reference composition) ----------
 const DEF = {
   pts: [[-6.4, 4.4, 0.6], [-4.2, 3.0, -0.5], [-2.6, 1.2, -1.4], [-1.0, 0.14, -2.0], [0.7, 0.7, -2.6], [2.4, 1.9, -2.2], [3.9, 3.1, -1.2], [5.0, 4.4, 0.6], [5.8, 5.8, 3.0]],
   arch: 1, lean: 0.9, leanEnd: -1.2, width: 7, taper: 0, thick: 0.09, twist: 0, bend: 0.12, center: 0, fillet: 0.35,
-  red: '#8e0c14', rough: 0.18, coat: 0.35, metal: 0.85, silver: 0.9, tint: 0.92,
-  stripPos: 0.6, stripSize: 1, stripI: 2.5, backI: 1.6, sky: 1.05, stripsSeen: false,
-  refl: 0.9, blur: 1, ao: 1, exposure: 0.92, bloom: 0.18, tone: 'neutral', res: 1,
+  red: '#8e0c14', rough: 0.18, coat: 0.35, metal: 0.85, silver: 0.9, tint: 0.92, dot: 0.8, dotS: 0.035, dotR: 0.28, dotEnd: 0.45,
+  stripPos: 0.6, stripSize: 1, stripI: 2.5, backI: 1.6, sky: 1.05, stripsSeen: false, selfRefl: false,
+  refl: 0.9, blur: 1, ao: 1, exposure: 0.92, bloom: 0.18, tone: 'neutral', res: 1, mode: 'mesh',
 };
 const P = structuredClone(DEF);
 const VIEWS = { ref: { pos: [-0.6, 0.45, 5.2], tgt: [1.0, 1.35, -3] }, alt: { pos: [-8.6, 3.4, 7.2], tgt: [0.2, 1.2, -2.2] } };
@@ -44,10 +45,27 @@ const ribMat = new THREE.MeshPhysicalMaterial({ vertexColors: true, color: 0xfff
   clearcoat: P.coat, clearcoatRoughness: 0.04, envMapIntensity: 1, side: THREE.DoubleSide });
 /* "Vörös tükröződés": tint reflections by the base colour. Pure PBR metal turns white at grazing angles (Fresnel), and the
  * low camera sees most of the sheet at grazing angles; the reference keeps the undersides red. Silver areas stay neutral. */
-const tintU = { value: P.tint };
+const tintU = { value: P.tint }, dotU = { uDot: { value: P.dot }, uDotS: { value: P.dotS }, uDotR: { value: P.dotR } };
 ribMat.onBeforeCompile = sh => {
-  sh.uniforms.uTint = tintU;
-  sh.fragmentShader = 'uniform float uTint;\n' + sh.fragmentShader.replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
+  sh.uniforms.uTint = tintU; Object.assign(sh.uniforms, dotU);
+  sh.vertexShader = 'attribute vec2 muv; attribute float mpat; varying vec2 vMuv; varying float vPat;\n' + sh.vertexShader.replace('#include <uv_vertex>', '#include <uv_vertex>\n vMuv = muv; vPat = mpat;');
+  /* Perforated dot pattern (hex grid in metres): darker, rougher, slightly sunk holes. Below pixel size it fades to the
+   * average coverage instead of shimmering (fwidth), so it stays calm in motion and at distance. */
+  sh.fragmentShader = sh.fragmentShader
+    .replace('#include <color_fragment>', `#include <color_fragment>
+  float dotHole = 0.0;
+  { vec2 p = vMuv / uDotS; vec2 rr = vec2(1.0, 1.7320508), hh = rr * 0.5;
+    vec2 a = mod(p, rr) - hh, b = mod(p - hh, rr) - hh; vec2 g = dot(a, a) < dot(b, b) ? a : b; float d = length(g);
+    float aa = max(fwidth(d), 1e-4), fade = 1.0 - smoothstep(0.12, 0.35, aa);
+    float hole = 1.0 - smoothstep(uDotR - aa, uDotR + aa, d);
+    dotHole = mix(3.14159 * uDotR * uDotR / 0.866, hole, fade) * vPat * uDot;
+    diffuseColor.rgb *= 1.0 - 0.6 * dotHole; }`)
+    .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n roughnessFactor = mix(roughnessFactor, 0.65, dotHole);')
+    .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+  { float hgt = -dotHole * 0.0025; vec2 dH = vec2(dFdx(hgt), dFdy(hgt));
+    vec3 sx = dFdx(-vViewPosition), sy = dFdy(-vViewPosition), r1 = cross(sy, normal), r2 = cross(normal, sx);
+    float det = dot(sx, r1); vec3 grad = sign(det) * (dH.x * r1 + dH.y * r2); normal = normalize(abs(det) * normal - grad); }`);
+  sh.fragmentShader = 'uniform float uTint, uDot, uDotS, uDotR; varying vec2 vMuv; varying float vPat;\n' + sh.fragmentShader.replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
   { vec3 tc = diffuseColor.rgb / max(max(diffuseColor.r, diffuseColor.g), max(diffuseColor.b, 1e-3));
     vec3 k = mix(vec3(1.0), tc, uTint);
     reflectedLight.indirectSpecular *= k; reflectedLight.directSpecular *= k;
@@ -58,6 +76,24 @@ ribMat.onBeforeCompile = sh => {
 };
 const ribbon = new THREE.Mesh(ribGeo, ribMat); scene.add(ribbon);
 
+/* Öntükrözés: a cube camera under the arch photographs the real scene (ribbon included, the mirror floor replaced by its
+ * streaky env version on layer 3) and the ribbon uses it as its environment. Updated on change only, not per frame. */
+const cubeRT = new THREE.WebGLCubeRenderTarget(256, { type: THREE.HalfFloatType, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
+const cubeCam = new THREE.CubeCamera(0.1, 400, cubeRT); cubeCam.position.set(0.4, 1.3, -1.4); scene.add(cubeCam);
+cubeCam.children.forEach(c => { c.layers.enable(1); c.layers.enable(2); c.layers.enable(3); });
+const cubeFloor = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), envFloorMat(P)); cubeFloor.rotation.x = -Math.PI / 2; cubeFloor.position.y = -0.003; cubeFloor.layers.set(3); scene.add(cubeFloor);
+let cubeT = 0, cubeMs = 0;
+function updCube() { clearTimeout(cubeT); cubeT = setTimeout(() => {
+  if (!P.selfRefl) { ribMat.envMap = null; ribMat.needsUpdate = true; return; }
+  const t0 = performance.now(), hv = handles.visible, th = tc.getHelper().visible; handles.visible = false; tc.getHelper().visible = false;
+  cubeCam.update(renderer, scene); cubeRT.texture.needsPMREMUpdate = true;
+  handles.visible = hv; tc.getHelper().visible = th;
+  if (ribMat.envMap !== cubeRT.texture) { ribMat.envMap = cubeRT.texture; ribMat.needsUpdate = true; } cubeMs = performance.now() - t0; }, 80); }
+// SDF comparison mode: the studio env (without the ribbon) as a mip-mapped cube for the raymarcher
+const envCubeRT = new THREE.WebGLCubeRenderTarget(256, { type: THREE.HalfFloatType, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
+const envCubeCam = new THREE.CubeCamera(0.1, 400, envCubeRT); envCubeCam.position.set(0, 1.2, 0);
+const sdf = makeSdfScene(P, envCubeRT.texture);
+function setMode() { const s = P.mode === 'sdf'; renderPass.scene = s ? sdf.scene : scene; renderPass.camera = s ? sdf.cam : camera; if (s) envCubeCam.update(renderer, env.scene); }
 let floor = null;
 function makeFloorNow() {
   if (floor) { scene.remove(floor); floor.getRenderTarget().dispose(); floor.material.dispose(); }
@@ -65,12 +101,13 @@ function makeFloorNow() {
   floor = makeFloor(P, Math.max(256, Math.round(s.x * 0.5)), Math.max(256, Math.round(s.y * 0.5))); scene.add(floor);
   if (info.contacts) setContacts(floor, info.contacts);
   floor.camera.layers.enable(1); // the mirror always sees the light strips
+  floor.layers.set(4); camera.layers.enable(4); // the cube camera must not render the mirror (it uses the env floor)
 }
 const info = { tris: 0, contacts: null };
 
 // ---------- post ----------
 const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 }));
-composer.addPass(new RenderPass(scene, camera));
+const renderPass = new RenderPass(scene, camera); composer.addPass(renderPass);
 const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), P.bloom, 0.45, 1.6); composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
@@ -82,17 +119,18 @@ function resize() {
 addEventListener('resize', resize);
 
 // ---------- apply ----------
-function applyGeo() { const r = buildRibbon(ribGeo, P, P.silver); info.tris = r.tris; info.contacts = r.contacts; info.curve = r.curve; if (floor) setContacts(floor, r.contacts); placeHandles(); }
+function applyGeo() { updCube(); const r = buildRibbon(ribGeo, P, P.silver); info.tris = r.tris; info.contacts = r.contacts; info.curve = r.curve; if (floor) setContacts(floor, r.contacts); placeHandles(); }
 let envT = 0;
 function applyLights() {
   layoutStrips(strips, P); strips.children.forEach((m, i) => m.layers.set(P.stripsSeen ? 0 : i < 3 ? 2 : 1)); // studio trick: lights hidden from the camera; overhead bars light via env only, side/back bars also in the floor mirror back.material.color.setRGB(1, 0.95, 0.88).multiplyScalar(P.backI * 6);
   sky.material.uniforms.uBackI.value = P.backI; sky.material.uniforms.uSky.value = P.sky;
-  clearTimeout(envT); envT = setTimeout(() => { scene.environment = env.update(P); }, 60); // env follows the lights
+  clearTimeout(envT); envT = setTimeout(() => { scene.environment = env.update(P); updCube(); if (P.mode === 'sdf') envCubeCam.update(renderer, env.scene); }, 60); // env follows the lights
+  cubeFloor.material.uniforms.uI.value = P.stripI / 2.5;
 }
 function applyMat() {
-  Object.assign(ribMat, { roughness: P.rough, metalness: P.metal, clearcoat: P.coat }); tintU.value = P.tint;
+  Object.assign(ribMat, { roughness: P.rough, metalness: P.metal, clearcoat: P.coat }); tintU.value = P.tint; dotU.uDot.value = P.dot; dotU.uDotS.value = P.dotS; dotU.uDotR.value = P.dotR;
   const u = floor.material.uniforms; u.uRefl.value = P.refl; u.uBlur.value = P.blur; u.uAOk.value = P.ao; u.uRed.value.set(P.red);
-  renderer.toneMapping = TONES[P.tone]; renderer.toneMappingExposure = P.exposure; bloom.strength = P.bloom;
+  updCube(); renderer.toneMapping = TONES[P.tone]; renderer.toneMappingExposure = P.exposure; bloom.strength = P.bloom;
 }
 
 // ---------- spine point editing ----------
@@ -148,6 +186,8 @@ row(adv, 'Csavarodás', slider('twist', 'Csavarodás', -3, 3, 0.01, applyGeo));
 row(adv, 'Padló-összeolvadás (lekerekítés)', slider('fillet', 'Sugár', 0, 1.2, 0.01, applyGeo));
 row(adv, 'Kontakt-árnyék / reflexió elmosás', slider('ao', 'árnyék', 0, 2, 0.01, applyMat), slider('blur', 'elmosás', 0, 4, 0.01, applyMat));
 row(adv, 'Vörös tükröződés', slider('tint', 'Tónus', 0, 1, 0.01, applyMat));
+row(adv, 'Pontminta (perforáció)', slider('dot', 'erősség', 0, 1, 0.01, applyMat), slider('dotS', 'sűrűség (m)', 0.01, 0.15, 0.001, applyMat));
+row(adv, 'Pontminta: lyukméret / meddig', slider('dotR', 'lyuk', 0.08, 0.45, 0.005, applyMat), slider('dotEnd', 'gerinc mentén', 0, 1, 0.01, applyGeo));
 row(adv, 'Ezüst felső oldal', slider('silver', 'Ezüst', 0, 1, 0.01, applyGeo));
 row(adv, 'Hátsó fény / stúdió', slider('backI', 'hátsó', 0, 4, 0.01, applyLights), slider('sky', 'stúdió', 0.3, 2, 0.01, applyLights));
 row(adv, 'Glow (finom)', slider('bloom', 'Glow', 0, 1, 0.01, applyMat));
@@ -156,11 +196,13 @@ row(adv, 'Glow (finom)', slider('bloom', 'Glow', 0, 1, 0.01, applyMat));
   const sel = (label, k, opts, on) => { const l = document.createElement('label'); l.textContent = label; const s = document.createElement('select'); s.setAttribute('aria-label', label);
     for (const [v, t] of opts) s.append(new Option(t, v, false, String(P[k]) === String(v))); s.onchange = () => { P[k] = typeof DEF[k] === 'number' ? +s.value : s.value; on(); }; r.append(l, s); };
   sel('Tónusleképezés', 'tone', [['neutral', 'Khronos PBR Neutral'], ['agx', 'AgX'], ['aces', 'ACES filmes']], applyMat);
+  sel('Render (összevetés)', 'mode', [['mesh', 'Mesh (háromszögháló)'], ['sdf', 'SDF (raymarching)']], setMode);
   sel('Előnézeti felbontás', 'res', [['0.5', '50%'], ['0.75', '75%'], ['1', '100%']], resize);
   adv.append(r);
   const b = document.createElement('div'); b.className = 'btns';
   const btn = (t, fn, pressed) => { const e = Object.assign(document.createElement('button'), { type: 'button', textContent: t }); if (pressed != null) e.setAttribute('aria-pressed', String(pressed)); e.onclick = () => fn(e); b.append(e); return e; };
   btn('Gerincpontok szerkesztése', e => { handles.visible = !handles.visible; e.setAttribute('aria-pressed', String(handles.visible)); if (!handles.visible) tc.detach(); }, false);
+  btn('Öntükrözés', e => { P.selfRefl = !P.selfRefl; e.setAttribute('aria-pressed', String(P.selfRefl)); updCube(); }, P.selfRefl);
   btn('Fénycsíkok a kamerának', e => { P.stripsSeen = !P.stripsSeen; e.setAttribute('aria-pressed', String(P.stripsSeen)); applyLights(); }, P.stripsSeen);
   btn('Referencia-nézet', () => setView('ref')); btn('Másik nézet', () => setView('alt'));
   btn('Alapállapot', () => { Object.assign(P, structuredClone(DEF)); document.querySelectorAll('input[type=range]').forEach(i => { i.value = P[i.dataset.k]; i.oninput(); }); applyAll(); });
@@ -174,16 +216,16 @@ function applyAll() { applyGeo(); applyLights(); applyMat(); }
 const hud = $('#hud'); let last = performance.now(), ema = 16, frames = 0, hudT = 0;
 function frame(now) {
   const dt = now - last; last = now; ema += (dt - ema) * 0.05; frames++;
-  orbit.update(); composer.render();
+  orbit.update(); if (P.mode === 'sdf') updSdf(sdf, P, camera); composer.render();
   if (now - hudT > 400) { hudT = now; const s = renderer.getDrawingBufferSize(new THREE.Vector2());
-    hud.innerHTML = `<b>${(1000 / ema).toFixed(0)} fps</b> · ${ema.toFixed(1)} ms\n${s.x}×${s.y} · MSAA 4× · ${(info.tris / 1000).toFixed(0)}k háromszög\nenv újraépítés ${env.ms.toFixed(1)} ms`; }
+    hud.innerHTML = `<b>${(1000 / ema).toFixed(0)} fps</b> · ${ema.toFixed(1)} ms\n${s.x}×${s.y} · MSAA 4× · ${(info.tris / 1000).toFixed(0)}k háromszög\nenv újraépítés ${env.ms.toFixed(1)} ms · öntükrözés ${P.selfRefl ? cubeMs.toFixed(1) + ' ms' : 'ki'}`; }
   requestAnimationFrame(frame);
 }
 
 /** Synchronous cost per element: N frames each, GPU flushed with a 1-px readback. Real GPU only means something. */
 async function bench(N = 40) {
   const gl = renderer.getContext(), px = new Uint8Array(4);
-  const run = () => { const t0 = performance.now(); for (let i = 0; i < N; i++) { composer.render(); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); } return (performance.now() - t0) / N; };
+  const run = () => { const t0 = performance.now(); for (let i = 0; i < N; i++) { if (P.mode === 'sdf') updSdf(sdf, P, camera); composer.render(); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); } return (performance.now() - t0) / N; };
   const out = {}; run();
   out['teljes'] = run();
   bloom.enabled = false; out['glow nélkül'] = run(); bloom.enabled = true;
@@ -194,6 +236,6 @@ async function bench(N = 40) {
   r.felbontas = `${s.x}x${s.y}`; r.gpu = (() => { const e = gl.getExtension('WEBGL_debug_renderer_info'); return e ? gl.getParameter(e.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER); })();
   window.__bench = r; return r;
 }
-window.__vel = { THREE, P, tc, handles, applyAll, setView, bench, renderer, scene, camera, orbit, look: (p, t) => { camera.position.set(...p); orbit.target.set(...t); orbit.update(); } };
+window.__vel = { setMode, THREE, P, tc, handles, get cubeMs() { return cubeMs; }, applyAll, setView, bench, renderer, scene, camera, orbit, look: (p, t) => { camera.position.set(...p); orbit.target.set(...t); orbit.update(); } };
 
 resize(); applyAll(); requestAnimationFrame(frame);

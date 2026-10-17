@@ -15,7 +15,7 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 | ✅ M3 | Könyvtár és rétegek UX (új kategóriák, kattintás alatti találatlista, csoportkijelölés, tömör effektlánc) | takart rétegek gyors kiválasztása |
 | ✅ M4 | Tipográfia: soronkénti fogantyúk, vegyes stílus, soronkénti/szavas/betűnkénti animáció | 4. kép ihlette szerkeszthető poszt |
 | ✅ M5 | Mozgásblokkok és retime, Eljátszás simítással, kézi Jelzések sáv | 10 perces 9:16 reel próba, exporttal |
-| M6 | Látványkapu: render/anyag audit, a vörös felület folytatása | mért kép a célgépen, hiánylista |
+| M6 | Látványkapu: **mesh-alapú, jó minőségű 3D réteg a Velben** (döntés: `prototypes/red-ribbon-webgl/README.md` vége) | mért kép a célgépen, hiánylista |
 | M7–M10 | Építőelemek és részecskék → fizika → folyadék (előbb kutatás) → receptek, Random, polírozás | lásd a terv 7. fejezetét |
 
 ## Környezet (Mac, helyben)
@@ -63,3 +63,8 @@ Rövid, pontos folytatási kontextus. Előbb ezt olvasd el, aztán a `PROGRESS.m
 
 ## Az M5 kiindulópontja (eredeti leírás)
 Terv §5 „Idővonal”: egy Mozgás = szerkeszthető blokk fázisokkal (beúszás, rugalmas közép, zárás). Középről húzva minden együtt tolódik; a jobb széle a középső részt nyújtja (a beúszás sebessége marad); „Zárás lassítása”; több réteg vagy kulcs együtt nyújtható; Eljátszás simítással; kézi Jelzések sáv (ütemre koppintás), a hangjelzéshez kötött időhorgonyok ne csússzanak. Kiindulás: `src/timeline.ts` (idővonal és Sávok, többes kijelölés, kulcsmozgatás), `Timing` (`tm`: in/inAt/inDur/out/outAt/outDur) és a `mtext` start/dur/stagger. Próba: 10 perces 9:16 reel exporttal.
+
+## M6 állapota
+- [x] Prototípus-lépés lezárva: pontminta, öntükrözés (opcionális, korlátokkal), mért mesh vs. SDF összevetés → **döntés: mesh-alapú 3D réteg + SDF a meglévő formákra (hibrid)**. Részletek és számok: `prototypes/red-ribbon-webgl/README.md` „M6 kiegészítés”.
+- A felhasználó kérése: **nem kell a referenciát pixelre másolni**, a cél a jó minőségű renderelés képessége a Velben. Ne csiszold tovább a prototípust.
+- [ ] Következő: mesh-alapú 3D réteg a Velben (saját WebGL2 mesh-pass textúrába: PBR, környezet, tükröző padló, MSAA), szerkeszthető gerincformával mint első forrással.
