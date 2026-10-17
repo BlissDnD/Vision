@@ -2,6 +2,15 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
+## Állapot: 2026-10-17 este — M2 első lépcső: vörös gerincfelület látványpróba KÉSZ, kreatív értékelésre vár
+
+Hely: `prototypes/red-ribbon-webgl/` (önálló, a Vel apphoz nem nyúl). Részletek, mérés és hiánylista: annak `README.md`-je.
+- Three.js r170 (indoklás a README-ben), szerkeszthető 9 pontos gerinc = felső él, erről lelógó lekerekített lap; 8 fő vezérlő + Továbbiak; gerincpont-húzás gizmóval; geometriai padló-összeolvadás (exp-leülés) + analitikus kontaktárnyék; PMREM-környezet a fényekből, csíkmozgatásra újraépül; valódi síktükör padló.
+- Ellenőrizve a beépített böngészőben (M1 Max): konzolhiba nincs, mind a 23 csúszka hat (geometriaiak a normálokkal együtt), alapállapot-visszaállítás bitre azonos, pontszerkesztés működik; build `dist/index.html` file://-ról fut.
+- Mérés 2048×1536, MSAA 4×: élő 117–120 fps; szinkron 9,4–14,3 ms/kép; legdrágább a glow (3,5–6 ms), majd a tükör (1–3 ms).
+- Képek: `prototypes/red-ribbon-webgl/shots/01-referencia-nezet.jpg`, `02-masik-nezet.jpg`, `03-gerincpont-szerkesztes.jpg`.
+- Fő hiány: perforált pontminta, öntükrözés (dinamikus cubemap), távolságfüggő padlótükör, mérés más gépeken/4K-n.
+
 ## Állapot: 2026-10-17 este — M1 („Alapok: közös idő, régi projekt”) LEZÁRVA, Macen ellenőrizve
 
 Verzió: `app/package.json` 0.14.0-m1. Helyi gépen futott: `npm install`, `npm run typecheck` (0 hiba), `npm run build` (294 KB JS), `npm test`: **14/14 zöld** (Playwright Chromium, kb. 2 perc). Dev szerver: `npm run dev` (Vite) működik, http://localhost:5180 (`.claude/launch.json` „vel”, a régi `latomas-src` a 5173-on fut, azt nem érintettük).
@@ -49,4 +58,6 @@ Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.g
 - Az `R.time` továbbra is a jelenetidő (Loopnál a frame() tekeri vissza). Az export az `sceneT()`-n keresztül képez le. Így a meglévő effektkód érintetlen.
 
 ## Következő lépés
-1. M2: a vörös gerincfelület prototípusa (`docs/vel-voros-felulet-webgl-prototipus-brief.md`), külön mappában (`prototypes/red-ribbon-webgl/`), mért összevetéssel az SDF-úttal.
+1. Felhasználói kreatív értékelés a látványpróbáról (forma, anyag, fény). Ha irányában jó: pontminta + öntükrözés, majd
+2. M2 második lépcső: mért összevetés a Vel SDF-ágával (ugyanez a forma SDF smooth-union padlóval vs. mesh), döntési feljegyzés, integráció szerkeszthető eszközként.
+3. Utána M3 (terv szerint): könyvtár/réteg/motion/text integrált szerkesztési szelet.
