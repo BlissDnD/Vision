@@ -1,4 +1,5 @@
 import { R } from './runtime';
+import { renderAt } from './sim';
 import { $, h } from './dom';
 import { SEL } from './effects/index';
 import { clearTarget, freeTarget, gl, mkTarget } from './gl';
@@ -28,12 +29,12 @@ $('#canvasBtn').onclick=e=>{
   openPop(e.currentTarget,h('div',{class:'pl'},'Vászon'),h('div',{class:'pc'},h('div',{class:'row2'},h('span',null,'Formátum'),h('div',{class:'pop'},sz)),h('div',{class:'row2'},h('span',null,'Előnézet'),h('div',{class:'pop'},qs)),
     h('div',{class:'row2'},h('span',null,'Háttér'),bg),h('div',{class:'row2'},h('span',null,'Tempó'),h('div',{class:'pop'},sp)),
     h('p',{class:'small'},'Takarékos: szünetben csak akkor renderel, ha változtatsz valamit. Az előnézeti minőség az exportot nem érinti.')));};
-export const EXP:{res:string;fps:number;dur:string|number;mb:number;sh:number}={res:'1',fps:30,dur:'tl',mb:0,sh:180};
+export const EXP:{res:string;fps:number;dur:string|number;mb:number;sh:number;from:string}={res:'1',fps:30,dur:'tl',mb:0,sh:180,from:'0'};
 /* motion blur: average N sub-frames inside the shutter interval (premultiplied, float accumulation) */
-export function renderMB(ctx,t,fps,N,shDeg){if(!N||N<2)return renderScene(st.layers,ctx,t,st.bg);
+export function renderMB(ctx,t,fps,N,shDeg){if(!N||N<2)return renderAt(st.layers,ctx,t,st.bg,true);
   if(!ctx.mb||ctx.mb.w!==ctx.w||ctx.mb.h!==ctx.h){if(ctx.mb)freeTarget(ctx.mb);ctx.mb=mkTarget(ctx.w,ctx.h);}
   const acc=ctx.mb;clearTarget(acc,[0,0,0,0]);const span=(shDeg/360)/fps*R.speed;
-  for(let i=0;i<N;i++){const ts=t+((i+.5)/N-.5)*span;const out=renderScene(st.layers,ctx,ts,st.bg);
+  for(let i=0;i<N;i++){const ts=Math.max(0,t+((i+.5)/N-.5)*span);const out=renderAt(st.layers,ctx,ts,st.bg,true);
     gl.enable(gl.BLEND);gl.blendColor(0,0,0,1/N);gl.blendFunc(gl.CONSTANT_ALPHA,gl.ONE);copyTo(out.t,acc);gl.disable(gl.BLEND);}
   return acc;}
 export function dimsFor(mode){const {W,H}=outSize();const q=mode==='4k'?3840/Math.max(W,H):1;return {q,w:Math.round(W*q/2)*2,h:Math.round(H*q/2)*2};}
@@ -47,7 +48,8 @@ $('#exportBtn').onclick=e=>{
     h('div',{class:'pc'},
       sel('Felbontás',[['1',`Teljes · ${d1.w}×${d1.h}`],['4k',`4K · ${d4.w}×${d4.h}`]],()=>EXP.res,v=>EXP.res=v),
       sel('Képkocka',[['30','30 fps'],['60','60 fps']],()=>EXP.fps,v=>EXP.fps=+v),
-      sel('Hossz',[['tl',`Idővonal · ${(+st.dur).toFixed(1)} mp`],['5','5 mp'],['10','10 mp'],['20','20 mp'],['30','30 mp'],['60','60 mp']],()=>EXP.dur,v=>EXP.dur=v==='tl'?'tl':+v),
+      sel('Hossz',[['tl',`Idővonal · ${(+st.dur).toFixed(1)} mp`],['5','5 mp'],['10','10 mp'],['15','15 mp'],['20','20 mp'],['30','30 mp'],['60','60 mp']],()=>EXP.dur,v=>EXP.dur=v==='tl'?'tl':+v),
+      sel('Kezdés',[['0','Az elejétől (0 mp)'],['head','A lejátszófejtől']],()=>EXP.from,v=>EXP.from=v),
       sel('Mozgási elmosás',[['0','Nincs'],['8','8 részkép (gyors)'],['16','16 részkép (szép)'],['32','32 részkép (filmes)']],()=>EXP.mb,v=>EXP.mb=+v),
       sel('Zárszög',[['90','90° (élesebb)'],['180','180° (mozis)'],['270','270°'],['360','360° (legelmosottabb)']],()=>EXP.sh,v=>EXP.sh=+v),
       h('p',{class:'small'},can?'Akkor is hibátlan, folyamatos videó lesz, ha az előnézet akad: minden képkocka külön renderelődik. A mozgási elmosás képkockánként több részképet átlagol, ezért a renderelés annyiszor lassabb. Visszhang (feedback) rétegek csóvái ilyenkor rövidebbek.':'Ez a böngésző nem tud MP4-et kódolni (WebCodecs hiányzik). Használd a lenti valós idejű felvételt, vagy Chrome-ot/Edge-et.'),

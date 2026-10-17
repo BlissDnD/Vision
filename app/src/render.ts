@@ -172,7 +172,7 @@ export const freeW=(set,ex)=>set.W.find(w=>!ex.includes(w));
 export function runChain(list,inTex,inTarget,set,ctx,t){
   let cur=inTarget,curTex=inTex;
   for(const F of list){if(!F.vis)continue;const def=EFFECTS[F.type];const out=freeW(set,[cur]);
-    if(def.feedback){const x=histFor(ctx,F.id);drawFx(F,x.next,ctx,t,curTex,x.cur.t,0);const s=x.cur;x.cur=x.next;x.next=s;copyTo(x.cur.t,out);}
+    if(def.feedback){const x=histFor(ctx,F.id);if(ctx.advance!==false||!x.stepped){drawFx(F,x.next,ctx,t,curTex,x.cur.t,0);const s=x.cur;x.cur=x.next;x.next=s;x.stepped=true;}copyTo(x.cur.t,out);}
     else if(def.blob){const B=blobPrep(F,ctx,t,curTex);drawFx(F,out,ctx,t,curTex,B.mkTex,0);}
     else if(def.passes===2){const mid=freeW(set,[cur,out]);drawFx(F,mid,ctx,t,curTex,null,0);drawFx(F,out,ctx,t,mid.t,curTex,1);}
     else drawFx(F,out,ctx,t,curTex,null,0);

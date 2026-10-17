@@ -7,7 +7,8 @@ import { RECIPES, makeRecipe } from './recipes';
 import { loadAsset } from './text';
 import { normCam, resizeMain } from './render';
 import { buildCats, buildShelf } from './shelf';
-import { commit, renderAll, setTL } from './history';
+import { applyProject, commit, renderAll } from './history';
+import { toast } from './modals';
 import { setPlay } from './transport';
 import { setTlx } from './timeline';
 import { frame } from './loop';
@@ -15,8 +16,8 @@ import { updLookLbl } from './popovers';
 
 (function boot(){
   let ok=false;
-  try{const a=localStorage.getItem('latomas2.auto');if(a){const o=JSON.parse(a);Object.assign(assets,o.assets||{});for(const id in assets)loadAsset(id);
-    st.layers=(o.state.layers||[]).filter(l=>l.type==='group'||EFFECTS[l.type]).map(normalize);st.bg=o.state.bg||st.bg;st.size=o.state.size||st.size;st.look=normLook(o.state.look);st.cam=normCam(o.state.cam);setTL(o.state);ok=st.layers.length>0;}}catch(_){}
+  let a=null;try{a=localStorage.getItem('latomas2.auto');}catch(_){}
+  try{if(a){const m=applyProject(JSON.parse(a));ok=st.layers.length>0;if(m.dropped.length)setTimeout(()=>toast('Az automatikus mentésből kimaradt: '+m.dropped.join(', ')),1500);}}catch(e){console.warn('autosave',e);}
   if(!ok)st.layers=[makeRecipe(RECIPES[0])];
   R.selId=(st.layers[st.layers.length-1]||{}).id||null;
   resizeMain();renderAll();commit();buildCats();buildShelf();setPlay(true);updLookLbl();setTlx(R.tlxOpen);

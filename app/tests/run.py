@@ -6,6 +6,10 @@ import sys, asyncio, json, os
 from playwright.async_api import async_playwright
 CHROME=os.environ.get('LATOMAS_CHROME','/opt/pw-browsers/chromium')
 src=sys.argv[1]; js=open(sys.argv[2]).read(); shots=sys.argv[3:]
+if '/*FIXTURES*/' in js:  # inline tests/fixtures/*.json as an object {filename: project}
+    import glob
+    fx={os.path.basename(f):json.load(open(f)) for f in sorted(glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)),'fixtures','*.json')))}
+    js=js.replace('/*FIXTURES*/',json.dumps(fx,ensure_ascii=False))
 wrap=lambda code:'(()=>{with(window.__L){return eval('+json.dumps(code)+');}})()'
 async def main():
     async with async_playwright() as p:

@@ -14,7 +14,7 @@ export const SIG_BASE=[['a:level','Hangerő'],['a:kick','Kick'],['a:snare','Perg
 export const SIG_BEAT=[['b:beat','Ütem'],['b:half','Fél ütem'],['b:bar','Ütem /4'],['b:phase','Ütemfázis']];
 export function sigList(){return [...SIG_BASE,...AUD.stems.flatMap((s,i)=>[[`s${i}:level`,`${s.name} · szint`],[`s${i}:hit`,`${s.name} · ütés`]]),...SIG_BEAT];}
 export function sigLabel(k){const x=sigList().find(s=>s[0]===k);return x?x[1]:k;}
-export function arrAt(a,t){if(!a||!a.length)return 0;const x=t*AUD.rate;if(x<=0)return a[0];const i=Math.floor(x);if(i>=a.length-1)return a[a.length-1];const f=x-i;return a[i]*(1-f)+a[i+1]*f;}
+export function arrAt(a,t){if(!a||!a.length)return 0;const x=t*AUD.rate;if(x<=0)return a[0];const i=Math.floor(x);if(i>=a.length-1)return i>=a.length?0:a[a.length-1];const f=x-i;return a[i]*(1-f)+a[i+1]*f;}
 export function sigVal(k,t){
   if(k[0]==='b'){const b=(t-(st.bpmOff||0))*(st.bpm||120)/60,fr=((b%1)+1)%1;
     if(k==='b:beat')return Math.exp(-fr*5);if(k==='b:phase')return fr;if(k==='b:half'){const f2=(((b*2)%1)+1)%1;return Math.exp(-f2*5);}
@@ -40,7 +40,7 @@ export function ensureAC(){if(!AUD.ctx){AUD.ctx=new (window.AudioContext||window
 export function audioStop(){for(const s of AUD.srcs){try{s.stop();}catch(_){}}AUD.srcs=[];}
 export function audioRestart(){audioStop();if(!AUD.ctx||!R.playing||R.snapping)return;const bufs=AUD.buf?[AUD.buf]:AUD.stems.map(s=>s.buf);if(!bufs.length)return;
   AUD.gain.gain.value=AUD.mute?0:AUD.vol;AUD.t0=R.time;AUD.c0=AUD.ctx.currentTime;
-  AUD.srcs=bufs.map(b=>{const s=AUD.ctx.createBufferSource();s.buffer=b;s.playbackRate.value=R.speed;s.connect(AUD.gain);s.start(0,Math.max(0,R.time%Math.max(.01,b.duration)));return s;});}
+  AUD.srcs=bufs.map(b=>{const s=AUD.ctx.createBufferSource();s.buffer=b;s.playbackRate.value=R.speed;s.connect(AUD.gain);const off=st.loop?R.time%Math.max(.01,b.duration):R.time;if(off<b.duration)s.start(0,Math.max(0,off));return s;});}
 export async function loadAudioFile(f,stem){
   try{ensureAC();const buf=await AUD.ctx.decodeAudioData(await f.arrayBuffer());toast('Hang elemzése…');
     if(stem){const lv=await bandEnv(buf,[]);AUD.stems.push({name:f.name.replace(/\.[^.]+$/,'').slice(0,18),buf,sig:{level:smoothEnv(lv),hit:pulseEnv(lv,.85)}});

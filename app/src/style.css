@@ -294,3 +294,6 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
   .ltree{max-height:300px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.tl-over{flex:none;height:22px;padding:0 8px;border-radius:6px;border:1px dashed var(--accent);background:transparent;color:var(--accent);font:inherit;font-size:11px;font-variant-numeric:tabular-nums;cursor:pointer;white-space:nowrap}
+.tl.over .tl-head{background:repeating-linear-gradient(var(--accent) 0 3px,transparent 3px 6px)}

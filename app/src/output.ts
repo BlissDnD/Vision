@@ -2,8 +2,10 @@ import { R } from './runtime';
 import { $, h } from './dom';
 import { cv, gl } from './gl';
 import { st } from './state';
-import { outSize, present, renderScene, resizeMain } from './render';
-import { resetFeedback, setPlay } from './transport';
+import { outSize, present, resizeMain } from './render';
+import { resetSim } from './sim';
+import { audioIndex, sceneT } from './time';
+import { setPlay } from './transport';
 import { AUD, exportAudioBuffer } from './signals';
 import { EXP, dimsFor, renderMB } from './popovers';
 import { closeModal, openMedia, openModal, toast } from './modals';
@@ -23,7 +25,7 @@ export function glOOM(){const e=gl.getError();return e===gl.OUT_OF_MEMORY||e===g
 export async function snapPNG(mode){const d=dimsFor(mode||'1');
   if(mode==='4k')toast('4K kép renderelése…');
   await withScale(d.q,async()=>{
-    for(let i=0;i<20;i++)renderScene(st.layers,R.main,R.time-(20-i)/60,st.bg);
+    resetSim(R.main);
     const out=renderMB(R.main,R.time,EXP.fps,EXP.mb,EXP.sh);present(R.main,out.t,null,cv.width,cv.height,R.time);
     if(glOOM())throw new Error('Elfogyott a videómemória ehhez a mérethez. Próbáld kisebb felbontással, vagy zárj be más lapokat.');
     const blob=await new Promise<Blob|null>(r=>cv.toBlob(r,'image/png'));if(!blob)throw new Error('A kép nem jött létre.');
@@ -47,10 +49,10 @@ export async function renderVideo(mode,fps,dur){
       if(!acfg)toast('Ez a böngésző nem tud hangot kódolni, a videó hang nélkül készül.');}}}
     const muxer=new M.Muxer({target:new M.ArrayBufferTarget(),video:{codec:'avc',width:w,height:hh,frameRate:fps},...(acfg?{audio:{codec:acfg.mux,numberOfChannels:acfg.numberOfChannels,sampleRate:acfg.sampleRate}}:{}),fastStart:'in-memory'});
     let encErr=null;const enc=new VideoEncoder({output:(ch,meta)=>muxer.addVideoChunk(ch,meta),error:e=>{encErr=e;}});enc.configure(cfg);
-    const N=Math.round(D*fps),t0=useTl?0:R.time;let prevT=-1;
-    resetFeedback();for(let i=0;i<20;i++)renderScene(st.layers,R.main,t0-(20-i)/fps*R.speed,st.bg);
+    const N=Math.round(D*fps),t0=EXP.from==='head'?R.time:0;
+    resetSim(R.main);
     for(let i=0;i<N;i++){
-      if(cancel||encErr)break;let t=t0+i/fps*R.speed;if(st.loop&&st.dur>0)t=t%st.dur;if(t<prevT)resetFeedback();prevT=t;
+      if(cancel||encErr)break;const t=sceneT(t0+i/fps*R.speed);
       const out=renderMB(R.main,t,fps,EXP.mb,EXP.sh);present(R.main,out.t,null,w,hh,t);
       if(i===0&&glOOM())throw new Error('Elfogyott a videómemória ehhez a mérethez. Próbáld kisebb felbontással.');
       const fr=new VideoFrame(cv,{timestamp:Math.round(i*1e6/fps),duration:Math.round(1e6/fps)});enc.encode(fr,{keyFrame:i%(fps*2)===0});fr.close();
@@ -60,9 +62,9 @@ export async function renderVideo(mode,fps,dur){
     stat.textContent='Kódolás befejezése…';await enc.flush();enc.close();if(encErr)throw encErr;
     if(acfg&&abuf&&!cancel){stat.textContent='Hang kódolása…';const aenc=new AudioEncoder({output:(c,m)=>muxer.addAudioChunk(c,m),error:e=>{encErr=e;}});aenc.configure({codec:acfg.codec,sampleRate:acfg.sampleRate,numberOfChannels:acfg.numberOfChannels,bitrate:acfg.bitrate});
       const sr=abuf.sampleRate,ch=acfg.numberOfChannels,len=abuf.length,chs=[...Array(ch)].map((_,j)=>abuf.getChannelData(Math.min(j,abuf.numberOfChannels-1)));
-      const total=Math.round(D*sr),s0=Math.floor(((st.loop&&st.dur>0?t0%st.dur:t0))*sr),CH=4096;
+      const total=Math.round(D*sr),CH=4096;
       for(let pos=0;pos<total;pos+=CH){const n=Math.min(CH,total-pos),data=new Float32Array(n*ch);
-        for(let j=0;j<ch;j++){const src=chs[j];for(let k=0;k<n;k++){const idx=s0+pos+k;data[j*n+k]=idx<len?src[idx]:src[idx%len];}}
+        for(let j=0;j<ch;j++){const src=chs[j];for(let k=0;k<n;k++){const idx=audioIndex(sceneT(t0+(pos+k)/sr),sr,len);data[j*n+k]=idx>=0?src[idx]:0;}}
         const ad=new AudioData({format:'f32-planar',sampleRate:sr,numberOfFrames:n,numberOfChannels:ch,timestamp:Math.round(pos/sr*1e6),data});aenc.encode(ad);ad.close();
         if(aenc.encodeQueueSize>8)await new Promise(r=>setTimeout(r,2));}
       await aenc.flush();aenc.close();if(encErr)throw encErr;}

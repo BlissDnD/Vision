@@ -114,7 +114,8 @@ R.tlDrag=false;export const tlSeek=e=>{const r=tlTrack.getBoundingClientRect();c
 tlTrack.onpointerdown=e=>{R.tlDrag=true;tlTrack.setPointerCapture(e.pointerId);tlSeek(e);};tlTrack.onpointermove=e=>{if(R.tlDrag)tlSeek(e);};tlTrack.onpointerup=()=>{R.tlDrag=false;};
 $('#tlDur').onchange=e=>{const v=parseFloat(String(e.target.value).replace(',','.'));if(isFinite(v)&&v>.2){st.dur=Math.min(600,v);commit();}renderTimeline();};
 $('#tlDur').onkeydown=e=>{if(e.key==='Enter')e.target.blur();};
-$('#loopBtn').onclick=()=>{st.loop=!st.loop;commit();renderTimeline();};
+$('#loopBtn').onclick=()=>{st.loop=!st.loop;if(st.loop&&R.time>=st.dur)seekTo(R.time%Math.max(.1,st.dur));commit();renderTimeline();toast(st.loop?'Ismétlés be: a tartomány végén vissza az elejére.':'Ismétlés ki: a jelenet a tartomány után is fut tovább (időzített elemek a végállapotban).');};
+$('#tlOver').onclick=()=>seekTo(0);
 $('#tlxBtn').onclick=()=>setTlx(!R.tlxOpen);
 $('#tlx').addEventListener('wheel',e=>{const lane=$('#tlxBody .tlx-lane[data-id]')||$('#tlxBody .tlx-ruler .tlx-lane');if(!lane)return;
   if(e.ctrlKey||e.metaKey){e.preventDefault();zoomView(Math.exp(e.deltaY*.0025),laneT(lane,e.clientX));}

@@ -4,23 +4,28 @@ import { cv } from './gl';
 import { st } from './state';
 import { curV, ev, hasK, keyState, keyVal } from './evaluation';
 import { loadLabel, sceneLoad } from './cost';
-import { present, renderScene, resizeMain } from './render';
+import { present, resizeMain } from './render';
+import { renderAt, sceneHasState } from './sim';
 import { fmt, setFill } from './controls';
 import { updGizmo } from './stage';
 import { fmtT, resetFeedback } from './transport';
 import { AUD, audioRestart, sigVal } from './signals';
 import { tlHeadEl, tlxTick } from './timeline';
 import { autoQuality } from './adaptive';
+import { overrun } from './time';
 
-R.snapping=false;R.dirty=3;export const markDirty=()=>{R.dirty=Math.max(R.dirty,2);};
+R.snapping=false;R.dirty=3;R.refine=false;R.editT=0;export const markDirty=()=>{R.dirty=Math.max(R.dirty,2);R.refine=true;R.editT=performance.now();};
 document.addEventListener('input',markDirty,true);document.addEventListener('change',markDirty,true);document.addEventListener('pointerup',markDirty,true);document.addEventListener('keyup',markDirty,true);
 export function frame(now){
   const dt=Math.min(.1,(now-R.last)/1000);R.last=now;
   if(R.playing&&!R.snapping){if(AUD.srcs.length&&AUD.ctx)R.time=AUD.t0+(AUD.ctx.currentTime-AUD.c0)*R.speed;else R.time+=dt*R.speed;
     if(st.loop&&st.dur>0&&R.time>=st.dur){R.time=R.time%st.dur;resetFeedback();audioRestart();}}
-  const need=R.playing||R.dirty>0||R.drag||R.rec;if(!R.snapping&&need){resizeMain();const items=R.audition?[...st.layers,R.audition]:st.layers;const out=renderScene(items,R.main,R.time,st.bg);present(R.main,out.t,null,cv.width,cv.height,R.time);if(R.dirty>0)R.dirty--;}
+  const need=R.playing||R.dirty>0||R.drag||R.rec;if(!R.snapping&&need){resizeMain();const items=R.audition?[...st.layers,R.audition]:st.layers;const out=renderAt(items,R.main,R.time,st.bg,false);present(R.main,out.t,null,cv.width,cv.height,R.time);if(R.dirty>0)R.dirty--;}
+  else if(!R.snapping&&!R.playing&&R.refine&&!R.drag&&now-R.editT>200){R.refine=false;const items=R.audition?[...st.layers,R.audition]:st.layers;
+    if(sceneHasState(items)){resizeMain();R.main.simT=null;const out=renderAt(items,R.main,R.time,st.bg,true);present(R.main,out.t,null,cv.width,cv.height,R.time);}}
   autoQuality(dt,need);
-  $('#timeOut').textContent=fmtT(R.time);tlHeadEl.style.left=(Math.min(1,st.dur>0?R.time/st.dur:0)*100)+'%';
+  {const ov=overrun(R.time);$('#timeOut').textContent=fmtT(R.time);tlHeadEl.style.left=(Math.min(1,st.dur>0?R.time/st.dur:0)*100)+'%';
+   const oe=$('#tlOver');if(oe){const on=ov>0.05;if(oe.hidden===on)oe.hidden=!on;if(on){const s='+'+ov.toFixed(1).replace('.',',')+' mp';if(oe.textContent!==s)oe.textContent=s;}$('#tl').classList.toggle('over',on);}}
   if(R.popEl)for(const c of R.popEl.querySelectorAll('.sigchip'))c.style.setProperty('--lv',Math.min(1,Math.max(0,sigVal(c.dataset.sig,R.time))).toFixed(3));
   for(const c of R.liveCtl){if(c.kbtn){const ks=keyState(c.obj);if(c.kbtn.dataset.k!==ks)c.kbtn.dataset.k=ks;if(ks&&document.activeElement!==c.rng&&document.activeElement!==c.val){const kv=keyVal(c.obj.k,R.time);if(Math.abs(+c.rng.value-kv)>1e-9){c.rng.value=kv;setFill(c.rng);c.val.value=fmt(kv,c.d);}}}
     if(c.obj.a||c.obj.s||hasK(c.obj)){c.mod.hidden=false;const v=ev(c.obj,c.d,R.time);c.mod.style.left=Math.min(100,Math.max(0,(v-c.d.min)/(c.d.max-c.d.min)*100))+'%';}else c.mod.hidden=true;}
