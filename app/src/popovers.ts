@@ -1,5 +1,5 @@
 import { R } from './runtime';
-import { renderAt } from './sim';
+import { frameAt, renderAt } from './sim';
 import { $, h } from './dom';
 import { SEL } from './effects/index';
 import { clearTarget, freeTarget, gl, mkTarget } from './gl';
@@ -37,10 +37,10 @@ export function applyExp(o:any){Object.assign(EXP,EXP_DEF);if(!o||typeof o!=='ob
   if(o.dur==='tl'||(typeof o.dur==='number'&&o.dur>0&&o.dur<=600))EXP.dur=o.dur;if(o.from==='0'||o.from==='head')EXP.from=o.from;
   if([0,8,16,32].includes(o.mb))EXP.mb=o.mb;if([90,180,270,360].includes(o.sh))EXP.sh=o.sh;}
 /* motion blur: average N sub-frames inside the shutter interval (premultiplied, float accumulation) */
-export function renderMB(ctx,t,fps,N,shDeg){if(!N||N<2)return renderAt(st.layers,ctx,t,st.bg,true);
+export function renderMB(ctx,t,fps,N,shDeg){if(!N||N<2){const f=frameAt(t);return renderAt(f.items,ctx,f.t,st.bg,true);}
   if(!ctx.mb||ctx.mb.w!==ctx.w||ctx.mb.h!==ctx.h){if(ctx.mb)freeTarget(ctx.mb);ctx.mb=mkTarget(ctx.w,ctx.h);}
   const acc=ctx.mb;clearTarget(acc,[0,0,0,0]);const span=(shDeg/360)/fps*R.speed;
-  for(let i=0;i<N;i++){const ts=Math.max(0,t+((i+.5)/N-.5)*span);const out=renderAt(st.layers,ctx,ts,st.bg,true);
+  for(let i=0;i<N;i++){const ts=Math.max(0,t+((i+.5)/N-.5)*span);const f=frameAt(ts);const out=renderAt(f.items,ctx,f.t,st.bg,true);
     gl.enable(gl.BLEND);gl.blendColor(0,0,0,1/N);gl.blendFunc(gl.CONSTANT_ALPHA,gl.ONE);copyTo(out.t,acc);gl.disable(gl.BLEND);}
   return acc;}
 export function dimsFor(mode){const {W,H}=outSize();const q=mode==='4k'?3840/Math.max(W,H):1;return {q,w:Math.round(W*q/2)*2,h:Math.round(H*q/2)*2};}

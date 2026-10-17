@@ -38,4 +38,5 @@ import './modals';
 import './describe';
 import './keyboard';
 import './linkcord';
+import './scenes';
 import './boot';

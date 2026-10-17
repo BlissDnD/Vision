@@ -91,6 +91,8 @@ export interface Project {
   bpmOff: number;
   /** Közös alapok (shared bases) by id; variants reference them. */
   bases?: Record<string, { id: string; name: string; children: Layer[] }>;
+  /** S1 Jelenetek: saved compositions in order, each with its incoming transition. */
+  scenes?: any[];
   /** Kapcsolatok: parameter links between elements. */
   links?: any[];
   /** Jelzések: manual cue taps {id, t, label}. */

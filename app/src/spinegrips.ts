@@ -55,7 +55,7 @@ export function dragSpinePt(L: any, i: number, start: V3, clientX: number, clien
 let box: HTMLElement | null = null, line: SVGPolylineElement | null = null, drag: any = null;
 R.spSel = 0;
 export function updSpineGrips(t: number) {
-  const L = sel(), show = isSurf(L) && R.gizmoOn && L.vis && R.tool !== 'orbit';
+  const L = sel(), show = !R.seqPlay && isSurf(L) && R.gizmoOn && L.vis && R.tool !== 'orbit';
   if (!box) {
     box = h('div', { class: 'sgrips' }); const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline'); svg.appendChild(line); box.appendChild(svg); $('#wrap').appendChild(box);

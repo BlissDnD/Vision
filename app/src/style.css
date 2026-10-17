@@ -412,3 +412,17 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .kparam{display:flex;flex-direction:column;gap:4px;padding:6px 2px 0}.kparam small{color:var(--fg2)}
 .klink{display:flex;flex-direction:column;gap:4px;padding:6px 0;border-top:1px solid var(--sep)}.klink b{font-size:12px;font-weight:600}
 .bdg.lnk{cursor:pointer}
+/* S1: Jelenetek sáv */
+.scn{position:absolute;left:12px;right:12px;bottom:52px;display:flex;align-items:center;gap:8px;padding:6px;border-radius:11px;background:var(--chrome);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--sep);z-index:3}
+.wrap.scn-on .tlx{bottom:116px}
+.scn .scplay[aria-pressed=true]{color:var(--accent);background:var(--accent-soft)}
+.scrow{flex:1;display:flex;align-items:stretch;gap:4px;min-width:0;overflow-x:auto}
+.scb{min-width:72px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;border:1px solid var(--sep);background:var(--fill2);border-radius:8px;padding:5px 9px;color:var(--fg);text-align:left;overflow:hidden}
+.scb b{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.scb small{font-size:10.5px;color:var(--fg2)}
+.scb.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.sct{flex:none;border:1px dashed var(--sep);background:none;border-radius:999px;padding:0 8px;font-size:11px;color:var(--fg2);white-space:nowrap}
+.sct:hover,.scb:hover{border-color:var(--accent)}
+.scadd{flex:none;white-space:nowrap}
+.scempty{align-self:center;padding:0 6px}
+.scard{min-width:280px;max-width:min(360px,calc(100vw - 32px))}
+.scard .pc select{max-width:170px}

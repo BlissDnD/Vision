@@ -31,6 +31,8 @@ export function migrateProject(obj: any): Migrated {
     return L;
   };
   state.layers = state.layers.map((L: any) => keep(L, 0)).flat().filter(Boolean);
+  // S1 scenes: the same rules for every saved scene (missing = none)
+  if (Array.isArray(state.scenes)) for (const s of state.scenes) if (s && Array.isArray(s.layers)) s.layers = s.layers.map((L: any) => keep(L, 0)).flat().filter(Boolean);
   // v1/v2 had no explicit loop flag in very early files: missing = loop on (old default)
   if (state.loop === undefined) state.loop = true;
   state.ver = PROJECT_VER;

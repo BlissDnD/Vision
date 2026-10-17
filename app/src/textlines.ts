@@ -33,7 +33,7 @@ function toScreen(L: any, e: any, cx: number, cy: number, t: number) {
 let box: HTMLElement | null = null, drag: any = null;
 export function updLineHandles(t: number) {
   const L = sel();
-  const show = isText(L) && R.gizmoOn && L.vis && R.tool !== 'orbit' && !(st.cam && st.cam.on);
+  const show = !R.seqPlay && isText(L) && R.gizmoOn && L.vis && R.tool !== 'orbit' && !(st.cam && st.cam.on);
   if (!box) { box = h('div', { class: 'lgrips' }); $('#wrap').appendChild(box); }
   if (!show) { box.hidden = true; return; }
   const e = textTex(L); if (!e || !e.layout) { box.hidden = true; return; }

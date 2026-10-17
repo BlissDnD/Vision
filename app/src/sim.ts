@@ -13,6 +13,11 @@ import { EFFECTS } from './effects/index';
 import { clearTarget } from './gl';
 import { renderScene } from './render';
 import { resetBlobs } from './blob';
+import { R } from './runtime';
+import { st } from './state';
+
+/** What the canvas / export shows at clock t: the workbench, or (Jelenetsor) the scene sequence with its local time. */
+export function frameAt(t: number): { items: any[]; t: number } { const f = R.seqPlay && R.seqFrame ? R.seqFrame(t) : null; return f ? { items: f.items, t: f.t } : { items: st.layers, t }; }
 
 export const SIM_HZ = 60;
 export const STEP = 1 / SIM_HZ;

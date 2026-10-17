@@ -27,7 +27,7 @@ $('#fsBtn').onclick=toggleFS;
 export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast('A teljes képernyő itt nem érhető el.'));}catch(_){toast('A teljes képernyő itt nem érhető el.');}}
 export function toAsp(e){const r=cv.getBoundingClientRect();const {W,H}=outSize();return {x:((e.clientX-r.left)/r.width-.5)*(W/H),y:.5-(e.clientY-r.top)/r.height};}
 R.drag=null;
-wrap.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('.hudbar,.hud,.tl,.tlx,.kmenu'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
+wrap.addEventListener('pointerdown',e=>{if(e.button!==0||R.seqPlay||e.target.closest('.hudbar,.hud,.tl,.tlx,.kmenu,.scn'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
   const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d'||L.type==='cloud3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):(R.glint&&usesLight(L)&&!hnd?'glint3':'move'));
   R.drag={mode,p0:toAsp(e),c0:[e.clientX,e.clientY],x:curV(L.n.x),y:curV(L.n.y),s:curV(L.n.s),rx:L.p&&L.p.rx?curV(L.p.rx):0,ry:L.p&&L.p.ry?curV(L.p.ry):0,m:1};
   {if(st.cam.on&&L.type!=='group'&&kindOf(L)!=='fx'){const sv=R.CAMON;R.CAMON=true;const r=camApply(L,R.time,R.drag.x,R.drag.y,1,0);R.CAMON=sv;R.drag.m=Math.max(.01,r[2]);R.drag.scx=r[0];R.drag.scy=r[1];}}
@@ -63,7 +63,7 @@ export function primDrag(L,drag,p,e){const o=L.prims[L.psel];if(!o)return;markDi
   else if(drag.mode==='r'){const c=sdfProj(L,R.time);let r=90-Math.atan2(p.y-c.y,p.x-c.x)*180/Math.PI;r=((r+180)%360+360)%360-180;if(e.shiftKey)r=Math.round(r/15)*15;o.ry=r;}
   syncCtl();}
 export function gizmoRadius(L,t){const s=ev(L.n.s,BASEK.s,t);if(L.type==='shape')return L.p.size.v*s*Math.max(1,L.p.aspect.v);if(L.type==='obj3d')return .39*s;if(L.type==='text'||L.type==='mtext'){const m=textCache.get(L.id);return m?.5*s*Math.min(4,m.w/m.h):.5*s;}if(L.type==='image')return .55*s;return .3*s;}
-export function updGizmo(t){const g=$('#gizmo');const L=sel();if(!L||!R.gizmoOn||!L.vis||R.tool==='orbit'||isSurf(L)){g.hidden=true;return;}g.hidden=false;
+export function updGizmo(t){const g=$('#gizmo');const L=sel();if(!L||R.seqPlay||!R.gizmoOn||!L.vis||R.tool==='orbit'||isSurf(L)){g.hidden=true;return;}g.hidden=false;
   const cr=cv.getBoundingClientRect(),wr=wrap.getBoundingClientRect();const {W,H}=outSize();
   let x=ev(L.n.x,BASEK.x,t),y=ev(L.n.y,BASEK.y,t),rr=(ev(L.n.r,BASEK.r,t)+L.n.spin.v*t),rw=gizmoRadius(L,t);
   const SPj=sdfProj(L,t);if(SPj){x=SPj.x;y=SPj.y;rw=SPj.r;rr=SPj.rot;}

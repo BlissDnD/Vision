@@ -42,7 +42,7 @@ export function pathPos(L: any, t: number) {
 let lastSig = '', pdrag: any = null;
 export function updPath(t: number) {
   const L = sel();
-  const show = !!L && L.vis && R.gizmoOn && R.tool !== 'orbit' && (hasK(L.n.x) || hasK(L.n.y)) && L.type !== 'surface3d';
+  const show = !!L && !R.seqPlay && L.vis && R.gizmoOn && R.tool !== 'orbit' && (hasK(L.n.x) || hasK(L.n.y)) && L.type !== 'surface3d';
   if (!show) { if (svg.style.display !== 'none') svg.style.display = 'none'; lastSig = ''; return; }
   svg.style.display = '';
   const cr = cv.getBoundingClientRect(), wr = wrap.getBoundingClientRect(); const { W, H } = outSize();

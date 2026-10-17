@@ -46,7 +46,7 @@ import type { Project, Layer, NParam } from './types';
  * Defaults reproduce the old fixed light (dir normalize(-0.5,0.8,0.6), shadow k 10, colour (1,.97,.92)). */
 export const LIGHTP=[S('az','Irány (körbe, °)',-180,180,-39.81),S('el','Magasság (°)',-10,90,45.58),S('soft','Lágyabb árnyék',0,1,.5),S('size','Nagyobb csillanás',0,1,0),S('warm','Melegebb ↔ hidegebb',-1,1,0),S('pow','Erősség',0,3,1)];
 export function normLight(o){const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}return b;}
-export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),light:normLight(null),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[]};
+export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),light:normLight(null),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[],scenes:[]};
 R.selId=null;export const assets={};export const imgTex=new Map();
 
 export function walk(list,fn,parent=null){for(const it of list){fn(it,list,parent);if(it.type==='group')walk(it.children,fn,it);}}

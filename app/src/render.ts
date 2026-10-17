@@ -205,7 +205,7 @@ export function renderList(items,set,ctx,t0,clear){
   clearTarget(set.A,clear);
   let baseOK=false,baseHidden=false,baseKey=0;
   for(const L of items){
-    const t=postT(t0,L.tm&&L.tm.fps||0);const camHere=!!(st.cam&&st.cam.on)&&!ctx.noCam;R.CAMON=camHere;
+    const t=postT(t0+(L._toff||0),L.tm&&L.tm.fps||0);const camHere=!!(st.cam&&st.cam.on)&&!ctx.noCam;R.CAMON=camHere;
     if(L.clip){if(baseHidden)continue;}else{baseHidden=!L.vis;baseOK=false;}
     if(!L.vis)continue;
     let out;const kind=kindOf(L);
