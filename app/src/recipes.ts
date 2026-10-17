@@ -279,6 +279,11 @@ export const RECIPES=[
    ['gradient',{name:'Háttér',pal:7,p:{span:.2}}],
    ['bento',{name:'Bento-rács',pal:12,p:{layout:5,layout2:4,morphAt:2.2,morphDur:1.2,fill:2,anim:0,order:1,round:.05,ease:5,shadow:.7,sheen:.5}}]],
   macros:[{l:'Átrendeződés ideje',t:[[1,'p.morphAt',.5,6]]},{l:'Lekerekítés',t:[[1,'p.round',0,.12]]},{l:'Hézag',t:[[1,'p.gap',0,.08]]},{l:'Tempó',t:[[1,'p.dur',2,.3],[1,'p.morphDur',2.5,.3]]}]},
+ {n:'Szerkesztői címlap (soronként)',cat:'motion',desc:'Vásznat kitöltő, vegyes méretű tipográfia (4. kép ihlette): minden sor külön méretű, behúzású és térközű, soronként maszkolva csúszik be. A sorok elején lévő fogantyúkkal a vásznon igazíthatod. A szöveg átírható.',layers:[
+   ['gradient',{name:'Háttér',pal:17,p:{span:.5,speed:0,mode:1}}],
+   ['mtext',{name:'Címlap',x:-.62,s:.22,text:{str:'AZ IDŐ\nnem vonal,\nhanem\nHULLÁM.',font:'Bricolage Grotesque',weight:'800',track:-.02,align:'left',lh:1.02,
+     lines:[{size:1.5},{size:.62,dx:.35,weight:'400',italic:true,gap:.05},{size:.62,dx:.35,weight:'400'},{size:1.75,gap:.08}]},
+     p:{anim:2,unit:2,order:0,start:.3,dur:.7,stagger:.35,ease:5,fill:0,color1:'#141216'}}]]},
  {n:'The End (vintage)',cat:'motion',desc:'Filmhíradós zárókép: a felirat méret- és fókuszpoppal ugrik be, kézzel rajzoltan remeg 12 kocka/mp-vel, szépia vetítő porral, karcokkal és fényszivárgással.',layers:[
    ['gradient',{name:'Papír',pal:17,p:{span:.35,speed:0,mode:1}}],
    ['mtext',{name:'The End',s:.2,tm:{in:0,inAt:0,inDur:.8,out:0,outAt:9,outDur:.8,ease:0,fps:12},text:{str:'The End',font:'Bodoni Moda',weight:'500',track:.02},p:{anim:7,stagger:0,start:.6,dur:.45,ease:6,fill:0,color1:'#16130f',boil:.55,boilfps:10}}],

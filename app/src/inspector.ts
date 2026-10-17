@@ -15,6 +15,7 @@ import { renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { showCode } from './modals';
 import { childVariantSection, linkSection, variantSection } from './variantsui';
+import { linesSection } from './textlines';
 
 export function renderInsp(){
   {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'));}
@@ -82,6 +83,7 @@ export function renderInsp(){
   const detKids=d.params.filter(p=>!mainKeys.includes(p.k)).map(pd=>ctlParam(L,pd));
   if(L.type!=='custom')detKids.push(h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása')));
   P.appendChild(section('Részletek','details',false,...detKids));
+  const ls=linesSection(L);if(ls)P.appendChild(ls);
   const vs=childVariantSection(L);if(vs)P.appendChild(vs);
   P.appendChild(linkSection(L));
 }

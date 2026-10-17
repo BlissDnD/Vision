@@ -306,3 +306,9 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .difflist{margin:4px 0 6px;padding-left:18px}
 #libSearch{flex:0 1 190px;min-width:120px;font:inherit;font-size:12px;padding:5px 9px;border-radius:7px;border:1px solid var(--sep);background:transparent;color:inherit;margin-right:8px}
 .fxi .fxn{opacity:.55;font-variant-numeric:tabular-nums}
+/* M4: sor-fogantyúk */
+.lgrips{position:absolute;inset:0;pointer-events:none;z-index:6}
+.lgrip{position:absolute;left:0;top:0;width:6px;margin:-0 0 0 -10px;translate:0 -50%;border-radius:3px;background:var(--accent);opacity:.55;pointer-events:auto;cursor:move;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.lgrip:hover,.lgrip.on{opacity:1}
+.lrow{border-top:1px solid var(--sep);padding-top:6px;margin-top:6px}
+.lhead{margin-bottom:2px}

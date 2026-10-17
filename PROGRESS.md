@@ -2,6 +2,11 @@
 
 Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
 
+## Állapot: 2026-10-17 este — M4 (soronkénti tipográfia) KÉSZ
+
+Verzió 0.17.0-m4, 17/17 teszt zöld. Részletek és korlátok: `HANDOFF.md` „M4 állapota”.
+**Felhasználói próba (1 perc):** Projekt → Új, üres vászon → írd be a könyvtár keresőjébe: „címlap” → kattints rá → tekerj 3 mp-re → a sorok elején lévő kék fogókat húzd (Shift: méret), vagy írd át a szöveget.
+
 ## Állapot: 2026-10-17 este — M3 (könyvtár és rétegek UX) KÉSZ
 
 Verzió 0.16.0-m3, 16/16 teszt zöld. Részletek és maradék: `HANDOFF.md` „M3 állapota”.
@@ -68,4 +73,4 @@ Verzió: `app/package.json` 0.14.0-m1.wip. Git: a projektmappa gyökerében (`.g
 - Az `R.time` továbbra is a jelenetidő (Loopnál a frame() tekeri vissza). Az export az `sceneT()`-n keresztül képez le. Így a meglévő effektkód érintetlen.
 
 ## Következő lépés
-Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M4** tipográfia, utána M5 mozgásblokkok. A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.
+Sorrend és mérföldkövek: `HANDOFF.md`. Most: **M5** mozgásblokkok és retime (lásd `HANDOFF.md` „Következő: M5”). A vörös felület (pontminta, öntükrözés, SDF-összevetés) az M6-ban.

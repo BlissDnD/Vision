@@ -40,7 +40,8 @@ export interface EffectDef {
 }
 
 export interface Timing { in: number; inAt: number; inDur: number; out: number; outAt: number; outDur: number; ease: number; fps?: number }
-export interface TextSpec { str: string; font: string; weight: string; track: number; align?: 'left' | 'center' | 'right'; lh?: number; wrap?: number }
+export interface LineSpec { size?: number; dx?: number; gap?: number; weight?: string; font?: string; italic?: boolean }
+export interface TextSpec { str: string; font: string; weight: string; track: number; align?: 'left' | 'center' | 'right'; lh?: number; wrap?: number; lines?: LineSpec[] }
 export interface Prim { t: number; op: number; x: number; y: number; z: number; sx: number; sy: number; sz: number; rx: number; ry: number; k: number; c: number }
 export interface Macro { l: string; v: number; t: [string, string, number, number][] }
 

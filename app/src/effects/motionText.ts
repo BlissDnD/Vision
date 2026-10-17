@@ -15,8 +15,12 @@ mtext:{kind:'text',name:'Animált szöveg',desc:'Kinetikus tipográfia betűnké
   vec2 p=P(); float ia=uImgSize.x/max(uImgSize.y,1.0); vec2 uv=TXUV(p,ia); float hb=max(uAux2.w,1.0); float nL=max(1.0,uAux2.x); float bhN=max(uAux2.z,1e-4);
   if(uv.x<-0.25||uv.x>1.25||uv.y<-0.5||uv.y>1.5) return vec4(0.0);
   int A=int(p_anim+0.5); bool whole=p_stagger<0.0001&&A!=10&&A!=11;
-  float li=clamp(floor((1.0-uv.y-uAux2.y)/bhN),0.0,nL-1.0); float yTop=1.0-(uAux2.y+li*bhN), yBot=yTop-bhN, yc=(yTop+yBot)*0.5;
-  vec4 ax=texture(uAux,vec2(clamp(uv.x,0.0,1.0),(2.0*li+0.5)/(2.0*nL))); vec4 bx=texture(uAux,vec2(clamp(uv.x,0.0,1.0),(2.0*li+1.5)/(2.0*nL)));
+  // line table (last aux row): variable line heights from per-line size / spacing
+  float AH=2.0*nL+1.0, vy=1.0-uv.y, li=0.0, tT=0.0, tB=1.0;
+  for(int i=0;i<24;i++){ if(float(i)>=nL) break; vec4 q=texelFetch(uAux,ivec2(i,int(2.0*nL)),0);
+    float a=(q.r*65280.0+q.g*255.0)/65535.0, b=(q.b*65280.0+q.a*255.0)/65535.0; if(i==0||vy>=a){ li=float(i); tT=a; tB=b; } }
+  float yTop=1.0-tT, yBot=1.0-tB, yc=(yTop+yBot)*0.5;
+  vec4 ax=texture(uAux,vec2(clamp(uv.x,0.0,1.0),(2.0*li+0.5)/AH)); vec4 bx=texture(uAux,vec2(clamp(uv.x,0.0,1.0),(2.0*li+1.5)/AH));
   bool gap=ax.r>0.995||uv.x<0.0||uv.x>1.0; if(gap&&!whole) return vec4(0.0);
   float ci=floor(ax.r*255.0+0.5); float cx=(floor(ax.g*255.0+0.5)*256.0+floor(ax.b*255.0+0.5))/65535.0; float wi=floor(ax.a*255.0+0.5);
   float lft=(floor(bx.r*255.0+0.5)*256.0+floor(bx.g*255.0+0.5))/65535.0; float rgt=(floor(bx.b*255.0+0.5)*256.0+floor(bx.a*255.0+0.5))/65535.0;
