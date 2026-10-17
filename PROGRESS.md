@@ -7,7 +7,7 @@ Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagy
 Verzió 0.15.0-m2, projektformátum v4 (`state.bases`, `group.variant`, `state.links`; régi fájlok: üres). Részletek: `HANDOFF.md` „M2 állapota”. Teszt: `tests/m2_variants.js` (3 változat; egyben átírt cím csak ott; Átadás az alapra és kijelölteknek; helyi törlés túléli az alapváltozást; Kapcsolat kiértékelés; mentés→újranyitás bitre azonos; visszavonás; leválasztás; árva alap törlődik). 15/15 zöld.
 **Felhasználói próba (2 perc):** jelölj ki egy csoportot → Közös alap és változatok → „Közös alappá alakítás” → „Új változat” kétszer → egy változatban írd át a címet → a rétegfában „1 helyi” látszik, a többi nem változik → „Átadás a kijelölteknek”.
 
-## (félretett, M6-ban folytatódik) Vörös gerincfelület látványpróba: vörös gerincfelület látványpróba KÉSZ, kreatív értékelésre vár
+## Vörös gerincfelület látványpróba: KÉSZ, félretéve (az M6-ban folytatódik)
 
 Hely: `prototypes/red-ribbon-webgl/` (önálló, a Vel apphoz nem nyúl). Részletek, mérés és hiánylista: annak `README.md`-je.
 - Three.js r170 (indoklás a README-ben), szerkeszthető 9 pontos gerinc = felső él, erről lelógó lekerekített lap; 8 fő vezérlő + Továbbiak; gerincpont-húzás gizmóval; geometriai padló-összeolvadás (exp-leülés) + analitikus kontaktárnyék; PMREM-környezet a fényekből, csíkmozgatásra újraépül; valódi síktükör padló.
