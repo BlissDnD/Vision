@@ -1,6 +1,6 @@
 # Vel – funkcióleltár a teljes funkcióátadó ellen (2026-10-17, 0.21.0-m7a)
 
-Forrás: `../VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md` (elsődleges funkcióátadó). Ez a fájl a kódbeli tényállapot. Minden mérföldkő után frissítendő.
+Forrás: `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md` (elsődleges funkcióátadó). Ez a fájl a kódbeli tényállapot. Minden mérföldkő után frissítendő.
 
 Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · **D** = demonstrálva (automatikus teszt és/vagy élő böngészős ellenőrzés) · **K** = felhasználóval kipróbálva.
 Jelenleg **egyetlen sor sem K**: a felhasználó egyik mérföldkövet sem próbálta ki (M1-nél kifejezetten kihagyta).

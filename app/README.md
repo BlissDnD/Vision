@@ -85,3 +85,15 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
   | Sarki fény | 208 | 192 |
 
   Valódi GPU-n az arányok mások, de az irány ugyanez.
+
+## Újabb modulok (M1–M7a, 2026-10-17)
+
+- `sim.ts`, `time.ts`: közös óra, 60 Hz-es rögzített lépés az állapottartó rétegeknek (feedback, blob), 3 mp előfuttatás ugráskor (`WARM`); `sceneT()` az exporthoz; Loop nélküli továbbfutás.
+- `migrate.ts`: minden betöltés ezen megy át; régi `app:'latomas'` v1/v2 fájlok; az ismeretlen elemeket toast sorolja fel.
+- `variants.ts`, `variantsui.ts`: Közös alap / Változat (a helyi eltérés számolt: `localDiff`), Kapcsolat `st.links` (`{from,to,mode:'add'|'set',amt,on}`), az `ev()` a nem mentett `_lk` horgonyon át értékeli.
+- `pick.ts`: jobb klikkes találatlista a vásznon, Alt+klikk. `shelf.ts`/`library.ts`: kategóriák, ékezet nélküli keresés.
+- `textlines.ts`: soronkénti fogantyúk és „Sorok” szekció (`text.lines[i]` = `{size,dx,gap,weight,italic}`, em-ben).
+- `retime.ts`: mozgásblokk húzása/nyújtása (a belépés sebessége marad, Alt: a zárás lassul), J-jelzések (`st.cues`), horgonyok. `perform.ts`: x/y Eljátszás simítással (E), a nyers felvétel megmarad.
+- `mesh3d.ts`: Gerincfelület (`surface3d`): Catmull–Rom gerinc → lap, MSAA, félfelbontású tükör, analitikus stúdió (`ENV`). `spinegrips.ts`: gerincpont-fogók, kamera-pásztázás/görgő, csillanás-húzás (`glintDrag`, CPU sugár–háromszög). Mesh-réteg: `EFFECTS[type].mesh` → `drawMesh`.
+- Jelenetfény: `st.light` (`LIGHTP`/`normLight`, `state.ts`), `lightU` a `render.ts`-ben (`setU` az obj3d/sdfscene-en, uniformok `uLDir/uLEnv/uLCol/uLSoftK/uLSize/uLWrap`); alapértéken bitre a régi kép. UI és csillanás-húzás: `lightui.ts`.
+- `partfx.ts`: Részecske Megjelenés `pdisp` (fx-ként futó részecske-shader, `runChain` `def.points` ág; nyugalomban másolás, közben `MIX` átúsztatás); események: kézi / `st.cues` / ismétlődés; `altText` = szövegváltás a szétesés csúcsán (külön textúra-gyorsítótár `id#alt`).

@@ -1,5 +1,5 @@
 node_modules/
 dist/
 *.png
-!images/*.png
+!docs/referenciak/kepek/*.png
 .venv/

@@ -1,6 +1,6 @@
 # Vel — PROGRESS
 
-Rövid folytatási kontextus. A teljes terv: `docs/vel-fejlesztesi-terv-jovahagyasra.md`, az átadás: `VEL-CLAUDE-ATADAS.md`.
+Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
 ## Állapot: 2026-10-17 este — M7 (D szakasz) első szelet: 0.21.0-m7a „részecskés szöveg visszaáll”
 

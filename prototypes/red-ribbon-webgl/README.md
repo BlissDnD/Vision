@@ -1,6 +1,6 @@
 # Vörös gerincfelület – Vel M2 látványpróba
 
-Önálló WebGL2-prototípus a `images/01.png` referenciához. A Vel appot nem módosítja. Ez látvány- és teljesítménykísérlet, nem integráció.
+Önálló WebGL2-prototípus a `docs/referenciak/kepek/01.png` referenciához. A Vel appot nem módosítja. Ez látvány- és teljesítménykísérlet, nem integráció.
 
 ## Indítás
 
