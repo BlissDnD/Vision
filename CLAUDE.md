@@ -16,8 +16,9 @@
 1. `HANDOFF.md`: **hol tartunk, mi a következő lépés**, mire vár jóváhagyás.
 2. `FUNKCIO-LELTAR.md`: minden kért funkció tényleges állapota (a 18 soros hiánylista).
 3. `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md`: **elsődleges követelmény** (mit akar a felhasználó, próbák, 14. fejezet: linklista).
-4. `docs/spec/vel-fejlesztesi-terv-jovahagyasra.md`: A–G szakaszok (7. fejezet), termékszabályok.
-5. Csak ha kell: `docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md` (E/F, 4K), `docs/spec/vel-voros-felulet-webgl-prototipus-brief.md` (1. kép), `app/README.md` (kódfelépítés, modulok).
+4. `docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md`: mozgás- és Kapcsolat-UX iránya (2026-10-18), a 3. kiegészítése.
+5. `docs/spec/vel-fejlesztesi-terv-jovahagyasra.md`: A–G szakaszok (7. fejezet), termékszabályok.
+6. Csak ha kell: `docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md` (E/F, 4K), `docs/spec/vel-voros-felulet-webgl-prototipus-brief.md` (1. kép), `app/README.md` (kódfelépítés, modulok).
 
 ## Mappatérkép
 ```
