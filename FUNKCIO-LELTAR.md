@@ -31,7 +31,7 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 | 18 | Import, hordozhatóság, formátumok | **R** | Kép, hang, projekt-JSON import; PNG/MP4 export. | Videó/font/3D import; pontos formátumspecifikáció. |
 | 19 | **Jelenetek + átmenetek** (új, a felhasználó kérése) | **T** | – | A kész kompozíció Jelenetként menthető; egy sávban jelenetekből rakható össze az animáció. Az átmenet rétegenként számol: ugyanaz az elem odamozog/átalakul, a csak egyikben szereplő be-/kiúszik; átmenet-láncok szerepek szerint (háttér így jön, szöveg ezt a mozgást használja). Párosítás automatikus és felülírható; **könyvtárba mentett elem (komponens/példány)** mindig ugyanannak számít. Alap: Közös alap/Változat (M2). |
 | 20 | Kulcskockázás és idővonal használhatósága | **R · K (hibákkal)** | ◆ gomb minden csúszkán, kulcsok pontként a rétegsorban, Sávok panel, görbeszerkesztő. | Hibák; lassú reakció; nem egyértelmű, mi kulcs és mi más animáció (LFO, jel, mozgásblokk); több kulcs kijelölése húzással; gyors munkafolyamat (Animálás mód: amit állítasz, az kulcs lesz); mozgáspálya a vásznon. |
-| 21 | Jobb panel rendezettsége | **R · K (hibákkal)** | Hosszú, lenyitható szekciók csúszkákkal. | Túl zsúfolt: ikonok, fülek, tömörebb sorok, világosabb bontás. |
+| 21 | Jobb panel és a teljes UI rendezettsége (U1: jobb panel, U3: többi munkatér) | **R · K (hibákkal)** | Hosszú, lenyitható szekciók csúszkákkal. | Túl zsúfolt: ikonok, fülek, tömörebb sorok, világosabb bontás. |
 | 22 | LFO hibátlan körbeérés (loop) | **T** | LFO-hullámok szabad tempóval. | A hullám tempója igazodjon a projekt/jelenet hosszához, a vége pontosan az elejébe érjen (varratmentes loop export). |
 
 ## Ami az A–B szakaszból tényleg működik (D, nem K)
