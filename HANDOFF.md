@@ -9,7 +9,7 @@ Neked nincs előzményed. Ez a fájl mindent tartalmaz, ami a folytatáshoz kell
 - Takarékosan dolgozz: minden lezárt szelet után commit, és frissítsd ezt a fájlt. A felhasználó szól, ha fogy a keret; ilyenkor tiszta ponton állj meg.
 
 ## 2. Hol van minden (Mac)
-- Repo: `~/Desktop/melo/CLAUDE/muchdesigner/vel` (git, `main` ág, helyi; nincs remote).
+- Repo: `~/Desktop/melo/CLAUDE/muchdesigner/vel` (git, `master` ág, helyi; nincs remote).
 - `app/`: a Vel forrása (`app/src`), tesztek (`app/tests`), build (`app/dist/index.html` = önálló, dupla kattintással megnyitható).
 - `docs/vel-fejlesztesi-terv-jovahagyasra.md`: **a felhasználó terve** (A–G szakaszok, 7. fejezet). Ez az elsődleges irány.
 - `docs/` többi: referenciák, részecske- és folyadékjegyzetek, a vörös felület briefje. `images/01–09.png`: referenciaképek.
