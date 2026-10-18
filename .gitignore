@@ -3,3 +3,6 @@ dist/
 *.png
 !docs/referenciak/kepek/*.png
 .venv/
+
+# external reference sources (read-only clones, not part of Vel)
+docs/referenciak/forras/*/
