@@ -32,3 +32,7 @@ A teljes leltárban R01–R54 a jelenlegi recept, Ö01–Ö20 a korábbi20 irán
 ## Ütköző információk sorrendje
 
 Emberi aktuális utasítás → érvényes AGENTS/CLAUDE folyamat → mai kód és bizonyíték → aktuális HANDOFF/funkcióleltár → e csomag terve → régi brief/referenciatanulmány. A hiányzó bizonyítékot ne töltsd ki feltételezett kész státusszal. A forráslicencet verzióspecifikus eredeti fájl/aktuális feltétel alapján ellenőrizd; egy régi táblázat címkéje nem elég.
+
+## Két új későbbi irány
+
+[Jövőbeli 3D jelenet és AI-vázlat](JOVO-3D-SCENE-ES-AI-VAZLAT.md): SCENE-01 és AI-PREVIZ-01. Részletes cél/UX/szeletek; gépi útvonal: `data/future-directions.json`. Nem a korábbi96 elem átírása, hanem két új munkafolyamat.

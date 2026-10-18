@@ -182,3 +182,5 @@ A `../docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` for
 ### Claude többagentes fejlesztési csomag
 
 Belépés: `../docs/claude-handoff/00-START-HERE.md`. Rövid taskkártyák, UX- és adapterhatárok, forrásútvonalak, külön keresőmodell és csomagellenőrzők; nem új app-runtime vagy beépített addonrendszer.
+
+Későbbi termékirányok: intuitív 3D scene/tájtervező és filmes AI-vázlatmód, közös adat-/kamerarendszerrel. Csak specifikáció: `../docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`; nincs új futásidejű modul.

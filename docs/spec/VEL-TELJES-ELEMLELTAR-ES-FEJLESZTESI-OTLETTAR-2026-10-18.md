@@ -2539,3 +2539,11 @@ Ez sorrendi javaslat, nem időbecslés. Az ötletek jóváhagyása dokumentálá
 
 
 **Dokumentumellenőrzés:** az elemtípusok és receptek nevei, a 259 polcsor, a hat mozgás, a 63 prototípus, a 20 korábbi irány és a 32 új recept száma a forráslistákkal összevetve egyezik. Ez lefedettségi és szerkezeti ellenőrzés; új működési tesztet nem futtattunk.
+
+## 12. Két új későbbi alkotói irány
+
+**SCENE-01 – gyors artisztikus 3D jelenettervező [Ö]:** pár kattintással szép táj, néhány behúzott asset valódi térbeli elhelyezése, közös kamera, automatikus és kézzel finomítható világítás. A cél könnyen összeállítható jelenet, nem sok technikai panel. A meglévő Terep/felhő/bolygó/anyag/prototípus építőkövek; az általános közös 3D jelenettér még új fejlesztés.
+
+**AI-PREVIZ-01 – filmes AI-vázlatmód [Ö]:** ugyanazon jelenet egyszerű helyettesítőkkel, felvételkártyákkal, kamera-/akciótervvel; referencia-PNG, storyboard, kezdő-/zárókép és később animatik, illetve támogatott depth/mask/normal passzok. Elsőnek helyi export, szolgáltatóspecifikus generálás külön későbbi adapter.
+
+A közös cél és részletes UX/szeletek: [későbbi 3D és AI-vázlat terv](../claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md). Mindkettő későbbi terv, nem működő funkció; az előző96 ötlet számozása változatlan.

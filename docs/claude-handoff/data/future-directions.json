@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "source": "User request 2026-10-18",
+  "status": "future-intent-not-implemented",
+  "items": [
+    {
+      "id": "SCENE-01",
+      "title": "Későbbi fő irány: intuitív artisztikus 3D tájtervező",
+      "workPackages": [
+        "SCENE-01"
+      ],
+      "implementationApproved": false
+    },
+    {
+      "id": "AI-PREVIZ-01",
+      "title": "Későbbi filmes vázlatmód AI-kép/videógenerátorhoz",
+      "workPackages": [
+        "AI-PREVIZ-01"
+      ],
+      "implementationApproved": false
+    }
+  ]
+}

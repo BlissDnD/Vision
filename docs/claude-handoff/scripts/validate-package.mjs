@@ -13,6 +13,7 @@ const backlog = await read("data/backlog.json"),
   addons = await read("data/addon-status.json"),
   sources = await read("data/source-index.json");
 const ideaRoutes = await read("data/idea-routing.json");
+const futureDirections = await read("data/future-directions.json");
 const errors = [],
   checks = [];
 const check = (ok, label) => {
@@ -20,12 +21,18 @@ const check = (ok, label) => {
 };
 const ids = new Set(backlog.tasks.map((t) => t.id));
 check(
-  ids.size === 26 && ids.size === backlog.tasks.length,
-  "26 unique task cards",
+  ids.size === 28 && ids.size === backlog.tasks.length,
+  "28 unique task cards",
 );
 for (const task of backlog.tasks) for (const dep of task.conditionalDependencies || []) {
   if (!ids.has(dep.task) || !dep.when) errors.push('Invalid conditional dependency: ' + task.id);
 }
+check(
+  futureDirections.items.length === 2 && futureDirections.items.every(item =>
+    !item.implementationApproved && item.workPackages.every(id => ids.has(id)) &&
+    backlog.tasks.find(task => task.id === item.id)?.status === 'deferred'),
+  'Both future directions are mapped and remain deferred'
+);
 const visiting = new Set(),
   done = new Set();
 function walk(id) {
@@ -44,7 +51,7 @@ function walk(id) {
   done.add(id);
 }
 backlog.tasks.forEach((t) => walk(t.id));
-check(done.size === 26, "Task dependency graph resolved");
+check(done.size === 28, "Task dependency graph resolved");
 for (const t of backlog.tasks) {
   check(!t.implementationApproved, "No fabricated approval: " + t.id);
   try {

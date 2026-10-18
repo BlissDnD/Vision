@@ -3,7 +3,7 @@
 **2026-10-18 · előkészítő csomag, nincs új alkalmazásintegráció.**
 
 - A külön keresőmodell **13/13 Node-tesztje zöld**: név/ékezet/alias, feladatkifejezés, szerepszűrés, el nem készült elem elrejtése, család/ID, kompatibilitási határ és adatok változatlansága.
-- A csomagellenőrző **46 szerkezeti ellenőrzése zöld**: 26 egyedi task és ciklusmentes függőségek, 259 forrássor/229 javasolt rekord, 72 típus/54 recept/6 mozgás, 44 korábbi követelménysor, 65 addon/layout és 96 új ötlet létező taskhoz rendelése.
+- A csomagellenőrző **49 szerkezeti ellenőrzése zöld**: 28 egyedi task és ciklusmentes függőségek, 259 forrássor/229 javasolt rekord, 72 típus/54 recept/6 mozgás, 44 korábbi követelménysor, 65 addon/layout és 96 korábbi új ötlet létező taskhoz rendelése; külön két új, halasztott alkotói irány.
 - A helyi Markdown-hivatkozások céljai léteznek. A számlálót és a végső eredményt a `data/package-validation.json` tartalmazza.
 - **368 kontextusfájl** hash-e egyezik a készítéskori forrással. A dirty/untracked státusz külön mező; nem emeltük ezeket csendben a saját commitba.
 - A ZIP-ben lévő forrásmásolatok hash-e ellenőrzött; az archívum CRC-próbája hibamentes. Nincs node_modules, .git, .venv vagy production dist.

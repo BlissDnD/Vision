@@ -69,3 +69,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 **Közös részletes leltár és ötlettár (2026-10-18):** `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` – minden jelenlegi könyvtári elem, működés és bővítési ötlet; prototípusok és új receptek külön státusszal. Dokumentáció, nem megvalósítás; a fenti funkcióállapotok változatlanok.
 
 **Többagentes Claude-előkészítés (2026-10-18):** `docs/claude-handoff/00-START-HERE.md`. Mind a44 jelenlegi követelménysor (a két külön28-as megőrzésével),63 addon+2layout és96 új ötlet munkacsomaghoz rendelve. Kategória/UX/adapter/mentés/idő/render feladatok együtt tervezve. Előkészítés, a fenti T/R/D/K termékállapotokat nem emeli.
+
+**Két új későbbi irány (T, 2026-10-18):** SCENE-01 – pár kattintásos artisztikus 3D tájépítés, assetelhelyezés és auto lighting; AI-PREVIZ-01 – AI-kép-/videógenerátorhoz filmes vázlat-/storyboard-/animatikmód. Részletek: `docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`. Közös scene/kamera/asset, a meglévő réteges 3D nem teljesíti automatikusan. Nincs implementálva vagy elindítva.

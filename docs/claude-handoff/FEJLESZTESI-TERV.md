@@ -61,3 +61,9 @@ A csomag nem állítja késznek egyik A–G termékszakaszt sem. Az A–G célok
 **Lista változása:** CAT-01 első rész demonstrálható, a 63 addon és A–G állapota ettől nem lesz kész.
 
 A jóváhagyott szelet rutindöntéseit az agent önállóan hozza; ne kérjen vissza minden szinonimára vagy segédfüggvényre.
+
+## Későbbi fő alkotói irány: gyors 3D jelenet és AI-vázlat
+
+A [külön terv](JOVO-3D-SCENE-ES-AI-VAZLAT.md) rögzíti Miksa új fő célját: pár kattintással szép, artisztikus táj, néhány behúzott assettel és automatikus, kézzel finomítható világítással. SCENE-01 egy közös 3D tér/camera/fény első használható szeletére épül. AI-PREVIZ-01 ugyanebből a jelenetből filmes felvételkártyát, kompozíciós referenciát és később animatikot exportál.
+
+Mindkettő későbbi nagy fejlesztés. A 2D/2,5D shot-PNG első szelet nem vár a teljes 3D rendszerre; valódi 3D blockout, depth/normal/object mask csak bizonyított renderadat után. A mai CAT/UX/média/útvonal fejlesztést a későbbi újrahasználat figyelembevételével tervezzük, de ne építsünk mindent előre át. A backlog így28 család, ebből az új kettő `deferred`.

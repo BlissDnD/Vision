@@ -18,3 +18,7 @@ Nincs termékkód-foglalás. A következő integrátor induláskor rögzítse a 
 - A teljes leltár referencia; a rövid taskkártya az elsődleges végrehajtási kontextus.
 
 A backlog státuszát és ezt a táblát ugyanaz a koordinátor frissítse. Az aktuális projekt HANDOFF továbbra is az élő termékállapot elsődleges forrása.
+
+## Későbbi, még nem kiosztott irányok
+
+SCENE-01: pár kattintásos artisztikus 3D tájépítés, közös tér és automatikus fény. AI-PREVIZ-01: filmes/képi generátorokhoz referencia- és animatikmód. Mindkettő `deferred`, nincs aktív implementáció vagy külső generálás.

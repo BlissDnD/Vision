@@ -2,7 +2,7 @@
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
-**Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 26 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
+**Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 28 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
 
 ## Állapot egy mondatban
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).
@@ -91,3 +91,7 @@ A `prototypes/extension-lab/layouts/README.md` az átadó: Unwoven eredeti shade
 ## Közös elemleltár és ötlettár (2026-10-18, Codex)
 
 Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md`. Forrásalapú leltár: 72 típus, 54 recept, 259 polcbejegyzés; 63 külön modul + 2 layout; 20 fejlesztési irány, 32 új recept/világ, 24 Megjelenés-/viselkedésötlet és 20 effektlánc. Minden elemnél működés és fejlesztési lehetőség, a beépített/prototípus/ötlet állapot elkülönítve. A Bolygó/Terep/hold/légkör külön részletes fejezet. Csak dokumentáció változott; nincs új integráció. A böngészőben tárolt Saját könyvtár tartalmához export kell, az nincs a leltárban.
+
+## Későbbi fő irányok (2026-10-18)
+
+`docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`: SCENE-01 – intuitív, pár kattintásos artisztikus 3D tájépítés, assetbehúzás/elhelyezés, auto lighting; AI-PREVIZ-01 – filmes kompozíciós vázlat, felvételkártya, storyboard/kezdő-zárókép/animatik AI-generátorok számára. Közös scene/asset/kamera alap, cluttermentes közvetlen interakció; mindkettő későbbi terv, nem megkezdett implementáció.

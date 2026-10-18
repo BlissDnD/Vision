@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "snapshotDate": "2026-10-18",
-  "baseCommit": "bcf77db2a5de8e512e258a5a3007f36611c199d6",
+  "baseCommit": "5a884eae329f3188d0b91de855356d5dfff7ab04",
   "appVersion": "0.36.0-g1",
   "repositoryRequired": true,
   "files": [
@@ -17,26 +17,26 @@
       "bytes": 9713,
       "sha256": "c64c7a7d160b015b4fdc20b7c58005226a236836cca99f3001ab716f4c73ac0e",
       "tracked": true,
-      "dirtyAtSnapshot": true
+      "dirtyAtSnapshot": false
     },
     {
       "path": "FUNKCIO-LELTAR.md",
-      "bytes": 23823,
-      "sha256": "ebac778d378ddb1e0b7d2d20aa3d73e5dd5b697a38b3285b9d1109c85712d8b1",
+      "bytes": 24241,
+      "sha256": "9f319c1f634615a8ab206e50ca08d70e1505aa7811a5629bff779fa3cbb1f45f",
       "tracked": true,
       "dirtyAtSnapshot": true
     },
     {
       "path": "HANDOFF.md",
-      "bytes": 17371,
-      "sha256": "a71b0348748bf7417122f5179ac2ac9dc658ddd2783be793d041eb704cb0f7b9",
+      "bytes": 17840,
+      "sha256": "af8dd71c4a38b8d24eeb27ec486a89b49957133037088e30186bc9e0b1a911d2",
       "tracked": true,
       "dirtyAtSnapshot": true
     },
     {
       "path": "PROGRESS.md",
-      "bytes": 29603,
-      "sha256": "0f841f6f5df7d009da584f4cd2e9b0c574a01cc77605b7ba9106d49c14731c7f",
+      "bytes": 30198,
+      "sha256": "85205c700c44c2faa9dc07abce12213b492157b64fcf58136110ee9e2c0855ed",
       "tracked": true,
       "dirtyAtSnapshot": true
     },
@@ -49,8 +49,8 @@
     },
     {
       "path": "app/README.md",
-      "bytes": 23371,
-      "sha256": "8a1f8e9f35aa31481e0fab9175fca94b017366d6c4beaf6b0d3dc409d0a14c0f",
+      "bytes": 23598,
+      "sha256": "3548b0b87984131ece6fe49c4429a11dae210651577fc3b961d7778deb752d52",
       "tracked": true,
       "dirtyAtSnapshot": true
     },
@@ -1043,10 +1043,10 @@
     },
     {
       "path": "docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md",
-      "bytes": 230122,
-      "sha256": "77b946fe5360784cd8216eb16f7bfb2fefd243ca5d58c6997a9c0386295ca5c6",
+      "bytes": 231150,
+      "sha256": "983d3633392c4f50fa8ff5c6e1cd417851fa40e2e9bb18384d42d70415369b62",
       "tracked": true,
-      "dirtyAtSnapshot": false
+      "dirtyAtSnapshot": true
     },
     {
       "path": "docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md",

@@ -34,6 +34,7 @@
 | Vizsgálat, vizuális minőség, release | [ELLENORZES-ES-ATADAS.md](ELLENORZES-ES-ATADAS.md) |
 | Kész agentindító szövegek | [AGENT-INDITO-PROMPTOK.md](AGENT-INDITO-PROMPTOK.md) |
 | Előkészített keresési modell és pillanatkép | [preparation/README.md](preparation/README.md) |
+| Későbbi fő cél: gyors 3D táj és filmes AI-vázlatmód | [JOVO-3D-SCENE-ES-AI-VAZLAT.md](JOVO-3D-SCENE-ES-AI-VAZLAT.md) |
 | Élő csapatállapot | [STATUS.md](STATUS.md) |
 
 ## Mit NE olvass be egyszerre?

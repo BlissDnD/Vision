@@ -44,3 +44,7 @@ U5: színösszesítő, színhierarchia, gradiens, action bar. U2: közvetlen sor
 Ez a csomag és az előkészítő mintakód engedélyezett. A jövőbeli termékszeletek a projekt mérföldkő-jóváhagyási szabálya szerint indulnak. Ugyanazt az engedélyt ne kérd újra, ha az aktuális beszélgetésben már megvan; de a „minden ötlet jó” nem bizonyít minden renderer-/fizikarendszerre konkrét implementációs szerződést.
 
 Állapotok a taskokban: `prepared`, `ready-for-proposal`, `waiting-for-dependency`, `approved`, `in-progress`, `demonstrated`, `user-tested`, `deferred`. Előkészítő teszt ≠ termékdemonstráció ≠ felhasználói próba. A meglévő FUNKCIO-LELTAR T/R/D/K állapotai megmaradnak.
+
+## Új későbbi fő célok
+
+A felhasználó fő alkotói célként rögzítette a gyors, intuitív artisztikus 3D tájépítést: néhány asset térbeli elhelyezése és auto lighting. Külön felhasználási mód a filmes AI-kép-/videógeneráláshoz készülő vázlat, storyboard és animatik. A két irány terve közös scene/kamera/asset alapra épül; egyik sem kész funkció és egyik sem indult el. Lásd SCENE-01 és AI-PREVIZ-01.

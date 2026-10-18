@@ -66,3 +66,7 @@ Javasolt életciklus: `create/resize/evaluateAt/render/dispose` és opcionális 
 Új mező = normalizálás és régi-projekt próba. Futásidejű cache maradjon nem sorosított. `main.ts` importsorrend, az R-hookok és az undo/Animálás-út megőrzendő. A séma/registry és beépítés gazdája az integrátor; a worker tiszta modulját adapter kapcsolja hozzá.
 
 A javasolt szerződéstől el lehet térni jobb, kisebb megoldással: dokumentáld a döntést és a megtartott invariánsokat. Ne hozz létre absztrakciót egyetlen feltételezett, még ki sem választott addon kedvéért.
+
+## 9. Későbbi közös scene és filmes felvételnézet
+
+A3D tájtervező és az AI-vázlatmód ugyanazt az asset/scene/transzformáció/kamera/fény/idő adatot használja. A mai2D csoport és a külön rétegkamera nem általános 3D hierarchia. Új közös scene megvalósítása SCENE-01 külön döntése, nem azonnali követelmény minden addonhoz. A felvételnézet saját shot-ID, kamera/időpont, jegyzet és exportmanifest; nem második renderengine vagy duplikált projektséma. Mélység/normal/ID-passz export csak létező hostképességből. Részletek a JOVO-3D-SCENE-ES-AI-VAZLAT.md-ben.

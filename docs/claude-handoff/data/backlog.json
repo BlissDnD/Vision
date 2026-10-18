@@ -667,6 +667,81 @@
         "Bizonyított tartós GLB-import",
         "A kiválasztott modellhez szükséges rig/skinning és/vagy morph renderadapter; viseme-hez tényleges morph-csatornák"
       ]
+    },
+    {
+      "id": "SCENE-01",
+      "title": "Későbbi fő irány: intuitív artisztikus 3D tájtervező",
+      "phase": 6,
+      "dependsOn": [
+        "BASE-01",
+        "BASE-02"
+      ],
+      "status": "deferred",
+      "implementationApproved": false,
+      "scope": "Egy közös térben terep és néhány asset; direkt felületre helyezés, egységes kamera/fény, kurált hangulat, kevés UI. Először kis primitíves térkísérlet, utána egy használható tájcsalád.",
+      "codeRoutes": [
+        "app/src/mesh3d.ts",
+        "app/src/terrain3d.ts",
+        "app/src/render.ts",
+        "app/src/lightui.ts",
+        "app/src/state.ts"
+      ],
+      "acceptance": "Közös mélység/takarás és kamera; talajra húzás; kézi fény/kamera zárolható; egy undo, mentés, export; minőségi referencia és felhasználói építési próba.",
+      "helperWork": "B: kurált kis asset/fénypreset adat. C: talaj, mélység, kamera és újranyitás teszt.",
+      "readRefs": [
+        "JOVO-3D-SCENE-ES-AI-VAZLAT.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "Későbbi nagy fejlesztés; kapcsolódik C/D/G céljaihoz",
+      "excluded": "Nem teljes DCC/modellező és nem minden világcsalád egyszerre.",
+      "conditionalDependencies": [
+        {
+          "task": "MEDIA-01",
+          "when": "Külső GLB assetes szeletnél tényleges tartós modellimport kell; primitíves kísérletnél nem."
+        }
+      ],
+      "capabilityGates": [
+        "A közös3D kamera/fény/mélység bizonyítása az assetelhelyezési mérföldkő előtt; külön rétegkamerák nem teljesítik."
+      ]
+    },
+    {
+      "id": "AI-PREVIZ-01",
+      "title": "Későbbi filmes vázlatmód AI-kép/videógenerátorhoz",
+      "phase": 6,
+      "dependsOn": [
+        "BASE-01"
+      ],
+      "status": "deferred",
+      "implementationApproved": false,
+      "scope": "Felvételkártyák, egyszerű helyettesítők, kamera/időpont és jegyzet; tiszta PNG/storyboard/kezdet-vég csomag. Később közös3D blockout, animatik és támogatott passzok.",
+      "codeRoutes": [
+        "app/src/scenes.ts",
+        "app/src/state.ts",
+        "app/src/output.ts",
+        "app/src/timeline.ts",
+        "app/src/render.ts"
+      ],
+      "acceptance": "Ugyanaz a jelenet színes/szürke nézetben; shot mentés/újranyitás; exportban overlay nincs; kimenetek képmérete/vetítése/ideje egyezik; felvételjegyzet szerkeszthető.",
+      "helperWork": "B: shot-/prompt-/manifest sablon. C: frame, overlay és passzkonzisztencia teszt.",
+      "readRefs": [
+        "JOVO-3D-SCENE-ES-AI-VAZLAT.md",
+        "ELLENORZES-ES-ATADAS.md"
+      ],
+      "legacy": "Új későbbi alkotói mód; ugyanaz a scene és assetrendszer",
+      "excluded": "Nem automatikus AI-szolgáltatói integráció, nem garantált generálási hűség; elsőben nincs teljes karakterrig.",
+      "conditionalDependencies": [
+        {
+          "task": "SCENE-01",
+          "when": "Valódi közös3D blockout/kameratér kell; a2D/2,5D shot-PNG első szelet nélküle is készülhet."
+        },
+        {
+          "task": "EXPORT-01",
+          "when": "Nagy jelenetes videó/animatik memória vagy abort-kezelése indokolja."
+        }
+      ],
+      "capabilityGates": [
+        "Depth/normal/object-ID export csak ha a kiválasztott renderút ezt ténylegesen adja."
+      ]
     }
   ]
 }

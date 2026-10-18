@@ -154,3 +154,10 @@ Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
 - Előkészítő keresőmodell:13 célzott Node-próba zöld; csomaglink/DAG/source-hash ellenőrzés külön.
 - ZIP a mappa és releváns forrás-/licenc-/tervpillanatképek átadásához; nem teljes telepíthető app.
 - Appkód/build változatlan; jövőbeli implementáció a meglévő mérföldkő-jóváhagyási szabállyal.
+
+### 2026-10-18 – két későbbi alkotói munkafolyamat (Codex)
+- SCENE-01: fő cél a gyors, szép artisztikus 3D táj, kevés assettel és kontrollálható automatikus világítással.
+- AI-PREVIZ-01: ugyanabból a scene-ből filmes felvételkártya, kompozíciós referencia, később storyboard/animatik/passzcsomag.
+- Külön brief/taskkártyák, feltételes függőségek;28 backlogcsalád, az új kettő deferred.
+- A 2D/2,5D referencia-PNG korábban is készülhet; közös 3D/depth/mask capability nem feltételezett.
+- Csak terv/átadó/ZIP frissül, appkód és build változatlan.

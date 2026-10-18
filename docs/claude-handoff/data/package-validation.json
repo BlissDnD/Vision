@@ -1,11 +1,11 @@
 {
   "packageValidationOnly": true,
   "runtimeOrGpuVerified": false,
-  "checks": 46,
+  "checks": 49,
   "sourceFiles": 368,
-  "taskCards": 26,
+  "taskCards": 28,
   "legacyRows": 44,
   "addons": 65,
-  "localLinks": 90,
+  "localLinks": 98,
   "errors": []
 }
