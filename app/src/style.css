@@ -506,8 +506,19 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .tlx-seg.mo{background:color-mix(in srgb,#ffb340 30%,transparent);border-color:#ffb340}
 .moarrow{position:absolute;inset:0;pointer-events:none;z-index:4}
 .moarrow svg{position:absolute;left:0;top:0;overflow:visible}
-.moarrow line{stroke:#ffb340;stroke-width:2;stroke-dasharray:6 5}
+.moarrow .mopath{fill:none;stroke:#ffb340;stroke-width:2;stroke-dasharray:6 5;stroke-linecap:round}
+.moarrow .moshape{fill:none;stroke:#ffb340;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.moarrow .mohit{fill:none;stroke:transparent;stroke-width:14;pointer-events:stroke;cursor:ew-resize}
+.moarrow.stub .mopath{opacity:.45}
+.moarrow .moghosts{opacity:0;transition:opacity .35s}
+.moarrow .moghosts.on{opacity:1;transition:none}
+.moarrow .moghosts rect{fill:rgba(255,179,64,.06);stroke:#ffb340;stroke-width:1;vector-effect:non-scaling-stroke}
 .mohandle{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#ffb340;box-shadow:0 0 0 3px rgba(0,0,0,.35);pointer-events:auto;cursor:grab}
+.momid{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:transparent;border:1.5px solid #ffb340;pointer-events:auto;cursor:grab;opacity:.7}
+.momid:hover{background:#ffb340;opacity:1}
+.motip,.molab{position:absolute;pointer-events:none;white-space:nowrap;font:11px/1.3 var(--font,system-ui);color:#ffd9a0;background:rgba(0,0,0,.55);padding:2px 6px;border-radius:5px}
+.motip{opacity:.8;transform:translate(12px,10px)}
+.molab{color:#fff;transform:translate(14px,-22px)}
 .small.warn{color:var(--warn,#e8b04a)}
 
 /* Mozgás v1.1: Ritmus (chips, one-cycle strip with live dot) + Mozgássávok (clip rows with soft ramp ends) */

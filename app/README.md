@@ -148,6 +148,12 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
 
+## Gesztus-mozgás (2026-10-18)
+- `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).
+- Módváltáskor (⌘/⌥/semmi) újrahorgonyoz (`snap`), így minden mód a saját kezdőpontjához képest relatív; ⌘ tempó = `v·2^(dy/90)`, karakter 45 px-enként. Egy húzás = egy `commit()` elengedéskor.
+- `motion.ts` spring: pálya `B(e)=u²S+2ue·C`, `C=S/2+n·bend·D` (bend 0 = régi egyenes; túllövés ugyanazon a görbén). Régi projekt `bend`=0-t kap a `normMo`/`makeMo` útján.
+- Tekerés: `R.moScrub={id,t}` a `behav` elején felülírja a réteg idejét (csak húzás közben, nem mentett).
+
 ## Időzítés gyorsan (2026-10-18)
 - `tap.ts`: nem mentett állapot `R.tapArm/tapBasket/tapIdx/tapS0`; `tapNow(t)` az első koppintáskor `snapshot()`-ot tesz el, `shiftBlock(L, t−entranceStart, false)` vagy `makeMo('spring',{at:t})`, `addCue`; commit csak a menet végén (egy undo), `tapEsc` = `restore(tapS0)`. Vászonkattintás `document` capture-ben (a `pick`/`stage` elé), listakattintás `R.tapToggle`, jelvény `R.tapBadge`, vászonszámok `R.updTap` (loop.ts).
 - `retime.ts` `tempoItem(it,f)`: t → a+(t−a)/f a blokk elejéhez (`tempoPivot`, csoportnál közös), hosszak /f, period/ry.cyc /f, speed/rate/hullám-f ×f; `it.tpo` a chip-állapot (opcionális mező, hiánya = 1×).

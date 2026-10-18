@@ -57,7 +57,7 @@ export function moveFx(type,e){const r={op:1,dx:0,dy:0,sc:1};if(!type)return r;c
   switch(type){case 1:r.op=Math.max(0,Math.min(1,e));break;case 2:r.op=o;r.dy=-u*.12;break;case 3:r.op=o;r.dy=u*.12;break;case 4:r.op=o;r.dx=-u*.35;break;case 5:r.op=o;r.dx=u*.35;break;
     case 6:r.op=o;r.sc=.7+.3*e;break;case 7:r.op=o;r.sc=1.4-.4*e;break;case 8:r.op=Math.max(0,Math.min(1,e*3));r.sc=Math.max(.001,e);break;}return r;}
 /** Entry/exit (tm, shown as Beúszás/Kiúszás motions) + draggable motions (L.mo, motion.ts) + a hovered shelf motion (R.moAud). */
-export function behav(L,t){const M=moEval(L,t,R.moAud&&R.moAud.id===L.id?R.moAud:null);const T=L.tm;if(!T||(!T.in&&!T.out))return M;const E=(EASES[T.ease|0]||EASES[0])[1];let a:any={op:1,dx:0,dy:0,sc:1,rot:0};
+export function behav(L,t){if(R.moScrub&&R.moScrub.id===L.id)t=R.moScrub.t;const M=moEval(L,t,R.moAud&&R.moAud.id===L.id?R.moAud:null);const T=L.tm;if(!T||(!T.in&&!T.out))return M;const E=(EASES[T.ease|0]||EASES[0])[1];let a:any={op:1,dx:0,dy:0,sc:1,rot:0};
   if(T.in){const x=Math.min(1,Math.max(0,(t-T.inAt)/Math.max(.01,T.inDur)));a=moveFx(T.in,E(x));if(t<T.inAt)a.op=0;}
   if(T.out){const x=Math.min(1,Math.max(0,(t-T.outAt)/Math.max(.01,T.outDur)));if(x>0){const b=moveFx(T.out,1-E(x));a.op*=b.op;a.dx+=b.dx;a.dy+=b.dy;a.sc*=b.sc;}}
   if(M){a.op*=M.op;a.dx+=M.dx;a.dy+=M.dy;a.sc*=M.sc;a.rot=(a.rot||0)+M.rot;}return a;}

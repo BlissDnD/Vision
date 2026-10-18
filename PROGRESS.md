@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
+
+- **Rugalmas beúszás nyila:** vég húzása = irány + távolság; ⌘ + fel/le = tempó (fel = rövidebb), ⌘ + oldalra = karakter (Lágy/Ütés/Rugó); ⌥ vagy a nyíl közepe = ív (a réteg valóban az íven érkezik, `bend` paraméter); ⇧ = 15°-os szögek.
+- Húzás közben 8 halvány szellemkép a pályán egyenlő időközönként (sűrűség = sebesség, a rugó túllövése látszik), elengedéskor elhalványul; címke csak módosítóval; súgó a nyílvégen rámutatásra.
+- Beúszás/Kiúszás chip: nyíl, húzás = irány (Balról/Jobbról/Emelkedés/Süllyedés), ⌘ = tempó + görbe. Öt folyamatos mozgás saját fogantyúja: Lebegés kettős nyíl, Keringés kör (⌥ irány), Forgás ív, Lüktetés két gyűrű, Remegés cikcakk (⌘ = tempó). A pályát magát húzva előnézeti tekerés.
+- Célzott teszt: `tests/g1_gesture.js` zöld; teljes kör 39/40, a bukó `polyhaven_import` önállóan zöld (ingadozó, `BUGS.md`). Typecheck 0 hiba.
+- Próba: 1) Rugalmas beúszás, Mozgás fül: ⌘-mal húzd a nyílvéget fel és oldalra; 2) ⌥-ral húzd oldalra a nyíl közepét, játszd le; 3) Lebegés/Keringés chipnél húzd a fogantyút; 4) mentés → újranyitás.
+- Korlát: a szellemkép a réteg körvonala (téglalap/kör), nem a valódi kép; a nyíl a réteg alaphelyéből indul (kamerát nem követi); a fogantyúk a kulcsozott paraméter .v értékét írják.
+
 ## Állapot: 2026-10-18 — PH1 Poly Haven képek (0.35.0-ph1)
 
 - **Szöveg és média → Poly Haven textúrák:** 12 elemes, kereshető CC0-válogatás; a kártyára kattintva csak a választott hivatalos 2K JPG töltődik le, saját képréteg lesz belőle.

@@ -1,7 +1,6 @@
 /** Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the
  *  draggable motions L.mo, strength ring, „+” grid), the per-layer key Loop (⟲), Képkocka-ütem, a warning for keys past
- *  the project end, attaching from the shelf (click / drop on canvas / drop on a layer row), and the on-canvas arrow that
- *  sets where Rugalmas beúszás comes from. */
+ *  the project end and attaching from the shelf (click / drop on canvas / drop on a layer row). Canvas gestures: gesture.ts. */
 import { R } from './runtime';
 import { $, h } from './dom';
 import { LIB } from './library';
@@ -120,7 +119,7 @@ export function motionsUI(L: any) {
     const ic = row.children[leg.length + i];
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, d.name), eye, del),
       h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q)), ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
-        m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a szaggatott nyíl végét húzva állítod, honnan és milyen messziről érkezik.') : null,
+        m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a nyíl végét húzva állítod, honnan érkezik; ⌘ + fel/le a tempó, ⌘ + oldalra a karakter, ⌥ vagy a nyíl közepe: ív, ⇧: 15°-os szögek.') : null,
         h('button', { class: 'btn mobake', type: 'button', title: 'A mozgást valódi X / Y / Méret / Szög / Átlátszóság kulcsokká alakítja (a mozgás eltűnik; ⌘Z visszavonja)', onclick: () => {
           const n = bakeMo(L, m); delete R.moSel[L.id]; commit(); renderAll(); markDirty(); toast(`${d.name} → ${n} kulcskocka a réteg saját értékein · ⌘Z visszavonja`); } }, 'Kulcsokká alakítás')))); }
   else kids.push(h('p', { class: 'small' }, 'Még nincs mozgás. A „+” vagy a Mozgás polcról ráhúzott mozgás hozzáad egyet (Lebegés, Forgás, Lüktetés, Keringés, Remegés, Rugalmas beúszás).'));
@@ -141,24 +140,4 @@ R.moUI = motionsUI;
 /** Main settings: the strength of each motion (the same value as on the Mozgás tab). */
 R.moMain = (L: any) => (L.mo || []).map((m: any) => ctlSlider(m.p.amt, { ...AMT, l: MO[m.t].name + ' erőssége' }));
 
-/* ---------- Rugalmas beúszás: arrow on the canvas (drag its tail = direction + distance) ---------- */
-const ar = h('div', { class: 'moarrow', hidden: true });
-ar.innerHTML = '<svg><line/></svg><i class="mohandle" title="Húzd: honnan és milyen messziről érkezik"></i>';
-$('#wrap').appendChild(ar);
-const hd: any = ar.querySelector('.mohandle'), ln: any = ar.querySelector('line'), sv: any = ar.querySelector('svg');
-let drag: any = null;
-const curSpring = () => { const L: any = sel(); if (!L || R.itab !== 'motion' || !L.mo) return null; const m = L.mo.find((x: any) => x.id === R.moSel[L.id] && x.t === 'spring'); return m ? { L, m } : null; };
-R.updMoArrow = (t: number) => {
-  const c = curSpring(); if (!c || R.seqPlay) { ar.hidden = true; return; } ar.hidden = false;
-  const { L, m } = c; const cr = cv.getBoundingClientRect(), wr = ($('#wrap') as HTMLElement).getBoundingClientRect(); const { W, H } = outSize();
-  const x = ev(L.n.x, BASEK.x, t), y = ev(L.n.y, BASEK.y, t), g = m.p.ang.v * Math.PI / 180, D = m.p.dist.v;
-  const P = (ax: number, ay: number) => [cr.left - wr.left + (ax / (W / H) + .5) * cr.width, cr.top - wr.top + (.5 - ay) * cr.height];
-  const [x1, y1] = P(x, y), [x0, y0] = P(x + Math.cos(g) * D, y + Math.sin(g) * D);
-  sv.setAttribute('width', String(wr.width)); sv.setAttribute('height', String(wr.height));
-  ln.setAttribute('x1', String(x0)); ln.setAttribute('y1', String(y0)); ln.setAttribute('x2', String(x1)); ln.setAttribute('y2', String(y1));
-  hd.style.left = x0 + 'px'; hd.style.top = y0 + 'px';
-};
-hd.onpointerdown = (e: PointerEvent) => { const c = curSpring(); if (!c) return; e.stopPropagation(); e.preventDefault(); hd.setPointerCapture(e.pointerId); drag = c; };
-hd.onpointermove = (e: PointerEvent) => { if (!drag) return; const { L, m } = drag; const p = toAsp(e); const x = ev(L.n.x, BASEK.x, R.time), y = ev(L.n.y, BASEK.y, R.time);
-  const dx = p.x - x, dy = p.y - y; m.p.dist.v = Math.min(2, Math.round(Math.hypot(dx, dy) * 1000) / 1000); m.p.ang.v = Math.round(Math.atan2(dy, dx) * 180 / Math.PI); markDirty(); };
-hd.onpointerup = () => { if (drag) { drag = null; commit(); renderInsp(); } };
+/* The on-canvas arrow (Rugalmas beúszás, Beúszás/Kiúszás) and the handles of the continuous motions live in gesture.ts. */

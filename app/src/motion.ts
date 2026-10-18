@@ -28,7 +28,7 @@ export const MO: Record<string, MoDef> = {
     params: [S('amp', 'Erő', 0, .1, .01), S('rate', 'Gyorsaság (Hz)', .5, 30, 12), S('rot', 'Billegés °', 0, 20, 2), S('seed', 'Minta', 0, 99, 7, 1)] },
   spring: { name: 'Rugalmas beúszás', cont: false, main: ['dur', 'char'], desc: 'Megadott irányból rugalmasan érkezik a helyére. Az irányt a vásznon a nyíllal fogod meg.',
     icon: '<path d="M3 12h9"/><path d="M12 12c1.5-3 2.5-3 3 0s1.5 3 2.5 0 1.5-3 2.5 0"/><path d="M6 9l-3 3 3 3"/>',
-    params: [S('at', 'Kezdés (mp)', 0, 60, 0), S('dur', 'Időtartam (mp)', .1, 4, .9), SEL('char', 'Karakter', ['Lágy', 'Ütés', 'Rugó'], 2), S('dist', 'Távolság', 0, 2, .45), S('ang', 'Érkezés iránya °', -180, 180, 180), S('fade', 'Beúszó áttetszőség', 0, 1, 1), S('from', 'Kezdő méret', .2, 2, 1)] },
+    params: [S('at', 'Kezdés (mp)', 0, 60, 0), S('dur', 'Időtartam (mp)', .1, 4, .9), SEL('char', 'Karakter', ['Lágy', 'Ütés', 'Rugó'], 2), S('dist', 'Távolság', 0, 2, .45), S('ang', 'Érkezés iránya °', -180, 180, 180), S('fade', 'Beúszó áttetszőség', 0, 1, 1), S('from', 'Kezdő méret', .2, 2, 1), S('bend', 'Ív', -1.5, 1.5, 0)] },
 };
 export const MO_ORDER = ['float', 'spin', 'pulse', 'orbit', 'shake', 'spring'];
 export const moIcon = (t: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${(MO[t] || MO.float).icon}</svg>`;
@@ -121,7 +121,10 @@ export function moEval(L: any, t0: number, aud?: any): any {
       case 'spring': {
         const at = V(m, 'at', t), dur = Math.max(.05, V(m, 'dur', t)), x = (t - at) / dur; if (x >= 1) break;
         const e = charEase(Math.round(V(m, 'char', t)), dur)(Math.max(0, x)), u = 1 - e, g = V(m, 'ang', t) * Math.PI / 180, D = V(m, 'dist', t) * a;
-        r.dx += Math.cos(g) * D * u; r.dy += Math.sin(g) * D * u;
+        // Gesztus: the path is a quadratic Bézier from the start offset S to rest, its control point bent sideways by bend × dist
+        // (bend 0 = the straight line u·S); overshoot (e > 1) continues along the same curve
+        const b = V(m, 'bend', t), cg = Math.cos(g), sg = Math.sin(g), Sx = cg * D, Sy = sg * D, Cx = Sx / 2 - sg * b * D, Cy = Sy / 2 + cg * b * D;
+        r.dx += u * u * Sx + 2 * u * e * Cx; r.dy += u * u * Sy + 2 * u * e * Cy;
         const fr = V(m, 'from', t); r.sc *= Math.max(.01, fr + (1 - fr) * e);
         const fd = V(m, 'fade', t); r.op *= x <= 0 ? 1 - fd : 1 - fd * Math.max(0, 1 - Math.min(1, x * 2.5)); break;
       }
