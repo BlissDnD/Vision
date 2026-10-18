@@ -140,6 +140,14 @@ export function detach(variantId: string) {
   const V = r.it; delete V.variant; for (const c of V.children || []) delete c.bid;
   gcBases(); return true;
 }
+/** STAB: drop Kapcsolatok whose both ends exist nowhere (layers, scenes, shared bases). One live end keeps the link. */
+export function gcLinks() {
+  if (!Array.isArray(st.links) || !st.links.length) return;
+  const ids = new Set<string>(); const take = (list: any[]) => walk(list, (it: any) => { ids.add(it.id); });
+  take(st.layers); for (const s of st.scenes || []) if (Array.isArray(s.layers)) take(s.layers);
+  for (const b of Object.values(st.bases || {}) as any[]) if (Array.isArray(b.children)) take(b.children);
+  st.links = st.links.filter((l: any) => ids.has(l.from.id) || ids.has(l.to.id));
+}
 export function gcBases() { if (!st.bases) return; for (const id of Object.keys(st.bases)) if (!variantsOf(id).length) delete st.bases[id]; }
 
 /* ---------------- Kapcsolat ---------------- */

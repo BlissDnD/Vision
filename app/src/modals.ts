@@ -4,13 +4,14 @@ import { $, h } from './dom';
 import { ff, hexRGB } from './palettes';
 import { EFFECTS } from './effects/index';
 import { texFromCanvas } from './gl';
-import { assets, imgTex, makeLayer, sel } from './state';
+import { assets, imgTex, makeLayer, sameAsset, sel } from './state';
 import { insertItem } from './itemops';
 import { commit, loadMsg, loadProject, projectJSON, renderAll } from './history';
 import { saveFile } from './output';
 
 export function openModal(...kids){const d=$('#dlg');d.innerHTML='';kids.forEach(k=>d.appendChild(k));$('#modal').hidden=false;const f=d.querySelector('button,input,textarea');f&&f.focus();}
-export function closeModal(){$('#modal').hidden=true;$('#dlg').innerHTML='';}
+/** Closing by any route (button, Escape, backdrop) runs the owner's close hook once, e.g. the video export's cancel. */
+export function closeModal(){const f=R.onModalClose;R.onModalClose=null;$('#modal').hidden=true;$('#dlg').innerHTML='';if(f)f();}
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
 export const closeBtn=()=>h('button',{class:'btn',onclick:closeModal},'Bezárás');
 export function openMedia(kind,url,name,label,blob){
@@ -42,7 +43,7 @@ export function projModal(){const list=savedList();const name=h('input',{class:'
 $('#fileJson').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{loadProject(JSON.parse(t));closeModal();toast(loadMsg());}).catch(err=>toast('Hibás fájl: '+err.message));e.target.value='';};
 $('#fileImg').onchange=e=>{const f=e.target.files[0];e.target.value='';const L=sel();if(!f||!L||(L.type!=='image'&&L.type!=='particles'))return;
   const im=new Image();im.onload=()=>{const sc=Math.min(1,2048/Math.max(im.naturalWidth,im.naturalHeight));const c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*sc);c.height=Math.round(im.naturalHeight*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
-    const id='A'+Date.now().toString(36);assets[id]=c.toDataURL(f.type==='image/jpeg'?'image/jpeg':'image/png',.9);imgTex.set(id,{tex:texFromCanvas(c),w:c.width,h:c.height});
+    const data=c.toDataURL(f.type==='image/jpeg'?'image/jpeg':'image/png',.9),old=sameAsset(data),id=old||'A'+Date.now().toString(36);if(!old){assets[id]=data;imgTex.set(id,{tex:texFromCanvas(c),w:c.width,h:c.height});}
     L.asset=id;if(L.name==='Kép')L.name=f.name.replace(/\.[^.]+$/,'').slice(0,40);commit();renderAll();URL.revokeObjectURL(im.src);};
   im.onerror=()=>toast('Ezt a képet nem tudtam megnyitni.');im.src=URL.createObjectURL(f);};
 R.toastT=undefined;export function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(R.toastT);R.toastT=setTimeout(()=>t.hidden=true,3200);}

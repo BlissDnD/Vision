@@ -41,16 +41,28 @@ export function audioStop(){for(const s of AUD.srcs){try{s.stop();}catch(_){}}AU
 export function audioRestart(){audioStop();if(!AUD.ctx||!R.playing||R.snapping)return;const bufs=AUD.buf?[AUD.buf]:AUD.stems.map(s=>s.buf);if(!bufs.length)return;
   AUD.gain.gain.value=AUD.mute?0:AUD.vol;AUD.t0=R.time;AUD.c0=AUD.ctx.currentTime;
   AUD.srcs=bufs.map(b=>{const s=AUD.ctx.createBufferSource();s.buffer=b;s.playbackRate.value=R.speed;s.connect(AUD.gain);const off=st.loop?R.time%Math.max(.01,b.duration):R.time;if(off<b.duration)s.start(0,Math.max(0,off));return s;});}
+const readURL=(f:Blob)=>new Promise<string>((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result));r.onerror=()=>no(r.error);r.readAsDataURL(f);});
+/** Decode + analyse one audio file. fresh = a new import (sets length/BPM, commits); otherwise a project reopen (state already holds them). */
+async function addAudio(ab:ArrayBuffer,name:string,url:string,stem:boolean,fresh:boolean){
+  ensureAC();const buf=await AUD.ctx.decodeAudioData(ab);if(fresh)toast('Hang elemzése…');
+  if(stem){const lv=await bandEnv(buf,[]);AUD.stems.push({name:name.replace(/\.[^.]+$/,'').slice(0,18),file:name,url,buf,sig:{level:smoothEnv(lv),hit:pulseEnv(lv,.85)}});
+    if(fresh&&!AUD.buf){st.dur=Math.round(Math.max(...AUD.stems.map(s=>s.buf.duration))*10)/10;}}
+  else{const F={level:[],kick:[['lowpass',110]],bass:[['lowpass',250],['highpass',50]],snare:[['bandpass',1800,.7]],hihat:[['highpass',7500]],mid:[['bandpass',1000,.6]],high:[['highpass',4000]]};
+    const raw:any={};for(const k in F)raw[k]=await bandEnv(buf,F[k]);
+    AUD.buf=buf;AUD.name=name;AUD.url=url;AUD.sig=<any>{level:smoothEnv(raw.level),bass:smoothEnv(raw.bass),mid:smoothEnv(raw.mid),high:smoothEnv(raw.high),kick:pulseEnv(raw.kick,.84),snare:pulseEnv(raw.snare,.85),hihat:pulseEnv(raw.hihat,.75)};
+    if(fresh){const b=estimateBpm(AUD.sig.kick);if(b){st.bpm=b.bpm;st.bpmOff=b.off;}st.dur=Math.round(buf.duration*10)/10;st.loop=true;}}}
 export async function loadAudioFile(f,stem){
-  try{ensureAC();const buf=await AUD.ctx.decodeAudioData(await f.arrayBuffer());toast('Hang elemzése…');
-    if(stem){const lv=await bandEnv(buf,[]);AUD.stems.push({name:f.name.replace(/\.[^.]+$/,'').slice(0,18),buf,sig:{level:smoothEnv(lv),hit:pulseEnv(lv,.85)}});
-      if(!AUD.buf){st.dur=Math.round(Math.max(...AUD.stems.map(s=>s.buf.duration))*10)/10;}}
-    else{const F={level:[],kick:[['lowpass',110]],bass:[['lowpass',250],['highpass',50]],snare:[['bandpass',1800,.7]],hihat:[['highpass',7500]],mid:[['bandpass',1000,.6]],high:[['highpass',4000]]};
-      const raw:any={};for(const k in F)raw[k]=await bandEnv(buf,F[k]);
-      AUD.buf=buf;AUD.name=f.name;AUD.sig=<any>{level:smoothEnv(raw.level),bass:smoothEnv(raw.bass),mid:smoothEnv(raw.mid),high:smoothEnv(raw.high),kick:pulseEnv(raw.kick,.84),snare:pulseEnv(raw.snare,.85),hihat:pulseEnv(raw.hihat,.75)};
-      const b=estimateBpm(AUD.sig.kick);if(b){st.bpm=b.bpm;st.bpmOff=b.off;}st.dur=Math.round(buf.duration*10)/10;st.loop=true;}
+  try{const url=await readURL(f);await addAudio(await f.arrayBuffer(),f.name,url,stem,true);
     R.time=0;resetFeedback();audioRestart();commit();renderTimeline();toast(stem?`Stem betöltve: ${f.name}`:`Hang betöltve · ${st.bpm} BPM`);
   }catch(e){toast('A hangfájlt nem sikerült megnyitni: '+(e&&e.message||e));}}
+export function audioClear(){audioStop();AUD.buf=null;AUD.name='';AUD.url='';AUD.sig={};AUD.stems=[];}
+/** STAB: the audio travels in the project file as the original file (data URL, encoded once at import, not per save). */
+R.audioExport=()=>{const o:any={};if(AUD.buf&&AUD.url)o.main={name:AUD.name,url:AUD.url};const st2=AUD.stems.filter(s=>s.url).map(s=>({name:s.file||s.name,url:s.url}));if(st2.length)o.stems=st2;return o.main||o.stems?o:null;};
+/** Project open/switch: drop the previous audio, then decode the embedded one in the background (no commit, state is already loaded). */
+R.audioApply=(a:any)=>{audioClear();R.audioReady=null;if(!a)return;const tok=R.audioTok=(R.audioTok||0)+1;
+  const one=async(x:any,stem:boolean)=>{if(!x||typeof x.url!=='string'||!x.url.startsWith('data:'))return;const ab=await (await fetch(x.url)).arrayBuffer();if(tok!==R.audioTok)return;await addAudio(ab,String(x.name||'hang'),x.url,stem,false);};
+  R.audioReady=(async()=>{try{await one(a.main,false);for(const s of Array.isArray(a.stems)?a.stems:[])await one(s,true);if(tok!==R.audioTok)return;audioRestart();renderTimeline();markDirty();}
+    catch(e){toast('A projekt hangját nem sikerült visszaállítani: '+(e&&e.message||e));}})();};
 export async function exportAudioBuffer(){if(AUD.buf)return AUD.buf;if(!AUD.stems.length)return null;const sr=AUD.stems[0].buf.sampleRate;const len=Math.max(...AUD.stems.map(s=>s.buf.length));
   const oc=new OfflineAudioContext(2,len,sr);for(const s of AUD.stems){const b=oc.createBufferSource();b.buffer=s.buf;b.connect(oc.destination);b.start();}return oc.startRendering();}
 export function openAudio(anchor){
@@ -66,7 +78,7 @@ export function openAudio(anchor){
     c.ondragstart=e=>{e.dataTransfer.setData('text/x-latomas-sig',k);e.dataTransfer.effectAllowed='link';};return c;}));
   openPop(anchor,'wide',h('div',{class:'pl'},'Hang és jelek'),h('div',{class:'pc'},info,
     h('div',{class:'btnrow'},h('button',{class:'btn accent',onclick:()=>fileIn.click()},AUD.buf?'Másik hangfájl…':'Hangfájl…'),h('button',{class:'btn',onclick:()=>stemIn.click()},'Stem-ek…'),
-      has?h('button',{class:'btn',onclick:()=>{audioStop();AUD.buf=null;AUD.sig={};AUD.stems=[];renderTimeline();openAudio(anchor);markDirty();}},'Eltávolítás'):null,fileIn,stemIn),
+      has?h('button',{class:'btn',onclick:()=>{audioClear();renderTimeline();openAudio(anchor);markDirty();commit();}},'Eltávolítás'):null,fileIn,stemIn),
     has?ctlSlider(vol,{k:'vol',l:'Hangerő',min:0,max:1},{noAnim:true}):null,
     has?ctlSwitch('Némítás',AUD.mute,v=>{AUD.mute=v;if(AUD.gain)AUD.gain.gain.value=v?0:AUD.vol;}):null,
     h('div',{class:'row2'},h('span',null,'Tempó (BPM)'),h('div',{class:'btnrow'},bpmIn,tap)),

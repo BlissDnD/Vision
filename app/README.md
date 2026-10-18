@@ -240,3 +240,8 @@ A `../docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` for
 Belépés: `../docs/claude-handoff/00-START-HERE.md`. Rövid taskkártyák, UX- és adapterhatárok, forrásútvonalak, külön keresőmodell és csomagellenőrzők; nem új app-runtime vagy beépített addonrendszer.
 
 Későbbi termékirányok: intuitív 3D scene/tájtervező és filmes AI-vázlatmód, közös adat-/kamerarendszerrel. Csak specifikáció: `../docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`; nincs új futásidejű modul.
+
+### STAB-01 mini (0.44.0-stab1)
+- `history.ts` `usedAssets` bejárja a jeleneteket és Közös alapokat; `state.ts` `sameAsset(data)` azonos képet újrahasznál.
+- Hang: `signals.ts` `R.audioExport`/`R.audioApply` (hookok, mert a history nem importálhatja a signals-t); az eredeti fájl data URL-ként egyszer készül importkor; `R.audioReady` promise a háttérdekódoláshoz.
+- `modals.ts` `closeModal` futtatja az egyszeri `R.onModalClose` hookot (export-megszakítás); `variants.ts` `gcLinks` a `commit()`-ban és betöltéskor.

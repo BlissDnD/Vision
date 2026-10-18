@@ -59,6 +59,8 @@ export function normLight(o){const b:any={on:!(o&&o.on===false),p:{}};for(const 
 export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),light:normLight(null),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[],scenes:[]};
 R.selId=null;export const assets={};export const vectorAssets:Record<string,string>={};export const imgTex=new Map();
 
+/** STAB: the id of an identical embedded image if one exists (same picture used twice is stored once), else null. */
+export function sameAsset(data:string){for(const k in assets)if(assets[k]===data)return k;return null;}
 export function walk(list,fn,parent=null){for(const it of list){fn(it,list,parent);if(it.type==='group')walk(it.children,fn,it);}}
 export function findItem(id){let r=null;walk(st.layers,(it,list,parent)=>{if(it.id===id)r={it,list,parent,i:list.indexOf(it)};});return r;}
 export const sel=()=>{const r=R.selId&&findItem(R.selId);return r?r.it:null;};

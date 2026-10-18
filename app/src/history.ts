@@ -2,7 +2,7 @@ import { tasteExport, tasteMerge } from './taste';
 import { R } from './runtime';
 import { $ } from './dom';
 import { migrateProject, PROJECT_VER } from './migrate';
-import { attachLinks, gcBases } from './variants';
+import { attachLinks, gcBases, gcLinks } from './variants';
 import { ev } from './evaluation';
 import { resetFeedback } from './transport';
 import { assets, findItem, normLight, normLook, normalize, st, walk } from './state';
@@ -19,17 +19,19 @@ import { saveAuto } from './autosave';
 
 R.hist=[];R.hi=-1;
 export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,light:st.light,cam:st.cam,dur:R.seqPlay?R.seqDurSave:st.dur,scenes:st.scenes,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff,bases:st.bases,links:st.links,cues:st.cues,ko:st.ko});
-export function commit(){gcBases();attachLinks(ev);markDirty();const s=snapshot();if(R.hist[R.hi]!==s){R.hist.splice(R.hi+1);R.hist.push(s);if(R.hist.length>100)R.hist.shift();R.hi=R.hist.length-1;}updUndo();scheduleSave();}
+export function commit(){gcBases();gcLinks();attachLinks(ev);markDirty();const s=snapshot();if(R.hist[R.hi]!==s){R.hist.splice(R.hi+1);R.hist.push(s);if(R.hist.length>100)R.hist.shift();R.hi=R.hist.length-1;}updUndo();scheduleSave();}
 export function restore(s){const o=JSON.parse(s);if(R.seqExit)R.seqExit();st.layers=o.layers;st.cam=normCam(o.cam);st.bg=o.bg;st.size=o.size;st.look=normLook(o.look);st.light=normLight(o.light);updLookLbl();setTL(o);setShared(o);setScenes(o);if(!findItem(R.selId))R.selId=(st.layers[st.layers.length-1]||{}).id||null;resizeMain();renderAll();}
 export function undo(){if(R.hi>0){R.hi--;restore(R.hist[R.hi]);updUndo();scheduleSave();}}
 export function redo(){if(R.hi<R.hist.length-1){R.hi++;restore(R.hist[R.hi]);updUndo();scheduleSave();}}
 export function updUndo(){$('#undoBtn').disabled=R.hi<=0;$('#redoBtn').disabled=R.hi>=R.hist.length-1;}
 $('#undoBtn').onclick=undo;$('#redoBtn').onclick=redo;
-export function usedAssets(){const o={};walk(st.layers,l=>{if(l.asset&&assets[l.asset])o[l.asset]=assets[l.asset];});return o;}
+/** Every embedded image used anywhere: current layers, saved scenes and shared bases (STAB: scene-only images were lost). */
+export function usedAssets(){const o={};const take=(list:any[])=>walk(list,l=>{if(l.asset&&assets[l.asset])o[l.asset]=assets[l.asset];});
+  take(st.layers);for(const s of st.scenes||[])if(Array.isArray(s.layers))take(s.layers);for(const b of Object.values(st.bases||{}) as any[])if(Array.isArray(b.children))take(b.children);return o;}
 export function usedVectorAssets(){const o:Record<string,string>={};const take=(list:any[])=>walk(list,l=>{if(l.type==='lottie'&&l.asset&&vectorAssets[l.asset])o[l.asset]=vectorAssets[l.asset];});
   take(st.layers);for(const s of st.scenes||[])if(Array.isArray(s.layers))take(s.layers);for(const b of Object.values(st.bases||{}) as any[])if(Array.isArray(b.children))take(b.children);return o;}
 export const stateJSON=()=>({...JSON.parse(snapshot()),exp:{...EXP}});
-export const projectJSON=()=>{const o:any={app:'vel',v:PROJECT_VER,state:stateJSON(),assets:usedAssets(),vectorAssets:usedVectorAssets(),ulib:ulibUsed()};const tt=tasteExport();if(tt)o.taste=tt;return JSON.stringify(o);};
+export const projectJSON=()=>{const o:any={app:'vel',v:PROJECT_VER,state:stateJSON(),assets:usedAssets(),vectorAssets:usedVectorAssets(),ulib:ulibUsed()};const au=R.audioExport?R.audioExport():null;if(au)o.audio=au;const tt=tasteExport();if(tt)o.taste=tt;return JSON.stringify(o);};
 R.saveT=undefined;export function scheduleSave(){clearTimeout(R.saveT);R.saveT=setTimeout(async()=>{
   try { if(await saveAuto(projectJSON()))return; } catch (_) {}
   const el=document.querySelector('#toast') as HTMLElement;if(el){el.textContent='Az automatikus mentés nem sikerült. Mentsd a projektet fájlba.';el.hidden=false;}
@@ -38,7 +40,8 @@ R.saveT=undefined;export function scheduleSave(){clearTimeout(R.saveT);R.saveT=s
 export function applyProject(obj){const m=migrateProject(obj);if(m.ulib.length)ulibMerge(m.ulib);if(obj&&obj.taste)tasteMerge(obj.taste);
   clearLottieCache();for(const id of Object.keys(vectorAssets))delete vectorAssets[id];Object.assign(vectorAssets,m.vectorAssets);
   Object.assign(assets,m.assets);for(const id in m.assets)loadAsset(id);
-  st.layers=m.state.layers.map(normalize);st.bg=m.state.bg||st.bg;st.size=m.state.size||st.size;st.look=normLook(m.state.look);st.light=normLight(m.state.light);st.cam=normCam(m.state.cam);updLookLbl();if(R.seqExit)R.seqExit();setTL(m.state);setShared(m.state);setScenes(m.state);applyExp(m.state.exp);
+  st.layers=m.state.layers.map(normalize);st.bg=m.state.bg||st.bg;st.size=m.state.size||st.size;st.look=normLook(m.state.look);st.light=normLight(m.state.light);st.cam=normCam(m.state.cam);updLookLbl();if(R.seqExit)R.seqExit();setTL(m.state);setShared(m.state);setScenes(m.state);applyExp(m.state.exp);gcLinks();
+  if(R.audioApply)R.audioApply(obj&&obj.audio||null);
   R.selId=(st.layers[st.layers.length-1]||{}).id||null;R.time=0;return m;}
 export function loadProject(obj){const m=applyProject(obj);resetFeedback();resizeMain();renderAll();commit();
   R.lastLoad=m;return m;}
