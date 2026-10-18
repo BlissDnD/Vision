@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — 1. nagy menet: U5 Szín+UI, CAT-01 témák, M10 korai layoutok (0.48.0-m10a)
+
+A felhasználó kérésére a szalagos stúdió-recept (M6b) kimaradt.
+- **U5** (0.46.0-u5): közös színválasztó (`colorpick.ts`: SV, árnyalat, opcionális alfa, hex, pipetta, projekt- és palettaszínek, húzható minták) minden színmezőn, szövegsávban, háttérszínnél; **saját átmenet** (`gradui.ts`, `L.grad`): állomások a sávon, OKLCH/RGB, harmóniák, saját paletták (böngészőben) — a shaderek `pal()` függvényét cseréli, így minden palettás elemen hat; **Színek sor** (`colorsum.ts`) forrásokkal, Kapcsolat-jellel, kontraszt-figyelmeztetés + „Olvashatóvá”; szín ráhúzása rétegre; **felső action bar** (`abar.ts`) + munkatér-elrendezések (Alaphelyzet, 2 mentett). Teszt: `u5_color.js`.
+- **CAT-01 témák** (0.47.0-cat2): 8 polcokon átívelő téma chipként (`TOPICS`, `topicItems`). Teszt: `cat2_topics.js`.
+- **M10 korai** (0.48.0-m10a, `layouts.ts`): Receptek → **Magazinrács** (saját tanulmány a WIDE után: 3 keretezett kép + élő cím/alcím, 5 kompozíció, képarány-chipek 1:1·4:5·9:16·16:9, a cím mérete a hosszához igazodik, lépcsőzött érkezés) és **Szövött galéria** (Unwoven eredeti shaderei + szalaggeometria natív WebGL2-portja, visszatekerhető). A Kép réteg új **Keret** paraméterei: kivágás téglalapba, sarok. Teszt: `m10_layout.js`.
+- Próba: (1) Alakzat → Színek sor pötty → picker, húzás közben élő, ⌘Z egy lépés; (2) Színátmenet → Szín fül → ✎ Saját átmenet → állomás hozzáadása, Triád; (3) húzz egy Megjelenést a felső sávra, jelölj ki réteget, kattints; (4) Téma: Folyadék; (5) Magazinrács → Layout: 9:16 → cím átírása hosszúra; (6) Szövött galéria lejátszás + tekerés.
+- Korlát: a saját átmenet a CPU-oldali palettát használó elemeken (pl. Blob, Áramló tinta színe) még nem hat; Magazinrács képcsere a meglévő képbetöltéssel; Unwoven-nél nincs húzásos görgetés (Eltolás paraméter van).
+
 ## Állapot: 2026-10-18 — CAT-01 első szelet: mindent gyorsan megtalálsz (0.45.0-cat1)
 
 - Új `src/catalog.ts`: stabil elem-azonosító (`polc:név`, saját elemnél `own:`), négy szerep (Források · Formák · Megjelenések · Mozgás), ékezet- és szinonimatűrő kereső a név, leírás és effektkulcs alapján (22 szinonimacsoport).

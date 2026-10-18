@@ -36,6 +36,7 @@ export function renderInsp(){
   {const cs=colorSummary(L);if(cs)P.appendChild(cs);}  // U5: Színek sor
   if(isG){
     const Rc=RECIPES.find(r=>r.n===L.recipe);if(Rc)T('content',h('p',{class:'desc'},Rc.desc));
+    if(L.layout&&R.layoutControls)T('content',section('Layout','macro',true,R.layoutControls(L,h)));
     if(L.macros.length)T('content',section('Vezérlők','macro',true,...L.macros.map(m=>{const o={v:m.v,a:0};return ctlSlider(o,{k:'m',l:m.l,min:0,max:1},{big:true,noAnim:true,onInput:()=>macroApply(L,m,o.v)});})));
     T('look',section('Megjelenés','blend',true,blendRow(L),ctlSlider(L.n.opacity,BASEK.opacity),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
     T('fx',section('Csoporteffektek','fx',true,fxListUI(L)));

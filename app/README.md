@@ -253,3 +253,8 @@ A `../docs/claude-handoff/shapegen/00-START-HERE.md` a FORM v8 generátorainak �
 - `catalog.ts`: `catalogIndex()` lustán épül LIB-ből (keresés nélkül `resetCatalog`), `catSearch(q, role)`, `catRoleCounts`, `catId`, `roleOf`. A típus az elem nevéből (EFFECTS) és a `make` forrás string-literáljaiból jön.
 - Pontozás: névprefix 100, egyéb saját szó 40, szinonima a névben 60, szinonima a leírásban 15; a szinonima nem illeszt a polc nevére.
 - `shelf.ts` `libSearch` → `catSearch`; `buildCats` keresés közben `.rolechip` gombokat rajzol (`R.libRole`).
+
+### U5 · CAT-01 témák · M10 korai (0.46–0.48)
+- `colorutil.ts` (OKLab/OKLCH, gradiens-mintavétel, WCAG, harmóniák), `colorpick.ts` (`colorWell`, `openPicker`, `COLOR_MIME`), `gradui.ts` (`L.grad={s:[[pos,hex]],m}`; `render.ts` `gradOf`/`setPal(p,i,L)` → `uGOn`, `uG[16]` a négy `pal()` definícióban), `colorsum.ts` (`colorSummary`, `applyColorTo`, `R.dropColor`), `abar.ts` (localStorage `vel.abar`, `vel.ws1/2`).
+- `catalog.ts` `TOPICS`/`topicItems`; `shelf.ts` `#topics` sor, `R.libTopic`.
+- `layouts.ts`: `makeMagazine`, `relayout` (`g.layout={k:'wide',comp}`, gyerek `role` = img/title/sub), `layoutControls` (`R.layoutControls`), `unwoven` effekt saját `draw`-val, `L.imgs` assetlista (a `usedAssets` is gyűjti). Kép effekt: `fw/fh/ox/oy/round`.
