@@ -3,6 +3,14 @@ import { S, SEL, COL } from './helpers';
 /** shapes */
 import type { EffectDef } from '../types';
 export const shapes:Record<string,EffectDef>={
+pathshape:{kind:'shape',name:'Útvonal',pathed:true,desc:'Szerkeszthető vonal: a vásznon rajzolod meg, a pontjait húzod (dupla kattintás a vonal mellett: új pont, Alt+kattintás: törlés). Ugyanezt az útvonalat használhatja a Mozgás → Útvonalon és a Részecske Forrás (Alak: Útvonal). Kirajzolással „rajzolódó vonal”, zárt alakként kitöltve maszk is lehet.',
+ main:['look','width','w1','color','c1','trimE'],
+ groups:[{t:'Fő beállítások',keys:['look','width','w0','w1','color','c1','c2','trimE'],open:true},{t:'Kirajzolás és szaggatás',keys:['trimS','trimO','dash','dashL']},{t:'Forma',keys:['closed','smooth','fill','fillc']},{t:'Élő vonal és fény',keys:['wave','wfreq','wspeed','twist','gloss','glow']}],
+ params:[SEL('look','Kinézet',['Vonal','Cső','Csavart szalag','Neon','Gyöngysor'],1),S('width','Vastagság',.002,.3,.035),S('w0','Vastagság az elején (×)',0,2,1),S('w1','Vastagság a végén (×)',0,2,1),
+  SEL('color','Szín',['Saját szín','Színátmenet','Paletta végig'],1),COL('c1','Szín','#ff4a3d'),COL('c2','Második szín','#ffc94a'),
+  S('trimS','Kirajzolás eleje',0,1,0),S('trimE','Kirajzolás vége',0,1,1),S('trimO','Kirajzolás eltolása',-1,1,0),SEL('dash','Szaggatás',['Nincs','Szaggatott','Pontozott'],0),S('dashL','Szaggatás hossza',.005,.3,.05),
+  SEL('closed','Vonal',['Nyitott','Zárt'],0),SEL('smooth','Sarkok',['Sima görbe','Szögletes'],0),SEL('fill','Kitöltés (zárt vonalnál)',['Nincs','Saját szín'],0),COL('fillc','Kitöltés színe','#20264a'),
+  S('wave','Hullámzás',0,.1,0),S('wfreq','Hullámok száma',.5,30,6),S('wspeed','Hullám sebessége',-5,5,1),S('twist','Csavarodás (szalag)',0,20,4),S('gloss','Csillanás',0,1,.6),S('glow','Ragyogás (neon)',0,2,.7)],code:''},
 shape:{kind:'shape',name:'Alakzat',desc:'Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.',
  main:['kind','size','soft','fill','color'],
  params:[SEL('kind','Forma',['Kör','Gyűrű','Téglalap','Sokszög','Csillag','Félhold','Vesica','Szív','Virág','Spirál','Szem','Kereszt','Végtelen','Dombvonal'],0),S('size','Méret',.02,1.5,.3),S('soft','Lágyság',0,1,0),

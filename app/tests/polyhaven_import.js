@@ -16,7 +16,7 @@
   const cx=sample.getContext('2d');cx.fillStyle='#a83242';cx.fillRect(0,0,32,32);
   const blob=await new Promise(resolve=>sample.toBlob(resolve,'image/jpeg',.9));
   window.fetch=async url=>{if(url!==polyHavenImageURL('marble_01'))throw new Error('wrong source URL');return new Response(blob,{headers:{'content-type':'image/jpeg','content-length':String(blob.size)}});};
-  if(choices[0])choices[0].click();await new Promise(r=>setTimeout(r,120));
+  if(choices[0])choices[0].click();for(let i=0;i<40&&!st.layers.some(x=>x.type==='image'&&x.asset);i++)await new Promise(r=>setTimeout(r,100));
   const layer=st.layers[0];info.layer={name:layer?.name,source:layer?.source,asset:!!assets[layer?.asset]};
   if(layer?.type!=='image'||layer?.source?.id!=='marble_01'||!assets[layer?.asset])bad.push('image not imported');
   const saved=JSON.parse(projectJSON());if(!saved.assets[layer.asset]||!saved.state.layers[0].source)bad.push('offline project lacks source/image');

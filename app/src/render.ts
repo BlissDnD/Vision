@@ -26,14 +26,18 @@ export function setXform(p,L,t){const n=L.n,B=behav(L,t);let ox=ev(n.x,BASEK.x,t
   gl.uniform2f(U(p,'uOff'),ox,oy);gl.uniform1f(U(p,'uScale'),Math.max(1e-4,sc));
   gl.uniform1f(U(p,'uRot'),rot*Math.PI/180);}
 /* ----- 2.5D camera: per-layer depth (n.z), parallax + depth of field on top-level layers ----- */
-export const CAMP=[S('x','Kamera X',-3,3,0),S('y','Kamera Y',-2,2,0),S('zoom','Zoom',.2,5,1),S('f','Fókusztáv (látószög)',.5,8,2.5),S('focus','Élességi sík (Z)',-1.5,8,0),S('ap','Mélységélesség (blende)',0,3,0),S('roll','Döntés °',-45,45,0)];
+export const CAMP=[S('x','Kamera X',-3,3,0),S('y','Kamera Y',-2,2,0),S('zoom','Zoom',.2,5,1),S('f','Fókusztáv (látószög)',.5,8,2.5),S('focus','Élességi sík (Z)',-1.5,8,0),S('ap','Mélységélesség (blende)',0,3,0),S('roll','Döntés °',-45,45,0),S('shake','Kézikamera',0,1,0),S('lag','Követés késése (mp)',0,2,.35),S('trans','Célváltás ideje (mp)',.1,4,1.2),S('pper','Útvonal bejárása (mp)',.5,60,8)];
 export const CAMK=Object.fromEntries(CAMP.map(d=>[d.k,d]));
 export function mkCam():Camera{const n={};for(const d of CAMP)n[d.k]=mkN(d.def);return <Camera>{id:'__cam',name:'Kamera',type:'cam',vis:true,on:false,n,p:{}};}
-export function normCam(o){const c=mkCam();if(!o)return c;c.on=!!o.on;for(const d of CAMP)if(o.n&&o.n[d.k])c.n[d.k]=mkN(o.n[d.k]);return c;}
+export function normCam(o){const c=mkCam();if(!o)return c;c.on=!!o.on;for(const d of CAMP)if(o.n&&o.n[d.k])c.n[d.k]=mkN(o.n[d.k]);
+  // K3 fields only when present (an old project stays byte-identical)
+  if(o.mode===1||o.mode===2)c.mode=o.mode;if(Array.isArray(o.shots)){const s=o.shots.filter(x=>x&&typeof x.id==='string'&&isFinite(x.t)).map(x=>({t:+x.t,id:x.id}));if(s.length)c.shots=s.sort((a,b)=>a.t-b.t);}
+  if(typeof o.path==='string')c.path=o.path;if(o.ploop===1||o.ploop===2)c.ploop=o.ploop;if(o.focusT)c.focusT=true;return c;}
 R.CAMON=false;
 export function camXf(L,t){if(!R.CAMON||!L)return null;const C=st.cam.n,E=k=>ev(C[k],CAMK[k],t);const z=ev(L.n.z,BASEK.z,t),f=Math.max(.2,E('f'));const den=f+z;
-  const k=den>.05?f/den:0;const zoom=Math.max(.05,E('zoom'));const ap=E('ap');const foc=E('focus');
-  return {k,zoom,cx:E('x'),cy:E('y'),roll:E('roll'),hide:den<=.05,blur:Math.min(10,ap*Math.abs(z-foc)*k*1.6)};}
+  const k=den>.05?f/den:0;const zoom=Math.max(.05,E('zoom'));const ap=E('ap');let foc=E('focus'),cx=E('x'),cy=E('y'),roll=E('roll');
+  if(R.camDir){const D=R.camDir(t);cx+=D.dx;cy+=D.dy;roll+=D.droll;if(D.focus!=null)foc=D.focus;}
+  return {k,zoom,cx,cy,roll,hide:den<=.05,blur:Math.min(10,ap*Math.abs(z-foc)*k*1.6)};}
 export function camApply(L,t,ox,oy,sc,rot){const c=camXf(L,t);if(!c)return [ox,oy,sc,rot];const m=c.k*c.zoom;let x=(ox-c.cx)*m,y=(oy-c.cy)*m;
   if(c.roll){const a=-c.roll*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a);[x,y]=[x*ca-y*sa,x*sa+y*ca];}return [x,y,sc*m,rot-c.roll];}
 export const dofCache=new Map();
@@ -41,7 +45,7 @@ export function dofLayer(id,r){let F=dofCache.get(id);if(!F){F=makeLayer('blur')
 export function openCam(anchor){
   const C=st.cam;const on=ctlSwitch('Kamera bekapcsolva',C.on,v=>{C.on=v;commit();renderTimeline();});
   const sl=CAMP.map(d=>ctlSlider(C.n[d.k],d,{onInput:markDirty}));
-  openPop(anchor,h('div',{class:'pl'},'Kamera · 2,5D tér'),h('div',{class:'pc'},on,...sl,
+  openPop(anchor,h('div',{class:'pl'},'Kamera · 2,5D tér'),h('div',{class:'pc'},on,R.camExtra?R.camExtra(()=>openCam(anchor)):null,...sl,
     h('p',{class:'small'},'Minden réteg Elhelyezés szekciójában van egy Mélység (Z) érték: 0 a képsík, a pozitív hátrébb, a negatív előrébb van. Kameramozgásnál a távoli rétegek lassabban mozognak (parallaxis), a blende az élességi síktól távoli rétegeket elmossa. A ◆ gombokkal a kamera is kulcskockázható, a Sávok panelen külön sora van.')));}
 st.cam=mkCam();
 /* ----- behaviours (enter / exit) ----- */
@@ -219,7 +223,7 @@ export function renderList(items,set,ctx,t0,clear){
       else{gl.bindFramebuffer(gl.FRAMEBUFFER,w0.f);gl.viewport(0,0,ctx.w,ctx.h);gl.useProgram(XFORM);gl.uniform2f(U(XFORM,'uRes'),ctx.w,ctx.h);setXform(XFORM,L,t);bindTex(0,acc.t);gl.uniform1i(U(XFORM,'uInput'),0);gl.drawArrays(gl.TRIANGLES,0,3);}
       out=runChain(L.fx,w0.t,w0,set,ctx,t);
     }else if(kind==='fx'){out=runChain([L,...L.fx],set.A.t,set.A,set,ctx,t);}
-    else{const w0=set.W[0];if(EFFECTS[L.type].mesh)drawMesh(L,w0,ctx,t,EFFECTS[L.type]);else if(EFFECTS[L.type].terrain)drawTerrain(L,w0,ctx,t,EFFECTS[L.type],lightU);else if(EFFECTS[L.type].points)drawPoints(L,w0,ctx,t,set.A.t);else drawFx(L,w0,ctx,t,set.A.t,null,0);out=runChain(L.fx,w0.t,w0,set,ctx,t);}
+    else{const w0=set.W[0];if(EFFECTS[L.type].draw)EFFECTS[L.type].draw(L,w0,ctx,t,set.A.t);else if(EFFECTS[L.type].mesh)drawMesh(L,w0,ctx,t,EFFECTS[L.type]);else if(EFFECTS[L.type].terrain)drawTerrain(L,w0,ctx,t,EFFECTS[L.type],lightU);else if(EFFECTS[L.type].points)drawPoints(L,w0,ctx,t,set.A.t);else drawFx(L,w0,ctx,t,set.A.t,null,0);out=runChain(L.fx,w0.t,w0,set,ctx,t);}
     if(R.CAMON&&kind!=='fx'&&kind!=='group'){const c=camXf(L,t);if(c&&c.blur>.05)out=runChain([dofLayer(L.id,c.blur)],out.t,out,set,ctx,t);}
     const useMask=L.clip&&baseOK;
     if(!L.maskOnly){
@@ -233,7 +237,7 @@ export function renderList(items,set,ctx,t0,clear){
     if(!L.clip){const i=set.W.indexOf(out);if(i>=0){set.W[i]=set.base;set.base=out;}else copyTo(out.t,set.base);baseOK=true;baseKey=kind==='fx'?0:Math.min(1,Math.max(0,ev(L.n.key,BASEK.key,t)));}
   }
   return set.A;}
-export function renderScene(items,ctx,t,bg){t=postT(t,st.look&&st.look.fps||0);for(const x of ctx.hist.values())x.used=false;const c=hexRGB(bg);const out=renderList(items,ctx.sets[0],ctx,t,[c[0],c[1],c[2],1]);
+export function renderScene(items,ctx,t,bg){R.camFrame=(R.camFrame||0)+1;t=postT(t,st.look&&st.look.fps||0);for(const x of ctx.hist.values())x.used=false;const c=hexRGB(bg);const out=renderList(items,ctx.sets[0],ctx,t,[c[0],c[1],c[2],1]);
   for(const [id,x] of ctx.hist)if(!x.used){freeTarget(x.cur);freeTarget(x.next);ctx.hist.delete(id);}return out;}
 export function present(ctx,tex,fb,w,h,t){
   const LK=st.look,P=k=>LK.p[k].v;const mips=ctx.mips||[];let bloomTex=BLANK;

@@ -29,7 +29,7 @@ $('#wrap').appendChild(bar);
 const done = () => { commit(); markDirty(); renderInsp(); };
 
 export function updTextbar() {
-  const L: any = sel(); const on = !!L && (L.type === 'text' || L.type === 'mtext') && !!L.text && !R.seqPlay;
+  const L: any = sel(); const on = !!L && (L.type === 'text' || L.type === 'mtext' || !!(EFFECTS[L.type] && EFFECTS[L.type].usesText)) && !!L.text && !R.seqPlay;
   bar.hidden = !on; if (!on) { bar.innerHTML = ''; return; }
   const T = L.text; bar.innerHTML = '';
   const font = h('select', { 'aria-label': 'Betűtípus', title: 'Betűtípus' }, ...TB_FONTS.map(f => { const o = h('option', { value: f, style: `font-family:'${f}'` }, f); if (f === T.font) o.selected = true; return o; }));

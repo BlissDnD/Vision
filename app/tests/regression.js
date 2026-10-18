@@ -1,5 +1,5 @@
 (()=>{const out={bad:[],ui:[]};
-for(const k of Object.keys(EFFECTS)){if(EFFECTS[k].points||['obj3d','sdfscene','gyroid'].includes(k))continue;const L=makeLayer(k);getProg(L);const e=progError(L);if(e)out.bad.push(k+': '+e.slice(0,300));}
+for(const k of Object.keys(EFFECTS)){if(EFFECTS[k].points||EFFECTS[k].draw||['obj3d','sdfscene','gyroid'].includes(k))continue;const L=makeLayer(k);getProg(L);const e=progError(L);if(e)out.bad.push(k+': '+e.slice(0,300));}
 try{for(const k of ['bento','mtext','projector','skygrad','sun','clouds','terrain','haze']){const L=makeLayer(k);st.layers=[L];R.selId=L.id;renderAll();timingSection(L);}
  const g=makeRecipe(RECIPES.find(r=>r.n==='Alsó harmad'));st.layers=[g];R.selId=g.id;renderAll();
  openLook(document.body);out.ui.push('look ok: '+document.querySelectorAll('select').length);

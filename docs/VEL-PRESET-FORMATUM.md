@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.32.0-t1.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.40.0-t6.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.
@@ -63,6 +63,8 @@ SHADER CONTRACT (layer type "custom"):
 
 CATALOG (key [kind] name: params; sel params list index:label):
 surface3d [3d] Gerincfelület: arch=0.4..1.6(1); width=2..12(7); thick=0.02..0.6(0.09); color=#hex; rough=0.02..0.8(0.18); metal=0..1(0.85); coat=0..1(0.35); refl=0..1.6(0.9); expo=0.1..2(0.72); taper=-0.9..0.9(0); bend=-0.5..0.5(0.12); lean=-2.5..2.5(0.9); leanEnd=-2.5..2.5(-1.2); twist=-3..3(0); fillet=0..1.2(0.35); tint=0..1(0.92); silver=0..1(0.9); dot=0..1(0.8); dotS=0.01..0.15(0.035); stripPos=-6..6(0.6); stripSize=0.2..2.5(1); stripI=0..8(2.5); backI=0..4(0.8); sky=0.3..2(0.95); floor=0:Nincs|1:Tükröző padló; bg=0:Átlátszó|1:Stúdió; blur=0..4(1); ao=0..2(1); ry=-180..180(-11); rx=-80..80(-6); dist=2..30(8.4); fov=15..100(62); tx=-10..10(1); ty=-2..8(1.35); tz=-12..6(-3)
+terrain3d [3d] 3D Terep: ttype=0:Hegy|1:Dűne|2:Sziget|3:Kanyon|4:Fennsík|5:Kráter; seed=0..999(7); style=0:Mérsékelt|1:Sivatag|2:Havas|3:Vulkáni|4:Idegen; size=0.3..4(0.9); relief=0..2(1); detail=0..1(0.5); water=0..1(0.22); bg=0:Átlátszó|1:Égbolt; fog=0..3(0.8); expo=0.2..2(1); qual=0:Vázlat|1:Normál|2:Részletes; ry=-180..180(32); rx=-5..85(26); dist=3..40(14); fov=15..90(42); tx=-12..12(0); ty=-2..6(0.6); tz=-12..12(0)
+pathshape [shape] Útvonal: look=0:Vonal|1:Cső|2:Csavart szalag|3:Neon|4:Gyöngysor; width=0.002..0.3(0.035); w0=0..2(1); w1=0..2(1); color=0:Saját szín|1:Színátmenet|2:Paletta végig; c1=#hex; c2=#hex; trimS=0..1(0); trimE=0..1(1); trimO=-1..1(0); dash=0:Nincs|1:Szaggatott|2:Pontozott; dashL=0.005..0.3(0.05); closed=0:Nyitott|1:Zárt; smooth=0:Sima görbe|1:Szögletes; fill=0:Nincs|1:Saját szín; fillc=#hex; wave=0..0.1(0); wfreq=0.5..30(6); wspeed=-5..5(1); twist=0..20(4); gloss=0..1(0.6); glow=0..2(0.7)
 shape [shape] Alakzat: kind=0:Kör|1:Gyűrű|2:Téglalap|3:Sokszög|4:Csillag|5:Félhold|6:Vesica|7:Szív|8:Virág|9:Spirál|10:Szem|11:Kereszt|12:Végtelen|13:Dombvonal; size=0.02..1.5(0.3); soft=0..1(0); fill=0:Szín|1:Paletta|2:Szivárvány; color=#hex; aspect=0.2..5(1); round=0..1(0.15); sides=3..12(6); inner=0..1(0.45); thick=0.002..0.4(0.04); outline=0..0.1(0); speed=0..3(0.3)
 plasma [gen] Plazma: speed=0..4(1); zoom=0.3..6(1.5); warp=0..2(0.6); bands=0.2..4(1.2)
 fire [gen] Tűz: height=0.1..1.5(0.75); intensity=0..2(1.1); speed=0..3(1); tint=0..1(0); width=0.05..2(0.55); turb=0.3..3(1)
@@ -85,6 +87,7 @@ cells [gen] Sejtszövet: zoom=1..14(5); speed=0..3(0.8); glow=0..3(1.2); fill=0.
 flare [gen] Lencsefény: size=0.2..3(1); rays=0..16(6); streak=0..2(1); ghosts=0..3(1); ring=0..2(0.6); flicker=0..1(0.3)
 text [text] Szöveg: tint=0..1(0.7); glow=0..3(1); spread=0..3(0.6); shimmer=0..4(1)
 image [image] Kép: bright=0..3(1); sat=0..3(1)
+lottie [image] Vektoranimáció: bright=0..3(1); sat=0..3(1)
 custom [gen] Saját GLSL: (own GLSL, see SHADER CONTRACT; default sliders a=0..1(0.5); b=0..1(0.5); c=0..1(0.5); d=0..1(0.5))
 blur [fx] Elmosás: radius=0..10(2)
 glow [fx] Ragyogás: amount=0..3(1); radius=0.2..4(1.5); thresh=0..1(0.35)
@@ -122,9 +125,13 @@ bento [shape] Bento-rács: layout=0:2 × 2|1:Hős + 2|2:Hős + 3|3:3 oszlop|4:Ol
 projector [fx] Vetítő: dust=0..1(0.5); leak=0..1(0.35); flicker=0..1(0.3); weave=0..1(0.3); shake=0..1(0.25); tone=0:Eredeti|1:Szépia|2:Fekete-fehér|3:Fakó szín; chroma=0..1(0.25); grain=0..1(0.35); vig=0..1(0.45); fps=4..30(12)
 pdisp [fx] Részecskékre bontás: trig=0:Kézi (csúszka)|1:Jelzésekre|2:Ismétlődve; spread=0..3(1.2); out=0.05..3(0.5); hold=0..5(0.3); back=0.1..4(1.1); every=0.3..10(3); amount=0..2(0); turb=0..2(0.5); density=0:65 ezer|1:147 ezer|2:262 ezer; size=0.5..8(1.6); depth=0..1.5(0.1); swirl=0..2(0); wave=0..2(0); jitter=0..1(0); speed=0..3(1); color=0:Eredeti|1:Paletta; bright=0..3(1); pblend=0:Fény (összeadó)|1:Normál
 particles [gen] Részecskék: source=0:Alatta lévő kép|1:Saját kép; density=0:65 ezer|1:147 ezer|2:262 ezer; size=0.5..8(2); thresh=0..1(0.06); depth=0..1.5(0.35); explode=0..2(0); swirl=0..2(0.25); wave=0..2(0); jitter=0..1(0); tilt=-90..90(0); turn=-180..180(0); spin=-1..1(0); speed=0..3(1); color=0:Eredeti|1:Paletta; bright=0..3(1); hidesrc=0:Nem|1:Igen; pblend=0:Fény (összeadó)|1:Normál
+emitter [gen] Részecske Forrás: shape=0:Pont|1:Vonal|2:Gyűrű|3:Korong|4:Téglalap|5:Alatta lévő kép alakja|6:Útvonal; rate=0..3000(300); life=0.1..12(2.5); dir=-180..180(90); spread=0..360(30); speed=0..3(0.6); grav=-2..4(0.6); look=0:Lágy pötty|1:Éles kör|2:Szikra|3:Csík|4:Konfetti|5:Levél|6:Füstfolt; size=0.5..60(5); color=0:Paletta (véletlen)|1:Paletta (életkor)|2:Saját szín|3:Forráskép színe; mode=0:Folyamatos|1:Löketek|2:Jelzésekre (J); burst=1..4000(400); every=0.2..10(1.5); ew=0..2(0.4); eh=0..2(0.2); radial=0..1(0); lifevar=0..1(0.4); speedvar=0..1(0.4); warm=0:Igen|1:Nem (0-tól indul); seed=0..999(1); wind=-2..2(0); gust=0..2(0); turb=0..2(0.2); tscale=0.2..8(2.5); drag=0..5(0.3); floor=0:Nincs|1:Pattog; fy=-0.5..0.5(-0.42); bounce=0..0.95(0.5); sizeEnd=0..4(0.3); sizevar=0..1(0.5); spin=0..10(2); fade=0..1(0.6); c1=#hex; bright=0..4(1.2); pblend=0:Fény (összeadó)|1:Normál
 sdfscene [3d] 3D jelenet: material=0:Paletta|1:Agyag|2:Króm|3:Irizáló|4:Normál-színek; env=0:Stúdió|1:Naplemente|2:Kozmikus|3:Neon; rough=0..1(0.5); metal=0..1(0); floor=0..1(0.6); glow=0..3(0.4); aa=0:Gyors|1:4× (lassabb); spin=-2..2(0.15); rx=-180..180(15); ry=-180..180(0); sceneL=0:Nem|1:Igen
 cloud3d [3d] Felhő: shape=0:Gomoly|1:Lapos|2:Tornyos; dens=0.2..3(1.6); soft=0.02..0.4(0.08); detail=0..1(0.6); billow=0:Ki (álló)|1:Be; bspeed=0..2(0.35); wind=-1..1(0); seed=0..20(3); color=#hex; shade=#hex; glow=0..2(0.8); rx=-180..180(0); ry=-180..180(0); sceneL=0:Nem|1:Igen
 balloon [fx] Lufi: infl=0..1(0.85); color=#hex; gloss=0..1(0.75); shine=0..3(1.2)
 liquidglass [fx] Liquid Glass: size=0.4..2(1); blur=0..1(1); quality=0:Gyors|1:Eredeti
 windflame [gen] Szélben lobogó láng: speed=0..3(1); width=0.2..2(1); glow=0..2(1)
+textwrap [text] Szöveg testen: shape=0:Gömb|1:Henger|2:Szalaggyűrű; rep=1..8(2); size=0.2..3(1); spin=-180..180(30); tilt=-60..60(12); c1=#hex; body=0:Átlátszó (csak betűk)|1:Tömör; bodyc=#hex; radius=0.05..0.6(0.3); height=0.05..1.2(0.5); vpos=-1..1(0); back=0..1(0.35); gloss=0..1(0.5); ry=-180..180(0); persp=0..1(0.5)
+textextrude [text] Kihúzott 3D szöveg: depth=0..0.6(0.12); ry=-80..80(-25); rx=-60..60(12); spin=0..40(0); c1=#hex; c2=#hex; light=-180..180(-40); gloss=0..1(0.4); persp=0..1(0.5); size=0.1..1.5(0.5)
+textpath [text] Szöveg útvonalon: size=0.02..0.4(0.09); offset=-1..1(0); speed=-1..1(0); spacing=0.5..2.5(1); c1=#hex; loop=0:Elfogy|1:Körbe ér; upright=0:Az úttal fordul|1:Egyenesen áll; lift=-0.2..0.2(0)
 ````

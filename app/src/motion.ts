@@ -7,6 +7,7 @@ import { S, SEL } from './effects/helpers';
 import { mkN, st, uid } from './state';
 import { ev, keyVal, setKey } from './evaluation';
 import { R } from './runtime';
+import { BASEK } from './effects/index';
 
 const TAU = Math.PI * 2;
 export interface MoDef { name: string; icon: string; cont: boolean; params: any[]; main: string[]; desc: string }
@@ -29,8 +30,11 @@ export const MO: Record<string, MoDef> = {
   spring: { name: 'Rugalmas beúszás', cont: false, main: ['dur', 'char'], desc: 'Megadott irányból rugalmasan érkezik a helyére. Az irányt a vásznon a nyíllal fogod meg.',
     icon: '<path d="M3 12h9"/><path d="M12 12c1.5-3 2.5-3 3 0s1.5 3 2.5 0 1.5-3 2.5 0"/><path d="M6 9l-3 3 3 3"/>',
     params: [S('at', 'Kezdés (mp)', 0, 60, 0), S('dur', 'Időtartam (mp)', .1, 4, .9), SEL('char', 'Karakter', ['Lágy', 'Ütés', 'Rugó'], 2), S('dist', 'Távolság', 0, 2, .45), S('ang', 'Érkezés iránya °', -180, 180, 180), S('fade', 'Beúszó áttetszőség', 0, 1, 1), S('from', 'Kezdő méret', .2, 2, 1), S('bend', 'Ív', -1.5, 1.5, 0)] },
+  path: { name: 'Útvonalon', cont: true, main: ['period', 'orient'], desc: 'Végigmegy egy Útvonal rétegen (2D Formák → Útvonal): a réteg a vonalra kerül, és körbe, oda-vissza vagy egyszer bejárja. Ha átrajzolod az útvonalat, követi.',
+    icon: '<path d="M4 18c3-9 7 3 10-6s4-5 6-6"/><circle cx="4" cy="18" r="1.6" fill="currentColor"/>',
+    params: [S('period', 'Bejárás ideje (mp)', .3, 30, 4), SEL('loop', 'Ismétlés', ['Körbe', 'Oda-vissza', 'Egyszer'], 0), SEL('orient', 'Irányba fordul', ['Nem', 'Igen'], 0), S('phase', 'Kezdőpont', 0, 1, 0)] },
 };
-export const MO_ORDER = ['float', 'spin', 'pulse', 'orbit', 'shake', 'spring'];
+export const MO_ORDER = ['float', 'spin', 'pulse', 'orbit', 'shake', 'spring', 'path'];
 export const moIcon = (t: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${(MO[t] || MO.float).icon}</svg>`;
 export const AMT = S('amt', 'Erősség', 0, 1, 1);
 /** A new motion item (all params as animatable values, so later slices can key them). */
@@ -118,6 +122,13 @@ export function moEval(L: any, t0: number, aud?: any): any {
       case 'pulse': r.sc *= Math.max(.01, 1 + Math.sin(TAU * (T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t))) * V(m, 'amp', t) * a); break;
       case 'orbit': { const ph = TAU * (T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t)) * (Math.round(V(m, 'dir', t)) === 0 ? -1 : 1), R0 = V(m, 'radius', t) * a; r.dx += Math.cos(ph) * R0; r.dy += Math.sin(ph) * R0; break; }
       case 'shake': { const x = T * V(m, 'rate', t), sd = V(m, 'seed', t), A = V(m, 'amp', t) * a; r.dx += smoothNoise(x, sd) * A; r.dy += smoothNoise(x + 31.7, sd + 3) * A; r.rot += smoothNoise(x + 77.1, sd + 5) * V(m, 'rot', t) * a; break; }
+      case 'path': {
+        const q = m.path && R.pathAt ? (() => { let u = T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t); const lp = Math.round(V(m, 'loop', t));
+          u = lp === 0 ? u - Math.floor(u) : lp === 1 ? (() => { const w = u - 2 * Math.floor(u / 2); return w < 1 ? w : 2 - w; })() : Math.max(0, Math.min(1, u));
+          return R.pathAt(m.path, t, u); })() : null;
+        if (q) { r.dx += (q.x - ev(L.n.x, BASEK.x, t)) * a; r.dy += (q.y - ev(L.n.y, BASEK.y, t)) * a; if (Math.round(V(m, 'orient', t)) === 1) r.rot -= q.ang * 180 / Math.PI * a; }
+        break;
+      }
       case 'spring': {
         const at = V(m, 'at', t), dur = Math.max(.05, V(m, 'dur', t)), x = (t - at) / dur; if (x >= 1) break;
         const e = charEase(Math.round(V(m, 'char', t)), dur)(Math.max(0, x)), u = 1 - e, g = V(m, 'ang', t) * Math.PI / 180, D = V(m, 'dist', t) * a;
@@ -173,6 +184,7 @@ export function syncKLoop(L: any) {
 R.normMo = (L: any) => { if (!Array.isArray(L.mo)) { if (L.mo != null) delete L.mo; return; }
   L.mo = L.mo.filter((m: any) => m && MO[m.t]).map((m: any) => { const b: any = makeMo(m.t); b.id = m.id || b.id; b.on = m.on !== false; for (const k in b.p) if (m.p && m.p[k] && isFinite(m.p[k].v)) b.p[k] = mkN(m.p[k]);
     // v1.1 fields only when present (no silent defaults written into the project)
+    if (typeof m.path === 'string') b.path = m.path;
     if (isFinite(m.a) && m.a > 0) b.a = +m.a; if (m.b != null && isFinite(m.b)) b.b = +m.b;
     const y = m.ry; if (y && y.k > 0 && Array.isArray(y.pts) && y.pts.length === RY_N && y.pts.every((v: any) => isFinite(v)))
       b.ry = { k: Math.min(5, Math.round(y.k)), cyc: Math.max(.2, Math.min(60, +y.cyc || 5)), tgt: y.tgt === 1 ? 1 : 0, rnd: y.rnd ? 1 : 0, seed: +y.seed || 1, pts: y.pts.map((v: number) => Math.max(0, Math.min(2, +v))) };
