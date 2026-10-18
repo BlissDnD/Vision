@@ -27,7 +27,7 @@ export const LIB={
  shapes:[LS('Kör',{kind:0}),LS('Gyűrű',{kind:1}),LS('Lekerekített négyzet',{kind:2,round:.3}),LS('Háromszög',{kind:3,sides:3}),LS('Hatszög',{kind:3,sides:6}),
    LS('Csillag',{kind:4,sides:5}),LS('Félhold',{kind:5,inner:.35}),LS('Vesica',{kind:6,inner:.5}),LS('Szív',{kind:7}),LS('Virág',{kind:8,sides:6,inner:.6}),LS('Spirál',{kind:9,inner:.3,thick:.02}),LS('Szem',{kind:10,thick:.02}),LS('Kereszt',{kind:11,inner:.2}),LS('Végtelen',{kind:12,thick:.02}),LS('Fénykör',{kind:0,soft:.8},{pal:8})],
  gen:[...['plasma','fire','windflame','aurora','galaxy','waves','lava','cells','nebula','liquid','tunnel','sacred','kali','julia','moire','hyper','grid','blackhole','gradient'].map(LG),{name:'Lencsefény',make:()=>makeLayer('flare',{blend:'add',pal:1})}],
- fx:['liquidglass','blob','texture','blur','glow','lens','warp','edge','radial','kaleido','feedback','swirl','ripple','ascii','halftone','pixelart','mirror','polar','chroma','psycolor','grade','glitch','film','pdisp','balloon'].map(LG),
+ fx:['liquidglass','blob','texture','blur','glow','lens','warp','edge','radial','kaleido','feedback','swirl','ripple','ascii','halftone','pixelart','mirror','polar','chroma','psycolor','grade','glitch','film','crt','castlight','pdisp','balloon'].map(LG),
  world:[
   ...RECIPES.filter(R=>R.cat==='world').map(R=>({name:R.n,make:()=>makeRecipe(R)})),
   {head:'Darabok'},

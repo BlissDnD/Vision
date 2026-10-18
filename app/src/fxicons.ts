@@ -22,6 +22,8 @@ const P: Record<string, string> = {
   psycolor: '<path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 8a4 4 0 1 0 4 4"/><path d="M20 12h-4"/>',
   grade: '<path d="M4 20 20 4"/><path d="M4 4h16v16H4z"/><path d="M7 7h4v4H7z" fill="currentColor" opacity=".5"/>',
   glitch: '<path d="M4 6h10M8 10h12M4 14h8M10 18h10"/>',
+  crt: '<rect x="3" y="5" width="18" height="13" rx="3"/><path d="M6 9h12M6 12h12M6 15h12" opacity=".6"/><path d="M9 21h6"/>',
+  castlight: '<path d="M5 8h6v8H5z"/><path d="M11 8l9 6M11 16l9-2" opacity=".6"/>',
   film: '<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 3v18M16 3v18M4 8h4M4 16h4M16 8h4M16 16h4"/>',
   pdisp: '<circle cx="6" cy="12" r="1.3"/><circle cx="10" cy="8" r="1.3"/><circle cx="10" cy="16" r="1.3"/><circle cx="15" cy="6" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="15" cy="18" r="1"/><circle cx="20" cy="9" r=".8"/><circle cx="20" cy="15" r=".8"/>',
   balloon: '<ellipse cx="12" cy="10" rx="6" ry="7"/><path d="M12 17l-1 2h2zM12 19c0 1-1 2 0 3"/>',

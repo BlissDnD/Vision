@@ -85,6 +85,35 @@ film:{kind:'fx',name:'Film és szemcse',desc:'Filmszemcse, képsorok, vignetta.'
  params:[S('grain','Szemcse',0,2,.5),S('vig','Vignetta',0,2,.8),S('scan','Képsorok',0,1,.3)],
  code:`vec4 fx(){vec4 s=IN(vUv); vec3 c=s.rgb; c+=(hash(floor(vUv*uRes)+fract(uTime*7.0)*100.0)-0.5)*p_grain*0.25*s.a;
   c*=1.0-p_scan*0.35*(0.5+0.5*sin(vUv.y*uRes.y*1.5)); vec2 q=vUv-0.5; c*=1.0-p_vig*dot(q,q)*2.2; return vec4(max(c,0.0),s.a);}`},
+// R1 · CRT screen: barrel curve, RGB convergence error, scanlines, aperture-grille mask, flicker; resolution-independent (lines/offset scale with the canvas), noise keyed to scene time
+crt:{kind:'fx',name:'CRT-képernyő',desc:'Régi tévé- vagy monitorképernyő: domború üveg, lekerekített sarkok, képsorok, RGB-maszk és enyhe villódzás. Szövegre, képre, csoportra vagy az egész jelenetre húzható.',main:['curve','scan','rgb'],
+ params:[S('curve','Domborúság',0,1,.35),S('scan','Képsorok',0,1,.45),S('rgb','RGB-elcsúszás',0,8,1.5),S('lines','Sorok száma',120,720,300,1),S('mask','RGB-maszk',0,1,.25),
+  S('grain','Zaj',0,.5,.08),S('vig','Vignetta',0,1,.4),S('corner','Saroklekerekítés',0,.3,.08),S('flick','Villódzás',0,1,.15)],
+ code:`vec4 fx(){vec2 q=vUv*2.0-1.0; float r2=dot(q,q); vec2 uv=0.5+0.5*q*(1.0+p_curve*0.25*r2)/(1.0+p_curve*0.25);
+  vec2 e=abs(uv-0.5)*2.0; float rc=p_corner; float d=length(max(e-1.0+rc,0.0))-rc; float edge=1.0-smoothstep(-3.0/uRes.y,0.0,d);
+  if(edge<=0.0) return vec4(0.0);
+  vec2 off=vec2(p_rgb/1080.0*uRes.y/uRes.x,0.0); vec4 A=IN(uv+off),B=IN(uv),C=IN(uv-off);
+  float a=max(max(A.a,B.a),C.a); vec3 col=vec3(A.r,B.g,C.b);
+  float s=0.5+0.5*cos(uv.y*p_lines*6.2831853); col*=1.0-p_scan*(1.0-s);
+  vec3 m=0.5+0.5*cos(uv.x*p_lines*ASP().x*6.2831853-vec3(0.0,2.0944,4.1888)); col*=(1.0-p_mask)+p_mask*m*2.0;
+  float fr=floor(uTime*24.0); col*=1.0-p_flick*0.12*hash(vec2(fr,7.0));
+  col+=(hash(floor(uv*uRes)+fr*vec2(17.0,31.0))-0.5)*p_grain*a;
+  col*=1.0-p_vig*0.5*r2;
+  return vec4(clamp(col,0.0,1.0)*edge,a*edge);}`},
+// R1 · coloured cast light/shadow behind the layer's alpha: two passes of 16 samples cover 256 steps along the ray (max-product with an exponential falloff is separable), so cost does not grow with length; near→far colour from the stored hit distance
+castlight:{kind:'fx',name:'Színes vetett fény',desc:'Hosszú, színes fénycsóva vagy árnyék a betűk és formák mögött; a körvonalat követi, a háttér átlátszó marad. Szövegre vagy alakra húzd.',passes:2,main:['angle','len','amount'],
+ params:[S('angle','Irány',0,360,315),S('len','Hossz',0,.6,.18),S('amount','Erősség',0,2,1),S('fade','Lecsengés',0,1,.5),COL('c1','Szín (közel)','#ff4fb8'),COL('c2','Szín (távol)','#4f6bff')],
+ code:`float clInside(vec2 u){return step(0.0,u.x)*step(u.x,1.0)*step(0.0,u.y)*step(u.y,1.0);}
+vec4 fx(){float an=radians(p_angle); vec2 D=vec2(cos(an),sin(an))*p_len*vec2(1.0,uRes.x/uRes.y); vec2 s=D/256.0; float fall=p_fade*4.0;
+  if(uPass<0.5){float best=0.0,bd=0.0;
+    for(int i=0;i<16;i++){float k=float(i)/256.0; vec2 u=vUv-s*float(i); float a=IN(u).a*clInside(u)*exp(-fall*k); if(a>best){best=a;bd=k;}}
+    return vec4(bd*16.0,0.0,0.0,best);}
+  vec4 src=texture(uPrev,vUv); if(src.a>0.999) return src;
+  float best=0.0,bd=0.0;
+  for(int j=0;j<16;j++){float k=float(j)*16.0/256.0; vec2 u=vUv-s*float(j)*16.0; vec4 v=IN(u); float a=v.a*clInside(u)*exp(-fall*k); if(a>best){best=a;bd=k+v.r/16.0;}}
+  float sa=clamp(best*p_amount,0.0,1.0)*smoothstep(1.0,0.8,bd);
+  vec3 col=mix(p_c1,p_c2,clamp(bd,0.0,1.0));
+  return src+vec4(col*sa,sa)*(1.0-src.a);}`},
 texture:{kind:'fx',name:'Textúra',desc:'Anyagszerűség a képen: papír, vászon, por és karcok, kőzet vagy finom zaj. Ettől lesz a kép tapintható.',main:['mode','amount','scale'],
  params:[SEL('mode','Anyag',['Papír','Vászon','Por és karcok','Kőzet','Finom zaj'],0),S('amount','Erősség',0,1,.35),S('scale','Lépték',.3,4,1),S('anim','Mozgás',0,1,0)],
  code:`vec4 fx(){vec4 c=IN(vUv); vec3 u=unp(c); vec2 q=(vUv-0.5)*ASP()*p_scale; float tm=floor(uTime*12.0*p_anim); float tx=0.5;
