@@ -2,6 +2,7 @@
 - Eight persisted motion types and 42 parameters now have display-only English names, descriptions, and select options keyed by motion type and parameter key.
 - The Motion Inspector and timeline use those labels without rewriting saved motion data; targeted browser check passes.
 - Source audit still finds Hungarian built-in copy across multiple workflows. Whole-app English default remains incomplete; document language is unchanged.
+- Full 60-test run: 51 passed and 9 failed on obsolete Hungarian UI selectors; all 9 were updated to the English labels and passed individually. Typecheck and production build pass.
 
 ## 2026-10-18 — English chrome and effects
 - English static chrome, shortcut guide and project/help dialogs; stable `locale.ts` message keys.
