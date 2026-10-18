@@ -6,6 +6,10 @@ Minden jelzett hiba ide kerül (a felhasználótól vagy tesztből). **Nem kell 
 
 ## Nyitott
 
+- **[nyitott · 2026-10-18 · Codex forrásaudit]** **Mentett jelenet képe kimaradhat a projektfájlból:** `history.ts:28` `usedAssets()` csak az aktuális `st.layers` rétegeit járja be, a mentett jelenetek és közös alapok képeit nem. Tiszta környezetes mentés–újranyitás reprodukció szükséges. Részletek: `docs/audit/VEL-AUDIT-2026-10-18.md` T1.
+- **[nyitott · 2026-10-18 · Codex forrásaudit]** **Hang hordozhatósága és projektcsere:** a `projectJSON()` nem menti az `AUD` hanganyagát/jeladatait; `applyProject()` nem állítja helyre és nem törli a korábbi hangot. Új munkamenetes és két projekt közti próbával ellenőrizendő. Audit T2.
+- **[nyitott · 2026-10-18 · Codex forrásaudit]** **Videóexport bezárása nem megszakítás:** Escape/háttérkattintás csak bezárja az ablakot, nem állítja az export `cancel` jelét; a hangkódolási ciklus sem vizsgálja azt. Hibánál nincs közös kódoló-felszabadítás. Futási reprodukció hátra. Audit T4.
+
 - **[javítva · 2026-10-18 · teszt]** (A teszt most legfeljebb 4 mp-ig várja a képréteget a fix 120 ms helyett.) A `tests/polyhaven_import.js` a teljes körben néha bukik („image not imported”), önállóan futtatva zöld. Valószínűleg időzítés (a kép betöltésére nem vár eléggé). Nem akadályoz; a tesztben a betöltésre várást érdemes biztosabbá tenni.
 - **[nyitott · 2026-10-18 · Random]** Egy Random jelenetben (bolygó + gyűrűk + fénycsíkok) a bal oldalon kemény szélű, vízszintes, téglalap alakú sötét sáv látszik, a bolygó magasságában. Gyanú: egy réteg (talán a bolygó gyűrűje vagy egy torzító réteg) téglalap alakú határa levágja a képet. A seed nem ismert, ezért még nem sikerült előidézni; a Random minőségszűrő szelet „kemény vágás” mérőszáma segíthet megtalálni.
 - **[nyitott · 2026-10-18 · CodePen-láng port]** Az eredeti zajtextúrával betöltött lángban keskeny függőleges csík jelenik meg a láng jobb oldalán. A shader lefordul és animálódik, de a CodePen-képhez való vizuális összevetés és az alfa/koordináta-út javítása még szükséges (`presets/egyedi/lang-eredeti-demo.vel.json`).
