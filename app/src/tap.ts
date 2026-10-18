@@ -1,5 +1,5 @@
-/* Időzítés gyorsan · Koppintós időzítés kosárral.
- * T arms „Koppintás”: clicks on layers (canvas or layer list) collect them into a basket in click order (numbered badges, click again
+/* Időzítés gyorsan · Tap timing kosárral.
+ * T arms „Tap”: clicks on layers (canvas or layer list) collect them into a basket in click order (numbered badges, click again
  * removes, drag a badge / strip chip to reorder; arming takes over a selected group's children or the layers of selected keys).
  * Then play and tap J (or the strip's button): each tap moves the NEXT basket layer's entrance to the tap time (shiftBlock of its
  * motion block; no entrance → a default Rugalmas beúszás at the tap) and stores the tap as a J cue. The whole take is one undo
@@ -55,14 +55,14 @@ export function setTapArm(on: boolean) {
   if (!on && R.tapS0) finishTake(false);
   R.tapArm = on; R.tapDone = ''; $('#tapBtn').setAttribute('aria-pressed', String(on));
   if (on) { R.tapBasket = (R.tapBasket as string[]).filter(id => item(id)); R.tapIdx = 0; const n = basketTakeSel();
-    toast(n > 1 ? `Koppintás élesítve: ${n} elem a kosárban (a kijelölésből). Szóköz: lejátszás, J: a következő belép. Esc: kilépés.` : 'Koppintás élesítve: kattints a rétegekre (vásznon vagy a listában) a belépés sorrendjében, aztán Szóköz és J minden ütemre.'); }
+    toast(n > 1 ? `Tap armed: ${n} items in the basket (from the selection). Space: play, J: the next one enters. Esc: exit.` : 'Tap armed: click the layers (on the canvas or in the list) in entrance order, then Space and J on every beat.'); }
   changed();
 }
 
 /** One tap: the next basket layer enters at time t. */
 export function tapNow(t: number = R.time) {
   const B: string[] = R.tapBasket; if (!R.tapArm) return null;
-  if (!B.length) { toast('A kosár üres: előbb kattints a rétegekre.'); return null; }
+  if (!B.length) { toast('The basket is empty: click the layers first.'); return null; }
   if (R.tapIdx >= B.length) return null;
   if (!R.tapS0) R.tapS0 = snapshot();
   const L = item(B[R.tapIdx]); t = r3(t);
@@ -78,12 +78,12 @@ export function tapNow(t: number = R.time) {
 /** End the take: one commit (one undo step). */
 function finishTake(all: boolean) {
   const n = R.tapIdx; R.tapS0 = null; commit(); renderInsp(); renderTimeline();
-  if (all) { R.tapDone = `Kész: mind a ${n} elem a helyén · ⌘Z visszavonja`; R.tapArm = false; $('#tapBtn').setAttribute('aria-pressed', 'false'); R.tapIdx = 0; renderLayers(); renderStrip(); toast(R.tapDone);
+  if (all) { R.tapDone = `Done: all ${n} items in place · ⌘Z undoes it`; R.tapArm = false; $('#tapBtn').setAttribute('aria-pressed', 'false'); R.tapIdx = 0; renderLayers(); renderStrip(); toast(R.tapDone);
     const msg = R.tapDone; setTimeout(() => { if (R.tapDone === msg) { R.tapDone = ''; renderStrip(); } }, 3500); }
 }
 /** Esc: revert a running take (stay armed, basket kept); with no take running, disarm. */
 export function tapEsc() {
-  if (R.tapS0) { const s = R.tapS0; R.tapS0 = null; R.tapIdx = 0; if (R.playing) setPlay(false); restore(s); changed(); toast('Koppintás visszavonva: semmi nem változott. Próbáld újra (Szóköz, J), vagy Esc: kilépés.'); return; }
+  if (R.tapS0) { const s = R.tapS0; R.tapS0 = null; R.tapIdx = 0; if (R.playing) setPlay(false); restore(s); changed(); toast('Tap undone: nothing changed. Try again (Space, J), or Esc: exit.'); return; }
   setTapArm(false);
 }
 R.tapSetArm = setTapArm; R.tapNow = () => tapNow(); R.tapEsc = tapEsc; R.tapToggle = basketToggle;
@@ -104,26 +104,26 @@ function dragReorder(el: HTMLElement, from: number, sel: string) {
 /** Numbered badge on a layer row (layers.ts asks for it). */
 R.tapBadge = (id: string) => {
   if (!R.tapArm) return null; const i = (R.tapBasket as string[]).indexOf(id); if (i < 0) return null;
-  const b = h('span', { class: 'tapbdg' + (i === R.tapIdx ? ' next' : '') + (i < R.tapIdx ? ' done' : ''), title: 'Belépési sorrend a koppintáshoz · húzd egy másik számra az átrendezéshez · kattintás a soron: kivétel' }, String(i + 1)) as HTMLElement;
+  const b = h('span', { class: 'tapbdg' + (i === R.tapIdx ? ' next' : '') + (i < R.tapIdx ? ' done' : ''), title: 'Entrance order for tapping · drag onto another number to reorder · click the row: remove' }, String(i + 1)) as HTMLElement;
   dragReorder(b, i, 'li.lr'); return b;
 };
 
 /* ---------- the strip (no window) ---------- */
-const strip = h('div', { class: 'tapstrip', hidden: true, role: 'region', 'aria-label': 'Koppintás kosár' }) as HTMLElement;
+const strip = h('div', { class: 'tapstrip', hidden: true, role: 'region', 'aria-label': 'Tap basket' }) as HTMLElement;
 $('#wrap').appendChild(strip);
 export function renderStrip() {
   strip.innerHTML = '';
   if (!R.tapArm) { strip.hidden = !R.tapDone; if (R.tapDone) strip.appendChild(h('span', { class: 'tapmsg ok' }, R.tapDone)); return; }
   strip.hidden = false; const B: string[] = R.tapBasket;
-  strip.appendChild(h('span', { class: 'taplbl' }, 'Koppintás'));
-  if (!B.length) strip.appendChild(h('span', { class: 'tapmsg' }, 'Kattints a rétegekre a belépés sorrendjében (vásznon vagy a listában).'));
-  B.forEach((id, i) => { const c = h('span', { class: 'tapchip' + (i === R.tapIdx ? ' next' : '') + (i < R.tapIdx ? ' done' : ''), 'data-tid': id, title: 'Húzd az átrendezéshez' },
+  strip.appendChild(h('span', { class: 'taplbl' }, 'Tap'));
+  if (!B.length) strip.appendChild(h('span', { class: 'tapmsg' }, 'Click the layers in entrance order (on the canvas or in the list).'));
+  B.forEach((id, i) => { const c = h('span', { class: 'tapchip' + (i === R.tapIdx ? ' next' : '') + (i < R.tapIdx ? ' done' : ''), 'data-tid': id, title: 'Drag to reorder' },
     h('b', null, String(i + 1)), h('span', null, nameOf(id)),
-    R.tapS0 ? null : h('button', { class: 'x', type: 'button', 'aria-label': nameOf(id) + ' kivétele', title: 'Kivétel a kosárból', onclick: (e: MouseEvent) => { e.stopPropagation(); basketToggle(id); } }, '×')) as HTMLElement;
+    R.tapS0 ? null : h('button', { class: 'x', type: 'button', 'aria-label': nameOf(id) + ' remove', title: 'Remove from the basket', onclick: (e: MouseEvent) => { e.stopPropagation(); basketToggle(id); } }, '×')) as HTMLElement;
     dragReorder(c, i, '.tapchip'); strip.appendChild(c); });
   if (B.length) { const left = B.length - R.tapIdx;
-    strip.appendChild(h('button', { class: 'btn tapgo', type: 'button', title: 'Koppintás most (J): a következő elem itt lép be', onclick: () => tapNow() }, `J · ${nameOf(B[R.tapIdx])} belép`));
-    strip.appendChild(h('span', { class: 'tapmsg' }, R.tapS0 ? `még ${left} · Esc: visszavonás` : `Szóköz: lejátszás · J minden ütemre · Esc: kilépés`)); }
+    strip.appendChild(h('button', { class: 'btn tapgo', type: 'button', title: 'Tap now (J): the next item enters here', onclick: () => tapNow() }, `J · ${nameOf(B[R.tapIdx])} enters`));
+    strip.appendChild(h('span', { class: 'tapmsg' }, R.tapS0 ? `${left} left · Esc: undo` : `Space: play · J on every beat · Esc: exit`)); }
   place();
 }
 function place() { // above the timeline bar, and above the Sávok / Jelenetek panel when one is open
@@ -140,7 +140,7 @@ document.addEventListener('pointerdown', (e: PointerEvent) => {
   const r = cv.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return;
   e.stopPropagation(); e.preventDefault();
   const hit = hitsAt((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height)[0];
-  if (hit) basketToggle(hit.it.id); else toast('Itt nincs réteg.');
+  if (hit) basketToggle(hit.it.id); else toast('No layer here.');
 }, { capture: true });
 R.updTap = (t: number) => {
   const B: string[] = R.tapBasket; if (!R.tapArm || !B.length) { if (nums.childElementCount) nums.innerHTML = ''; return; }
@@ -154,7 +154,7 @@ R.updTap = (t: number) => {
 };
 
 /* ---------- the button on the timeline bar ---------- */
-const btn = h('button', { class: 'ib', id: 'tapBtn', type: 'button', 'aria-pressed': 'false', title: 'Koppintás (T): rétegek kosárba a belépés sorrendjében, aztán lejátszás közben J minden ütemre', 'aria-label': 'Koppintós időzítés',
+const btn = h('button', { class: 'ib', id: 'tapBtn', type: 'button', 'aria-pressed': 'false', title: 'Tap (T): rétegek kosárba a belépés sorrendjében, aztán lejátszás közben J minden ütemre', 'aria-label': 'Tap timing',
   html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10l4.2.9a2 2 0 0 1 1.6 2.2l-.6 4.9H10l-3.2-4.2a1.4 1.4 0 0 1 2.2-1.7z"/><path d="M5 4.5 3.5 3M15.5 4.5 17 3M4 8H2"/></svg>' }) as HTMLElement;
 btn.onclick = () => setTapArm(!R.tapArm);
 $('#tlxBtn').after(btn);

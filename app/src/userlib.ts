@@ -30,7 +30,7 @@ export const ulibId = () => 'U' + Date.now().toString(36) + Math.random().toStri
 /** Normalised copy of an item, or null when it is not one (unknown fields are kept, so later kinds survive). */
 export function ulibValid(x: any): UItem | null {
   if (!x || typeof x !== 'object' || typeof x.id !== 'string' || !x.id || x.data == null) return null;
-  return { ...x, kind: String(x.kind || 'preset'), cat: String(x.cat || 'recipes'), name: String(x.name || 'Névtelen').slice(0, 60), created: +x.created || Date.now(), thumb: typeof x.thumb === 'string' ? x.thumb : null, v: ULIB_VER };
+  return { ...x, kind: String(x.kind || 'preset'), cat: String(x.cat || 'recipes'), name: String(x.name || 'Unnamed').slice(0, 60), created: +x.created || Date.now(), thumb: typeof x.thumb === 'string' ? x.thumb : null, v: ULIB_VER };
 }
 export const ulibGet = (id: string) => ULIB.find(x => x.id === id) || null;
 export const ulibBy = (pred: (x: UItem) => boolean) => ULIB.filter(pred);
@@ -68,9 +68,9 @@ export async function ulibMerge(list: any[]): Promise<number> {
 export const ulibExport = () => JSON.stringify({ app: 'vel', kind: 'userlib', v: ULIB_VER, items: ULIB }, null, 1);
 /** Import a library file (or a single item / an array). Throws a readable message when it is not one. */
 export async function ulibImport(text: string): Promise<number> {
-  let o: any; try { o = JSON.parse(text); } catch (_) { throw new Error('Ez nem JSON fájl.'); }
+  let o: any; try { o = JSON.parse(text); } catch (_) { throw new Error('This is not a JSON file.'); }
   const list = Array.isArray(o) ? o : o && Array.isArray(o.items) ? o.items : o && o.id ? [o] : null;
-  if (!list) throw new Error('Ez nem Vel könyvtárfájl.');
+  if (!list) throw new Error('This is not a Vel library file.');
   return ulibMerge(list);
 }
 /** Library items used by the project (layers tagged with `ulib`), without thumbnails, for the project file. */

@@ -9,9 +9,9 @@ export const PROJECT_VER = 4;
 export interface Migrated { state: any; assets: Record<string, any>; vectorAssets: Record<string,string>; from: number; dropped: string[]; missingMedia: string[]; ulib: any[] }
 
 export function migrateProject(obj: any): Migrated {
-  if (!obj || typeof obj !== 'object') throw new Error('Ez nem Vel / Látomás projekt.');
+  if (!obj || typeof obj !== 'object') throw new Error('This is not a Vel / Látomás project.');
   const raw = obj.state && Array.isArray(obj.state.layers) ? obj.state : Array.isArray(obj.layers) ? obj : null;
-  if (!raw) throw new Error('Ez nem Vel / Látomás projekt.');
+  if (!raw) throw new Error('This is not a Vel / Látomás project.');
   const from = +obj.v || (obj.app ? 2 : 1);
   if (from > PROJECT_VER) console.warn(`Projekt v${from}, ez a program v${PROJECT_VER}-ig ismeri.`);
   const state = JSON.parse(JSON.stringify(raw));
@@ -44,12 +44,12 @@ export function migrateProject(obj: any): Migrated {
     for (const [id, source] of Object.entries(obj.vectorAssets).slice(0, 64)) {
       if (!/^V[A-Za-z0-9_-]{3,40}$/.test(id) || typeof source !== 'string') { dropped.push(`Lottie asset (${id})`); continue; }
       try { parseVectorLottie(source); vectorAssets[id] = source; }
-      catch (_) { dropped.push(`Érvénytelen Lottie asset (${id})`); }
+      catch (_) { dropped.push(`Invalid Lottie asset (${id})`); }
     }
   }
   const missing = new Set<string>();
   const checkMedia = (layers: any[]) => { for (const layer of layers || []) {
-    if (layer.type === 'lottie' && !vectorAssets[layer.asset]) missing.add(layer.name || layer.asset || 'Vektoranimáció');
+    if (layer.type === 'lottie' && !vectorAssets[layer.asset]) missing.add(layer.name || layer.asset || 'Vector animation');
     if (Array.isArray(layer.children)) checkMedia(layer.children);
   } };
   checkMedia(state.layers);

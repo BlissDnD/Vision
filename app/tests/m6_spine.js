@@ -14,10 +14,10 @@
  const d0=L.p.dist.v;wheelDist(L,100);if(!(L.p.dist.v>d0))bad.push('görgő: távolság');
  updGizmo(R.time);if(!document.querySelector('#gizmo').hidden)bad.push('a 2D gizmó látszik');
  R.gizmoOn=true;updSpineGrips(R.time);const gr=document.querySelectorAll('.sgrip:not([hidden])').length;info.grips=gr;if(gr<5)bad.push('kevés fogó: '+gr);
- const txt=document.querySelector('#insp').textContent;if(!txt.includes('Gerinc'))bad.push('nincs Gerinc szekció');if(txt.includes('Elhelyezés'))bad.push('Elhelyezés látszik');
+ const txt=document.querySelector('#insp').textContent;if(!txt.includes('Spine'))bad.push('nincs Spine szekció');if(txt.includes('Placement'))bad.push('Placement látszik');
  const n0=L.spine.length,btn=t=>[...document.querySelectorAll('#insp button')].find(b=>b.textContent===t);
- btn('Új pont utána').click();if(st.layers[0].spine.length!==n0+1)bad.push('új pont');
- renderInsp();btn('Pont törlése').click();if(st.layers[0].spine.length!==n0)bad.push('pont törlése');
+ btn('New point after').click();if(st.layers[0].spine.length!==n0+1)bad.push('új pont');
+ renderInsp();btn('Delete point').click();if(st.layers[0].spine.length!==n0)bad.push('pont törlése');
  // csillanás-húzás: a felület egy pontjára húzva a fénycsík úgy áll, hogy ott fényesebb legyen
  L.p.dist.v=d0;L.p.tx.v=tx0;L.p.ty.v=ty0;L.spine[i]=[...s0];
  const cr=cv.getBoundingClientRect(),lum=(X,Y)=>{const out=renderScene(st.layers,R.main,R.time,st.bg);present(R.main,out.t,null,cv.width,cv.height,R.time);const b=new Uint8Array(4);

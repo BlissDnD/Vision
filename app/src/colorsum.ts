@@ -1,4 +1,4 @@
-// U5 Színek: every source that gives the selected layer (or group) its colour, in the order they act
+// U5 Colors: every source that gives the selected layer (or group) its colour, in the order they act
 // (palette/own gradient → own colour parameters → the layer's Megjelenések → parent group's → global Hangulat),
 // each editable in place; ⇢ marks a parameter driven by a Kapcsolat. Plus a contrast warning for text.
 import { h } from './dom';
@@ -23,21 +23,21 @@ export function colorSummary(L: any) {
   if (!L) return null; const rows: any[] = []; const d = L.type === 'group' ? null : EFFECTS[L.type];
   const usesPal = d && (!d.noPal || d.usesPal);
   const own = d ? colorParams(L) : [];
-  if (usesPal) { const sw = h('button', { class: 'cwell cwb', title: 'Paletta · kattints: Szín fül', style: `background:${L.grad ? gradCSS(L.grad.s, L.grad.m | 0) : palCSS(L.pal || 0)}`, onclick: () => R.setITab && R.setITab('look') });
-    rows.push(row([sw], L.grad ? 'Saját átmenet' : 'Paletta', false, 'A réteg alapszínei. A saját szín paraméterek és a Megjelenések ezt módosíthatják.')); }
-  for (const p of own) rows.push(row([well(L, p), linked(L, p.k) ? h('b', { title: 'Kapcsolat vezérli' }, '⇢') : null], p.l + ' · saját szín'));
+  if (usesPal) { const sw = h('button', { class: 'cwell cwb', title: 'Palette · click: Color tab', style: `background:${L.grad ? gradCSS(L.grad.s, L.grad.m | 0) : palCSS(L.pal || 0)}`, onclick: () => R.setITab && R.setITab('look') });
+    rows.push(row([sw], L.grad ? 'Custom gradient' : 'Palette', false, 'The layer’s base colors. Its own color parameters and Appearances can modify them.')); }
+  for (const p of own) rows.push(row([well(L, p), linked(L, p.k) ? h('b', { title: 'Driven by a link' }, '⇢') : null], p.l + ' · own color'));
   const chain = (list: any[], who: string) => { for (const F of list || []) { if (F.on === false || F.off || !COLORFX.has(F.type)) continue; const E = EFFECTS[F.type]; if (!E) continue;
     const ps = colorParams(F); rows.push(row(ps.length ? ps.map((p: any) => well(F, p)) : [h('i', { class: 'cwell cwb', style: 'background:conic-gradient(#f55,#ff5,#5f5,#5ff,#55f,#f5f,#f55)' })], `${E.name} · ${who}`)); } };
-  chain(L.fx, 'Megjelenés, módosítja');
-  const par = findItem(L.id); if (par && par.parent) chain(par.parent.fx, `a csoporté (${par.parent.name})`);
-  if (st.look && st.look.preset && st.look.preset !== 'Semleges') rows.push(row([h('i', { class: 'cwell cwb', style: 'background:linear-gradient(135deg,#222,#c9a,#fd8)' })], `Hangulat: ${st.look.preset} · az egész képen`));
-  if (Math.abs(L.n && L.n.hue ? L.n.hue.v : 0) > .001) rows.push(row([h('i', { class: 'cwell cwb', style: 'background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)' })], 'Színeltolás (Árnyalat)'));
+  chain(L.fx, 'Appearance, modifies');
+  const par = findItem(L.id); if (par && par.parent) chain(par.parent.fx, `the group’s (${par.parent.name})`);
+  if (st.look && st.look.preset && st.look.preset !== 'Neutral') rows.push(row([h('i', { class: 'cwell cwb', style: 'background:linear-gradient(135deg,#222,#c9a,#fd8)' })], `Look: ${st.look.preset} · on the whole image`));
+  if (Math.abs(L.n && L.n.hue ? L.n.hue.v : 0) > .001) rows.push(row([h('i', { class: 'cwell cwb', style: 'background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)' })], 'Color shift (Hue)'));
   // contrast: text colour vs the background colour
   let warn = null; const isText = L.type === 'text' || L.type === 'mtext' || L.text;
   if (isText) { const fgHex = L.p && L.p.color1 ? L.p.color1.v : rgbToHex(palJS(L.pal || 0, .5) as any), fg = hexToRgb(fgHex), bg = hexToRgb(st.bg || '#000'), cr = contrast(fg, bg);
-    if (cr < 3) warn = h('div', { class: 'csum-warn' }, `⚠ Gyenge kontraszt a háttérrel (${cr.toFixed(1)}:1)`, L.p && L.p.color1 ? h('button', { class: 'btn', onclick: () => { L.p.color1.v = rgbToHex(readableOn(fg, bg)); if (L.p.fill) L.p.fill.v = 0; commit(); R.renderInsp && R.renderInsp(); } }, 'Olvashatóvá') : null); }
+    if (cr < 3) warn = h('div', { class: 'csum-warn' }, `⚠ Low contrast with the background (${cr.toFixed(1)}:1)`, L.p && L.p.color1 ? h('button', { class: 'btn', onclick: () => { L.p.color1.v = rgbToHex(readableOn(fg, bg)); if (L.p.fill) L.p.fill.v = 0; commit(); R.renderInsp && R.renderInsp(); } }, 'Make readable') : null); }
   if (!rows.length && !warn) return null;
-  return h('div', { class: 'csum', 'aria-label': 'Színek' }, h('div', { class: 'pl' }, 'Színek · lentről felfelé hatnak'), ...rows, warn);
+  return h('div', { class: 'csum', 'aria-label': 'Colors' }, h('div', { class: 'pl' }, 'Colors · they apply from bottom to top'), ...rows, warn);
 }
 
 /** A colour dropped on a layer: its first own colour parameter, else a tonal own gradient around the colour. */

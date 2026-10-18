@@ -1,0 +1,145 @@
+/* WA1: Vel design tokens (docs/final-updates/DESIGN-SYSTEM.md) + the Web Awesome custom properties we override.
+ * Loaded after Web Awesome's default theme, before style.css, so Vel values win. Dark only in WA1; Light mode is WA4. */
+:root {
+  /* Surface */
+  --vel-bg: #141417;
+  --vel-panel: #1c1c21;
+  --vel-raised: #25252c;
+  --vel-line: #34343d;
+  --vel-text: #ececf1;
+  --vel-text-quiet: #9a9aa8;
+  --vel-text-off: #5c5c68;
+  --vel-focus: #8b8bff;
+  --vel-accent: #6e6cf5;
+  /* State */
+  --vel-ok: #4cc38a;
+  --vel-warn: #f0b44c;
+  --vel-err: #ff6b6b;
+  /* Category colours: one meaning each, used for icon tint, tab edge, library card edge, layer badge */
+  --vel-cat-fx: #4c9bff;
+  --vel-cat-shader: #3ccfe0;
+  --vel-cat-shape: #4cc38a;
+  --vel-cat-media: #f0b44c;
+  --vel-cat-motion: #ff8a4c;
+  --vel-cat-light: #ffd84c;
+  --vel-cat-color: #f06fb0;
+  --vel-cat-mask: #b07cf5;
+  --vel-cat-particles: #38d6b0;
+  --vel-cat-library: #8a99b3;
+  /* Shape and rhythm */
+  --vel-r-ctl: 6px;
+  --vel-r-card: 10px;
+  --vel-row: 28px;
+  --vel-hit: 28px;
+  --vel-s1: 4px;
+  --vel-s2: 8px;
+  --vel-s3: 12px;
+  --vel-s4: 16px;
+  --vel-dur: 150ms;
+
+  /* Web Awesome overrides (dark surface, Vel brand) */
+  --wa-color-surface-default: var(--vel-panel);
+  --wa-color-surface-raised: var(--vel-raised);
+  --wa-color-surface-lowered: var(--vel-bg);
+  --wa-color-surface-border: var(--vel-line);
+  --wa-color-text-normal: var(--vel-text);
+  --wa-color-text-quiet: var(--vel-text-quiet);
+  --wa-color-focus: var(--vel-focus);
+  --wa-color-brand-fill-loud: var(--vel-accent);
+  --wa-color-brand-border-loud: var(--vel-accent);
+  --wa-color-brand-on-loud: #fff;
+  --wa-font-family-body: inherit;
+  --wa-font-size-s: 12px;
+  --wa-font-size-m: 12px;
+  --wa-border-radius-m: var(--vel-r-ctl);
+  --wa-border-radius-l: var(--vel-r-card);
+  --wa-transition-normal: var(--vel-dur);
+  --wa-tooltip-max-width: 22rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --vel-dur: 0ms; --wa-transition-normal: 0ms; }
+}
+
+/* The dark surface of the whole app: the legacy style.css variables take the design-system values, so every existing
+ * panel picks up the new theme without being rewritten. `:not([data-theme="light"])` beats style.css's plain `:root`
+ * whatever the import order, and leaves the existing Light mode alone (its own slice is WA4). */
+:root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --bg: var(--vel-bg);
+  --stage: #0d0d10;
+  --chrome: rgba(28, 28, 33, .82);
+  --side: var(--vel-panel);
+  --card: var(--vel-raised);
+  --sep: var(--vel-line);
+  --hover: rgba(255, 255, 255, .05);
+  --fill: rgba(120, 120, 128, .22);
+  --fill2: rgba(120, 120, 128, .13);
+  --seg-on: #4a4a55;
+  --fg: var(--vel-text);
+  --fg2: var(--vel-text-quiet);
+  --fg3: var(--vel-text-off);
+  --accent: var(--vel-accent);
+  --accent-soft: rgba(110, 108, 245, .22);
+  --danger: var(--vel-err);
+  --ok: var(--vel-ok);
+  --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+}
+:focus-visible { outline-color: var(--vel-focus); }
+.val, .time { font-variant-numeric: tabular-nums; }
+
+/* Shared controls (src/ui/) ------------------------------------------------ */
+.vel-ib {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--vel-hit); min-height: var(--vel-hit);
+  padding: 0 6px; border: 1px solid transparent; border-radius: var(--vel-r-ctl);
+  background: transparent; color: var(--vel-text-quiet); cursor: pointer;
+  transition: background var(--vel-dur), color var(--vel-dur);
+}
+.vel-ib svg { width: 16px; height: 16px; display: block; }
+.vel-ib:hover { background: var(--vel-raised); color: var(--vel-text); }
+.vel-ib:focus-visible { outline: 2px solid var(--vel-focus); outline-offset: 1px; }
+.vel-ib[aria-pressed="true"], .vel-ib[aria-checked="true"] { background: var(--vel-raised); color: var(--vel-text); border-color: var(--vel-line); }
+.vel-ib[aria-pressed="true"] { box-shadow: inset 0 -2px 0 var(--vel-cc, var(--vel-accent)); }
+.vel-ib[disabled] { color: var(--vel-text-off); cursor: default; }
+.vel-ib .vel-lbl { font-size: 11px; margin-left: 5px; white-space: nowrap; }
+
+/* Segmented icon group: 2–4 mutually exclusive modes */
+.vel-seg {
+  display: inline-flex; gap: 2px; padding: 2px;
+  background: var(--vel-bg); border: 1px solid var(--vel-line); border-radius: var(--vel-r-ctl);
+}
+.vel-seg .vel-ib { min-width: 26px; min-height: 24px; }
+.vel-seg .vel-ib[aria-checked="true"] { background: var(--vel-accent); color: #fff; border-color: transparent; }
+
+/* A labelled row that never truncates: label wraps, control keeps its size */
+.vel-row { display: flex; align-items: center; gap: var(--vel-s2); min-height: var(--vel-row); }
+.vel-row > .vel-row-lab { flex: 1 1 auto; min-width: 0; font-size: 11px; color: var(--vel-text-quiet); overflow-wrap: anywhere; }
+.vel-row > .vel-row-ctl { flex: 0 0 auto; }
+
+/* Category tint on a control: set --vel-cc, the icon and the pressed underline follow */
+.vel-cat { color: var(--vel-cc); }
+
+wa-tooltip::part(body) { font-size: 11px; }
+wa-switch { --wa-color-brand-fill-loud: var(--vel-accent); }
+
+/* Icon-first toolbar: the pill keeps its name for screen readers and Help, the visible part is the icon + tooltip,
+ * tinted by category (colour is always paired with an icon). */
+.bar .pill[data-cat] { min-width: 32px; justify-content: center; gap: 0; padding-inline: 8px; }
+.bar .pill[data-cat] > .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.bar .pill[data-cat] svg { color: var(--vel-cc, currentColor); }
+[data-cat="effect"] { --vel-cc: var(--vel-cat-fx); }
+[data-cat="shader"] { --vel-cc: var(--vel-cat-shader); }
+[data-cat="shape"] { --vel-cc: var(--vel-cat-shape); }
+[data-cat="text"] { --vel-cc: var(--vel-cat-media); }
+[data-cat="motion"] { --vel-cc: var(--vel-cat-motion); }
+[data-cat="light"] { --vel-cc: var(--vel-cat-light); }
+[data-cat="color"] { --vel-cc: var(--vel-cat-color); }
+[data-cat="mask"] { --vel-cc: var(--vel-cat-mask); }
+[data-cat="particles"] { --vel-cc: var(--vel-cat-particles); }
+[data-cat="library"] { --vel-cc: var(--vel-cat-library); }
+[data-cat="random"] { --vel-cc: var(--vel-cat-color); }
+
+/* Rhythm presets: the icon is the curve itself */
+.vel-seg .vel-ib svg[viewBox="0 0 28 14"] { width: 26px; height: 13px; }
+wa-dropdown.vel-animmenu { display: contents; }
+wa-dropdown-item .vel-mi svg { width: 14px; height: 14px; }

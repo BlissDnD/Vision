@@ -40,8 +40,8 @@
  // 4) text toolbar
  const T=makeLayer('mtext',{text:{str:'Hello',font:'Syne',weight:'400'}});st.layers=[T];R.selId=T.id;commit();renderInsp();
  const tb=document.querySelector('#textbar');if(!tb||tb.hidden)bad.push('nincs szövegsáv szöveg kijelölésekor');
- else{tb.querySelector('[aria-label="Félkövér"]').click();if(T.text.weight!=='700')bad.push('B: '+T.text.weight);
-  document.querySelector('#textbar [aria-label="Középre igazítás"]');document.querySelector('#textbar [aria-label="Jobbra igazítás"]').click();if(T.text.align!=='right')bad.push('igazítás');
+ else{tb.querySelector('[aria-label="Bold"]').click();if(T.text.weight!=='700')bad.push('B: '+T.text.weight);
+  document.querySelector('#textbar [aria-label="Center alignment"]');document.querySelector('#textbar [aria-label="Right alignment"]').click();if(T.text.align!=='right')bad.push('igazítás');
   const f=document.querySelector('#textbar select');f.value='Fraunces';f.dispatchEvent(new Event('change'));if(T.text.font!=='Fraunces')bad.push('betűtípus');
   const c=document.querySelector('#textbar .cwb');c.click();const hx=document.querySelector('.cpick .cp-hex');hx.value='#ff0000';hx.dispatchEvent(new Event('change'));closePicker();if(T.p.color1.v!=='#ff0000'||Math.round(T.p.fill.v)!==0)bad.push('szín');
   undo();if(T.text.font!=='Fraunces'&&st.layers[0].text.font!=='Fraunces')bad.push('undo szín után a betű');}

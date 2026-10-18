@@ -10,6 +10,8 @@ import { makeMo, moIcon } from './motion';
 import { findItem } from './state';
 import { ROLES, TOPICS, catRoleCounts, catSearch, resetCatalog, topicItems, catalogLabel } from './catalog';
 import { SECTION_EN } from './catalogcopy';
+import { iconBtn } from './ui/common';
+import { CAT_COLOR, CAT_ICON } from './ui/icons';
 
 R.cat='recipes';R.thumbJob=0;R.libQ='';
 /** Search across every shelf by name (accent-insensitive): [cat, index] pairs. */
@@ -32,7 +34,9 @@ export function buildCats(){const s=$('#cats');s.innerHTML='';
   R.libRole=null;resetCatalog();
   // CAT-01 themes: a second chip row under the shelves; a theme lists its entries from every shelf
   let tp=$('#topics');if(!tp){tp=h('div',{class:'seg topics',id:'topics',role:'group','aria-label':'Themes'});s.after(tp);}tp.hidden=false;tp.innerHTML='';
-  for(const [k,l] of TOPICS)tp.appendChild(h('button',{'aria-pressed':String(R.libTopic===k),onclick:()=>{R.libTopic=R.libTopic===k?null:k;buildCats();buildShelf();}},l));for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&!R.libTopic&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';R.libTopic=null;$('#libSearch').value='';buildCats();buildShelf();}},l));}
+  for(const [k,l] of TOPICS)tp.appendChild(h('button',{'aria-pressed':String(R.libTopic===k),onclick:()=>{R.libTopic=R.libTopic===k?null:k;buildCats();buildShelf();}},l));  // WA1: the shelf row is icon-first — category colour + generic icon + one-sentence tooltip; the name stays next to it
+  for(const [k,l] of CATS)s.appendChild(iconBtn({icon:CAT_ICON[k]||CAT_ICON.gen,tip:`${l} — ${CAT_HINT[k]||''}`.trim(),label:l,tint:CAT_COLOR[k]||'--vel-cat-library',
+    pressed:!R.libQ&&!R.libTopic&&k===R.cat,cls:'catb',onclick:()=>{R.cat=k;R.libQ='';R.libTopic=null;$('#libSearch').value='';buildCats();buildShelf();}}));}
 export function buildShelf(){
   const box=$('#items');box.innerHTML='';const found=R.libQ?libSearch(R.libQ):R.libTopic?topicItems(R.libTopic):null;
   $('#shelfHint').textContent=found?(found.length?`${found.length} results across shelves`:'No results. Try a shorter search.'):CAT_HINT[R.cat]||'';

@@ -18,9 +18,9 @@
   chooseLottieFile();const libLink=document.querySelector('#dlg a[href="https://lottiefiles.com/free-animations"]');
   if(!libLink||libLink.getAttribute('rel')!=='noopener noreferrer')bad.push('official library link missing');closeModal();
   await importLottieFile(file);const dlg=document.querySelector('#dlg');
-  if(!dlg.textContent.includes('Vektoranimáció importálása')||!dlg.querySelector('canvas'))bad.push('import preview missing');
+  if(!dlg.textContent.includes('Import vector animation')||!dlg.querySelector('canvas'))bad.push('import preview missing');
   await new Promise(r=>setTimeout(r,100));const preview=dlg.querySelector('canvas');const ppx=preview.getContext('2d').getImageData(0,0,preview.width,preview.height).data;info.previewAlpha=ppx.filter((_,i)=>i%4===3&&ppx[i]>0).length;
-  const add=[...dlg.querySelectorAll('button')].find(x=>x.textContent.includes('Hozzáadás'));if(!add)bad.push('add button missing');else add.click();
+  const add=[...dlg.querySelectorAll('button')].find(x=>x.textContent.includes('Add as a layer'));if(!add)bad.push('add button missing');else add.click();
   let L=st.layers[0];if(!L||L.type!=='lottie'||!vectorAssets[L.asset])bad.push('layer or asset missing');
   undo();if(st.layers.some(x=>x.type==='lottie'))bad.push('undo import');redo();if(!st.layers.some(x=>x.type==='lottie'))bad.push('redo import');L=st.layers.find(x=>x.type==='lottie');
   info.layer={asset:L.asset,meta:lottieMeta(L.asset)?.meta};info.media0=lottieMediaFor(L,.1,{w:640,h:480});await new Promise(r=>setTimeout(r,100));info.media1=lottieMediaFor(L,.1,{w:640,h:480});info.media0={w:info.media0.w,h:info.media0.h,blank:info.media0.tex===BLANK};info.media1={w:info.media1.w,h:info.media1.h,blank:info.media1.tex===BLANK};
@@ -45,8 +45,8 @@
   const count=st.layers.length;try{parseVectorLottie(JSON.stringify({...root,assets:[{id:'x',p:'remote.png'}]}));bad.push('external image accepted');}catch(_){}
   if(st.layers.length!==count)bad.push('invalid input changed project');
   const dt=new DataTransfer();dt.items.add(file);window.dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:dt}));
-  for(let attempt=0;attempt<12&&!document.querySelector('#dlg')?.textContent.includes('Vektoranimáció importálása');attempt++)await new Promise(r=>setTimeout(r,25));
-  if(!document.querySelector('#dlg')?.textContent.includes('Vektoranimáció importálása'))bad.push('JSON drop opened preset instead of Lottie');closeModal();
+  for(let attempt=0;attempt<12&&!document.querySelector('#dlg')?.textContent.includes('Import vector animation');attempt++)await new Promise(r=>setTimeout(r,25));
+  if(!document.querySelector('#dlg')?.textContent.includes('Import vector animation'))bad.push('JSON drop opened preset instead of Lottie');closeModal();
   info.glError=gl.getError();if(info.glError)bad.push('GL error '+info.glError);
  }catch(e){bad.push('ERR '+e.message+' '+(e.stack||'').slice(0,350));}
  return {bad,info};})()

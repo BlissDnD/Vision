@@ -15,7 +15,7 @@
  // outside Animálás an un-keyed param just changes
  R.time=1;setVal(L.n.opacity,.8);if(L.n.opacity.k||L.n.opacity.v!==.8)bad.push('Animálás nélkül kulcs keletkezett');
  // non-animatable controls (timing) never key, even in Animálás
- setAnimMode(true);L.tm={in:1,inAt:0,inDur:.8,out:0,outAt:9,outDur:.8,ease:0};R.moSel[L.id]='tm:in';renderInsp();setITab('motion');const tctl=[...document.querySelectorAll('#insp .ipane[data-tab=motion] .ctl')].find(c=>c.textContent.includes('Kezdés (mp)'));
+ setAnimMode(true);L.tm={in:1,inAt:0,inDur:.8,out:0,outAt:9,outDur:.8,ease:0};R.moSel[L.id]='tm:in';renderInsp();setITab('motion');const tctl=[...document.querySelectorAll('#insp .ipane[data-tab=motion] .ctl')].find(c=>c.textContent.includes('Start (s)'));
  if(!tctl)bad.push('Időzítés csúszka hiányzik a Mozgás fülön');else{const r=tctl.querySelector('input[type=range]');r.value='1.25';r.dispatchEvent(new Event('input'));
    if(!L.tm||L.tm.inAt!==1.25)bad.push('Időzítés csúszka nem írt: '+JSON.stringify(L.tm));if(L.tm&&L.tm.k)bad.push('Időzítés proxyra kulcs került');}
  setAnimMode(false);delete L.tm;
@@ -61,7 +61,7 @@
  // curve quick menu on right click
  R.tlxSels=[];renderTracks();const kd=[...document.querySelectorAll('#tlxBody .tlx-key.sub')].find(e=>e.dataset.p==='n.x'&&+e.dataset.t===0);
  if(!kd)bad.push('nincs x kulcs a paramétersorban');else{kd.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,clientX:300,clientY:300}));
-   const m=document.querySelector('.kmenu');if(!m)bad.push('görbe-gyorsmenü nem nyílt meg');else{const b=[...m.querySelectorAll('button')].find(b=>b.textContent==='Rugós');b.click();
+   const m=document.querySelector('.kmenu');if(!m)bad.push('görbe-gyorsmenü nem nyílt meg');else{const b=[...m.querySelectorAll('button')].find(b=>b.textContent==='Spring');b.click();
      if(T.n.x.k[0].e!==5)bad.push('Rugós nem állt be: '+T.n.x.k[0].e);if(document.querySelector('.kmenu'))bad.push('menü nem zárult');if(T.n.y.k[0].e===5)bad.push('a menü a nem kijelölt paramétert is átírta');}}
  // param-row marquee picks only that param
  renderTracks();const lane=document.querySelector('#tlxBody .tlx-lane[data-p="n.y"]');

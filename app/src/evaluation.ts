@@ -20,8 +20,8 @@ export function klVal(K,t,kl){const span=kl.b-kl.a+kl.ret;if(t<=kl.b||span<=1e-6
 export function ev(n,def,t){let v=n._pv!=null?n._pv:n.k&&n.k.length?(n._kl?klVal(n.k,t,n._kl):keyVal(n.k,t)):n.v;if(n.a)v+=wave(n.w,t*(n.lp?snapRate(n.f,loopLen()):n.f))*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
 
 /* ----- keyframes: n.k=[{t,v,e,z?,w?,bz?}] on any slider param; e = curve of the segment that starts at this key ----- */
-export const KEY_EASES=[...EASE_NAMES,'Egyedi rugó','Egyedi görbe (Bézier)','Sima (átmenő)'];
-/** 'Sima (átmenő)': a monotone cubic Hermite segment through the neighbouring keys (no corner, no stop at keys, no overshoot). */
+export const KEY_EASES=[...EASE_NAMES,'Custom spring','Custom curve (Bézier)','Smooth (pass-through)'];
+/** 'Smooth (pass-through)': a monotone cubic Hermite segment through the neighbouring keys (no corner, no stop at keys, no overshoot). */
 export const SMOOTH_E=14;
 export const KEY_EPS=1/60;
 export const hasK=n=>!!(n&&n.k&&n.k.length);
@@ -39,7 +39,7 @@ export function keyVal(K,t){const n=K.length;if(t<=K[0].t)return K[0].v;if(t>=K[
     if((a.e??5)===SMOOTH_E){const x2=x*x,x3=x2*x;return (2*x3-3*x2+1)*a.v+(x3-2*x2+x)*h*smTan(K,i)+(-2*x3+3*x2)*b.v+(x3-x2)*h*smTan(K,i+1);}
     return a.v+(b.v-a.v)*keyEase(a,x);}}return K[n-1].v;}
 export const curV=n=>hasK(n)?keyVal(n.k,R.time):n.v;
-/** New keys start with 'Lágy' (0); a key inserted after another inherits that one's curve. Old keys without `e` keep the legacy default (5). */
+/** New keys start with 'Soft' (0); a key inserted after another inherits that one's curve. Old keys without `e` keep the legacy default (5). */
 export const DEF_EASE=0;
 export function setKey(n,t,v){if(!n.k)n.k=[];const i=keyIdx(n,t);if(i>=0)n.k[i].v=v;else{const prev=n.k.filter(k=>k.t<t).pop();n.k.push({t:Math.round(t*1000)/1000,v,e:prev?(prev.e??5):DEF_EASE});n.k.sort((a,b)=>a.t-b.t);}n.v=v;}
 export function delKey(n,i){n.k.splice(i,1);if(!n.k.length)delete n.k;}
@@ -56,25 +56,25 @@ export function setVal(n,v){if(R.perfHook&&R.perfHook(n,v))return;
 /** What animates a param, for the badges: k = keys, w = wave (LFO), s = signal, l = Kapcsolat. */
 export function animKinds(n){if(!n||typeof n!=='object')return '';return (hasK(n)?'k':'')+(n.a>0?'w':'')+(n.s?'s':'')+(n._lk?'l':'');}
 export const ANIM_SYM={k:'◆',w:'∿',s:'♪',l:'⇢',b:'▭'};
-export const ANIM_TIP={k:'kulcskockák',w:'hullám (LFO)',s:'hang / jel',l:'Kapcsolat másik elemről',b:'mozgásblokk (belépés / kilépés)'};
+export const ANIM_TIP={k:'keyframes',w:'wave (LFO)',s:'hang / jel',l:'Link from another element',b:'motion block (entrance / exit)'};
 export function toggleKey(n){const i=keyIdx(n,R.time);if(i>=0){delKey(n,i);return false;}setKey(n,R.time,curV(n));return true;}
 export function seekTo(t){R.time=Math.max(0,t);resetFeedback();markDirty();if(R.playing)audioRestart();}
 export const SVG_KEY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3.5 20.5 12 12 20.5 3.5 12z"/></svg>';
 export const SVG_CURVE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 19c6 0 6-14 18-14"/><circle cx="3" cy="19" r="1.6" fill="currentColor"/><circle cx="21" cy="5" r="1.6" fill="currentColor"/></svg>';
 R.liveKed=[];
-export function keyButton(obj,label,after){const b=h('button',{class:'kb',type:'button',title:'Kulcskocka ezen az időponton (K)','aria-label':label+' kulcskocka',html:SVG_KEY});
+export function keyButton(obj,label,after){const b=h('button',{class:'kb',type:'button',title:'Keyframe at this time (K)','aria-label':label+' kulcskocka',html:SVG_KEY});
   b.onclick=e=>{e.stopPropagation();const added=toggleKey(obj);commit();renderTimeline();after&&after();
-    if(added&&obj.k.length===1)toast(`Kulcskocka: ${label} @ ${fmtT(R.time)}. Lépj máshová az idővonalon, és állítsd át az értéket: új kulcskocka lesz.`);};
+    if(added&&obj.k.length===1)toast(`Keyframe: ${label} @ ${fmtT(R.time)}. Move elsewhere on the timeline and change the value: it becomes a new keyframe.`);};
   return b;}
 export function keyState(obj){return hasK(obj)?(keyIdx(obj,R.time)>=0?'on':'has'):'';}
 export function keyEditor(obj,d,label){
   const box=h('div',{class:'ked'});const NS='http://www.w3.org/2000/svg';const W=260,H=86;
   let si=Math.max(0,keyIdx(obj,R.time));let map=null,ph=null;
-  const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('class','kgraph');svg.setAttribute('role','img');svg.setAttribute('aria-label',label+' görbéje');
+  const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('class','kgraph');svg.setAttribute('role','img');svg.setAttribute('aria-label',label+' curve');
   const info=h('div',{class:'kinfo'});box.append(svg,info);
   const el=(tag,a)=>{const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);return e;};
   function draw(full=true){
-    if(!hasK(obj)){box.replaceChildren(h('p',{class:'small'},'Nincs több kulcskocka ezen a paraméteren.'));return;}
+    if(!hasK(obj)){box.replaceChildren(h('p',{class:'small'},'No more keyframes on this parameter.'));return;}
     const K=obj.k;si=Math.min(si,K.length-1);const t0=K[0].t,t1=K[K.length-1].t,span=Math.max(.6,t1-t0),a=t0-span*.1,b=t1+span*.1;
     let mn=Infinity,mx=-Infinity;const pts=[];for(let i=0;i<=160;i++){const t=a+(b-a)*i/160,v=keyVal(K,t);pts.push([t,v]);mn=Math.min(mn,v);mx=Math.max(mx,v);}
     if(mx-mn<1e-6){mx+=.5;mn-=.5;}const pd=(mx-mn)*.14;mn-=pd;mx+=pd;
@@ -88,17 +88,17 @@ export function keyEditor(obj,d,label){
     tick();if(full)info.replaceChildren(...keyInfo());}
   function keyInfo(){const K=obj.k,k=K[si];
     const num=(lbl,get,set,step)=>{const i=h('input',{class:'knum',type:'number',step,value:+get().toFixed(3),'aria-label':lbl});i.onchange=()=>{const v=parseFloat(i.value);if(isFinite(v)){set(v);K.sort((x,y)=>x.t-y.t);si=K.indexOf(k);commit();renderTimeline();draw();}};return h('label',{class:'kfield'},h('span',null,lbl),i);};
-    const es=h('select',{'aria-label':'Görbe a következő kulcskockáig'},...KEY_EASES.map((n,i)=>{const o=h('option',{value:i},n);if((k.e??5)===i)o.selected=true;return o;}));
+    const es=h('select',{'aria-label':'Curve to the next keyframe'},...KEY_EASES.map((n,i)=>{const o=h('option',{value:i},n);if((k.e??5)===i)o.selected=true;return o;}));
     es.onchange=()=>{k.e=+es.value;if(k.e===12){k.z=k.z??.45;k.w=k.w??12;}if(k.e===13)k.bz=k.bz||[.25,.1,.25,1];commit();draw();};
-    const rows=[h('div',{class:'krow'},num('Idő (mp)',()=>k.t,v=>{k.t=Math.max(0,v);},.05),num('Érték',()=>k.v,v=>{k.v=v;},(d.max-d.min)/100)),
-      h('div',{class:'row2'},h('span',null,si<K.length-1?'Görbe a következőig':'Görbe (utolsó kulcs)'),h('div',{class:'pop'},es))];
+    const rows=[h('div',{class:'krow'},num('Time (s)',()=>k.t,v=>{k.t=Math.max(0,v);},.05),num('Value',()=>k.v,v=>{k.v=v;},(d.max-d.min)/100)),
+      h('div',{class:'row2'},h('span',null,si<K.length-1?'Curve to the next':'Curve (last key)'),h('div',{class:'pop'},es))];
     if(k.e===12){const Z={get v(){return k.z??.45;},set v(x){k.z=x;draw(false);markDirty();}},Wn={get v(){return k.w??12;},set v(x){k.w=x;draw(false);markDirty();}};
-      rows.push(ctlSlider(Wn,S('w','Merevség',2,40,12),{noAnim:true}),ctlSlider(Z,S('z','Csillapítás',.05,.98,.45),{noAnim:true}));}
+      rows.push(ctlSlider(Wn,S('w','Stiffness',2,40,12),{noAnim:true}),ctlSlider(Z,S('z','Damping',.05,.98,.45),{noAnim:true}));}
     if(k.e===13)rows.push(bezPad(k,draw));
     rows.push(h('div',{class:'btnrow'},
-      h('button',{class:'btn',disabled:si<=0,onclick:()=>{si--;seekTo(K[si].t);draw();}},'◀ Előző'),
-      h('button',{class:'btn',disabled:si>=K.length-1,onclick:()=>{si++;seekTo(K[si].t);draw();}},'Következő ▶'),
-      h('button',{class:'btn',onclick:()=>{delKey(obj,si);si=Math.max(0,si-1);commit();renderTimeline();draw();}},'Törlés')));
+      h('button',{class:'btn',disabled:si<=0,onclick:()=>{si--;seekTo(K[si].t);draw();}},'◀ Previous'),
+      h('button',{class:'btn',disabled:si>=K.length-1,onclick:()=>{si++;seekTo(K[si].t);draw();}},'Next ▶'),
+      h('button',{class:'btn',onclick:()=>{delKey(obj,si);si=Math.max(0,si-1);commit();renderTimeline();draw();}},'Delete')));
     return rows;}
   function tick(){if(!map||!ph)return;const x=map.X(Math.min(map.b,Math.max(map.a,R.time)));ph.setAttribute('d',`M${x.toFixed(1)} 0V${H}`);}
   draw();R.liveKed.push({tick,box});return box;}
@@ -111,5 +111,5 @@ export function bezPad(k,redraw){const NS='http://www.w3.org/2000/svg',S0=120,P=
   svg.addEventListener('pointermove',e=>{if(hnd<0)return;const [x,y]=pos(e);b[hnd]=Math.min(1,Math.max(0,x));b[hnd+1]=Math.min(1.6,Math.max(-.6,y));paint();markDirty();});
   svg.addEventListener('pointerup',()=>{if(hnd>=0){hnd=-1;commit();redraw();}});
   paint();
-  const presets=[['Lágy',[.25,.1,.25,1]],['Ki',[0,0,.2,1]],['Be',[.6,0,1,1]],['Ki-be',[.65,0,.35,1]],['Túllövés',[.3,1.4,.5,1]]];
+  const presets=[['Soft',[.25,.1,.25,1]],['Ki',[0,0,.2,1]],['Be',[.6,0,1,1]],['Ki-be',[.65,0,.35,1]],['Overshoot',[.3,1.4,.5,1]]];
   return h('div',{class:'bezw'},svg,h('div',{class:'chips'},...presets.map(([n,v])=>h('button',{class:'chip',type:'button',onclick:()=>{b.splice(0,4,...v);paint();commit();redraw();}},n))));}

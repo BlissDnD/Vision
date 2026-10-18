@@ -18,7 +18,7 @@
  st.light.p.az.v=140;st.light.p.el.v=-5;const l0=lum();glint3(L,P);const l1=lum();info.glint=[l0,l1,st.light.p.az.v,st.light.p.el.v];if(!(l1>l0+30))bad.push('csillanás-húzás: nem lett fényesebb');
  const S=makeLayer('sdfscene');st.layers=[S];st.light.p.az.v=50;const s1=px();st.light.p.az.v=-39.81;st.light.p.el.v=45.58;const s0=px();info.sdf=+diff(s0,s1).toFixed(2);if(info.sdf<.3)bad.push('3D jelenetre nem hat');
  if(gl.getError())bad.push('GL hiba');
- st.layers=[L];R.selId=L.id;renderInsp();if(!document.querySelector('#insp').textContent.includes('Jelenetfény'))bad.push('nincs Jelenetfény szekció');
+ st.layers=[L];R.selId=L.id;renderInsp();if(!document.querySelector('#insp').textContent.includes('Scene light'))bad.push('nincs Scene light szekció');
  setKey(st.light.p.az,0,-30);setKey(st.light.p.az,2,40);commit();const snap=snapshot();loadProject(JSON.parse(projectJSON()));
  if(snapshot()!==snap||!(st.light.p.az.k&&st.light.p.az.k.length===2))bad.push('újranyitás: fény');
  const old=JSON.parse(projectJSON());delete old.state.light;loadProject(old);if(!st.light||!st.light.on||st.light.p.az.v!==-39.81)bad.push('régi projekt: alapfény');

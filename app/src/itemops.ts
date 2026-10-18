@@ -20,12 +20,12 @@ export function insertItem(obj,refId){
 const hostTarget=refId=>refId?findItem(refId):(R.selId?findItem(R.selId):null);
 export function addFromLib(c,i,refId){const li=LIB[c][i];if(li.polyhaven){R.openPolyHaven&&R.openPolyHaven();return;}if(li.mo){R.attachMo&&R.attachMo(i,refId);return;}const it=li.make();
   if(it.type==='lottie'){R.openLottie&&R.openLottie();return;}
-  if(EFFECTS[it.type]&&EFFECTS[it.type].host){const r=hostTarget(refId);if(r&&fxFits(it.type,r.it)){attachFx(c,i,r.it.id);return;}toast(`${it.name}: ${fxHostNote(it.type)}. Húzd egy ilyen rétegre, vagy jelöld ki, és kattints újra.`);return;}
-  insertItem(it,refId);if(li.drawPath&&R.armPathDraw)setTimeout(()=>R.armPathDraw(it.id));const Rc=it.recipe&&RECIPES.find(r=>r.n===it.recipe)||(li.cam?li:null);if(Rc&&Rc.cam){st.cam=normCam(Rc.cam);if(Rc.dur)st.dur=Rc.dur;}commit();renderAll();toast(Rc&&Rc.cam?`Hozzáadva: ${it.name} · a kamera bekapcsolva`:`Hozzáadva: ${it.name}`);if(it.type==='image')$('#fileImg').click();}
-export function attachFx(c,i,targetId){const r=findItem(targetId);if(!r)return;const f=LIB[c][i].make();if(!fxFits(f.type,r.it)){toast(`${f.name} nem került rá: ${fxHostNote(f.type)}.`);return;}r.it.fx.push(f);R.selId=r.it.id;SECOPEN.fx=true;commit();renderAll();toast(`${f.name} → ${r.it.name}`);}
+  if(EFFECTS[it.type]&&EFFECTS[it.type].host){const r=hostTarget(refId);if(r&&fxFits(it.type,r.it)){attachFx(c,i,r.it.id);return;}toast(`${it.name}: ${fxHostNote(it.type)}. Drag it onto such a layer, or select one and click again.`);return;}
+  insertItem(it,refId);if(li.drawPath&&R.armPathDraw)setTimeout(()=>R.armPathDraw(it.id));const Rc=it.recipe&&RECIPES.find(r=>r.n===it.recipe)||(li.cam?li:null);if(Rc&&Rc.cam){st.cam=normCam(Rc.cam);if(Rc.dur)st.dur=Rc.dur;}commit();renderAll();toast(Rc&&Rc.cam?`Added: ${it.name} · camera turned on`:`Added: ${it.name}`);if(it.type==='image')$('#fileImg').click();}
+export function attachFx(c,i,targetId){const r=findItem(targetId);if(!r)return;const f=LIB[c][i].make();if(!fxFits(f.type,r.it)){toast(`${f.name} was not applied: ${fxHostNote(f.type)}.`);return;}r.it.fx.push(f);R.selId=r.it.id;SECOPEN.fx=true;commit();renderAll();toast(`${f.name} → ${r.it.name}`);}
 export function removeItem(id){const r=findItem(id);if(!r)return;r.list.splice(r.i,1);const nx=r.list[Math.min(r.i,r.list.length-1)]||r.parent;R.selId=nx?nx.id:((st.layers[st.layers.length-1]||{}).id||null);}
 export function delSel(){if(!R.selId)return;removeItem(R.selId);commit();renderAll();}
-export function dupSel(){const r=R.selId&&findItem(R.selId);if(!r)return;const c=cloneItem(r.it);c.name=r.it.name+' másolat';r.list.splice(r.i+1,0,c);R.selId=c.id;commit();renderAll();}
+export function dupSel(){const r=R.selId&&findItem(R.selId);if(!r)return;const c=cloneItem(r.it);c.name=r.it.name+' copy';r.list.splice(r.i+1,0,c);R.selId=c.id;commit();renderAll();}
 export function moveSel(d){const r=R.selId&&findItem(R.selId);if(!r)return;const j=r.i+d;if(j<0||j>=r.list.length)return;r.list.splice(r.i,1);r.list.splice(j,0,r.it);commit();renderLayers();}
 export function groupSel(){const r=R.selId&&findItem(R.selId);if(!r)return;if(r.it.type==='group'||r.parent){toast('Csoportot nem lehet csoportba tenni.');return;}
   const g=makeGroup('Csoport',[r.it],{open:true});r.list.splice(r.i,1,g);R.selId=g.id;commit();renderAll();}

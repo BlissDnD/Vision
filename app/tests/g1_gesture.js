@@ -33,13 +33,13 @@
  peC(hd,'pointerdown',hx,hy,{metaKey:true});peC(hd,'pointermove',hx,hy-90,{metaKey:true});m=st.layers[0].mo[0];
  if(!(m.p.dur.v<d0*.6))bad.push('⌘ fel nem gyorsít: '+d0+'→'+m.p.dur.v);if(lab.hidden||!/mp · /.test(lab.textContent))bad.push('⌘ címke: '+lab.textContent);info.cmdLab=lab.textContent;
  peC(hd,'pointermove',hx-90,hy,{metaKey:true});m=st.layers[0].mo[0];if(Math.abs(m.p.dur.v-d0)>.06)bad.push('⌘ le nem lassít vissza: '+m.p.dur.v);if(m.p.char.v!==Math.max(0,c0-2))bad.push('⌘ balra nem lágyabb: '+m.p.char.v);
- if(!/Lágy/.test(lab.textContent))bad.push('karakter címke: '+lab.textContent);
+ if(!/Soft/.test(lab.textContent))bad.push('karakter címke: '+lab.textContent);
  peC(hd,'pointermove',hx-45,hy,{metaKey:true});m=st.layers[0].mo[0];if(m.p.char.v!==Math.max(0,c0-1))bad.push('⌘ jobbra: '+m.p.char.v);
  peC(hd,'pointerup',hx-45,hy);if(R.hi!==h0+1)bad.push('⌘ húzás nem egy undo');
  // 4) ⌥ bend (from the middle grip) → the layer really travels along the curve
  L=st.layers[0];m=L.mo[0];m.p.ang.v=180;m.p.dist.v=.4;m.p.char.v=0;m.p.dur.v=1;m.p.at.v=0;m.p.fade.v=0;m.p.from.v=1;commit();upd();
  const straight=behav(L,.35);pe(mid,'pointerdown',-.2,0,{altKey:true});pe(mid,'pointermove',-.2,.15,{altKey:true});upd();
- if(!/ív/.test(lab.textContent)||lab.hidden)bad.push('⌥ címke: '+lab.textContent);pe(mid,'pointerup',-.2,.15);
+ if(!/arc/.test(lab.textContent)||lab.hidden)bad.push('⌥ címke: '+lab.textContent);pe(mid,'pointerup',-.2,.15);
  L=st.layers[0];m=L.mo[0];info.bend=m.p.bend.v;if(!(m.p.bend.v<-.4))bad.push('ív nem hajlik: '+m.p.bend.v); // pointer above a leftward arrow → negative (right-hand normal points down)
  const bent=behav(L,.35);info.paths={straight:[straight.dx,straight.dy],bent:[bent.dx,bent.dy]};
  if(Math.abs(straight.dy)>1e-9)bad.push('egyenes pálya nem egyenes');if(!(bent.dy>.03))bad.push('hajlított pálya nem ível: '+bent.dy);
@@ -54,7 +54,7 @@
  if(!R.moScrub||Math.abs(R.moScrub.t-.3)>.05)bad.push('tekerés idő: '+JSON.stringify(R.moScrub));const sb=behav(L,5);if(Math.abs(sb.dx-q.dx)>.02)bad.push('tekerés nem mutatja a pontot');
  pe(hit,'pointerup',q.dx,q.dy);if(R.moScrub)bad.push('tekerés megmaradt');if(R.hi!==h0)bad.push('tekerés undo-t írt');
  // 7) hover hint at the tail
- hd.dispatchEvent(new PointerEvent('pointerenter',{pointerId:1}));if(tip.hidden||!/⌘ tempó · ⌥ ív · ⇧ szög/.test(tip.textContent))bad.push('súgó: '+tip.textContent);hd.dispatchEvent(new PointerEvent('pointerleave',{pointerId:1}));if(!tip.hidden)bad.push('súgó nem tűnik el');
+ hd.dispatchEvent(new PointerEvent('pointerenter',{pointerId:1}));if(tip.hidden||!/⌘ tempo · ⌥ arc · ⇧ angle/.test(tip.textContent))bad.push('súgó: '+tip.textContent);hd.dispatchEvent(new PointerEvent('pointerleave',{pointerId:1}));if(!tip.hidden)bad.push('súgó nem tűnik el');
  // 8) the five continuous handles
  const H={};const sel1=t=>{attachMo(idx(t),L.id);L=st.layers[0];const mm=L.mo[L.mo.length-1];R.moSel[L.id]=mm.id;setPlay(false);R.time=0;renderInsp();setITab('motion');upd();return mm;};
  const drag=(a,b,mods={},el=hd)=>{const h1=R.hi;pe(el,'pointerdown',a[0],a[1],mods);pe(el,'pointermove',b[0],b[1],mods);pe(el,'pointerup',b[0],b[1],mods);upd();return R.hi-h1;};

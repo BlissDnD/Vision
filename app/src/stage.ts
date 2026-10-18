@@ -21,11 +21,11 @@ export function fitCanvas(){markDirty();const r=wrap.getBoundingClientRect();con
 new ResizeObserver(fitCanvas).observe(wrap);
 R.tool='move';R.gizmoOn=true;
 export function setTool(t){R.tool=t;document.querySelectorAll<HTMLElement>('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===t)));
-  if(t==='orbit'){const L=sel();if(!L||(L.type!=='obj3d'&&L.type!=='sdfscene'&&L.type!=='surface3d'&&L.type!=='cloud3d'&&L.type!=='terrain3d'))toast('Válassz ki egy 3D objektumot vagy 3D jelenetet, majd húzd a vásznon a forgatáshoz.');}}
+  if(t==='orbit'){const L=sel();if(!L||(L.type!=='obj3d'&&L.type!=='sdfscene'&&L.type!=='surface3d'&&L.type!=='cloud3d'&&L.type!=='terrain3d'))toast('Select a 3D object or 3D scene, then drag on the canvas to orbit.');}}
 document.querySelectorAll<HTMLElement>('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
 $('#gizmoBtn').onclick=()=>{R.gizmoOn=!R.gizmoOn;$('#gizmoBtn').setAttribute('aria-pressed',String(R.gizmoOn));};
 $('#fsBtn').onclick=toggleFS;
-export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast('A teljes képernyő itt nem érhető el.'));}catch(_){toast('A teljes képernyő itt nem érhető el.');}}
+export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast('Full screen is not available here.'));}catch(_){toast('Full screen is not available here.');}}
 export function toAsp(e){const r=cv.getBoundingClientRect();const {W,H}=outSize();return {x:((e.clientX-r.left)/r.width-.5)*(W/H),y:.5-(e.clientY-r.top)/r.height};}
 R.drag=null;
 wrap.addEventListener('pointerdown',e=>{if(e.button!==0||R.seqPlay||e.target.closest('.hudbar,.hud,.tl,.tlx,.kmenu,.scn,.textbar'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
@@ -45,7 +45,7 @@ wrap.addEventListener('pointermove',e=>{if(!R.drag)return;markDirty();const L=se
   else if(R.drag.mode==='s'){const d0=Math.hypot(R.drag.p0.x-cx,R.drag.p0.y-cy)||.01;setVal(L.n.s,Math.max(.02,R.drag.s*Math.hypot(p.x-cx,p.y-cy)/d0));}
   else if(R.drag.mode==='r'){let r=90-Math.atan2(p.y-cy,p.x-cx)*180/Math.PI;r=((r+180)%360+360)%360-180;if(e.shiftKey)r=Math.round(r/15)*15;setVal(L.n.r,r);}
   else if(R.drag.mode==='orbit'){setVal(L.p.ry,((R.drag.ry+(e.clientX-R.drag.c0[0])*.5+180)%360+360)%360-180);setVal(L.p.rx,Math.max(L.type==='terrain3d'?-5:-180,Math.min(L.type==='terrain3d'?85:180,R.drag.rx+(e.clientY-R.drag.c0[1])*.5)));syncCtl();}});
-export const endDrag=()=>{if(R.drag){if(R.drag.mode==='glint'&&!R.drag.gok)toast('Ide a mennyezeti fénycsík nem tud csillanást tenni (ez a rész lefelé vagy oldalra néz). Próbáld a felület egy felfelé forduló részén.');R.drag=null;commit();renderTimeline();}};wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
+export const endDrag=()=>{if(R.drag){if(R.drag.mode==='glint'&&!R.drag.gok)toast('The ceiling light strip cannot put a glint here (this part faces down or sideways). Try an upward-facing part of the surface.');R.drag=null;commit();renderTimeline();}};wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
 R.wheelT=undefined;wrap.addEventListener('wheel',e=>{if((e.target as HTMLElement).closest('.tlx,.hudbar,.tl,.textbar'))return;const L=sel();if(!L)return;e.preventDefault();markDirty();if(isSurf(L)||L.type==='terrain3d'){wheelDist(L,e.deltaY);syncCtl();clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);return;}setVal(L.n.s,Math.max(.02,Math.min(20,curV(L.n.s)*Math.exp(-e.deltaY*.0012))));clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);},{passive:false});
 wrap.addEventListener('dragover',e=>{const ty=[...e.dataTransfer.types];if(ty.includes('text/x-latomas-lib')){e.preventDefault();$('#dropHint').hidden=false;}else if(ty.includes('text/x-vel-color'))e.preventDefault();});
 wrap.addEventListener('dragleave',e=>{if(!wrap.contains(e.relatedTarget))$('#dropHint').hidden=true;});

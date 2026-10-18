@@ -7,7 +7,7 @@ import { renderInsp } from './inspector';
 
 export const cv=$('#cv');
 export const gl=cv.getContext('webgl2',{preserveDrawingBuffer:false,antialias:false,alpha:false,depth:false,stencil:false,premultipliedAlpha:false,powerPreference:'high-performance'});
-if(!gl){document.body.innerHTML='<p style="padding:24px;font:15px system-ui">Ez a böngésző nem támogatja a WebGL2-t. Próbáld Chrome-ban, Edge-ben, Firefoxban vagy Safari 15+ alatt.</p>';throw new Error('no webgl2');}
+if(!gl){document.body.innerHTML='<p style="padding:24px;font:15px system-ui">This browser does not support WebGL2. Try Chrome, Edge, Firefox or Safari 15+.</p>';throw new Error('no webgl2');}
 export const HALF=!!gl.getExtension('EXT_color_buffer_float');
 export const IFMT=HALF?gl.RGBA16F:gl.RGBA8, TYPE=HALF?gl.HALF_FLOAT:gl.UNSIGNED_BYTE;
 gl.bindVertexArray(gl.createVertexArray());
@@ -127,7 +127,7 @@ export const BLANK=(()=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D
 export const PLACEHOLDER=(()=>{const c=document.createElement('canvas');c.width=640;c.height=400;const x=c.getContext('2d');
   const g=x.createLinearGradient(0,0,640,400);g.addColorStop(0,'#2c2b45');g.addColorStop(1,'#15151c');x.fillStyle=g;x.fillRect(0,0,640,400);
   x.strokeStyle='#8f8df7';x.setLineDash([10,8]);x.lineWidth=3;x.strokeRect(14,14,612,372);x.fillStyle='#e8e8f0';x.font='600 30px system-ui,sans-serif';x.textAlign='center';
-  x.fillText('Válassz egy képet',320,200);x.font='22px system-ui,sans-serif';x.fillStyle='#a6a6b4';x.fillText('a jobb oldali panelen',320,238);return {tex:texFromCanvas(c),w:640,h:400};})();
+  x.fillText('Choose an image',320,200);x.font='22px system-ui,sans-serif';x.fillStyle='#a6a6b4';x.fillText('a jobb oldali panelen',320,238);return {tex:texFromCanvas(c),w:640,h:400};})();
 
 export const ASCII_ATLAS=(()=>{const chars=' .:-=+*#%@';const c=document.createElement('canvas');c.width=chars.length*32;c.height=48;const x=c.getContext('2d');
   x.fillStyle='#fff';x.font='bold 38px "SF Mono",Menlo,Consolas,monospace';x.textAlign='center';x.textBaseline='middle';[...chars].forEach((ch,i)=>x.fillText(ch,i*32+16,26));return {tex:texFromCanvas(c),w:c.width,h:c.height};})();

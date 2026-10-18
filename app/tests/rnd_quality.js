@@ -41,7 +41,7 @@
  info.pickMs=Math.round((performance.now()-t0)/4);info.withNotes=rer;
  // taste: Ronda lowers, Tetszik raises, both persist; strong dislike makes an ingredient rarer
  tasteClear();runRandom(true);const last=R.rndLast;if(!last||!last.keys||!last.keys.length)bad.push('az utolsó dobás összetevői hiányoznak');
- const fb=document.getElementById('rndFb');if(!fb||fb.hidden||![...fb.querySelectorAll('button')].some(b=>b.textContent==='Ronda'))bad.push('nincs Ronda/Tetszik sáv');
+ const fb=document.getElementById('rndFb');if(!fb||fb.hidden||![...fb.querySelectorAll('button')].some(b=>b.textContent==='Ugly'))bad.push('nincs Ronda/Tetszik sáv');
  const k0=last.keys[0];rndVote(-1);if(!(tasteMul(k0)<1))bad.push('a Ronda nem csökkent');
  try{const saved=JSON.parse(localStorage.getItem('latomas2.rndTaste')||'{}');if(!saved.k||!saved.k[k0])bad.push('az ízlés nem mentődött');}catch(_){info.ls='nincs localStorage a tesztoldalon';}
  const k1=R.rndLast.keys[0],m1=tasteMul(k1);rndVote(1);if(!(tasteMul(k1)>m1))bad.push('a Tetszik nem növelt');
@@ -55,6 +55,6 @@
  const old=JSON.parse(JSON.stringify(pj));delete old.taste;tasteClear();tasteVote(['bg:nebula'],1);try{loadProject(old);}catch(e){bad.push('régi projekt hiba: '+e.message);}
  if(!TASTE.k['bg:nebula']||TASTE.k['foc:planet'])bad.push('régi projekt megváltoztatta az ízlést');
  // popover section
- const a=document.getElementById('rndBtn');openRandom(a);const pop=document.querySelector('.popover');if(!pop||!pop.textContent.includes('Minőségszűrő')||!pop.textContent.includes('Ízlés törlése'))bad.push('nincs Minőségszűrő a panelen');closePop();
+ const a=document.getElementById('rndBtn');openRandom(a);const pop=document.querySelector('.popover');if(!pop||!pop.textContent.includes('Quality filter')||!pop.textContent.includes('Clear taste'))bad.push('nincs Minőségszűrő a panelen');closePop();
  tasteClear();st.layers=[];commit();
  return {bad,info};})()

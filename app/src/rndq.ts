@@ -66,14 +66,14 @@ export function measureImg(buf:Uint8Array,W:number,H:number){
 
 /** Symptom list: add a row to recognise a new kind of ugliness. p(stats) → 0..1, w = weight in the 0–100 score. */
 export const SYMPTOMS:{k:string,name:string,w:number,p:(s:any)=>number,fixable?:boolean}[]=[
-  {k:'dark',name:'túl sötét',w:.7,p:s=>ramp(.06-s.mean,0,.04)*ramp(.08-s.p95,-.04,.06)},
-  {k:'burnt',name:'beégett',w:.5,p:s=>ramp(s.bright,.3,.6)},
-  {k:'mud',name:'sáros',w:.55,p:s=>ramp(s.mud,.45,.75)*ramp(40-s.colorful,0,22)},
+  {k:'dark',name:'too dark',w:.7,p:s=>ramp(.06-s.mean,0,.04)*ramp(.08-s.p95,-.04,.06)},
+  {k:'burnt',name:'blown out',w:.5,p:s=>ramp(s.bright,.3,.6)},
+  {k:'mud',name:'muddy',w:.55,p:s=>ramp(s.mud,.45,.75)*ramp(40-s.colorful,0,22)},
   {k:'flat',name:'lapos',w:.45,p:s=>ramp(.07-s.std,0,.05)*ramp(.25-(s.p95-s.p5),0,.15)},
   {k:'noise',name:'zajos',w:.7,p:s=>ramp(s.speck,.02,.06),fixable:true},
-  {k:'clutter',name:'zsúfolt',w:.4,p:s=>ramp(s.edges,.3,.55)},
-  {k:'nofocus',name:'nincs fókusz',w:.25,p:s=>ramp(.3-s.focus,0,.08)},
-  {k:'garish',name:'túl tarka',w:.45,p:s=>ramp(s.hues,3,5)*ramp(s.strong,.12,.3)},
+  {k:'clutter',name:'crowded',w:.4,p:s=>ramp(s.edges,.3,.55)},
+  {k:'nofocus',name:'no focus',w:.25,p:s=>ramp(.3-s.focus,0,.08)},
+  {k:'garish',name:'too garish',w:.45,p:s=>ramp(s.hues,3,5)*ramp(s.strong,.12,.3)},
   {k:'cut',name:'kemény vágás',w:.6,p:s=>ramp(s.cut,.18,.35),fixable:true},
   {k:'pixel',name:'pixeles',w:.6,p:s=>ramp(s.blocky,1.5,2.3),fixable:true},
 ];
@@ -111,11 +111,11 @@ export function fixCulprit(group:any,look:any,bg:string,q:any,strict=.5){
   const better=(r)=>bad.every(k=>(r.ps[k]||0)<Math.max(.3,(q.ps[k]||0)-.4));
   for(const c of cands){
     if(c.look){const k=c.look,v0=lp[k].v;lp[k].v=0;const r=judgeScene([group],look,bg,strict);if(better(r)){lp[k].v=v0*.3;const r2=judgeScene([group],look,bg,strict);
-        if(better(r2))return {q:r2,msgs:[`a Kinézet ${k==='grain'?'szemcséje':'színcsúszása'} ${bad.map(nameOf).join(', ')} volt, gyengítettem`]};lp[k].v=0;return {q:r,msgs:[`a Kinézet ${k==='grain'?'szemcséjét':'színcsúszását'} kivettem (${bad.map(nameOf).join(', ')})`]};}
+        if(better(r2))return {q:r2,msgs:[`the Look’s ${k==='grain'?'grain':'color fringing'} was ${bad.map(nameOf).join(', ')}, weakened it`]};lp[k].v=0;return {q:r,msgs:[`removed the Look’s ${k==='grain'?'grain':'color fringing'} (${bad.map(nameOf).join(', ')})`]};}
       lp[k].v=v0;continue;}
     const L=c.L;L.vis=false;const r=judgeScene([group],look,bg,strict);L.vis=true;if(!better(r))continue;
     const nm=EFFECTS[L.type]?.name||L.type,o0=L.n.opacity.v,warp=NOWEAK.has(L.type);let r2:any=null;if(!warp){L.n.opacity.v=o0*.35;r2=judgeScene([group],look,bg,strict);}
-    if(r2&&better(r2))return {q:r2,msgs:[`a(z) ${nm} ${bad.map(nameOf).join(', ')} volt, gyengítettem`],fixed:L.type};
+    if(r2&&better(r2))return {q:r2,msgs:[`${nm} was ${bad.map(nameOf).join(', ')}, weakened it`],fixed:L.type};
     L.n.opacity.v=o0;c.list.splice(c.list.indexOf(L),1);return {q:r,msgs:[`a(z) ${nm} ${bad.map(nameOf).join(', ')} volt, kivettem`],fixed:L.type};}
   return null;}
 const nameOf=k=>(SYMPTOMS.find(s=>s.k===k)||{name:k}).name;

@@ -24,8 +24,8 @@ export function libById(id: string): [string, number] | null { const legacy: Rec
 
 export function addToBar(it: Item) { const a = abarItems().filter(x => x.id !== it.id); a.push(it); save(a); renderBar(); }
 function useItem(it: Item) {
-  if (it.t === 'col') { const f = R.selId && findItem(R.selId); if (!f || !applyColorTo(f.it, it.id)) toast('Jelölj ki egy réteget a színhez.'); else R.renderAll && R.renderAll(); return; }
-  const ref = libById(it.id); if (!ref) { toast(`${it.name}: ez az elem már nincs a könyvtárban.`); return; } if (ref[0] === 'fx' && R.selId) attachFx(ref[0], ref[1], R.selId); else addFromLib(ref[0], ref[1], R.selId || null);
+  if (it.t === 'col') { const f = R.selId && findItem(R.selId); if (!f || !applyColorTo(f.it, it.id)) toast('Select a layer for the color.'); else R.renderAll && R.renderAll(); return; }
+  const ref = libById(it.id); if (!ref) { toast(`${it.name}: this item is no longer in the Library.`); return; } if (ref[0] === 'fx' && R.selId) attachFx(ref[0], ref[1], R.selId); else addFromLib(ref[0], ref[1], R.selId || null);
 }
 export function renderBar() {
   const bar = $('#abar'); if (!bar) return; bar.innerHTML = '';
@@ -41,8 +41,8 @@ export function renderBar() {
 }
 function setup() {
   const hud = document.querySelector('.hudbar'); if (!hud || $('#abar')) return;
-  const bar = h('div', { class: 'abar', id: 'abar', role: 'toolbar', 'aria-label': 'Gyorssáv' });
-  const more = h('button', { class: 'ib', title: 'Munkatér-elrendezések', 'aria-label': 'Munkatér-elrendezések', onclick: () => layoutMenu(more) }, '⋯');
+  const bar = h('div', { class: 'abar', id: 'abar', role: 'toolbar', 'aria-label': 'Quick bar' });
+  const more = h('button', { class: 'ib', title: 'Workspace layouts', 'aria-label': 'Workspace layouts', onclick: () => layoutMenu(more) }, '⋯');
   hud.append(h('span', { class: 'sepv' }), bar, more);
   bar.ondragover = (e: DragEvent) => { const ty = [...e.dataTransfer!.types]; if (ty.includes('text/x-latomas-lib') || ty.includes(COLOR_MIME) || ty.includes('text/x-vel-abar')) { e.preventDefault(); bar.classList.add('drop'); } };
   bar.ondragleave = () => bar.classList.remove('drop');
@@ -64,9 +64,9 @@ export function layoutMenu(anchor: HTMLElement) {
   const old = $('#wsmenu'); if (old) { old.remove(); return; }
   const m = h('div', { class: 'cpick', id: 'wsmenu', style: 'width:200px' });
   const close = () => m.remove();
-  m.append(h('button', { class: 'btn', onclick: () => { applyWs({ 'vel.shelfH': '52', 'vel.itab': 'content', cat: 'recipes' }); close(); toast('Munkatér: alaphelyzet'); } }, 'Alaphelyzet'));
+  m.append(h('button', { class: 'btn', onclick: () => { applyWs({ 'vel.shelfH': '52', 'vel.itab': 'content', cat: 'recipes' }); close(); toast('Workspace: reset'); } }, 'Alaphelyzet'));
   for (const n of [1, 2]) { const sv = ls('vel.ws' + n);
-    m.append(h('div', { class: 'btnrow' }, h('button', { class: 'btn', disabled: !sv, onclick: () => { applyWs(JSON.parse(sv!)); close(); } }, `Elrendezés ${n}`), h('button', { class: 'btn', onclick: () => { ls('vel.ws' + n, JSON.stringify(snapshotWs())); close(); toast(`Elrendezés ${n} elmentve`); } }, 'Mentés'))); }
+    m.append(h('div', { class: 'btnrow' }, h('button', { class: 'btn', disabled: !sv, onclick: () => { applyWs(JSON.parse(sv!)); close(); } }, `Layout ${n}`), h('button', { class: 'btn', onclick: () => { ls('vel.ws' + n, JSON.stringify(snapshotWs())); close(); toast(`Layout ${n} saved`); } }, 'Save'))); }
   document.body.appendChild(m); const r = anchor.getBoundingClientRect(); m.style.left = r.left + 'px'; m.style.top = (r.bottom + 6) + 'px';
   setTimeout(() => document.addEventListener('pointerdown', function f(e) { if (!m.contains(e.target as Node)) { m.remove(); document.removeEventListener('pointerdown', f, true); } }, true));
 }

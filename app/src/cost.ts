@@ -8,4 +8,4 @@ export function itemCost(it){const fx=(it.fx||[]).reduce((s,f)=>s+(f.vis?COST[f.
   if(it.type==='group')return 1+fx+it.children.reduce((s,c)=>s+(c.vis?itemCost(c):0),0);
   let c=COST[it.type]||1;if(it.type==='custom'&&it.cw>0)c=it.cw;if(it.type==='obj3d'){if(it.p.shape.v>8.5)c+=2;if(it.p.floor.v>0)c+=1;if(it.p.aa.v>.5)c*=4;}if(it.type==='sdfscene'&&it.p.aa.v>.5)c*=4;if(it.type==='particles')c+=Math.round(it.p.density.v)*2;return c+fx;}
 export function sceneLoad(){const px=(cv.width*cv.height)/(960*540);return (st.layers.reduce((s,it)=>s+(it.vis?itemCost(it):0),0)+(st.look.p.bloom.v>0||st.look.p.hal.v>0?2:1))*px;}
-export const loadLabel=l=>l<10?'Könnyű':l<22?'Közepes':l<40?'Nehéz':'Nagyon nehéz';
+export const loadLabel=l=>l<10?'Light':l<22?'Medium':l<40?'Heavy':'Very heavy';
