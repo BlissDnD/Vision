@@ -1,0 +1,1055 @@
+{
+  "schemaVersion": 1,
+  "source": "docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md",
+  "items": [
+    {
+      "sourceId": "Ö01",
+      "title": "Organikus lebegés",
+      "kind": "direction",
+      "workPackages": [
+        "MOT-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö02",
+      "title": "Útvonal követése",
+      "kind": "direction",
+      "workPackages": [
+        "PATH-01",
+        "MOT-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö03",
+      "title": "Görbére hajlás",
+      "kind": "direction",
+      "workPackages": [
+        "PATH-01",
+        "BASE-02"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö04",
+      "title": "Leesés/pattanás/gurulás",
+      "kind": "direction",
+      "workPackages": [
+        "PHYS-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö05",
+      "title": "Lánc/csáp követés",
+      "kind": "direction",
+      "workPackages": [
+        "MOT-01",
+        "BASE-02"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö06",
+      "title": "Kameramozgások",
+      "kind": "direction",
+      "workPackages": [
+        "MOT-01",
+        "BASE-02"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö07",
+      "title": "Hangra pulzálás",
+      "kind": "direction",
+      "workPackages": [
+        "LINK-01",
+        "MEDIA-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö08",
+      "title": "Szalagos szétbomlás",
+      "kind": "direction",
+      "workPackages": [
+        "LAYOUT-01",
+        "BASE-02"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö09",
+      "title": "Lépcsőzetes érkezés",
+      "kind": "direction",
+      "workPackages": [
+        "MOT-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö10",
+      "title": "Modellanimáció",
+      "kind": "direction",
+      "workPackages": [
+        "MEDIA-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö11",
+      "title": "Részecske Források",
+      "kind": "direction",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö12",
+      "title": "Élő térbeli tipográfia",
+      "kind": "direction",
+      "workPackages": [
+        "TEXT-01",
+        "PATH-01",
+        "MEDIA-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö13",
+      "title": "Generatív formák",
+      "kind": "direction",
+      "workPackages": [
+        "PATH-01",
+        "MEDIA-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö14",
+      "title": "Új anyagok",
+      "kind": "direction",
+      "workPackages": [
+        "MAT-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö15",
+      "title": "Színvilágok",
+      "kind": "direction",
+      "workPackages": [
+        "COLOR-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö16",
+      "title": "Folyadék és víz",
+      "kind": "direction",
+      "workPackages": [
+        "FLUID-01",
+        "WORLD-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö17",
+      "title": "Magazinlayout",
+      "kind": "direction",
+      "workPackages": [
+        "LAYOUT-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö18",
+      "title": "Végtelen képszalag",
+      "kind": "direction",
+      "workPackages": [
+        "LAYOUT-01",
+        "BASE-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö19",
+      "title": "Formaépítő eszközök",
+      "kind": "direction",
+      "workPackages": [
+        "PATH-01",
+        "MEDIA-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "Ö20",
+      "title": "Személyre szabható felület",
+      "kind": "direction",
+      "workPackages": [
+        "UI-01"
+      ],
+      "availability": "idea-with-existing-or-prototype-bases",
+      "note": "A részletes jelenlegi alap és hiány a teljes leltár8. fejezetében."
+    },
+    {
+      "sourceId": "ÚR01",
+      "title": "Randomizálható naprendszer",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "LINK-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR02",
+      "title": "Űr-landscape család",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Beépített elemekből egyszerűbb alap korábban is készülhet; a teljes leírt viselkedés függőségeit külön vizsgáld."
+    },
+    {
+      "sourceId": "ÚR03",
+      "title": "Holdbázis",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "MEDIA-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR04",
+      "title": "Gázóriás a felhők fölött",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Beépített elemekből egyszerűbb alap korábban is készülhet; a teljes leírt viselkedés függőségeit külön vizsgáld."
+    },
+    {
+      "sourceId": "ÚR05",
+      "title": "Aszteroidamező",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "PERF-01",
+        "MEDIA-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR06",
+      "title": "Fogyatkozás",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Beépített elemekből egyszerűbb alap korábban is készülhet; a teljes leírt viselkedés függőségeit külön vizsgáld."
+    },
+    {
+      "sourceId": "ÚR07",
+      "title": "Lávavilág",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "PART-01",
+        "FLUID-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR08",
+      "title": "Jeges idegenvilág",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "PART-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR09",
+      "title": "Lebegő szigetek",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "MEDIA-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR10",
+      "title": "Viharos tenger",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "PART-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR11",
+      "title": "Sivatagi dűnevándorlás",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR12",
+      "title": "Hegyi tengerszem",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Beépített elemekből egyszerűbb alap korábban is készülhet; a teljes leírt viselkedés függőségeit külön vizsgáld."
+    },
+    {
+      "sourceId": "ÚR13",
+      "title": "Felhőóceán",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR14",
+      "title": "Neonváros esőben",
+      "kind": "recipe",
+      "workPackages": [
+        "MEDIA-01",
+        "MAT-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR15",
+      "title": "Papírmakett-város",
+      "kind": "recipe",
+      "workPackages": [
+        "MEDIA-01",
+        "MAT-01",
+        "MOT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR16",
+      "title": "Üvegbetű-stúdió",
+      "kind": "recipe",
+      "workPackages": [
+        "TEXT-01",
+        "MEDIA-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR17",
+      "title": "Lufibetűk",
+      "kind": "recipe",
+      "workPackages": [
+        "TEXT-01",
+        "MEDIA-01",
+        "PHYS-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR18",
+      "title": "Krómembléma",
+      "kind": "recipe",
+      "workPackages": [
+        "MEDIA-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR19",
+      "title": "Folyékony embléma",
+      "kind": "recipe",
+      "workPackages": [
+        "FLUID-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR20",
+      "title": "Sziklából épülő cím",
+      "kind": "recipe",
+      "workPackages": [
+        "TEXT-01",
+        "WORLD-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR21",
+      "title": "Víz alatti biolumineszcencia",
+      "kind": "recipe",
+      "workPackages": [
+        "MOT-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR22",
+      "title": "Kristálykert",
+      "kind": "recipe",
+      "workPackages": [
+        "WORLD-01",
+        "MAT-01",
+        "PERF-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR23",
+      "title": "Őszi levélvilág",
+      "kind": "recipe",
+      "workPackages": [
+        "PART-01",
+        "WORLD-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR24",
+      "title": "Hógömb",
+      "kind": "recipe",
+      "workPackages": [
+        "PART-01",
+        "PHYS-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR25",
+      "title": "Zenei részecskeuniverzum",
+      "kind": "recipe",
+      "workPackages": [
+        "PART-01",
+        "LINK-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR26",
+      "title": "CRT adáscsomag",
+      "kind": "recipe",
+      "workPackages": [
+        "RECIPE-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Beépített elemekből egyszerűbb alap korábban is készülhet; a teljes leírt viselkedés függőségeit külön vizsgáld."
+    },
+    {
+      "sourceId": "ÚR27",
+      "title": "Nyomdai plakát",
+      "kind": "recipe",
+      "workPackages": [
+        "RECIPE-01",
+        "COLOR-01",
+        "LAYOUT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Beépített elemekből egyszerűbb alap korábban is készülhet; a teljes leírt viselkedés függőségeit külön vizsgáld."
+    },
+    {
+      "sourceId": "ÚR28",
+      "title": "Szalagokra bomló magazin",
+      "kind": "recipe",
+      "workPackages": [
+        "LAYOUT-01",
+        "TEXT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR29",
+      "title": "Generatív sejtvilág",
+      "kind": "recipe",
+      "workPackages": [
+        "RECIPE-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR30",
+      "title": "Portál egy másik világba",
+      "kind": "recipe",
+      "workPackages": [
+        "RECIPE-01",
+        "BASE-02",
+        "MOT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR31",
+      "title": "Termékvilág három anyaggal",
+      "kind": "recipe",
+      "workPackages": [
+        "MEDIA-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "ÚR32",
+      "title": "Életfa fénycsövekből",
+      "kind": "recipe",
+      "workPackages": [
+        "PATH-01",
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A teljes recepthez új adat-/render-/mozgáskapcsolat kell; a prototípus nem termékfeature."
+    },
+    {
+      "sourceId": "MÖ01",
+      "title": "Részecske → Életkor szerinti szín és méret",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Születéskor kicsi/forró, középen nagyobb, végén áttetsző; közvetlenül rajzolható görbék. Emitter-életkor kell hozzá, a mai képpontos mezőnek nincs ilyen életciklusa."
+    },
+    {
+      "sourceId": "MÖ02",
+      "title": "Részecske → Csóva",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A gyors részecske mögött szalag vagy rövid fényfarok. Hossz sebességből, szélesség/finomság külön; rendes részecskeelőzmény vagy analitikus pálya kell."
+    },
+    {
+      "sourceId": "MÖ03",
+      "title": "Részecske → Alakba rendezés",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Pontok egy szöveg, kép vagy térbeli felszín célpontjaihoz térnek. Összeállási erő és szél külön; nem azonos a jelenlegi eredeti képpontba visszaállással."
+    },
+    {
+      "sourceId": "MÖ04",
+      "title": "Részecske → Közös szél és örvénytér",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PART-01",
+        "LINK-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Több kibocsátó ugyanazt a szélmezőt olvassa; magasság, lökés és turbulencia. Ez viselkedés/erőtér, nem kizárólag színező Megjelenés."
+    },
+    {
+      "sourceId": "MÖ05",
+      "title": "Részecske → Mélységben lágy perem",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PART-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Füst vagy köd ne metsszen keményen a talajba; mélységhez közeli alfa-halványítás, csak mélységbemenettel."
+    },
+    {
+      "sourceId": "MÖ06",
+      "title": "Részecske → Anyagpreset",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Por, szikra, hó, papír, levél, parázs; mind eltérő sprite, keverés, forgás, méret és színprofil. A név mögött tényleges eltérő viselkedés legyen."
+    },
+    {
+      "sourceId": "MÖ07",
+      "title": "Világ → Környezeti beolvasztás",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "WORLD-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Háttérszínből vett finom peremfény, köd, kontrasztcsökkentés. Bolygón, sziklán és felhőn közös, helyi erővel; nem általános Gaussian blur."
+    },
+    {
+      "sourceId": "MÖ08",
+      "title": "Világ → Magassági köd",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "WORLD-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Völgyben vagy víz fölött sűrűbb pára, felfelé ritkul; világkoordináta/mélység szükséges a tényleges térbeli változathoz."
+    },
+    {
+      "sourceId": "MÖ09",
+      "title": "Világ → Távolsági légi perspektíva",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "WORLD-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Távolabb halványabb és a köd színéhez közelebb kerülő tárgyak; mélységküszöb, görbe és szín. 2,5D-nél művészi réteg-Z alapú közelítés is lehet."
+    },
+    {
+      "sourceId": "MÖ10",
+      "title": "Világ → Felhőárnyék",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "WORLD-01",
+        "LINK-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A felhők mintája végigvonul a terepen; közös felhőpozíció, szél és Nap irány. Árnyék nem festett, statikus folt."
+    },
+    {
+      "sourceId": "MÖ11",
+      "title": "Világ → Nedvesedés",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MAT-01",
+        "WORLD-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Talaj és tárgy sötétebb, simább, fényesebb; pocsolyamaszk, vízszint és eső együtt. Anyag- és tükröződési adat kell."
+    },
+    {
+      "sourceId": "MÖ12",
+      "title": "Világ → Por/hó felhalmozódás",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MAT-01",
+        "WORLD-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Felfelé néző felületeken több anyag, meredek részen kevesebb; szélirány és felszínnormál alapján. Először művészi statikus mód."
+    },
+    {
+      "sourceId": "MÖ13",
+      "title": "Forma / 3D → Ráhúzható domborzat",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "WORLD-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Közös zaj-/magasságkomponens; hegyes gömb, csipkézett kő, erodált betű. Külön tesszellációs/minőségi határ és normálfrissítés."
+    },
+    {
+      "sourceId": "MÖ14",
+      "title": "Forma / 3D → Lekerekítés / puha él",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MEDIA-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Anyagtól független geometriai él; sugár fogantyúval, apró részek összeomlásának jelzése. Nem egyszerű képelmosás."
+    },
+    {
+      "sourceId": "MÖ15",
+      "title": "Forma / 3D → Kontúr menti növekedés",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "PATH-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Cső, spirál, növény és logó fokozatos felrajzolása; útvonalhossz alapú állapot, szép végzárás."
+    },
+    {
+      "sourceId": "MÖ16",
+      "title": "Forma / 3D → Rétegelt anyag",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MAT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Alapanyag + lakk + por vagy fém + kopás. Lejtés/perem/maszk vezérelheti; a rétegrend közvetlenül látható."
+    },
+    {
+      "sourceId": "MÖ17",
+      "title": "Forma / 3D → Összenyomás és nyúlás",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MOT-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Állítható squash/stretch a térfogat érzetének megőrzésével; mozgásirányra és gyorsulásra kapcsolható. Merev fémnél alapból kikapcsolt."
+    },
+    {
+      "sourceId": "MÖ18",
+      "title": "Forma / 3D → Szellemkép / mozgásnyom",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MOT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Korábbi időpontokból mintázott másolatok, halványuló sorban; ne függjön az előnézet lejátszási történetétől."
+    },
+    {
+      "sourceId": "MÖ19",
+      "title": "Szöveg / kép → Kontúr követő fény",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "TEXT-01",
+        "PATH-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A betűn vagy logón végigfutó fény, sebesség/fej/csóva külön; útvonal- vagy távolságmező kell a szép követéshez."
+    },
+    {
+      "sourceId": "MÖ20",
+      "title": "Szöveg / kép → Szalagos felbontás",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "LAYOUT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Unwoven-karakterű szétesés bármely réteg renderképén; szalagok, szél, összeállás, kifakulás. A főcím tartalma közben szerkeszthető marad."
+    },
+    {
+      "sourceId": "MÖ21",
+      "title": "Szöveg / kép → Nyomdai rétegcsúszás",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "COLOR-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Külön színlemezek enyhe eltolása, nyomáserő és papírtextúra; finom álló és eseményvezérelt hibák."
+    },
+    {
+      "sourceId": "MÖ22",
+      "title": "Szöveg / kép → Papírkivágás és rétegárnyék",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "MAT-01",
+        "LAYOUT-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Vastag papírperem, egymás mögötti árnyékok és kis kiemelkedés. A sima Drop shadow helyett több réteg külön távolsággal."
+    },
+    {
+      "sourceId": "MÖ23",
+      "title": "Minden kompatibilis host → Fókuszvédő maszk",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "UX-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "A főcím vagy főtárgy területén kevesebb háttérrészlet, glow és részecske; látható, kézzel felülírható fókuszterület."
+    },
+    {
+      "sourceId": "MÖ24",
+      "title": "Minden kompatibilis host → Stíluscsere szerkezetzárral",
+      "kind": "appearance-or-behavior",
+      "workPackages": [
+        "RECIPE-01",
+        "COLOR-01"
+      ],
+      "availability": "idea-not-integrated",
+      "note": "Paletta, anyag és fény cserélhető úgy, hogy a kamera, objektumszám és kompozíció megmarad. Nem véletlenszerű teljes jelenetcsere."
+    },
+    {
+      "sourceId": "LÁNC01",
+      "title": "Bolygó a háttérbe simulva",
+      "kind": "chain",
+      "workPackages": [
+        "WORLD-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Vegyes: bolygó/pára B; háttérmintás perem és mélységadat Ö."
+    },
+    {
+      "sourceId": "LÁNC02",
+      "title": "Kőzetes bolygó",
+      "kind": "chain",
+      "workPackages": [
+        "WORLD-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Vegyes: T2 és közös felszínkomponens hiányzik."
+    },
+    {
+      "sourceId": "LÁNC03",
+      "title": "Felhőből lufi",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01",
+        "MOT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B alap: Lufi csak Felhőn; univerzális talajárnyék és kötél külön."
+    },
+    {
+      "sourceId": "LÁNC04",
+      "title": "Szélben élő láng",
+      "kind": "chain",
+      "workPackages": [
+        "PART-01",
+        "LINK-01",
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Vegyes: shaderláng B, emitter P, közös mező Ö; csíkhiba nyitott."
+    },
+    {
+      "sourceId": "LÁNC05",
+      "title": "Neonfelirat",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; valódi üveg-neoncső geometria új."
+    },
+    {
+      "sourceId": "LÁNC06",
+      "title": "Részecskés felirat",
+      "kind": "chain",
+      "workPackages": [
+        "PART-01",
+        "LINK-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Vegyes: pdisp B, közös szélmező és célalak-bővítés Ö."
+    },
+    {
+      "sourceId": "LÁNC07",
+      "title": "Füstös alak",
+      "kind": "chain",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "P emitter és atlasz; soft-particle mélységút Ö."
+    },
+    {
+      "sourceId": "LÁNC08",
+      "title": "Havazás",
+      "kind": "chain",
+      "workPackages": [
+        "PART-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Vegyes P/Ö; a mai képből részecske önmagában nem hóemitter."
+    },
+    {
+      "sourceId": "LÁNC09",
+      "title": "Folyékony króm",
+      "kind": "chain",
+      "workPackages": [
+        "MAT-01",
+        "BASE-02"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Vegyes P; SDF-fémtest B változata egyszerűbb kiindulás."
+    },
+    {
+      "sourceId": "LÁNC10",
+      "title": "Üvegplakát",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; szabad lencseforma és több lencse Ö."
+    },
+    {
+      "sourceId": "LÁNC11",
+      "title": "Analóg videóérzet",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; gondosan csökkentett duplázott sor-/zajhatás."
+    },
+    {
+      "sourceId": "LÁNC12",
+      "title": "Papírszínház",
+      "kind": "chain",
+      "workPackages": [
+        "LAYOUT-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Textúra/forma B; térbeli rétegárnyék és automatikus csomag Ö."
+    },
+    {
+      "sourceId": "LÁNC13",
+      "title": "Nyomdai pop",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01",
+        "COLOR-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "Halftone/textúra B; valódi színlemezek és palettakorlát bővítés."
+    },
+    {
+      "sourceId": "LÁNC14",
+      "title": "Színes árnyékos tipográfia",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; új többállomásos spektrum és fogantyú Ö."
+    },
+    {
+      "sourceId": "LÁNC15",
+      "title": "Organikus maszk",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; ugyanazzal a maszkseed-del több réteg kapcsolható Ö."
+    },
+    {
+      "sourceId": "LÁNC16",
+      "title": "Fraktálkelme",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; fizikai textilredőzés nem része."
+    },
+    {
+      "sourceId": "LÁNC17",
+      "title": "Világító sejt",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; valódi sejtosztódás Ö."
+    },
+    {
+      "sourceId": "LÁNC18",
+      "title": "Élő hologram",
+      "kind": "chain",
+      "workPackages": [
+        "MAT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B alapokból művészi közelítés; normál-/mélységfüggő hologram P/Ö."
+    },
+    {
+      "sourceId": "LÁNC19",
+      "title": "Képből csillagmező",
+      "kind": "chain",
+      "workPackages": [
+        "RECIPE-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "B-lánc; a pontok még a kép mintái, nem külön életciklusos csillagok."
+    },
+    {
+      "sourceId": "LÁNC20",
+      "title": "Fénycsöves út",
+      "kind": "chain",
+      "workPackages": [
+        "PATH-01",
+        "MAT-01"
+      ],
+      "availability": "idea-not-saved-as-product-chain",
+      "note": "P46/P47; felrajzolás és Vel-útvonaladapter Ö."
+    }
+  ]
+}

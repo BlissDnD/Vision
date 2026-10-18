@@ -34,6 +34,7 @@ vel/                     git repo (master, helyi, nincs remote)
   app/                   a Vel forrása: src/, tests/, scripts/build.mjs, dist/index.html (build)
   app/CODEMAP.md         generált kódtérkép (a build írja; scripts/codemap.mjs)
   docs/spec/             a felhasználó követelményei és terve (ELSŐDLEGES)
+  docs/claude-handoff/    összehangolt addon/UX/elemkönyvtár + többagentes feladatkártyák; belépés: 00-START-HERE.md
   docs/referenciak/      külső minták (CodePen stb.) + kepek/01–09.png referenciaképek
   docs/archiv/           régi átadók, döntésvázlat, naplók, felülírt leírások (csak visszakereséshez)
   prototypes/red-ribbon-webgl/   lezárt Three.js-prototípus (vörös felület), ne csiszold

@@ -2,6 +2,8 @@
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
+**Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 26 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
+
 ## Állapot egy mondatban
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).
 

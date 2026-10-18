@@ -1,0 +1,672 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-10-18",
+  "implementationApproved": false,
+  "tasks": [
+    {
+      "id": "TRIAGE-01",
+      "title": "Aktuális állapot és szerződések rögzítése",
+      "phase": 0,
+      "dependsOn": [],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Forrásverzió, dirty fájlok, meglévő funkciók és jóváhagyott scope ellenőrzése; 3–5 döntési pont. A reprodukált adatvesztési hibát előrevenni.",
+      "codeRoutes": [
+        "HANDOFF.md",
+        "app/CODEMAP.md",
+        "BUGS.md",
+        "FUNKCIO-LELTAR.md"
+      ],
+      "acceptance": "Snapshot és valós kód eltérései megnevezve; nincs elveszett idegen változtatás; egy konkrét következő szeletjavaslat.",
+      "helperWork": "B: név/ID/besorolás ellenőrzés. C: mentési gyanuhoz reprodukcióterv.",
+      "readRefs": [
+        "ALLAPOT-ES-HATAROK.md",
+        "AGENT-MUNKAREND.md"
+      ],
+      "legacy": "A–G teljes terv",
+      "excluded": "Nem új repoaudit minden fájlra; nem implementációengedély."
+    },
+    {
+      "id": "CAT-01",
+      "title": "Egységes metaadat és található könyvtár",
+      "phase": 1,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Első szelet: stabil ID → négy szerep → keresés/szinonima → régi drag payload átvezetése. Második: családok és témagyűjtemények.",
+      "codeRoutes": [
+        "app/src/library.ts",
+        "app/src/shelf.ts",
+        "app/src/itemops.ts",
+        "app/src/presets.ts",
+        "app/src/userlib.ts"
+      ],
+      "acceptance": "Minden mai csempe elérhető; ugyanaz az ID több témában; régi saját kategóriák működnek; 20 keresési eset és drag-mapping; preview nem ment.",
+      "helperWork": "B: külön metaadat/alias modul. C: legacy payload és sajátpreset teszt; A kapcsolja be a UI-t.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md",
+        "preparation/README.md"
+      ],
+      "legacy": "A/B/G; leltár1,16,21,28/29",
+      "excluded": "Nem LLM-kereső, nem új renderer; a négy kategória nem nevezi át a projekt layer.type értékét."
+    },
+    {
+      "id": "UX-01",
+      "title": "Kontextusos alkalmazás és tiszta előnézet",
+      "phase": 2,
+      "dependsOn": [
+        "CAT-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Cél megnevezése, canApply, kijelölt rétegen próba/elfogadás/mégse; egy közös Hozzáadás ehhez út. Első körben a jelenlegi elemekre.",
+      "codeRoutes": [
+        "app/src/shelf.ts",
+        "app/src/itemops.ts",
+        "app/src/moui.ts",
+        "app/src/pick.ts",
+        "app/src/controls.ts"
+      ],
+      "acceptance": "F1–F5 billentyűzettel is; preview→Escape változatlan projekt/undo; async A→B nem ír vissza; egy gesztus egy undo; nincs kényszerű hover.",
+      "helperWork": "B: tiszta capability-mapping. C: async/undo/fókusz tesztek.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "B; U3; leltár1,5,12,24",
+      "excluded": "Nem minden lehetséges addon támogatása, nem állandó ajánlógombsor a vásznon."
+    },
+    {
+      "id": "STAB-01",
+      "title": "Mentés/export/kapcsolat hibák célzott stabilizálása",
+      "phase": 1,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "A BUGS érintett adatvesztési/export hibáit reprodukálni; igazoltnál szűk javítás. Jelenet/base média, projektcsere hang, abort és kapcsolatparaméter.",
+      "codeRoutes": [
+        "app/src/history.ts",
+        "app/src/output.ts",
+        "app/src/signals.ts",
+        "app/src/linkcord.ts",
+        "app/src/variants.ts"
+      ],
+      "acceptance": "Tiszta környezetű újranyitás és két projekt váltása; cancel tényleg megszakít és felszabadít; reprodukció nélkül nincs hamis javítva státusz.",
+      "helperWork": "B: minimál fixture. C: regressziós próba. A egy hibát vigyen végig, nem mindent egyszerre.",
+      "readRefs": [
+        "ELLENORZES-ES-ATADAS.md",
+        "ALLAPOT-ES-HATAROK.md"
+      ],
+      "legacy": "A/B; BUGS audit T1/T2/T4",
+      "excluded": "Nem általános refaktor; a vizsgálatból nem szabad feltételezett hibát bizonyítottnak nevezni."
+    },
+    {
+      "id": "BASE-01",
+      "title": "Médiafüggőségek és újranyithatóság",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "A meglévő asset/vector/ULIB út egységes referenciagyűjtése és forrásmetaadata; új modellekhez/fontokhoz szerződés. STAB reprodukált javítása beemelhető.",
+      "codeRoutes": [
+        "app/src/history.ts",
+        "app/src/state.ts",
+        "app/src/migrate.ts",
+        "app/src/userlib.ts",
+        "app/src/autosave.ts"
+      ],
+      "acceptance": "Aktuális+mentett jelenet+base használt médiája újranyílik; árva/hiányzó asset érthető; ideiglenes URL nincs a projektben; régi projektek megmaradnak.",
+      "helperWork": "B: tiszta ref-collector/teszt. C: hiányzó média és régi projekt fixture.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "A; P1/L1/PH1; leltár18,28",
+      "excluded": "Nem teljes tárolómotorcsere; nagyvideó-proxy VIDEO-01."
+    },
+    {
+      "id": "BASE-02",
+      "title": "Capability és célzott renderadapter-döntés",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Egy kiválasztott célhoz hasonlítsd a natív algoritmus/mesh út és az opcionális Three bridge árát. Az eredmény lehet a meglévő render megtartása.",
+      "codeRoutes": [
+        "app/src/render.ts",
+        "app/src/gl.ts",
+        "app/src/mesh3d.ts",
+        "app/src/terrain3d.ts",
+        "app/src/effects/index.ts"
+      ],
+      "acceptance": "Egy reprezentatív frame alfa/színtér/resize/seek/dispose próbával; mért többletköltség és kódméret; rövid ADR, nincs általános bridge ígéret.",
+      "helperWork": "B: algoritmuskísérlet saját prototypeban. C: frame-összevetés és erőforrásteszt.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md",
+        "ADDON-INTEGRACIOS-TERKEP.md"
+      ],
+      "legacy": "C; renderkapu",
+      "excluded": "Nem kötelező általános Three-host minden feladat előtt; geometry-only importhoz nem kell bridge."
+    },
+    {
+      "id": "PATH-01",
+      "title": "Közös útvonal első használható szelete",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Egységes görbeadat és hossz szerinti mintavétel; először egy meglévő mozgáspályához adapter. Később szöveg/cső/SVG.",
+      "codeRoutes": [
+        "app/src/animate.ts",
+        "app/src/perform.ts",
+        "app/src/mesh3d.ts"
+      ],
+      "acceptance": "Nyílt/zárt pálya; időminták megmaradnak; egyenletes mintavétel; mentés és régi gesztus kompatibilis; egy látható útvonalgesztus.",
+      "helperWork": "B: tiszta görbemag P10/P58 és vel-utvonal prototípus alapján. C: geometriai/időzítési tesztek.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "B/C; U2; leltár6,10,39",
+      "excluded": "Nem komplett vektoreditor és nem minden geometry-motor egyszerre."
+    },
+    {
+      "id": "MOT-01",
+      "title": "Új mozgások és átadás kis szeletekben",
+      "phase": 3,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Elsőnek organikus Lebegés-változat vagy több réteg lépcsőzése; meglévő hat mozgás bővítése. Útvonalos változat PATH után; célkövetés LINK után.",
+      "codeRoutes": [
+        "app/src/motion.ts",
+        "app/src/moui.ts",
+        "app/src/gesture.ts",
+        "app/src/evaluation.ts",
+        "app/src/timeline.ts"
+      ],
+      "acceptance": "A→B→A azonos; G1 fogantyú megmarad; kulcs csak Animálás módban; Loop nélkül folytatódik; átadáskor Ritmus/Út/Teljes hatókör világos.",
+      "helperWork": "B: tiszta evaluator/görbe és teszt. C: régi6 motion+retime regresszió.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "B; U2; leltár9,10,22,25–29,34",
+      "excluded": "Nem második tween/GSAP óra; a fizikai ütközés PHYS-01."
+    },
+    {
+      "id": "WORLD-01",
+      "title": "T2: bolygódomborzat és világkomponensek",
+      "phase": 3,
+      "dependsOn": [
+        "TRIAGE-01",
+        "BASE-02"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Először meglévő Bolygó + valódi gömbi domborzat miniprototípus; a T1 mag újrahasználata. Utána légköri háttérillesztés; holdkomponens LINK-kel külön.",
+      "codeRoutes": [
+        "app/src/terrain3d.ts",
+        "app/src/effects/worlds.ts",
+        "app/src/mesh3d.ts",
+        "app/src/render.ts",
+        "app/src/library.ts"
+      ],
+      "acceptance": "Forgáskor nincs varrat; valódi horizontsziluett; felhő/légkör/gyűrű/városfény megmarad; seed/seek/mentés/export; visszaesési út a régi bolygóra.",
+      "helperWork": "B: tiszta gömbi height/normal kísérlet. C:7 típus+part réteg összevetés.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "C/D; T2; leltár13,32",
+      "excluded": "Nem komplett naprendszer vagy tetszőleges háló displacement egy szeletben; közös3D tér nem automatikus."
+    },
+    {
+      "id": "COLOR-01",
+      "title": "U5: színhierarchia és szerkeszthető gradiens",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Egyértelmű effektív színforrás; réteg/csoport/base/effekt viszony; gradiensállomások és egy közös picker. Előbb egy céltípus, aztán bővítés.",
+      "codeRoutes": [
+        "app/src/controls.ts",
+        "app/src/palettes.ts",
+        "app/src/inspector.ts",
+        "app/src/textbar.ts"
+      ],
+      "acceptance": "A felület mutatja, melyik szín érvényes; inspector megnyitása nem módosít; gradiensmentés/undo; régi paletták azonos képpel.",
+      "helperWork": "B: tiszta gradiensmag P19/P20 és fixture. C: kontraszt/öröklés/saját eltérés tesztek.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "B/C; U5; leltár2,30",
+      "excluded": "Nem három új színválasztó és nem minden anyagrendszer újraírása."
+    },
+    {
+      "id": "MAT-01",
+      "title": "Ráhúzható anyagok és fénycsaládok",
+      "phase": 3,
+      "dependsOn": [
+        "BASE-02",
+        "COLOR-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Egy hoston egy demonstrált anyagcsere; kompatibilitás, közös fény, később PBR/HDR. R1b fényfogantyú kis külön szeletként korábban is készülhet.",
+      "codeRoutes": [
+        "app/src/effects/objects3d.ts",
+        "app/src/effects/soft3d.ts",
+        "app/src/lightui.ts",
+        "app/src/render.ts",
+        "app/src/effects/filters.ts"
+      ],
+      "acceptance": "Azonos forma/kamera mellett anyagcsere; régi vizuális karakter; hostfüggő világos ok; fényfogantyú nem ütközik mozgatással; 4K-kapu mérve.",
+      "helperWork": "B: tiszta anyagparaméter/kurált preset. C: célonkénti shader/látványteszt.",
+      "readRefs": [
+        "ADDON-INTEGRACIOS-TERKEP.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "C; R1b; leltár2–4,35,37,40",
+      "excluded": "Nem globális fizikai fény/tükrözés minden rétegre automatikusan."
+    },
+    {
+      "id": "PART-01",
+      "title": "Egy részecskeemitter és három első preset",
+      "phase": 4,
+      "dependsOn": [
+        "BASE-01",
+        "BASE-02"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Nebula/Quarks/GPU alapból egy út választása; pontemitter, életkor, szél, sprite, seed. Első három: por/szikra/hó. A képbontó régi út megmarad.",
+      "codeRoutes": [
+        "app/src/partfx.ts",
+        "app/src/effects/particles.ts",
+        "app/src/sim.ts",
+        "app/src/render.ts"
+      ],
+      "acceptance": "Emitter életkor és időfüggvény; A→B→A, scene lokális idő, hordozható atlasz, dispose; előnézet/export, mennyiség/minőség; széllel közös gesztus.",
+      "helperWork": "B: sprite/életgörbe adat vagy replay-core. C: lifecycle+seek+mentés teszt.",
+      "readRefs": [
+        "ADDON-INTEGRACIOS-TERKEP.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "D/E; leltár14,15",
+      "excluded": "Nem két emittermotor; nem minden ütközés és folyadék egyszerre."
+    },
+    {
+      "id": "PHYS-01",
+      "title": "Egy fizikai motor, ráhúzható test és alapból kikapcsolt gravitáció",
+      "phase": 4,
+      "dependsOn": [
+        "BASE-02"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "A régi Oimo-irányt és a Cannon/Rapier példákat célzott próbával összevetni; egy motor. Egy test/talaj, rögzítés, tömeg/súrlódás/rugalmasság, később mezők.",
+      "codeRoutes": [
+        "app/src/sim.ts",
+        "app/src/render.ts",
+        "app/src/state.ts",
+        "app/src/variants.ts"
+      ],
+      "acceptance": "Gravitáció alapból ki; test visszahozható; rögzített lépés/replay/checkpoint; projektcsere kitakarít; kontaktus érthető esemény; exportazonosság.",
+      "helperWork": "B: collider+determinista replay kísérlet. C: hosszú seek és reset fixture.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md",
+        "ADDON-INTEGRACIOS-TERKEP.md"
+      ],
+      "legacy": "E; leltár15,23,36",
+      "excluded": "Nem teljes dinamika minden rétegtípuson, nem 3D folyadék."
+    },
+    {
+      "id": "FLUID-01",
+      "title": "Áramló festék és folyadékos torzítás",
+      "phase": 5,
+      "dependsOn": [
+        "BASE-02"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Először külön2D mezőforrás, explicit injektor és idő/replay. Utána célrétegre torzítás/feltárás. A térbeli fizikai Liquid külön, későbbi szelet.",
+      "codeRoutes": [
+        "app/src/sim.ts",
+        "app/src/render.ts",
+        "app/src/effects/generators.ts",
+        "app/src/effects/filters.ts"
+      ],
+      "acceptance": "Nem üres, stabil mező; seek/reset/export egyezés; injektor vászongesztus; egy undo; minőség/memória; félbeszakítható előszámítás.",
+      "helperWork": "B: solver tiszta modul vagy shaderkísérlet. C: pixelazonos replay és változó paraméter.",
+      "readRefs": [
+        "ADDON-INTEGRACIOS-TERKEP.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "F; leltár15,33",
+      "excluded": "P50 saját kísérlet nem az eredeti nagy solver; 3D fizikai folyadék nincs ígérve."
+    },
+    {
+      "id": "LAYOUT-01",
+      "title": "Unwoven rétegbemenet és WIDE szerkeszthető recept",
+      "phase": 3,
+      "dependsOn": [
+        "CAT-01",
+        "BASE-01",
+        "BASE-02"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Két külön szelet: Unwoven képfájl helyett rétegbemenet+idő; WIDE eredeti forrás tisztázása és layoutrecipé. A meglévő Bento/címlap alapra építs.",
+      "codeRoutes": [
+        "app/src/recipes.ts",
+        "app/src/effects/motionDesign.ts",
+        "app/src/render.ts",
+        "app/src/textlines.ts"
+      ],
+      "acceptance": "Szalag finomság megmarad; kép/text csere;1:1/4:5/9:16; hosszú magyar szöveg; save/seek/export; WIDE hűséget csak bizonyítékkal állítani.",
+      "helperWork": "B: layoutadat/fókuszpontok. C: hosszuszöveg/képarány fixture és eredeti-új összevetés.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "ADDON-INTEGRACIOS-TERKEP.md"
+      ],
+      "legacy": "G; R2; leltár16,38",
+      "excluded": "WIDE-forrás hiányában az eredeti port ága vár; Unwoven függetlenül haladhat."
+    },
+    {
+      "id": "MEDIA-01",
+      "title": "Importált forma, font, modell és Lottie célzott bővítése",
+      "phase": 3,
+      "dependsOn": [
+        "BASE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Válassz egy inputot: SVG vagy GLB vagy font; a meglévő L1/PH1 korlátai láthatók. Tartós asset, forrásadat, normalizálás és időbeli klip ha van.",
+      "codeRoutes": [
+        "app/src/state.ts",
+        "app/src/modals.ts",
+        "app/src/lottieCore.ts",
+        "app/src/lottie.ts",
+        "app/src/history.ts"
+      ],
+      "acceptance": "Érvényes/hibás/hiányzó függőséges import; nincs félig betett réteg; régi project újranyílik; modellclip A→B→A.",
+      "helperWork": "B: import parser/limit adapter és fixture. C: hibás fájl és hordozhatóság.",
+      "readRefs": [
+        "ADDON-INTEGRACIOS-TERKEP.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "A/C; leltár7,18",
+      "excluded": "Nem internetes assetáruház, nem teljes video/GIPHY integráció.",
+      "conditionalDependencies": [
+        {
+          "task": "BASE-02",
+          "when": "GLB/mesh vagy új 3D renderút kell; tiszta SVG-/fontadat-importnál nem kötelező."
+        }
+      ]
+    },
+    {
+      "id": "VIDEO-01",
+      "title": "Többvideós média és reszponzív idővonal",
+      "phase": 4,
+      "dependsOn": [
+        "BASE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "A meglévő külön videótervet lépcsőzd: egy klip → időmapping/trim/split → seek → aszinkron cache/proxy → több klip.",
+      "codeRoutes": [
+        "app/src/timeline.ts",
+        "app/src/render.ts",
+        "app/src/output.ts",
+        "app/src/history.ts"
+      ],
+      "acceptance": "Változó képkockaidő és forrásméret; lejátszás/seek/export ugyanaz; proxy nem végleges asset; nagy jelenet memória; loading nem fagyasztja az UI-t.",
+      "helperWork": "B: időindex/dekódoló adapter fixture. C: késő érkező képkocka/projektcsere/cancel próbák.",
+      "readRefs": [
+        "ELLENORZES-ES-ATADAS.md",
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "A/B; külön többvideós terv; leltár18",
+      "excluded": "A mostani időkiválasztó prototype nem GIF/MP4 dekóder; online GIF kereső később."
+    },
+    {
+      "id": "EXPORT-01",
+      "title": "Memóriakorlátos és megszakítható export",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "A meglévő hangos WebCodecs út értékeinek megőrzése; stream/célíró és abort, kódolók lifecycle, újranyitható output.",
+      "codeRoutes": [
+        "app/src/output.ts",
+        "app/src/popovers.ts",
+        "app/src/history.ts"
+      ],
+      "acceptance": "1080p és célgépes4K memória/frameidő; hangszinkron; cancel a hangciklusban is; decode roundtrip; hibánál takarítás; nem csak kis video-only demo.",
+      "helperWork": "B: MediaBunny célíró adapter kísérlet. C: abort/error/hangszinkron fixture.",
+      "readRefs": [
+        "ELLENORZES-ES-ATADAS.md",
+        "ADDON-INTEGRACIOS-TERKEP.md"
+      ],
+      "legacy": "A/F/G; leltár17",
+      "excluded": "Nem vár a teljes videóimport/fizika elkészültére; támogatott böngésző/fájlíró fallback szükséges."
+    },
+    {
+      "id": "RECIPE-01",
+      "title": "Kurált receptek, családok és szerepalapú random",
+      "phase": 3,
+      "dependsOn": [
+        "CAT-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Először3 csomag a beépített elemekből: CRT-adás, nyomdai plakát, egyszerű űrtáj. Új motoros család csak saját feltételei után.",
+      "codeRoutes": [
+        "app/src/recipes.ts",
+        "app/src/random.ts",
+        "app/src/rndq.ts",
+        "app/src/taste.ts",
+        "app/src/macros.ts"
+      ],
+      "acceptance": "Kibontva szerkeszthető;3–6 érthető makró; rövid/hosszú szöveg és3 képarány; seed/locks; random nem ígér hiányzó hostot vagy szereprendszert.",
+      "helperWork": "B: izolált receptadat saját fájlban. C: képarány/szöveg/random baseline screenshot.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "FORRASUTMUTATO.md"
+      ],
+      "legacy": "G; leltár16,27,43",
+      "excluded": "Naprendszer látványmakett és teljes3D keringés külön; nem minden32 ötlet egyszerre."
+    },
+    {
+      "id": "PERF-01",
+      "title": "Mérési profilok és renderköltség",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Reprezentatív referenciajelenetek, külön CPU/GPU/feltöltés/memória/export mérés; új adapter hozzáadása előtt baseline.",
+      "codeRoutes": [
+        "app/src/cost.ts",
+        "app/src/adaptive.ts",
+        "app/src/output.ts",
+        "app/tests"
+      ],
+      "acceptance": "Headless és valódi GPU elkülönítve; felbontás/device/adatok rögzítve; abszolút és baseline-hoz viszonyított szám; eltérés oka és fallback.",
+      "helperWork": "B: minimál fixture/benchmark. C: mérési report és lifecycle ellenőrzés.",
+      "readRefs": [
+        "ELLENORZES-ES-ATADAS.md"
+      ],
+      "legacy": "C–G keresztmetszet",
+      "excluded": "Nem új drága debug UI az alkotói felületre; előzetes ms cél nem mérési eredmény."
+    },
+    {
+      "id": "UI-01",
+      "title": "Mentett munkatér és tiszta action bar",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "U5-ben egy bővítés: sorrendezhető eszközök vagy panelpreset; jelenlegi splitter viselkedés megtartása, alaphelyzet.",
+      "codeRoutes": [
+        "app/src/workspace.ts",
+        "app/src/style.css",
+        "app/src/popovers.ts",
+        "app/src/controls.ts"
+      ],
+      "acceptance": "Nincs elveszett művelet szűk ablaknál/nagyítva; keyboard fallback; preferencia mentődik; projektmódosítás és UI-pref külön.",
+      "helperWork": "B: tiszta preferencia-normalizáló. C: régi preference/resize/fókusz próbák.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md"
+      ],
+      "legacy": "B; U5; leltár21,30",
+      "excluded": "Nem egész szerkesztő új UI-frameworkre portolása; engine-helper ne legyen csempe."
+    },
+    {
+      "id": "QA-01",
+      "title": "Célzott bizonyíték és integrációs ellenőrzés",
+      "phase": 1,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Minden wave-hez kicsi fixture és user-flow; közös review csak integráció után. A kísérleti kódot a termékút próbájával külön igazold.",
+      "codeRoutes": [
+        "app/tests",
+        "prototypes/extension-lab/tests"
+      ],
+      "acceptance": "Rövid report: parancs, pass/fail, lefedettség, hiányzó manuális/GPU próba. Flaky eredmény nem hallgatandó el; újrafutás oka rögzítve.",
+      "helperWork": "B/C ezen szerepbe átállhat; új teszt ne tükörmásolja az implementációt.",
+      "readRefs": [
+        "ELLENORZES-ES-ATADAS.md"
+      ],
+      "legacy": "A–G; T/R/D/K",
+      "excluded": "Nem minden agentnél teljes tesztkör, nem headlessból UX-kész állítás."
+    },
+    {
+      "id": "LINK-01",
+      "title": "Kapcsolatok, közös vezérlők és események",
+      "phase": 3,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Először a forrásparaméter és célhatás egyértelmű választása, árva kapcsolat; utána közös szél/Nap/célkövetés. Jelenetsor hatókör külön.",
+      "codeRoutes": [
+        "app/src/linkcord.ts",
+        "app/src/variants.ts",
+        "app/src/variantsui.ts",
+        "app/src/evaluation.ts",
+        "app/src/scenes.ts"
+      ],
+      "acceptance": "Nincs találgatott paraméter; forrás→cél név látható; ciklus/prioritás dokumentált; egy undo; scene lokális idő; régi kapcsolatok kompatibilisek.",
+      "helperWork": "B: tiszta dependency/cycle ellenőrző. C: két jelenet és hiányzó cél fixture.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md",
+        "UX-ES-KONYVTAR.md"
+      ],
+      "legacy": "B/E; K1/K2–K4; leltár5,19,23–27",
+      "excluded": "Nem külön hang/fizika kapcsolatmotor; célállapot Itt legyen ekkor külön döntés."
+    },
+    {
+      "id": "TEXT-01",
+      "title": "U2 és gazdag szerkeszthető tipográfia",
+      "phase": 2,
+      "dependsOn": [
+        "TRIAGE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Először sor megfogása/Cmd-mozgatás és takarási szabály; utána karakter-/szóstílus és váltakozó szöveg. PATH után görbült szöveg.",
+      "codeRoutes": [
+        "app/src/text.ts",
+        "app/src/textlines.ts",
+        "app/src/textbar.ts",
+        "app/src/stage.ts",
+        "app/src/effects/motionText.ts"
+      ],
+      "acceptance": "Hosszú magyar szöveg, sorok nem fedik ki egymást; normál és Cmd-gesztus; fontcsere után időzítés; undo;9:16.",
+      "helperWork": "B: sorlayout/fixture. C: szöveg/maszk/kijelölés regresszió.",
+      "readRefs": [
+        "UX-ES-KONYVTAR.md",
+        "FORRASUTMUTATO.md"
+      ],
+      "legacy": "B/C; U2; leltár7,8",
+      "excluded": "Nem kell teljes szövegengine-csere az első javításhoz."
+    },
+    {
+      "id": "RELIGHT-01",
+      "title": "Kép újravilágítás mélységtérképpel",
+      "phase": 5,
+      "dependsOn": [
+        "BASE-01",
+        "BASE-02",
+        "MAT-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Először saját mélység-/normálkép import és mozgatható fény; automatikus mélység csak külön minőségi/költség döntés.",
+      "codeRoutes": [
+        "app/src/render.ts",
+        "app/src/lightui.ts",
+        "app/src/effects/filters.ts"
+      ],
+      "acceptance": "Hiányzó vagy hibás depth javítható; fényirány gesztus; eredeti kép visszakapható; mentés és export.",
+      "helperWork": "B: normál/depth preprocess kísérlet. C: peremhiba és árnyalat fixture.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "C; leltár41",
+      "excluded": "Nem kész AI-mélységgenerálás; WebGPU referencia nem automatikus WebGL2 port."
+    },
+    {
+      "id": "CHARACTER-01",
+      "title": "Beszélő karakter determinisztikus klippel",
+      "phase": 5,
+      "dependsOn": [
+        "MEDIA-01",
+        "BASE-01"
+      ],
+      "status": "prepared",
+      "implementationApproved": false,
+      "scope": "Importált rig/morph és előre időzített viseme; kis lokalizált mozgás és hangkapcsolat. A MEDIA-01 puszta lezárása (például SVG/font szeletként) nem teljesíti ezt a kaput.",
+      "codeRoutes": [
+        "app/src/render.ts",
+        "app/src/signals.ts",
+        "app/src/output.ts"
+      ],
+      "acceptance": "Morph/rig hiány érthető; audioidő és szájframe egyezik seek/export alatt; tartós GLB/audio.",
+      "helperWork": "B: meglévő viseme-idő prototype adapter. C: egyszerű arcfixture.",
+      "readRefs": [
+        "ARCHITEKTURA-ES-SZERZODESEK.md"
+      ],
+      "legacy": "D/G; leltár42",
+      "excluded": "Nem élő TTS/mikrofon vagy karakterkészítő első szeletben.",
+      "capabilityGates": [
+        "Bizonyított tartós GLB-import",
+        "A kiválasztott modellhez szükséges rig/skinning és/vagy morph renderadapter; viseme-hez tényleges morph-csatornák"
+      ]
+    }
+  ]
+}

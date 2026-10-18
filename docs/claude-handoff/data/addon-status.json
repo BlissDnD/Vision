@@ -1,0 +1,649 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": 1,
+      "title": "Térbeli formaműveletek",
+      "module": "prototypes/extension-lab/modules/01-csg.mjs",
+      "example": "prototypes/extension-lab/examples/01-csg.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three-bvh-csg",
+      "source": "https://github.com/gkjohnson/three-bvh-csg"
+    },
+    {
+      "id": 2,
+      "title": "Hálósimítás",
+      "module": "prototypes/extension-lab/modules/02-subdivide.mjs",
+      "example": "prototypes/extension-lab/examples/02-subdivide.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three-subdivide",
+      "source": "https://github.com/stevinz/three-subdivide"
+    },
+    {
+      "id": 3,
+      "title": "Matrica 3D tárgyon",
+      "module": "prototypes/extension-lab/modules/03-decal.mjs",
+      "example": "prototypes/extension-lab/examples/03-decal.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 4,
+      "title": "Kontúr térbelivé alakítása",
+      "module": "prototypes/extension-lab/modules/04-extrude.mjs",
+      "example": "prototypes/extension-lab/examples/04-extrude.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 5,
+      "title": "Görbére hajlítás",
+      "module": "prototypes/extension-lab/modules/05-curve-flow.mjs",
+      "example": "prototypes/extension-lab/examples/05-curve-flow.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 6,
+      "title": "Összeolvadó térbeli formák",
+      "module": "prototypes/extension-lab/modules/06-metaballs.mjs",
+      "example": "prototypes/extension-lab/examples/06-metaballs.mjs",
+      "primaryWorkPackage": "BASE-02",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 7,
+      "title": "Felületre szórás",
+      "module": "prototypes/extension-lab/modules/07-surface-scatter.mjs",
+      "example": "prototypes/extension-lab/examples/07-surface-scatter.mjs",
+      "primaryWorkPackage": "WORLD-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 8,
+      "title": "SVG import",
+      "module": "prototypes/extension-lab/modules/08-svg-import.mjs",
+      "example": "prototypes/extension-lab/examples/08-svg-import.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 9,
+      "title": "Font és betűkontúrok",
+      "module": "prototypes/extension-lab/modules/09-font-outlines.mjs",
+      "example": "prototypes/extension-lab/examples/09-font-outlines.mjs",
+      "primaryWorkPackage": "TEXT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "opentype.js",
+      "source": "git://github.com/opentypejs/opentype.js"
+    },
+    {
+      "id": 10,
+      "title": "Vektoros görbesimítás",
+      "module": "prototypes/extension-lab/modules/10-vector-paths.mjs",
+      "example": "prototypes/extension-lab/examples/10-vector-paths.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "paper",
+      "source": "https://github.com/paperjs/paper.js"
+    },
+    {
+      "id": 11,
+      "title": "Sík formaműveletek",
+      "module": "prototypes/extension-lab/modules/11-polygon-boolean.mjs",
+      "example": "prototypes/extension-lab/examples/11-polygon-boolean.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "polygon-clipping",
+      "source": "github:mfogel/polygon-clipping"
+    },
+    {
+      "id": 12,
+      "title": "Kontúr háromszögelése",
+      "module": "prototypes/extension-lab/modules/12-triangulate.mjs",
+      "example": "prototypes/extension-lab/examples/12-triangulate.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "earcut",
+      "source": "git://github.com/mapbox/earcut"
+    },
+    {
+      "id": 13,
+      "title": "Voronoi mozaik",
+      "module": "prototypes/extension-lab/modules/13-voronoi.mjs",
+      "example": "prototypes/extension-lab/examples/13-voronoi.mjs",
+      "primaryWorkPackage": "RECIPE-01",
+      "status": "prototype-not-integrated",
+      "dependency": "d3-delaunay",
+      "source": "https://github.com/d3/d3-delaunay"
+    },
+    {
+      "id": 14,
+      "title": "Saját 3D shaderanyag",
+      "module": "prototypes/extension-lab/modules/14-custom-material.mjs",
+      "example": "prototypes/extension-lab/examples/14-custom-material.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three-custom-shader-material",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 15,
+      "title": "Sík tükör",
+      "module": "prototypes/extension-lab/modules/15-planar-reflection.mjs",
+      "example": "prototypes/extension-lab/examples/15-planar-reflection.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 16,
+      "title": "Környezeti fény előkészítése",
+      "module": "prototypes/extension-lab/modules/16-environment-map.mjs",
+      "example": "prototypes/extension-lab/examples/16-environment-map.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 17,
+      "title": "Térbeli mélyedésárnyék",
+      "module": "prototypes/extension-lab/modules/17-contact-shading.mjs",
+      "example": "prototypes/extension-lab/examples/17-contact-shading.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 18,
+      "title": "LUT színprofil",
+      "module": "prototypes/extension-lab/modules/18-lut-import.mjs",
+      "example": "prototypes/extension-lab/examples/18-lut-import.mjs",
+      "primaryWorkPackage": "COLOR-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 19,
+      "title": "Érzékelésalapú gradiens",
+      "module": "prototypes/extension-lab/modules/19-perceptual-gradient.mjs",
+      "example": "prototypes/extension-lab/examples/19-perceptual-gradient.mjs",
+      "primaryWorkPackage": "COLOR-01",
+      "status": "prototype-not-integrated",
+      "dependency": "culori",
+      "source": "git@github.com:Evercoder/culori"
+    },
+    {
+      "id": 20,
+      "title": "Paletta és kontraszt",
+      "module": "prototypes/extension-lab/modules/20-palette-scales.mjs",
+      "example": "prototypes/extension-lab/examples/20-palette-scales.mjs",
+      "primaryWorkPackage": "COLOR-01",
+      "status": "prototype-not-integrated",
+      "dependency": "chroma-js",
+      "source": "git://github.com/gka/chroma.js"
+    },
+    {
+      "id": 21,
+      "title": "Kamera célzása",
+      "module": "prototypes/extension-lab/modules/21-camera-framing.mjs",
+      "example": "prototypes/extension-lab/examples/21-camera-framing.mjs",
+      "primaryWorkPackage": "MOT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "camera-controls",
+      "source": "yomotsu/camera-controls"
+    },
+    {
+      "id": 22,
+      "title": "Csontlánc végpontja",
+      "module": "prototypes/extension-lab/modules/22-ik-chain.mjs",
+      "example": "prototypes/extension-lab/examples/22-ik-chain.mjs",
+      "primaryWorkPackage": "MOT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 23,
+      "title": "Nebula részecskék",
+      "module": "prototypes/extension-lab/modules/23-nebula-particles.mjs",
+      "example": "prototypes/extension-lab/examples/23-nebula-particles.mjs",
+      "primaryWorkPackage": "PART-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three-nebula",
+      "source": "https://github.com/creativelifeform/three-nebula"
+    },
+    {
+      "id": 24,
+      "title": "Merevtestek Cannon motorral",
+      "module": "prototypes/extension-lab/modules/24-rigid-bodies.mjs",
+      "example": "prototypes/extension-lab/examples/24-rigid-bodies.mjs",
+      "primaryWorkPackage": "PHYS-01",
+      "status": "prototype-not-integrated",
+      "dependency": "cannon-es",
+      "source": "https://github.com/pmndrs/cannon-es"
+    },
+    {
+      "id": 25,
+      "title": "GPU részecskeállapot",
+      "module": "prototypes/extension-lab/modules/25-gpu-particle-state.mjs",
+      "example": "prototypes/extension-lab/examples/25-gpu-particle-state.mjs",
+      "primaryWorkPackage": "PART-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 26,
+      "title": "Bézier sebességgörbe",
+      "module": "prototypes/extension-lab/modules/26-bezier-easing.mjs",
+      "example": "prototypes/extension-lab/examples/26-bezier-easing.mjs",
+      "primaryWorkPackage": "MOT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "bezier-easing",
+      "source": "git://github.com/gre/bezier-easing"
+    },
+    {
+      "id": 27,
+      "title": "Explicit idejű tween",
+      "module": "prototypes/extension-lab/modules/27-tween-sampling.mjs",
+      "example": "prototypes/extension-lab/examples/27-tween-sampling.mjs",
+      "primaryWorkPackage": "MOT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "@tweenjs/tween.js",
+      "source": "https://github.com/tweenjs/tween.js"
+    },
+    {
+      "id": 28,
+      "title": "Hanghullám",
+      "module": "prototypes/extension-lab/modules/28-waveform.mjs",
+      "example": "prototypes/extension-lab/examples/28-waveform.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "wavesurfer.js",
+      "source": "git@github.com:katspaugh/wavesurfer.js"
+    },
+    {
+      "id": 29,
+      "title": "Hangjellemzők",
+      "module": "prototypes/extension-lab/modules/29-audio-features.mjs",
+      "example": "prototypes/extension-lab/examples/29-audio-features.mjs",
+      "primaryWorkPackage": "LINK-01",
+      "status": "prototype-not-integrated",
+      "dependency": "meyda",
+      "source": "https://github.com/meyda/meyda"
+    },
+    {
+      "id": 30,
+      "title": "Metronóm",
+      "module": "prototypes/extension-lab/modules/30-metronome.mjs",
+      "example": "prototypes/extension-lab/examples/30-metronome.mjs",
+      "primaryWorkPackage": "MOT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "tone",
+      "source": "https://github.com/Tonejs/Tone.js"
+    },
+    {
+      "id": 31,
+      "title": "Gyors térbeli kijelölés",
+      "module": "prototypes/extension-lab/modules/31-bvh-picking.mjs",
+      "example": "prototypes/extension-lab/examples/31-bvh-picking.mjs",
+      "primaryWorkPackage": "PERF-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three-mesh-bvh",
+      "source": "https://github.com/gkjohnson/three-mesh-bvh"
+    },
+    {
+      "id": 32,
+      "title": "GLB optimalizálás",
+      "module": "prototypes/extension-lab/modules/32-gltf-optimize.mjs",
+      "example": "prototypes/extension-lab/examples/32-gltf-optimize.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "@gltf-transform/core",
+      "source": "github:donmccurdy/glTF-Transform"
+    },
+    {
+      "id": 33,
+      "title": "Háló egyszerűsítése",
+      "module": "prototypes/extension-lab/modules/33-mesh-simplify.mjs",
+      "example": "prototypes/extension-lab/examples/33-mesh-simplify.mjs",
+      "primaryWorkPackage": "PERF-01",
+      "status": "prototype-not-integrated",
+      "dependency": "meshoptimizer",
+      "source": "https://github.com/zeux/meshoptimizer"
+    },
+    {
+      "id": 34,
+      "title": "Sok azonos tárgy",
+      "module": "prototypes/extension-lab/modules/34-instanced-copies.mjs",
+      "example": "prototypes/extension-lab/examples/34-instanced-copies.mjs",
+      "primaryWorkPackage": "PERF-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 35,
+      "title": "Közös tárgyrajzolás",
+      "module": "prototypes/extension-lab/modules/35-batched-objects.mjs",
+      "example": "prototypes/extension-lab/examples/35-batched-objects.mjs",
+      "primaryWorkPackage": "PERF-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 36,
+      "title": "WebGL képkockavizsgáló",
+      "module": "prototypes/extension-lab/modules/36-frame-debugger.mjs",
+      "example": "prototypes/extension-lab/examples/36-frame-debugger.mjs",
+      "primaryWorkPackage": "QA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "spectorjs",
+      "source": "git://github.com/BabylonJS/Spector.js"
+    },
+    {
+      "id": 37,
+      "title": "WebGL hibakereső",
+      "module": "prototypes/extension-lab/modules/37-webgl-lint.mjs",
+      "example": "prototypes/extension-lab/examples/37-webgl-lint.mjs",
+      "primaryWorkPackage": "QA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "webgl-lint",
+      "source": "https://github.com/greggman/webgl-lint"
+    },
+    {
+      "id": 38,
+      "title": "Átrendezhető eszköztár",
+      "module": "prototypes/extension-lab/modules/38-sortable-toolbar.mjs",
+      "example": "prototypes/extension-lab/examples/38-sortable-toolbar.mjs",
+      "primaryWorkPackage": "UI-01",
+      "status": "prototype-not-integrated",
+      "dependency": "sortablejs",
+      "source": "git://github.com/SortableJS/Sortable"
+    },
+    {
+      "id": 39,
+      "title": "Állítható panelek",
+      "module": "prototypes/extension-lab/modules/39-split-panels.mjs",
+      "example": "prototypes/extension-lab/examples/39-split-panels.mjs",
+      "primaryWorkPackage": "UI-01",
+      "status": "prototype-not-integrated",
+      "dependency": "split.js",
+      "source": "https://github.com/nathancahill/split"
+    },
+    {
+      "id": 40,
+      "title": "Növényi atlasz",
+      "module": "prototypes/extension-lab/modules/40-foliage-assets.mjs",
+      "example": "prototypes/extension-lab/examples/40-foliage-assets.mjs",
+      "primaryWorkPackage": "PART-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://kenney.nl/assets/foliage-sprites"
+    },
+    {
+      "id": 41,
+      "title": "Füstatlasz",
+      "module": "prototypes/extension-lab/modules/41-smoke-assets.mjs",
+      "example": "prototypes/extension-lab/examples/41-smoke-assets.mjs",
+      "primaryWorkPackage": "PART-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://kenney.nl/assets/smoke-particles"
+    },
+    {
+      "id": 42,
+      "title": "Poly Haven kép és HDR",
+      "module": "prototypes/extension-lab/modules/42-polyhaven-intake.mjs",
+      "example": "prototypes/extension-lab/examples/42-polyhaven-intake.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://polyhaven.com/license"
+    },
+    {
+      "id": 43,
+      "title": "PBR anyagimport",
+      "module": "prototypes/extension-lab/modules/43-ambient-pbr.mjs",
+      "example": "prototypes/extension-lab/examples/43-ambient-pbr.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://docs.ambientcg.com/license/"
+    },
+    {
+      "id": 44,
+      "title": "Részecskeatlasz",
+      "module": "prototypes/extension-lab/modules/44-particle-atlas.mjs",
+      "example": "prototypes/extension-lab/examples/44-particle-atlas.mjs",
+      "primaryWorkPackage": "PART-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://kenney.nl/assets/particle-pack"
+    },
+    {
+      "id": 45,
+      "title": "Hengeres élő szöveg",
+      "module": "prototypes/extension-lab/modules/45-curved-text.mjs",
+      "example": "prototypes/extension-lab/examples/45-curved-text.mjs",
+      "primaryWorkPackage": "TEXT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "troika-three-text",
+      "source": "https://github.com/protectwise/troika"
+    },
+    {
+      "id": 46,
+      "title": "Útvonalas cső",
+      "module": "prototypes/extension-lab/modules/46-path-tube.mjs",
+      "example": "prototypes/extension-lab/examples/46-path-tube.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 47,
+      "title": "Változó vastagságú vonal",
+      "module": "prototypes/extension-lab/modules/47-tapered-line.mjs",
+      "example": "prototypes/extension-lab/examples/47-tapered-line.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "meshline",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 48,
+      "title": "Üveganyag",
+      "module": "prototypes/extension-lab/modules/48-glass-material.mjs",
+      "example": "prototypes/extension-lab/examples/48-glass-material.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "@pmndrs/vanilla",
+      "source": "https://github.com/pmndrs/drei-vanilla"
+    },
+    {
+      "id": 49,
+      "title": "Quarks részecskék",
+      "module": "prototypes/extension-lab/modules/49-quarks-emitter.mjs",
+      "example": "prototypes/extension-lab/examples/49-quarks-emitter.mjs",
+      "primaryWorkPackage": "PART-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three.quarks",
+      "source": "https://github.com/Alchemist0823/three.quarks"
+    },
+    {
+      "id": 50,
+      "title": "Áramló festékmező",
+      "module": "prototypes/extension-lab/modules/50-fluid-field.mjs",
+      "example": "prototypes/extension-lab/examples/50-fluid-field.mjs",
+      "primaryWorkPackage": "FLUID-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/PavelDoGreat/WebGL-Fluid-Simulation"
+    },
+    {
+      "id": 51,
+      "title": "Tükröződő víz",
+      "module": "prototypes/extension-lab/modules/51-water-surface.mjs",
+      "example": "prototypes/extension-lab/examples/51-water-surface.mjs",
+      "primaryWorkPackage": "WORLD-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 52,
+      "title": "Seedelt makettváros",
+      "module": "prototypes/extension-lab/modules/52-seeded-city.mjs",
+      "example": "prototypes/extension-lab/examples/52-seeded-city.mjs",
+      "primaryWorkPackage": "RECIPE-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://kenney.nl/assets/city-kit-suburban"
+    },
+    {
+      "id": 53,
+      "title": "Procedurális zaj",
+      "module": "prototypes/extension-lab/modules/53-procedural-noise.mjs",
+      "example": "prototypes/extension-lab/examples/53-procedural-noise.mjs",
+      "primaryWorkPackage": "MOT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/ashima/webgl-noise"
+    },
+    {
+      "id": 54,
+      "title": "Utófeldolgozás",
+      "module": "prototypes/extension-lab/modules/54-postprocessing.mjs",
+      "example": "prototypes/extension-lab/examples/54-postprocessing.mjs",
+      "primaryWorkPackage": "MAT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "postprocessing",
+      "source": "https://github.com/pmndrs/postprocessing"
+    },
+    {
+      "id": 55,
+      "title": "Merevtestek Rapier motorral",
+      "module": "prototypes/extension-lab/modules/55-rapier-physics.mjs",
+      "example": "prototypes/extension-lab/examples/55-rapier-physics.mjs",
+      "primaryWorkPackage": "PHYS-01",
+      "status": "prototype-not-integrated",
+      "dependency": "@dimforge/rapier3d-compat",
+      "source": "https://github.com/dimforge/rapier"
+    },
+    {
+      "id": 56,
+      "title": "Folyamatos videóexport",
+      "module": "prototypes/extension-lab/modules/56-streaming-export.mjs",
+      "example": "prototypes/extension-lab/examples/56-streaming-export.mjs",
+      "primaryWorkPackage": "EXPORT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "mediabunny",
+      "source": "https://github.com/Vanilagy/mediabunny"
+    },
+    {
+      "id": 57,
+      "title": "Színválasztó",
+      "module": "prototypes/extension-lab/modules/57-color-picker.mjs",
+      "example": "prototypes/extension-lab/examples/57-color-picker.mjs",
+      "primaryWorkPackage": "COLOR-01",
+      "status": "prototype-not-integrated",
+      "dependency": "@melloware/coloris",
+      "source": "https://github.com/melloware/coloris-npm"
+    },
+    {
+      "id": 58,
+      "title": "Mozgáspálya illesztése",
+      "module": "prototypes/extension-lab/modules/58-fit-motion-path.mjs",
+      "example": "prototypes/extension-lab/examples/58-fit-motion-path.mjs",
+      "primaryWorkPackage": "PATH-01",
+      "status": "prototype-not-integrated",
+      "dependency": "fit-curve",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 59,
+      "title": "DOM transzformáció",
+      "module": "prototypes/extension-lab/modules/59-dom-transform.mjs",
+      "example": "prototypes/extension-lab/examples/59-dom-transform.mjs",
+      "primaryWorkPackage": "LAYOUT-01",
+      "status": "prototype-not-integrated",
+      "dependency": "moveable",
+      "source": "https://github.com/daybrush/moveable/blob/master/packages/moveable"
+    },
+    {
+      "id": 60,
+      "title": "Térbeli fogantyú",
+      "module": "prototypes/extension-lab/modules/60-transform-gizmo.mjs",
+      "example": "prototypes/extension-lab/examples/60-transform-gizmo.mjs",
+      "primaryWorkPackage": "BASE-02",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 61,
+      "title": "Modellanimáció mintavétele",
+      "module": "prototypes/extension-lab/modules/61-model-animation.mjs",
+      "example": "prototypes/extension-lab/examples/61-model-animation.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 62,
+      "title": "GLB import",
+      "module": "prototypes/extension-lab/modules/62-gltf-import.mjs",
+      "example": "prototypes/extension-lab/examples/62-gltf-import.mjs",
+      "primaryWorkPackage": "MEDIA-01",
+      "status": "prototype-not-integrated",
+      "dependency": "three",
+      "source": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "id": 63,
+      "title": "Színkerék",
+      "module": "prototypes/extension-lab/modules/63-color-wheel.mjs",
+      "example": "prototypes/extension-lab/examples/63-color-wheel.mjs",
+      "primaryWorkPackage": "COLOR-01",
+      "status": "prototype-not-integrated",
+      "dependency": "@jaames/iro",
+      "source": "https://github.com/jaames/iro.js"
+    },
+    {
+      "id": "unwoven",
+      "title": "Unwoven",
+      "module": "prototypes/extension-lab/layouts/unwoven.mjs",
+      "primaryWorkPackage": "LAYOUT-01",
+      "status": "prototype-not-integrated"
+    },
+    {
+      "id": "wide",
+      "title": "WIDE study",
+      "module": "prototypes/extension-lab/layouts/wide.mjs",
+      "primaryWorkPackage": "LAYOUT-01",
+      "status": "study-original-source-missing"
+    }
+  ]
+}

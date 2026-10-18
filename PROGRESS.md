@@ -146,3 +146,11 @@ Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
 - Bolygó: jelenlegi funkciók pontosítva; hold-komponens, közös domborzat, légkör és háttérbe simulás terve.
 - Lefedettség forráslistákkal ellenőrizve; alkalmazáskód/build és funkcióállapot nem változott.
 - Fájl: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md`.
+
+### 2026-10-18 – teljes Claude multi-agent átadócsomag (Codex)
+- `docs/claude-handoff/00-START-HERE.md`: intuitív, kreatív, cluttermentes UX minden új funkcióra.
+- 26 taskkártya + DAG; egy nagy fejlesztő és kis izolált segítők, fájltulajdon és tokenfegyelem.
+- 63 addon +2 layout,44 régi követelménysor és96 új ötlet útvonala;229 metaadatrekord őrzi a259 mai polcsort.
+- Előkészítő keresőmodell:13 célzott Node-próba zöld; csomaglink/DAG/source-hash ellenőrzés külön.
+- ZIP a mappa és releváns forrás-/licenc-/tervpillanatképek átadásához; nem teljes telepíthető app.
+- Appkód/build változatlan; jövőbeli implementáció a meglévő mérföldkő-jóváhagyási szabállyal.

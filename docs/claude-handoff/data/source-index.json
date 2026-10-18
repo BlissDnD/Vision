@@ -1,0 +1,2591 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-10-18",
+  "baseCommit": "bcf77db2a5de8e512e258a5a3007f36611c199d6",
+  "appVersion": "0.36.0-g1",
+  "repositoryRequired": true,
+  "files": [
+    {
+      "path": "BUGS.md",
+      "bytes": 4928,
+      "sha256": "cb216878f66404aa897041c06a3bc0c98d23bbff700f33dbd957907b0e1cbfe6",
+      "tracked": true,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 9713,
+      "sha256": "c64c7a7d160b015b4fdc20b7c58005226a236836cca99f3001ab716f4c73ac0e",
+      "tracked": true,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "FUNKCIO-LELTAR.md",
+      "bytes": 23823,
+      "sha256": "ebac778d378ddb1e0b7d2d20aa3d73e5dd5b697a38b3285b9d1109c85712d8b1",
+      "tracked": true,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "HANDOFF.md",
+      "bytes": 17371,
+      "sha256": "a71b0348748bf7417122f5179ac2ac9dc658ddd2783be793d041eb704cb0f7b9",
+      "tracked": true,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "PROGRESS.md",
+      "bytes": 29603,
+      "sha256": "0f841f6f5df7d009da584f4cd2e9b0c574a01cc77605b7ba9106d49c14731c7f",
+      "tracked": true,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "app/CODEMAP.md",
+      "bytes": 20077,
+      "sha256": "5087d135acba1f0247edf29a4aa3d3ec86442867d6a00af29effee26735cf8a3",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/README.md",
+      "bytes": 23371,
+      "sha256": "8a1f8e9f35aa31481e0fab9175fca94b017366d6c4beaf6b0d3dc409d0a14c0f",
+      "tracked": true,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "app/index.html",
+      "bytes": 12718,
+      "sha256": "a8ce79fddec4e67585801831d0c5119e7e9600a28c991f7009e85a5f174aebb6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/package-lock.json",
+      "bytes": 50761,
+      "sha256": "f5159bd64c61d2f1e66b247202181a5351a33e2e0dc235aa6c61b3d9bf7b66e1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/package.json",
+      "bytes": 854,
+      "sha256": "41561dfa5a9d14cc6c63d5c90b309a151d520ac743ab4d3050d780e92fdd857d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/scripts/build.mjs",
+      "bytes": 4848,
+      "sha256": "6a5c40ae3ac03c37297dba954674bd41a9b8c38ef1dfc128c0762ce27eddb5c8",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/scripts/codemap.mjs",
+      "bytes": 6664,
+      "sha256": "d94356c58f7917b4301e58739fe4bb0c062c7fc454a8626e0715afe26cd65d53",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/adaptive.ts",
+      "bytes": 1351,
+      "sha256": "0e5224c6e2537abc67df6692db0bdda8ab9269edea054d970d8575e985a17ccb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/animate.ts",
+      "bytes": 5576,
+      "sha256": "cdf09355cbbf666f44a7fd3adaaa8c8b3e460db2d94dacd80bbf47c0f87ef1b8",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/autosave.ts",
+      "bytes": 2153,
+      "sha256": "1259286ac037359035008314e4e2af0be4c5a643b3866843b2c164806969ac3e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/blob.ts",
+      "bytes": 10952,
+      "sha256": "223612c8a9dce6315ed8ff7de06703a561fd03596938ebcb4aa42495619f08aa",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/boot.ts",
+      "bytes": 1745,
+      "sha256": "bd5782b5862c1ab5366c708ca5244356aa9a4974f79af8c87e3cc56dc47b6414",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/cloud.ts",
+      "bytes": 4024,
+      "sha256": "4e818280c2778f0dfb7a04e931989fc942dcef16feded8f7d123224f2b94e432",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/controls.ts",
+      "bytes": 15958,
+      "sha256": "ed187f60cc71127224ccbee3d02973ade55e92e2c340c2dc92b037bd38cd504f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/cost.ts",
+      "bytes": 1616,
+      "sha256": "0434ce7d104aaf567365975487dd5e838cca8da2ee8947562d60208c4fd90ae1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/describe.ts",
+      "bytes": 9747,
+      "sha256": "f7e5f2f0999bdcfa766e1203dcb39012b87de6782ee23bcefe8d04a5bc8fd297",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/dom.ts",
+      "bytes": 551,
+      "sha256": "8c379dbef84da1a1034cccf8486e6e2cfb96993507fdce915ccfa39e28ae8984",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/codepen.ts",
+      "bytes": 4024,
+      "sha256": "a729dd3f45a151d587b6e562a7270952823721d13d459f08d4a5a46b1e608f81",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/filters.ts",
+      "bytes": 20139,
+      "sha256": "c05816ef21e22fc287f60cf6d0e9dc16a688e01c31e9b26d12d40954f7c0c10e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/generators.ts",
+      "bytes": 16497,
+      "sha256": "055687e078cb243becce7888bcbedc3ca91534632103f5ccedbe92955c79bea0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/helpers.ts",
+      "bytes": 2868,
+      "sha256": "2e7873c5d5883bec7429e630fcc4e2e2243bc11096150c9343fe7dcafa63a4d9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/index.ts",
+      "bytes": 12179,
+      "sha256": "837d0a8f9f0080f4e9b1f88751a2ef49587ead6249193b637e19bf976e9267f1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/media.ts",
+      "bytes": 2372,
+      "sha256": "1533a38f33a0f35acf617a962a563da0d341ab099c8cfecd2de572365770e2ba",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/motionDesign.ts",
+      "bytes": 6831,
+      "sha256": "c603592beb491360b8d1c2120d8102746b00a28058093cde08d6ac1771e41fb7",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/motionText.ts",
+      "bytes": 9890,
+      "sha256": "7bcb68ea2ec4a8f25f12820ce971753711ba2335f7ebf4dafa170ce763b7b772",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/objects3d.ts",
+      "bytes": 14818,
+      "sha256": "e4b2e16259d2dc621af75fbd6a75c3270a7cf646c301572418f795da12f86df6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/particles.ts",
+      "bytes": 3210,
+      "sha256": "eeee4d57fb33a1f45c5d688f7476432a537f8a63cb551ebd486ef3c189d17df2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/shapes.ts",
+      "bytes": 4109,
+      "sha256": "1f9a1eb7ea86c3ccf3a8264395970b919d7bebf56b4af04b80e6419bc8261a64",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/soft3d.ts",
+      "bytes": 7168,
+      "sha256": "4d3b571ead4754b39d5c106b8edcd31d11cd6a054f263c5b620eedcaff64d592",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/worldBlocks.ts",
+      "bytes": 6902,
+      "sha256": "3589ac2053ef7b2d64197cb08c179346d0c8f8b29e7ddbe4f8142c31f4a525e9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/effects/worlds.ts",
+      "bytes": 13808,
+      "sha256": "4d446019f0ae4c006b37565094dd546f1b47e70193e4682009b9d4fb83a833cd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/evaluation.ts",
+      "bytes": 12163,
+      "sha256": "b0ab7de978c781a08f5a46f16408ec66e9c7897a4bef423d7cd81a4ab1b4ad54",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/fxicons.ts",
+      "bytes": 4132,
+      "sha256": "7280151cc171ba309d5680fc73df887120af7a9748dabb4a3c5c8403acf81335",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/gesture.ts",
+      "bytes": 16435,
+      "sha256": "f098eb345613b48a230cb51a815df84b50edced21d65bc127053f246000c4270",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/gl.ts",
+      "bytes": 12619,
+      "sha256": "f7f57fde293a618b73dab09669745bc6efad0955351c9f2d787725da7e2624f6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/globals.d.ts",
+      "bytes": 423,
+      "sha256": "cf3062205ed9b357555e297d453ccc3bf058e836a22d395eba380d4fb1552028",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/glsl.ts",
+      "bytes": 3160,
+      "sha256": "a204e7106485f472cf254e9ef802eb111c591801c7591f44d8e81a4ac067f89a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/history.ts",
+      "bytes": 5916,
+      "sha256": "e247016e533517563092de0a570f49e821bf51f10e004b21556dc937144f4d26",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/inspector.ts",
+      "bytes": 25015,
+      "sha256": "26fad88fb5518e8717cf2827c2d4b17b6ca59189f2665a2ab28adb06353be4a0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/itemops.ts",
+      "bytes": 3682,
+      "sha256": "55d5660be1f03713bb0f007e0254983274a626c1b5292e04f60906ad839b79eb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/keyboard.ts",
+      "bytes": 3930,
+      "sha256": "bc65ef72984b0e1e6f0beb073c4f2015636425837fca6315511ace1ba74b9d41",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/layers.ts",
+      "bytes": 5000,
+      "sha256": "e5e2a5500ca2a0d9dec942ca02f7835398a6755f336798abc9ad558a0b5df28e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/library.ts",
+      "bytes": 15558,
+      "sha256": "24ff413edf64d5dc5e3f1eb7d596c2c0555d5b783815eb6f18cbd96618228135",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/lightui.ts",
+      "bytes": 3084,
+      "sha256": "c23a48b508091bd3b25374341eeafea15495f96395f0bd5a108abe8267220f6a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/linkcord.ts",
+      "bytes": 17552,
+      "sha256": "ea4c7e6f93168f8b6c07139138981de054632c47ff521412c79bfa5ea5e60eea",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/loop.ts",
+      "bytes": 4850,
+      "sha256": "89c555729880b9c5fb78e8e2ff97a7c332f27f41765732d879dea4d43bb3b6df",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/lottie.ts",
+      "bytes": 3840,
+      "sha256": "63733132a55f8e7e1fc444d81867a391af7a3e48fdf93b2a63a45e40ae5bb930",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/lottieCore.ts",
+      "bytes": 3860,
+      "sha256": "d02c6d732b4c7539f3d81798d076be60e77fdc83ca7df9b360b7ccc733477e97",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/lottieImport.ts",
+      "bytes": 3939,
+      "sha256": "9d862704fdc6369b49254c971295bd317dca22b524634fb7f5e719daa1ef8e13",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/macros.ts",
+      "bytes": 736,
+      "sha256": "d61131490dcb316d420ba4b79e49cd4bf8f660e81b6d65bb01e39506f6208452",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/main.ts",
+      "bytes": 1012,
+      "sha256": "71a0e546d1bb4873ed46bd5ab6eaccdd147d8d9e482ec1972280161b14b91038",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/mesh3d.ts",
+      "bytes": 24566,
+      "sha256": "814c229538faa61cfaddaf5e5814d781a7f21bc0f14c6ac497113bb24b4f18ed",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/migrate.ts",
+      "bytes": 4006,
+      "sha256": "6ff1e8469784289e82f393cd71992eb934c7201881f0b700387f1880963aa5ff",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/modals.ts",
+      "bytes": 6682,
+      "sha256": "26e3f12d546cc761a53cbe696f1be9c7053fb362e0506a73ef182e61e7a841d6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/motion.ts",
+      "bytes": 17092,
+      "sha256": "eaf803081facc813d6618ff113b07df8a2b23c79514cdf8c4e6a58e5905acc3f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/moui.ts",
+      "bytes": 15920,
+      "sha256": "63fb6cd7ccbfb10cfc6ac029c4bb711810acdb834d87addf756e237a0f780f6e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/output.ts",
+      "bytes": 9347,
+      "sha256": "5f12a867471b074790189a74547e15da78f5efa0ec73275af89c705d52fd5be0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/palettes.ts",
+      "bytes": 2223,
+      "sha256": "e6392b4a3de2d92c5dc81c03ea872ce797c24a83538267e725321370b0e5b989",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/partfx.ts",
+      "bytes": 3048,
+      "sha256": "baef457212287cddda56c5f2cccf36c497df198420e62420f8c3b4ed43c6f009",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/perform.ts",
+      "bytes": 8047,
+      "sha256": "e01fec93dff0ad978eb55ec7de86f53ef8d773732da1bb8c41a665656fc1d752",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/pick.ts",
+      "bytes": 6510,
+      "sha256": "af3bf520e20e6557a038c474b62dd8d45e9f76d54650ad8851f080755c8d2ceb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/polyhaven.ts",
+      "bytes": 5724,
+      "sha256": "ee52c8ec3c4b5d68ee3c0b8d7da61c217e3a28bcb3ee2ed12671b69a7f090205",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/popovers.ts",
+      "bytes": 8898,
+      "sha256": "d0030caf09f498db4483cba20b380d52d6d6fd5aede9ebb90a455769b7d37501",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/presetfmt.ts",
+      "bytes": 9336,
+      "sha256": "71f8547aaaf2e23f0e1b6d2dc769ba4594fd399713715c017b35baae6eb0b998",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/presets.ts",
+      "bytes": 21948,
+      "sha256": "ec34bff1f652c884acab1000003167c513ac4704c4fde004365a10b627c36482",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/random.ts",
+      "bytes": 25341,
+      "sha256": "98f2d35acb121a1d17371b44964869c2d0d79bac5faeded410a190fab4146950",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/recipes.ts",
+      "bytes": 35345,
+      "sha256": "14d8d8f6d32ffadb2f9fe8bc43494887f8a573cff0c147973ac4374d31bbf33b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/referenceAssets.ts",
+      "bytes": 316804,
+      "sha256": "6b0e572ba1a74b49eac2fe7c3188d8608e35764e1a9e72eb300c4aba668a56e5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/render.ts",
+      "bytes": 23881,
+      "sha256": "d3ce102479bd7803f273cdcc623a9d8a3008d756a9105f79a2df4320f6efc9a4",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/retime.ts",
+      "bytes": 9336,
+      "sha256": "7331e793a0ec10500a00a20dfe2cf64a3780fd05a844f0708e4c175d75f7ccd6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/rndq.ts",
+      "bytes": 11651,
+      "sha256": "a5047dd71454fa540281afc277a3398a69e859ec828d1853d254f8d8f319fc4f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/runtime.ts",
+      "bytes": 95,
+      "sha256": "63c38acd2e3e78d3d7c43b5c7a4de6dd0b94ba6e1110bab44e088fcd5eb26af1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/scenes.ts",
+      "bytes": 16198,
+      "sha256": "0aa5a0a3aecc429708c4cacfcfc2483dfe39a70d6ded3506ebb0afc54c29bf3b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/shelf.ts",
+      "bytes": 8470,
+      "sha256": "949e5a1c53e12cd85850b4b8c033397769d2a16ecc321f8b0dcdb5529918b20a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/signals.ts",
+      "bytes": 8930,
+      "sha256": "c4ba63fcd088049b459435d112ca0d92f61f5e7a1bd32d7f107b13f85e43c0b3",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/sim.ts",
+      "bytes": 3832,
+      "sha256": "893eadb85664c116ee52d0dad3584c36663f6fedb7a7d4581720a3c8f61ce6e6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/spinegrips.ts",
+      "bytes": 11654,
+      "sha256": "0ec1facdb305a7142d284e42a4d009b823bf3bf4d9942cd5bfe788b9e567376e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/stage.ts",
+      "bytes": 9314,
+      "sha256": "cc9f23d62a8978f85041bec114b7ad5400862b94cf23e01d4d276f5acc3d1340",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/state.ts",
+      "bytes": 7322,
+      "sha256": "e47d4248d6779fe5f16c5823857471ed306974d3d9715744a78800e6eb00bdf9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/style.css",
+      "bytes": 53000,
+      "sha256": "e64a793a21390cbcc90f335ab35ca73f5205f49e0eaf5a2959842e5ac5afbe82",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/tap.ts",
+      "bytes": 11996,
+      "sha256": "54e2810f8025be5f02b310ebfb480a06cf9646a18cc5451944553533ce6fa62b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/taste.ts",
+      "bytes": 2614,
+      "sha256": "20288c1d5ca465ed06e9edeaa31815077e1d0ebf3a778bc5b8532e8c6241fe5e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/terrain3d.ts",
+      "bytes": 18264,
+      "sha256": "bda4673088a89303b07b131d652a9051d387424b044249048fe9db9329ca9805",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/text.ts",
+      "bytes": 6251,
+      "sha256": "6d10be0e0e845d6d1262bc9854927450643cc5c4f2d04b560815b00d14800490",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/textbar.ts",
+      "bytes": 8100,
+      "sha256": "719ec442cd58ef0173efb819ff84ec7448b8496625d334f28be9c6d24ba60301",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/textlines.ts",
+      "bytes": 6715,
+      "sha256": "1c6856ffd9731e97e4e1740f01f6c258f48cee11ea9bb858a6a850c0f0529d9b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/thumbs.ts",
+      "bytes": 1689,
+      "sha256": "d6fc8401498216d879f7b87ad5ba9eae559ae4df223ecaa64546d9e95508f3aa",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/thumbstore.ts",
+      "bytes": 2169,
+      "sha256": "9935f58bfe4b0983f0169418d0e7124dd22246b9e5c7ae536dfc5ff9a322b4bd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/time.ts",
+      "bytes": 1128,
+      "sha256": "31b18fbf3d5f29108dff765b6e595ef49ba65de82db9d2e786d3f9933c96cf04",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/timeline.ts",
+      "bytes": 34123,
+      "sha256": "cba63f5cf66036b98a8a0c323b913d873821cd8bfeab5a3f20420388206bf34c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/transport.ts",
+      "bytes": 1070,
+      "sha256": "a0765f039bef803e9a6b5f88b2f86e648aaa16561752d84bd6b38f0b5fdd685a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/types.ts",
+      "bytes": 4122,
+      "sha256": "b92a1079dda3cd4034f3782dd3337f51d219f39fea42f18cd2fe299eb4408880",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/userlib.ts",
+      "bytes": 5207,
+      "sha256": "c4c3ab4c946d9ff942a795937b7699fa53b326300bdfcf522c1e7fadf2cfd1b0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/variants.ts",
+      "bytes": 14669,
+      "sha256": "a87ea39521cf61e0a4f1b6093677a7554577e8e1ea410dc7dddbe6262a2f4e07",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/variantsui.ts",
+      "bytes": 8388,
+      "sha256": "12762729eb3b5bb45bccc2e1f1c3ab300e1e62826f5fca232a6c7955a3f92978",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/version.ts",
+      "bytes": 924,
+      "sha256": "5a72dadbb7d80a5db31cc481e63819255f70ee3ab4efe5bddde77812bf701121",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/src/workspace.ts",
+      "bytes": 5915,
+      "sha256": "300a56d8149770f64165c7a7a0efdf19943c02273c736cc169b3e1b57c328a19",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/adaptive.js",
+      "bytes": 752,
+      "sha256": "0492400b3fd721ee29172d5693eced042e3cdbd84d74fa9c2308b7277a7f13cc",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/camera.js",
+      "bytes": 871,
+      "sha256": "0c1194aa03f6f4d571a139ccf7cfcf43207218f899754420ec13d24ca77f6c08",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/codepen_library.js",
+      "bytes": 1622,
+      "sha256": "a83718e02e93db554a87077ba6248286b0458e678653ef81373544d86ade642c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/describe.js",
+      "bytes": 1134,
+      "sha256": "df9811d1b9889ef3f5dfb801dc64c4ef8e19b8ea6fff61363ccee792a10e080f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/g1_gesture.js",
+      "bytes": 11439,
+      "sha256": "12c3f25e45676db7217ce715ed23760084476c14d50212e9780131b33414f427",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/k1_cord.js",
+      "bytes": 6487,
+      "sha256": "8a86245ba0c4a742d552b6b60db92d469fafe1bca179b131dfc4f11053a52d75",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/keyframes.js",
+      "bytes": 1606,
+      "sha256": "47b59b6d33bf6c2af7507ddbf7a2cb6391b9ed384b77ae288172493636188d57",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/lottie_import.js",
+      "bytes": 7333,
+      "sha256": "3cfa55437605f4aa00dcaa2cb2c615bc63d06e59bc6118ca692b2425da129b09",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m1_close.js",
+      "bytes": 4748,
+      "sha256": "e063f3bd1d2d61c160cd93d0c68c98fb788a7786cc39ae03d69cb80248ba97dc",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m1_recipes.js",
+      "bytes": 766,
+      "sha256": "4084e9a57cf76a8ba128fb4bbdc334fd259af618ec0268c248ad84e59825436f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m2_features.js",
+      "bytes": 1063,
+      "sha256": "e772ed908fd8fc256ab5755d1f77794b6092b1be2ec36362538a36e90b954ee2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m2_variants.js",
+      "bytes": 4531,
+      "sha256": "98e5e5ec276b47b65283d181c6f647672408ce9bb4d01487d60e6112c5a74292",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m3_ux.js",
+      "bytes": 2375,
+      "sha256": "f0f4431c4e0eb91fd7efb9f7b185899fdf6fedb2fc10b1c010fdb292f5b546a6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m4_type.js",
+      "bytes": 2440,
+      "sha256": "3e628a54d47e0d28ad52f11c9b70e11ea8c78d9de05142f1e0eb063c90570868",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m5_perform.js",
+      "bytes": 2079,
+      "sha256": "de7e67662122ba7e216432acff6a30d7c0dbac0e62e6c555c3f3887e2751a648",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m5_retime.js",
+      "bytes": 2782,
+      "sha256": "91c00780d6343881f11cfc3a70349c128a2ab5eed0e8057e384ef638f9dc10c5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m6_light.js",
+      "bytes": 3424,
+      "sha256": "83dd3abf56fd31d1f93e3b6776ae15d0dae1ea82e681174bba64d0f96abe4abb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m6_mesh.js",
+      "bytes": 1926,
+      "sha256": "6d573691f542ba291118066a37d09d5d05ba6cb9b231d9aef4b64deb4de54cd6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m6_spine.js",
+      "bytes": 3532,
+      "sha256": "fd5c495933a1273740017ad74721f69a0aacfb1d290d15d5d6500a296b7a0b1c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m7_cloud.js",
+      "bytes": 4992,
+      "sha256": "37684215241bd39a1579382e6732b40e8a3e333fc7952e730b94263b55cb8ede",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/m7_partfx.js",
+      "bytes": 2536,
+      "sha256": "acfab12477fe3ecb9fa1a1cfdfa4c3bf0324763092fa8f7c3b14eeb093040714",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/migrate.js",
+      "bytes": 1960,
+      "sha256": "d028591ec07bd0bf3e5196863b904e3f07f846f2f16c8a3c67474aaf9eac56f9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/mo_motion.js",
+      "bytes": 7248,
+      "sha256": "c88a9bc931176cafb9bbedc6c878192f813c20df6a92ea7226351dbb01a9a047",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/mo_rhythm.js",
+      "bytes": 10547,
+      "sha256": "98044c52c5cb6298aadcc50179a8b1f56e3ca1dfb3b43727bd5cc2f53a434cd5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/new_effects.js",
+      "bytes": 257,
+      "sha256": "13e7da726af14de80a5e66d4e71e7b0b76d3a16c2ef26feb6093886a93801714",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/p1_presets.js",
+      "bytes": 9019,
+      "sha256": "a8e21d2d37d6fd9bb5dc54ab598a25622d9f858d8d0cc0c3e8df8b6e0aa734b1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/polyhaven_import.js",
+      "bytes": 2697,
+      "sha256": "e8e99b57b73ed96ff41757d41537b75e598da805035fda6b14e0cfa1d30ff0e6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/r1_crt_light.js",
+      "bytes": 3759,
+      "sha256": "8a8fffaedb500fd58fa902162e302031280eb7737918ddcf981eca26265d8c42",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/regression.js",
+      "bytes": 1109,
+      "sha256": "a1f063d5b38363ba10f2ebabed5251c84ea9217eb58dbce1e06e299f87c9bb2c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/rnd_quality.js",
+      "bytes": 6543,
+      "sha256": "73425603295ce43382d1aaa24598f8b082f6bd045036ccec4551f3f7e778f662",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/run.py",
+      "bytes": 2581,
+      "sha256": "f41604c323483eb5c1ec953015d04644aed5713e25b08ddafc5a708d33c519dd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/run_all.py",
+      "bytes": 906,
+      "sha256": "f26b51244e6f06c9ac95a46d1786da6a9b87526e577e0e60d2ae5a81346b0a69",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/s1_scenes.js",
+      "bytes": 5353,
+      "sha256": "870cdbb2a8c1e5996113aa479a28863640360528c99f2980d096a57786af4fb0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/smoke.js",
+      "bytes": 36,
+      "sha256": "0b8ef96c4f8ea823f4a154d6737b5d068f8d1e83b2fed8aaffe3b671b7faca29",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/t1_terrain3d.js",
+      "bytes": 3026,
+      "sha256": "b52872ef9c4ec334302db00d3b7475bd3989577055880a0a5fbc5dc13996ad48",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/tap_timing.js",
+      "bytes": 9813,
+      "sha256": "64e29127eb6c363d2c1643d861913734a313c7390d369db141f5293d01d639e2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/time.js",
+      "bytes": 3800,
+      "sha256": "9e0a370c24d69940601c0ab6b51b8dc7d0710590dbfb60ce61b146c0c7574894",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/timeline.js",
+      "bytes": 881,
+      "sha256": "d19402001f204ee759eb8fef84068f705523d3c05386c3f3c74e18c2e39f82b6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/tracks.js",
+      "bytes": 934,
+      "sha256": "1788085914c9a86d4355f224251251adbbbf6a1f19db37456511b07f9f11bea9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/u1_anim.js",
+      "bytes": 11550,
+      "sha256": "017026212e600b13f52a99e4eed21074658b887fd6313d4829930cd3c3fe561d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/u3_ui.js",
+      "bytes": 5390,
+      "sha256": "2774426ff8783f93c8cdd61096a448de66f925757036e3d447208b310e592465",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tests/u4_ui.js",
+      "bytes": 7724,
+      "sha256": "91eea855958a069e4b9317e019a20cdb05365fd5b8fb609fb013ff302332a792",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "app/tsconfig.json",
+      "bytes": 369,
+      "sha256": "c2a6204c8b7b0ebcf9674f591c70d105b0d39897a97527983a6594a04fd9d964",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/javaslatok/3D-TEREP-JAVASLAT.md",
+      "bytes": 8350,
+      "sha256": "93d53f3e409f9d22b42a5517328f65d4e102cb70b5df01bc7d85dee686eac926",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md",
+      "bytes": 13304,
+      "sha256": "7585271dd8acaa0c3eb5035683662059e17387b7b2fbd96ade7a9e9d0e9f1f13",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/VEL-KULSO-MEDIAK-IMPORT-ELŐKÉSZÍTÉS-2026-10-18.md",
+      "bytes": 17960,
+      "sha256": "3d0b168baf81269a4784bd3e1276b463d00646efceb2e91c9f4eeaaca5be7dc7",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md",
+      "bytes": 230122,
+      "sha256": "77b946fe5360784cd8216eb16f7bfb2fefd243ca5d58c6997a9c0386295ca5c6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md",
+      "bytes": 46211,
+      "sha256": "28c4f49fd2f10ce2d38e6d676c39b5cde6a496a7a45a123e1191ee1a2421e68b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/VEL-TOBBVIDEOS-TIMELINE-TELJESITMENY.md",
+      "bytes": 6950,
+      "sha256": "636b19d5425e90af2cc2ea93312ef0e5cae3273c761699dec1d064284c4e1740",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md",
+      "bytes": 14596,
+      "sha256": "39d00a2daa72e296d4e3ac415dec087d26208b41777f768ec3de07f1be19d756",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/vel-beszed-ido-prototipus.mjs",
+      "bytes": 1321,
+      "sha256": "cdfab838f30ea662afaecf46c57ad90e663ee59b04fbfeae3b845e6a3633181d",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/vel-beszed-ido-prototipus.test.mjs",
+      "bytes": 965,
+      "sha256": "48074ce844f43b637d2e4ae51fd705b3ec2ac7441bbf127aa6f9724fb4453f07",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/vel-fejlesztesi-terv-jovahagyasra.md",
+      "bytes": 40491,
+      "sha256": "57171d920fa5de455d821fdc2afae3edba683db416d1422b9609110a1307dea1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md",
+      "bytes": 23327,
+      "sha256": "1198fbf3638bef6fe4d88f4a3a392d5cc0fab81d741f3fa16a20a143b521317a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/vel-media-import-core-prototipus.mjs",
+      "bytes": 5736,
+      "sha256": "be0662ad97d9ae554e8f16fd53f1f404a7ff0ef3bd571bd5d5b52e45c35f3537",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/vel-media-import-core-prototipus.test.mjs",
+      "bytes": 3431,
+      "sha256": "4e920275472f45844ebac09940019b1c17adf4f9382d32449fdd10351c28ddcd",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/vel-mozgas-polc-kategoriak.md",
+      "bytes": 1915,
+      "sha256": "0ac52eeb42bb4056008ff9f296640a2f9a575b20db86611e9073b2974476c21c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md",
+      "bytes": 18009,
+      "sha256": "e63ac4079471954bb1c1c782bda653eebd5c1045e4ae4fe9ba0f933292740982",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/vel-ui-visszajelzes-2026-10-18.md",
+      "bytes": 2669,
+      "sha256": "347e2c8b0b513d043b1f759c068acc0e06f509973aec9ecb5f57802bd4621dc9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "docs/spec/vel-utvonal-mag-prototipus.mjs",
+      "bytes": 3956,
+      "sha256": "3293538783ae3fb157aa3b22d43e4d71cc6ebc4f294f399a527d9263c9589320",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "docs/spec/vel-utvonal-mag-prototipus.test.mjs",
+      "bytes": 1463,
+      "sha256": "18baaf35797d3abd1f8c0005bbef735c91f5bbfef564164a21c02e3932b96522",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "presets/egyedi/EREDETI-PORTOK.md",
+      "bytes": 4077,
+      "sha256": "0cb773246d9c15c09942d285565894f30d75601352b7e17243146f1e6dd07765",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/CATALOG.md",
+      "bytes": 12294,
+      "sha256": "f51b002cd8c609e049b41b5a9f1e318a41fc87900d83cde2387cf2d22494dc54",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/CLAUDE-HANDOFF.md",
+      "bytes": 4039,
+      "sha256": "75b6dd870de4844a60efb21ea33931a183d49148fb5b5661811820d94c557a2f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/README.md",
+      "bytes": 4888,
+      "sha256": "435c7ec1629dd976681a005a9f49e5899cc24e7f643f0ce798b363f8793daa61",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/THIRD-PARTY.md",
+      "bytes": 12163,
+      "sha256": "c5d723612d27ddc9be35899357178a8ef94de7b0ae8a3f1180746668c217121f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/VALIDATION.md",
+      "bytes": 2396,
+      "sha256": "aa0c349ab1e878b048b09d4c11716e8ff97df97f196c9cdaded75f9cd72d2446",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/browser-report.json",
+      "bytes": 8589,
+      "sha256": "a9142f603161fc74d3c5c0d42913834f4e55a315aa8b1c970928dfc786348c7d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/core.mjs",
+      "bytes": 2435,
+      "sha256": "b1b25c98b32266ec59f1b8f42fe78c1c8316ccdd226f68e72a7a721a941b2fc7",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/01-csg.mjs",
+      "bytes": 300,
+      "sha256": "74f19d0a2d202923df2b75e0d19bfef9545e0e4c4a3452e23883e6a39f6f69e0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/02-subdivide.mjs",
+      "bytes": 312,
+      "sha256": "69a63f4fbf932deb39be430c0c4344824b8f8d9b901b283f55ef53dc86180a89",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/03-decal.mjs",
+      "bytes": 304,
+      "sha256": "884a20e36217b9d2f4fd7dac904b4059386523f747fa9cd96e8c0b5e77862516",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/04-extrude.mjs",
+      "bytes": 308,
+      "sha256": "171fbecbbfdb6f73d0bfe3e83666df82a5867e905251c9424963af7b570802b9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/05-curve-flow.mjs",
+      "bytes": 314,
+      "sha256": "d61a3cdf98d148eeab3b1b925cbbfb2bf2e7d3b9a8ef0004fd1befe70bf21f0e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/06-metaballs.mjs",
+      "bytes": 312,
+      "sha256": "956bb9ce12074f660530200c2e0799280a3f9fd835f41fa62d55dcb994406326",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/07-surface-scatter.mjs",
+      "bytes": 324,
+      "sha256": "ff11aae747ef0f7267b94ad040de0443f125376dae1fe05c333433010b557f86",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/08-svg-import.mjs",
+      "bytes": 314,
+      "sha256": "0b64bbe3d3a1a1242bb572271745982f55d95824bb93f18d45a591ccd83bfd4b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/09-font-outlines.mjs",
+      "bytes": 320,
+      "sha256": "e3835a38188087d8759201a0070020e512b724fb2b1934148ec8a051690ff955",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/10-vector-paths.mjs",
+      "bytes": 318,
+      "sha256": "3146dcd8c36517ce0eed6b862172f1beb76ab7c3b8894c54d3d90f651aa56e3b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/11-polygon-boolean.mjs",
+      "bytes": 324,
+      "sha256": "b3757fbf73b307c7638f4ffcbc06abf09d4aaec4d695428c01bab8ab99753d8c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/12-triangulate.mjs",
+      "bytes": 316,
+      "sha256": "f185eac68f32d88b5d119650d86cbcd6ef3fdf70660a90ce831a4207da06de8f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/13-voronoi.mjs",
+      "bytes": 308,
+      "sha256": "e047b29bc70d2e7108e60bf5588889f0c4c1349a6cb5f1cefd588d85a49dbe07",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/14-custom-material.mjs",
+      "bytes": 324,
+      "sha256": "592dc1bae032d237114e32b92d0e75582b36f747bead8b7c8d0187b53ac71dcb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/15-planar-reflection.mjs",
+      "bytes": 328,
+      "sha256": "0baab29d8615540d7fe8d1f26e656ac4a302175958f7f1bd5c16ea623e7efd17",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/16-environment-map.mjs",
+      "bytes": 456,
+      "sha256": "6275fe018f8d1f01cbed07bb30e4ceeb4dd3f3089edd3db45236d0cde557703e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/17-contact-shading.mjs",
+      "bytes": 415,
+      "sha256": "93900c72c38ef20360543307fbc336fabe99bf1ed027598012169200878681c6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/18-lut-import.mjs",
+      "bytes": 366,
+      "sha256": "fa68def38e20f9d65bfdbc98a1add59d0be88f142387ce0a63363c3d676be2d0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/19-perceptual-gradient.mjs",
+      "bytes": 332,
+      "sha256": "e8cc8b04fd6358fedda133de58a7fae2faafaac286b2618d28b33a15c57b7f5b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/20-palette-scales.mjs",
+      "bytes": 322,
+      "sha256": "569091da197fcb26d18348a5bfa989cf239de65f94ac269172bf992d786d2c88",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/21-camera-framing.mjs",
+      "bytes": 491,
+      "sha256": "aef1f74f1992a83fedc61091325c316e1942a1d9b39dd16f857e313a684ea088",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/22-ik-chain.mjs",
+      "bytes": 310,
+      "sha256": "a15d3f9fed5e026560af05fbd92d89e1bffcd000b3dcd3c92d96ba0ef507f9de",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/23-nebula-particles.mjs",
+      "bytes": 687,
+      "sha256": "29a6838bc6fd450e5ec162e6455f8ca3300e90169c70cd7c5c66cf5c8fa04a69",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/24-rigid-bodies.mjs",
+      "bytes": 396,
+      "sha256": "a5f7c506a89bd54c01a81c6a683f92059a79d9b9786543771b146810ff8d2473",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/25-gpu-particle-state.mjs",
+      "bytes": 1533,
+      "sha256": "48fc10d12eff79fffe5d1a25245e239a3bfca8fa873cd479ab56af5bce37bb20",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/26-bezier-easing.mjs",
+      "bytes": 320,
+      "sha256": "f7e6586acdd5505c4680a829ca5a8a9de924eb53aabd01fd1ecc4372762678c9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/27-tween-sampling.mjs",
+      "bytes": 322,
+      "sha256": "7dd330be72e3b7866048f78c8ca6f389c65e539ce2078be2c8f6a421ca0c0156",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/28-waveform.mjs",
+      "bytes": 518,
+      "sha256": "574b349f7d909136413748c3f43e0d4f452381f91d56af69bee938ccf86a5531",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/29-audio-features.mjs",
+      "bytes": 322,
+      "sha256": "aa23cb9618c506f0db846e3015932d88fe609aee101e233bf3fe465e9cd18a5b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/30-metronome.mjs",
+      "bytes": 408,
+      "sha256": "4ed4f97f96541357e51f2f5ac97e71f0b00d21ba311a457fd6888b2731f33a97",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/31-bvh-picking.mjs",
+      "bytes": 316,
+      "sha256": "981df6c54fb31356d34bc335a048f8d30f8112986b277c630f74cde1c80e12ca",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/32-gltf-optimize.mjs",
+      "bytes": 373,
+      "sha256": "ca9fe3fa75884ac8bfaa01d2edcab4785a7c05db5e1a198d6025559bd418c8c4",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/33-mesh-simplify.mjs",
+      "bytes": 575,
+      "sha256": "d0c149ac8c2f47bd60b2e5f1e5b04ada5043e70aa8ad47c5e3cf343fa5c3e90d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/34-instanced-copies.mjs",
+      "bytes": 326,
+      "sha256": "78d10d1c4c20dc2c871c2783fbe07e264be8601757412c6377b57658ec562f67",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/35-batched-objects.mjs",
+      "bytes": 324,
+      "sha256": "f0c597e9cc27706e0937270c75db1796dd646de2670f905c35a36ba2834a7390",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/36-frame-debugger.mjs",
+      "bytes": 389,
+      "sha256": "c1f79da334bb0bb79ccc84ce9bc96e5a1592ba2e387fe99c134885b69be1a546",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/37-webgl-lint.mjs",
+      "bytes": 413,
+      "sha256": "0c540c0f6e3f78ee3973c32c83e815fd697b29ca51c4d6912d1265b0d64bd9c5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/38-sortable-toolbar.mjs",
+      "bytes": 583,
+      "sha256": "b1a0fb077b0d56e8c0ec62bcd85d041728d9375bf59ddc82280c69afaea3e533",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/39-split-panels.mjs",
+      "bytes": 646,
+      "sha256": "00f164b00d6f8fffa24a759615a0dbf2428295609900330d695acda0c18871cf",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/40-foliage-assets.mjs",
+      "bytes": 490,
+      "sha256": "f311c9ab333916faedf0500f0898ecbe0276c7afa4c553e686f683ec21f78587",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/41-smoke-assets.mjs",
+      "bytes": 483,
+      "sha256": "90762ede07800fcea40c8cf5b72cb840b981fcf3f0b10616c376b6054083d5c5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/42-polyhaven-intake.mjs",
+      "bytes": 625,
+      "sha256": "4f985b588b7cecc2969f0c04bc57d420172e5d1d59c3f2c0e88d5a0bc0605086",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/43-ambient-pbr.mjs",
+      "bytes": 706,
+      "sha256": "cff71291a546392f4d404a2adca4856971440b30bbf04f0836ec6969a00814c2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/44-particle-atlas.mjs",
+      "bytes": 519,
+      "sha256": "29f0329099e14f26a7d632b7c935f86f032d14e29426921587ea843bec3f37fd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/45-curved-text.mjs",
+      "bytes": 400,
+      "sha256": "798154a696d66b3338cc63f51822cd503a81450062ff993cbe6e82ae57caa95f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/46-path-tube.mjs",
+      "bytes": 312,
+      "sha256": "672220a7eb62451ff1c4516d904b9e320bde8abdc3db836bcbea90c3b068d80a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/47-tapered-line.mjs",
+      "bytes": 318,
+      "sha256": "1ea960407be757863b257ebccb68cca423ee8fc872b5a3498f044dfbce74535a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/48-glass-material.mjs",
+      "bytes": 340,
+      "sha256": "5f978f140be47651bef6011f3cf79b46574cd70cb8b61d5e22ca051f8d5274ec",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/49-quarks-emitter.mjs",
+      "bytes": 392,
+      "sha256": "6f6248160c39457d3d20474877606d95625abaa45cc9f5a3307715a3a2b341aa",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/50-fluid-field.mjs",
+      "bytes": 401,
+      "sha256": "0e430441db33de622c1fff3ca585ff41dc01fa9a0d772f9d8e8a1f5a37f9a65b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/51-water-surface.mjs",
+      "bytes": 320,
+      "sha256": "2cb809a5fa9344cd3fe68f12a6a72ca7af75970925df1d26961255b07aaa89cf",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/52-seeded-city.mjs",
+      "bytes": 316,
+      "sha256": "bb1a2c5488bee59c56c171ed663f0374a52e4e4d0e3e2e7b5946bdfcba26ec07",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/53-procedural-noise.mjs",
+      "bytes": 243,
+      "sha256": "4b51f52b446e6d838d94e44767be9a779d6cbf9a2bd12650b8c7ce34ef996c6b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/54-postprocessing.mjs",
+      "bytes": 362,
+      "sha256": "a91a41ca8734fa4de7a3a1c8927b1aa63f50ed76ea609cde90aed76d29f278e6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/55-rapier-physics.mjs",
+      "bytes": 441,
+      "sha256": "543ebad2750e8f6e4dd3cb664226202e607cd1273666dca03e15b7cfcef26a15",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/56-streaming-export.mjs",
+      "bytes": 1016,
+      "sha256": "c51168e49c47fdc65a95ce0766912f5ab57758f94901fdbbed22dd5b5ac20a6c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/57-color-picker.mjs",
+      "bytes": 390,
+      "sha256": "ce36f3609954010c3c986f726e85ac05983eb783de2b687d89a70faa42e224b9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/58-fit-motion-path.mjs",
+      "bytes": 324,
+      "sha256": "0256272b24ee85dd25e184a5973dda03810e4b6f6f4229916a184774ce5d303f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/59-dom-transform.mjs",
+      "bytes": 856,
+      "sha256": "099525d9e6ad17e725b5f92489fe0a274058987159b3b738966e8fc461e52118",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/60-transform-gizmo.mjs",
+      "bytes": 357,
+      "sha256": "6606165180980e0c8cf16bd0d683d5e0c9a4fbbc49427b921727e0c8be0cdc9c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/61-model-animation.mjs",
+      "bytes": 324,
+      "sha256": "8d835afef294edf022e3420c4075eaa9ff6267b26fd32baf5476d397c90c976b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/62-gltf-import.mjs",
+      "bytes": 534,
+      "sha256": "a91418416f699d9a0ed4d298b23df3fbd2fec61bc80338e2dc91c8779af3adab",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/examples/63-color-wheel.mjs",
+      "bytes": 331,
+      "sha256": "d24291185696b723013b7c4054c2aa9727d768b21a3f321e9d05b38c1d1e7acf",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/fixtures/lab-vector-font.otf",
+      "bytes": 1724,
+      "sha256": "d62f7c55894e0f341d5bbc5b3fd5a590a9b0097fea261dd261311b78397d5f4f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/gallery.css",
+      "bytes": 83,
+      "sha256": "19231d34e9ddb0e2affd058217f1514c39260d8351a76da88063a714f4e68437",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/gallery.mjs",
+      "bytes": 3478,
+      "sha256": "c7ee40b5b3edc23af76f3f79b81bd336d930a45af62f7e2cd90f727f85f7b337",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/index.html",
+      "bytes": 1958,
+      "sha256": "58b0e6e36e909236217dc5f16019829f2d3860e78afa3bda0784b7e8edafe93b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts.html",
+      "bytes": 1043,
+      "sha256": "0167dd7ece9e0f60e82bdbdd5d8a07737baf0bd911443c057eed7230a338fcf3",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/README.md",
+      "bytes": 4590,
+      "sha256": "c67f7c20dbde67de89166cc90101a27860cb7224f23a25d802d477c7aa9cc10b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/assets/motion_blur_portrait_01.jpg",
+      "bytes": 26871,
+      "sha256": "f84477bebe47fe31721914c04ef5979614df7554af3671f8ee9975039a36680d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/assets/motion_blur_portrait_02.jpg",
+      "bytes": 28279,
+      "sha256": "4d2a9253ee60f5e86eb2c04a1e19045e8229ac558062f6b773bf9dd82e43f7ea",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/assets/motion_blur_portrait_03.jpg",
+      "bytes": 31885,
+      "sha256": "59700fa08be5cdead1061b86f2660124dc0f2aef4168291e3d48961b2c41dc12",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/assets/motion_blur_portrait_04.jpg",
+      "bytes": 28414,
+      "sha256": "c0547459451a2335514e877207f509ed2bd4a5e8fd7eeae130e60309eb039c24",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/assets/motion_blur_portrait_05.jpg",
+      "bytes": 28699,
+      "sha256": "c0114f1eae4e6ee703761983f821f8f0853d9c1d996b8fd1c24a64f21b1bd489",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/assets/motion_blur_portrait_06.jpg",
+      "bytes": 29396,
+      "sha256": "5565997c89281217bd3bc09becccb05dfd065fd3faa3722eb5f377a1b4e4b3d3",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/browser-report.json",
+      "bytes": 234,
+      "sha256": "fa52e11bbde18e506a581c1b037c24e6a33bd64660eea572b0e5fd72b8da6f95",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/gallery.mjs",
+      "bytes": 5415,
+      "sha256": "80e8023c77cd4b4c7c2ec3837e90673e181306ac216003a9cbbd9cb3fb4ee515",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/mobile-preview.png",
+      "bytes": 155207,
+      "sha256": "089249c13e588964eb4f46a35fd96577ce9d296e46881aec3a167af003a53517",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/state.mjs",
+      "bytes": 2191,
+      "sha256": "82820fb83f2bca3b6731b24d66136344e620f557da96e1e9337549925ae144da",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/style.css",
+      "bytes": 1747,
+      "sha256": "ec34b4744d11ea78803944b1d9950994a9c4ca4cd1b4621691b31cb786704d40",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/unwoven-preview.png",
+      "bytes": 382162,
+      "sha256": "9ba3851da3c4fe4c5e4f69338cc0b0b4b404de7f09a60108525bae024f9a38c8",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/unwoven.mjs",
+      "bytes": 5141,
+      "sha256": "777771df4ad3f0048db6177cda213e416c227d70f6c724b1b4b4889f2b7855ec",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/vendor/LICENSE.md",
+      "bytes": 1112,
+      "sha256": "0dc582269b0291cff034902c2498e132698fbce33a2a11c784b827fb54aab4f2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/vendor/unwoven-original.mjs",
+      "bytes": 6484,
+      "sha256": "57bb6dfc7772e747a2e8f7a3449d7e77df2e6d71ff7db274149ae10384dff2b5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/wide-study-preview.png",
+      "bytes": 411792,
+      "sha256": "861213322fde1da233c57f77a06af7da907ec6a69f22060c0466cdfc22b0d0b5",
+      "tracked": false,
+      "dirtyAtSnapshot": true
+    },
+    {
+      "path": "prototypes/extension-lab/layouts/wide.mjs",
+      "bytes": 3063,
+      "sha256": "716c354ab30836109553f79bf59bc4aca623f323deb11f3e64f2ad45272459aa",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/@gltf-transform__core-LICENSE.md",
+      "bytes": 1078,
+      "sha256": "2c4f111d00dbf22b10d31a14813c5f5de6a828640f7311f26b9dda89b3fce165",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/@gltf-transform__extensions-LICENSE.md",
+      "bytes": 1078,
+      "sha256": "2c4f111d00dbf22b10d31a14813c5f5de6a828640f7311f26b9dda89b3fce165",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/@gltf-transform__functions-LICENSE.md",
+      "bytes": 1078,
+      "sha256": "2c4f111d00dbf22b10d31a14813c5f5de6a828640f7311f26b9dda89b3fce165",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/@img__colour-LICENSE.md",
+      "bytes": 4433,
+      "sha256": "e2eaa4603c14cb26f301e88648c12a853fa3f0f5da6d4b0972958c666e7f2ab8",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/@irojs__iro-core-LICENSE.txt",
+      "bytes": 16724,
+      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/@jaames__iro-LICENSE.txt",
+      "bytes": 16724,
+      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/bidi-js-LICENSE.txt",
+      "bytes": 1071,
+      "sha256": "49d4d143fed599deb502a0fe6e02f49832f87e9a3a4cd0502e469596d50faa6d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/deepmerge-license.txt",
+      "bytes": 1116,
+      "sha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/esbuild-LICENSE.md",
+      "bytes": 1069,
+      "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/fftjs-LICENSE.md",
+      "bytes": 1067,
+      "sha256": "4b6621d64abd54d81c7434d96ba794b2f3966a6a543daddf3904a3945f2c6308",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/meshoptimizer-LICENSE.md",
+      "bytes": 1079,
+      "sha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/meyda-LICENSE.md",
+      "bytes": 1111,
+      "sha256": "15be9b78aa3f0b48a2ef63359b0cacfd73e61ac9244818db8086d858fc7f8121",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/ms-license.md",
+      "bytes": 1077,
+      "sha256": "6652830c2607c722b66f1b57de15877ab8fc5dca406cc5b335afeb365d0f32c1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/paper-LICENSE.txt",
+      "bytes": 1173,
+      "sha256": "f8833a38807922b4652421eb0cf29065400c55abd6f4832b9c3250dae87e1958",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/polygon-clipping-LICENSE.md",
+      "bytes": 1327,
+      "sha256": "864ae9e4ed75e1571a3bcf5dc9070264213445b32e7e2af5bf60eba46fb656d0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/postprocessing-LICENSE.md",
+      "bytes": 858,
+      "sha256": "b7650918449bd5fb011ce30ce0e5bcda27aa9639db1fb3aef8c67c32945237f2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/spectorjs-LICENSE.txt",
+      "bytes": 1075,
+      "sha256": "2d0995ba877a5f0ee647e8ccd3e185179994954d00d4957aedd66f76f6debd87",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/split.js-LICENSE.txt",
+      "bytes": 1057,
+      "sha256": "88c6d1571864b8c6b47f223cadd1351f0a33f0281de9855ff7f7031b76114372",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/three-custom-shader-material-LICENSE.md",
+      "bytes": 1090,
+      "sha256": "ed77fd7f6af32f16457c2351282c926e061f80814fa71546b07075a0c5eef5b6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/three-nebula-LICENSE.md",
+      "bytes": 1067,
+      "sha256": "2d8ca57d819642ee10c5782be66e571b3f041c934dfa67518bf01b08744d992c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/tone-LICENSE.md",
+      "bytes": 1072,
+      "sha256": "391ed5af60b7b5d1f74b31040c5fa645e6e238f3d9b4c971941a262a675bbdcd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/tslib-LICENSE.txt",
+      "bytes": 655,
+      "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/vite-LICENSE.md",
+      "bytes": 108786,
+      "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/webgl-lint-LICENSE.md",
+      "bytes": 2241,
+      "sha256": "a5887987c58bac1c242439ebc7170a9759a9a344a9bfd444265eecee8687a3a7",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/licenses/webgl-sdf-generator-LICENSE.txt",
+      "bytes": 1071,
+      "sha256": "49d4d143fed599deb502a0fe6e02f49832f87e9a3a4cd0502e469596d50faa6d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/lint-demo.mjs",
+      "bytes": 815,
+      "sha256": "bac2448e42a51a296520c2c8912964d34a47477067aa6fb338b45ece23e722cb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/lint.html",
+      "bytes": 272,
+      "sha256": "97fdbfc90115f7e1f77be979c74ffca996426e6a7fe03e9679891069c8a8abd1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/manifest.json",
+      "bytes": 28203,
+      "sha256": "284bff53143221679dff6329ff764c681680486b86494b9ab6d8775e4dae1e58",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/01-csg.mjs",
+      "bytes": 979,
+      "sha256": "2095148e9fe273e641a884e0ff1b9ff34d57bf07e244654c9e08b99492e52f32",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/02-subdivide.mjs",
+      "bytes": 685,
+      "sha256": "a3c0631792da781a50a6a1e230a2c6979d25b6a4d84bbb17e23d80595d1c71db",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/03-decal.mjs",
+      "bytes": 1028,
+      "sha256": "a66a6f89d27700c34535d093805831f0954ab1f912ef66dadeda3802fd4c739c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/04-extrude.mjs",
+      "bytes": 979,
+      "sha256": "aacbb8c216ac6b173e6850ef99ed3eebc304f4365efba7da0cb5b31e3b717aa5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/05-curve-flow.mjs",
+      "bytes": 1029,
+      "sha256": "9aca252085d6e5a73c2b55d91baea3ec8818a576ff56c07c8da6a6d7ea7265d4",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/06-metaballs.mjs",
+      "bytes": 931,
+      "sha256": "9836a461cea452d54550fac210f3d5651b6b7a360d061711576afc836ed46111",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/07-surface-scatter.mjs",
+      "bytes": 1334,
+      "sha256": "bd365e54e267635933f7b7e1e3d53ce3d709f75c4228eb269dabe9dc6c3aaf8e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/08-svg-import.mjs",
+      "bytes": 1131,
+      "sha256": "9bb0c0c58a2fab503f23030e7a4517a8729476cd1b48e39f2691afaae1b5e4dd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/09-font-outlines.mjs",
+      "bytes": 1135,
+      "sha256": "49bf3232e84d51ba6933f9a531942d98aff48eb11c94525a5318fd009a802060",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/10-vector-paths.mjs",
+      "bytes": 702,
+      "sha256": "a169ac3b1abf64f9d9a8c51e9225a80100c3c37a8396a78208c688d8228d5b1a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/11-polygon-boolean.mjs",
+      "bytes": 605,
+      "sha256": "3926635a0b5b80e5428eaaedeceb52bbe4c0d3259dc7fbcbe325d8ffd2153254",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/12-triangulate.mjs",
+      "bytes": 728,
+      "sha256": "3a554809e9d67e64356cfc1f27d2dd4cf6f2f12243000e6743113294ee7f4121",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/13-voronoi.mjs",
+      "bytes": 685,
+      "sha256": "e7a4fcf732a587fe33cb30f3b80c0a64225d9d26f464cea01cbe365157a513bb",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/14-custom-material.mjs",
+      "bytes": 713,
+      "sha256": "4e330bba614c4bf959c3b133d67ba4f62db69f691b61c8321ccdeb252ad3d423",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/15-planar-reflection.mjs",
+      "bytes": 457,
+      "sha256": "9f152166c2c47b90582b0cc78ff5d1500e10cdd763bc4da0ed0e7b9a276981f3",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/16-environment-map.mjs",
+      "bytes": 766,
+      "sha256": "8809d9f9f8f3ff359543fe658adf06c630920ce8a3babbb920fba3811661672d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/17-contact-shading.mjs",
+      "bytes": 528,
+      "sha256": "d05225d2853ebce8083250d9a3c1979b276e3e44a6e955ee4a7734db18b9d7c5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/18-lut-import.mjs",
+      "bytes": 602,
+      "sha256": "a4eb6db70995e0922bf28414ba96a82ec6d4c14e404a44cf9f9d8cc69238b43a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/19-perceptual-gradient.mjs",
+      "bytes": 571,
+      "sha256": "aa113500408ebbd362c858b620bc35bd9257f560a65aa2c528e19284f4e15d65",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/20-palette-scales.mjs",
+      "bytes": 511,
+      "sha256": "42a4793f45d1803b7cac6aa1f95fc3ca7c6258014745f3c218d431b0fbdbd170",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/21-camera-framing.mjs",
+      "bytes": 804,
+      "sha256": "9e11be4cc60634b084a41921b1e9038569f6de3f55946f890e1268605368a96a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/22-ik-chain.mjs",
+      "bytes": 1654,
+      "sha256": "b3a52efeec2b68125d3ad641bee174c9e9635b7dd2e37860b44b0499a0e1caf2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/23-nebula-particles.mjs",
+      "bytes": 1107,
+      "sha256": "35375e270a4fb20b3c02186766d262de9a3016d14319d49a54e624320413450b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/24-rigid-bodies.mjs",
+      "bytes": 811,
+      "sha256": "5980a2faf0ae39dc81b76f5310ca7ef78f5d64a4108c4e42553655074b2a3269",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/25-gpu-particle-state.mjs",
+      "bytes": 1340,
+      "sha256": "8dd7bf66e8f42a574aa7312d62bac5ee60e329cc6b1d3d55645e8c30d69fad37",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/26-bezier-easing.mjs",
+      "bytes": 459,
+      "sha256": "34b330f24272c596659ffc18320e1efdbfa4f92dbfb8095953b130e7d4a400cd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/27-tween-sampling.mjs",
+      "bytes": 712,
+      "sha256": "01b69dd3d148bd02341b732c5fa677b2415ea6053c04f61b0f086f55d9b67585",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/28-waveform.mjs",
+      "bytes": 1117,
+      "sha256": "2de35d592088e9fa55bc71068c19d11d34b397a9d60c974cfd63aa6ff6ee468d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/29-audio-features.mjs",
+      "bytes": 982,
+      "sha256": "4d27e4b4583b8666ee1f3c4bdba48af41047c62b46025a73fca18501ed9a3174",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/30-metronome.mjs",
+      "bytes": 1064,
+      "sha256": "0f4b5fe895069f20b3fda423f1ac870c800e8c7b3793fdfe58c55c6bc6d0a1db",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/31-bvh-picking.mjs",
+      "bytes": 781,
+      "sha256": "ee1f9f251aa92dd1846753baeeca7371aaeb6dbfae774439d8aa2b996433a567",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/32-gltf-optimize.mjs",
+      "bytes": 560,
+      "sha256": "d51791cc8de09b586e34ddffa7b2124f878db4e5fa4bcbaaeceb177881b8b766",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/33-mesh-simplify.mjs",
+      "bytes": 619,
+      "sha256": "332655de3ed26ef12d605f0dea899d46d96e1dc33e738b499e692bee4c6c25ac",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/34-instanced-copies.mjs",
+      "bytes": 786,
+      "sha256": "e0ef9575ff9c99e858f5d0530670ebea54e9f4a0725f046e2cc67e6c3b7a6ac2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/35-batched-objects.mjs",
+      "bytes": 815,
+      "sha256": "bd93a2dc48857809791076dad10f778afd772c2ad2b63687274816495c150aed",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/36-frame-debugger.mjs",
+      "bytes": 603,
+      "sha256": "3fba9038538660d573d176bdd83b98aed765f71e3cf9c0c6964956f908941418",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/37-webgl-lint.mjs",
+      "bytes": 714,
+      "sha256": "9220c6444571b90d7217d04ce44ae3ee9e2b5747d136114dedf6d77136cacc01",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/38-sortable-toolbar.mjs",
+      "bytes": 592,
+      "sha256": "0557ec5a00a86579bdd7cf1b20884f3efc58499184685f0627b0a6b6d8f4650c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/39-split-panels.mjs",
+      "bytes": 582,
+      "sha256": "994192b1b4b2d678bee028ebc3f2ddc4a6c1cb2228708699062d24df9c817be5",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/40-foliage-assets.mjs",
+      "bytes": 482,
+      "sha256": "46f686c0fe68be8280cd11586d879aa998f5e0860942096b4c37382fe216ead9",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/41-smoke-assets.mjs",
+      "bytes": 478,
+      "sha256": "fdaa96daff6bf015003b14ca5e3968a1da34c4ff0f1c2cc552b70a83b31e4ecd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/42-polyhaven-intake.mjs",
+      "bytes": 687,
+      "sha256": "6a63552bb8381536562a24b2871ea8664e7970d5645067a0a3643a2d14cd935e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/43-ambient-pbr.mjs",
+      "bytes": 1001,
+      "sha256": "e5a1cc67694c813847deeadbebf465191a02f33c591758a173b7317eb98ab1ec",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/44-particle-atlas.mjs",
+      "bytes": 370,
+      "sha256": "2a4287a5b9e076f2482197221adce409a1c40fe3c151690ff48a4d818370b2f8",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/45-curved-text.mjs",
+      "bytes": 723,
+      "sha256": "719afe2c4346d1dfdaca88ac4dda680ffbb73c05efad3cc0ef9f7032f1d1de65",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/46-path-tube.mjs",
+      "bytes": 812,
+      "sha256": "fca9a0e8ce8dc13d714e3dbe622eef2f0de23aebac26693758bdc605cf15ccb1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/47-tapered-line.mjs",
+      "bytes": 586,
+      "sha256": "efc4a327528fd17ca328c5ba03f8a76740e36ea2edc8f8c1b7d37b512c074a3e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/48-glass-material.mjs",
+      "bytes": 761,
+      "sha256": "840f03a8274462ff0fae5ffd2ed7ae9ed03f5ff46fb444669ed15801d11fc86f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/49-quarks-emitter.mjs",
+      "bytes": 1231,
+      "sha256": "9ce4317a24f58700a6377196cd814cc3cca668727e3a2137862ce2cd52128a8c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/50-fluid-field.mjs",
+      "bytes": 7103,
+      "sha256": "ae2812b1cbcafad6bbcf3408fdd5a012c8e7b287857835493abaa4e50d52132b",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/51-water-surface.mjs",
+      "bytes": 1019,
+      "sha256": "f92a09e7796d924ac243238987920619286764d8ced84cd825fb46dafe835e72",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/52-seeded-city.mjs",
+      "bytes": 1199,
+      "sha256": "c351addd849141f1c2b959fc2ab927da6ffc6b92670c470191cbcb3dd26c364e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/53-procedural-noise.mjs",
+      "bytes": 500,
+      "sha256": "baa0a5f3a7fe5aae5a6bf1ddc5ccd091f0337c1fa3660fe7059767c5d774108c",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/54-postprocessing.mjs",
+      "bytes": 749,
+      "sha256": "e39fedcf077c454e7b03aa078f5cf404d2f34fe9c7ced6cf6403f57c9f8b3c89",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/55-rapier-physics.mjs",
+      "bytes": 844,
+      "sha256": "466c589d0910c466dd457afa2e0325a79c106db5c9433eb79fb245b24db77ed4",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/56-streaming-export.mjs",
+      "bytes": 2091,
+      "sha256": "a8703f3ba81eba8656ace64cbf1e45c26409ea6827ddd153e29b727bf994c88d",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/57-color-picker.mjs",
+      "bytes": 978,
+      "sha256": "f000ea5691644d9214b6f67ed688d116e3a9412d91b7dde146d65ac214bfc737",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/58-fit-motion-path.mjs",
+      "bytes": 870,
+      "sha256": "25e2cc66777382e82e23b2431910f19424e332da7696d768f700759310184d8e",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/59-dom-transform.mjs",
+      "bytes": 886,
+      "sha256": "ea263b6d4992f8c0752dea61ec4e2bfc8c452163164fe5da9aab87f57b5d7771",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/60-transform-gizmo.mjs",
+      "bytes": 818,
+      "sha256": "bb547b2a9e48aa54c5856b636a4f61ba12f8dfd0b6aed97f9788dcc45809786a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/61-model-animation.mjs",
+      "bytes": 964,
+      "sha256": "e093ce45deba80082882829f31d73ca8fb013d80ae8603a2ddf71a524c2885b0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/62-gltf-import.mjs",
+      "bytes": 1117,
+      "sha256": "4fafde367c0487a01468114f074a6f2ae2e79b4f4475d022b54bf549f2bebd98",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/modules/63-color-wheel.mjs",
+      "bytes": 674,
+      "sha256": "32e61a97afd1fc25a0f17f10a41bca0b47b70be47b99feed0ac2a69be3ca7014",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/package-lock.json",
+      "bytes": 107892,
+      "sha256": "834b43889352678bcc1a09a58a74252137827cba03e3d11104511e75931b914f",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/package.json",
+      "bytes": 1774,
+      "sha256": "d2f820d010c9aadf11852879ec5a0aa72b9dc72a49df6afb5b76a6180cbe17a7",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/registry.mjs",
+      "bytes": 7290,
+      "sha256": "d50c82b64953f80b93de2d53f42fb3405a644c6981e7b5adbbf443f5504720b4",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/scripts/build.mjs",
+      "bytes": 1804,
+      "sha256": "40ed5401ff8291e377a5d9ef8fb4d1dc1c2e2c8b4f4dd9a851c9cd47bd4247cd",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/scripts/catalog.mjs",
+      "bytes": 5226,
+      "sha256": "9958b341a2a6fa1cc9febd4c9dfab43c006bb59253752a3ccea9e4dee0ecb0d0",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/scripts/create-font.mjs",
+      "bytes": 1460,
+      "sha256": "e704844041f0d32f870693dfda7f57da24c460ad01732f3169d5182d025731f4",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/scripts/notices.mjs",
+      "bytes": 2062,
+      "sha256": "ba84ebfbacfef8e98496e27bd847cdfb29b338ce893c01d667b869fba18204c2",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/scripts/serve.mjs",
+      "bytes": 1297,
+      "sha256": "de76a7611f17f72a6df4026b7b9285286532566ab6153139dab4b1927288a51a",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/shared/assets.mjs",
+      "bytes": 3433,
+      "sha256": "737bdc027d0da9c234599b6880614b7ec8861499b3673b3cac257c932060d5dc",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/shared/browser-input.mjs",
+      "bytes": 1132,
+      "sha256": "67d98ad64ffec3fbe2a48ee2379a7041d0beec3131786386e678dc51d8a1c273",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/shared/gallery-host.mjs",
+      "bytes": 5178,
+      "sha256": "d25d75dcf8f5b56450349cfe53fd6427063ea6ba8f40d29f5b1908e42d4530a8",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/tests/browser-checks.mjs",
+      "bytes": 5696,
+      "sha256": "255855dc4cc0d9dbb426d83a46c644e4ff0f2cf869bda68b7070eabd00197484",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/tests/browser_smoke.py",
+      "bytes": 2863,
+      "sha256": "c0dafb1ae8452d44b0e0b9728203404777cdccdbc67a65eee28c1beb8f8834ba",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/tests/core.test.mjs",
+      "bytes": 9998,
+      "sha256": "828ec53ccf75bb1efd2e9d0de7fbe6250ff1aa69ce0bb928bf9db7721abf1565",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/tests/layout.test.mjs",
+      "bytes": 1258,
+      "sha256": "acd56999811d3b1e822ec4bda5a83bf648a063c05afc550ec45ef28d615377d7",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/tests/layout_smoke.py",
+      "bytes": 3519,
+      "sha256": "f92dddc9d92113c3a2130eeefb689bdd6a0c1a8f89788de7026ac5163ac7f2d7",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/vendor/ASHIMA-LICENSE.txt",
+      "bytes": 1129,
+      "sha256": "bce6c887104eda776ad5e3a2c0b249d1ef5adca91573b350e7147a59d65757f1",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/vendor/THREE-LICENSE.txt",
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/vendor/Water.mjs",
+      "bytes": 13146,
+      "sha256": "d82d289787392e835a9eada3f50b363df10bec8e90282da1c27f12fd4a3a1727",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    },
+    {
+      "path": "prototypes/extension-lab/vendor/ashima-simplex3.mjs",
+      "bytes": 3083,
+      "sha256": "1da46cc0a7917713711df2259637585cd0dfdd977af0aab0c58f65259349f039",
+      "tracked": true,
+      "dirtyAtSnapshot": false
+    }
+  ],
+  "externalInstructionFile": "/Users/miksa/Desktop/melo/CLAUDE/AGENTS.md",
+  "notes": [
+    "Context copies are snapshots. Prefer live repository and human authorization.",
+    "Untracked/dirty source references are marked; do not commit unrelated originals.",
+    "No node_modules, dist, .git, credentials or browser own-library data."
+  ]
+}

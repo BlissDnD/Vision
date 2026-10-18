@@ -178,3 +178,7 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 ### Teljes elemleltár és ötlettár
 
 A `../docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` forrásalapú katalógus: elemtípusok, polcbejegyzések, receptek és prototípusok. A működő elemeket és fejlesztési terveket külön jelöli; nem új alkalmazásfunkció.
+
+### Claude többagentes fejlesztési csomag
+
+Belépés: `../docs/claude-handoff/00-START-HERE.md`. Rövid taskkártyák, UX- és adapterhatárok, forrásútvonalak, külön keresőmodell és csomagellenőrzők; nem új app-runtime vagy beépített addonrendszer.

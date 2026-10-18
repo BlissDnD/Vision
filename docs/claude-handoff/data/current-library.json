@@ -1,0 +1,6214 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-10-18",
+  "declarativeOnly": true,
+  "runtimeVerified": false,
+  "appVersion": "0.36.0-g1",
+  "sourceRowCount": 259,
+  "uniqueRecordCount": 229,
+  "effectTypeCount": 72,
+  "recipeCount": 54,
+  "motionCount": 6,
+  "fingerprints": {
+    "app/src/library.ts": "24ff413edf64d5dc5e3f1eb7d596c2c0555d5b783815eb6f18cbd96618228135",
+    "app/src/recipes.ts": "14d8d8f6d32ffadb2f9fe8bc43494887f8a573cff0c147973ac4374d31bbf33b",
+    "app/src/motion.ts": "eaf803081facc813d6618ff113b07df8a2b23c79514cdf8c4e6a58e5905acc3f",
+    "app/src/effects/index.ts": "837d0a8f9f0080f4e9b1f88751a2ef49587ead6249193b637e19bf976e9267f1",
+    "app/src/state.ts": "e47d4248d6779fe5f16c5823857471ed306974d3d9715744a78800e6eb00bdf9",
+    "app/src/presets.ts": "ec34bff1f652c884acab1000003167c513ac4704c4fde004365a10b627c36482",
+    "app/src/shelf.ts": "949e5a1c53e12cd85850b4b8c033397769d2a16ecc321f8b0dcdb5529918b20a"
+  },
+  "notes": [
+    "Proposed identifiers and tags need integrator review before production.",
+    "Empty accepts does not mean every target is compatible.",
+    "No browser IndexedDB own-library items are included."
+  ],
+  "records": [
+    {
+      "proposedId": "draft-recipe-c368acc67b39d396",
+      "title": "Liquid Glass · fénykép",
+      "role": "recipe",
+      "familyId": "recipe:31c0e1c9e939",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 0,
+          "title": "Liquid Glass · fénykép"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-e9e6a979b16f5e75",
+      "title": "Láng · szélben",
+      "role": "recipe",
+      "familyId": "recipe:82613e455a14",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 1,
+          "title": "Láng · szélben"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-b3e3a07d883131f2",
+      "title": "Portál",
+      "role": "recipe",
+      "familyId": "recipe:35e058d717d7",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 2,
+          "title": "Portál"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-fe2478dd5d89c0ba",
+      "title": "Lélek",
+      "role": "recipe",
+      "familyId": "recipe:b8ef61fd0bf5",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 3,
+          "title": "Lélek"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-653d4919e3fc8250",
+      "title": "Tűz",
+      "role": "recipe",
+      "familyId": "recipe:9cdab2c0e4ff",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 4,
+          "title": "Tűz"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-abb4c27b9bbfb082",
+      "title": "Plazmamandala",
+      "role": "recipe",
+      "familyId": "recipe:b9d80d101cd2",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 5,
+          "title": "Plazmamandala"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-e3e5aaec176f59a0",
+      "title": "Fekete lyuk",
+      "role": "recipe",
+      "familyId": "recipe:c75b20f8bbb5",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 6,
+          "title": "Fekete lyuk"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-3cb90931941fda8e",
+      "title": "Mandala-sodródás",
+      "role": "recipe",
+      "familyId": "recipe:7226303b3aab",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 7,
+          "title": "Mandala-sodródás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-e2a057782fa64d0c",
+      "title": "Sarki fény",
+      "role": "recipe",
+      "familyId": "recipe:8c1e9f190657",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 8,
+          "title": "Sarki fény"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-c60b5d2d5a38ba2c",
+      "title": "Kristály",
+      "role": "recipe",
+      "familyId": "recipe:e6df2b293a41",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 9,
+          "title": "Kristály"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-24045f1cdc2089dc",
+      "title": "Merkaba",
+      "role": "recipe",
+      "familyId": "recipe:6c04172f3de8",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 10,
+          "title": "Merkaba"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-48ab91683e149f65",
+      "title": "Hipertér-ugrás",
+      "role": "recipe",
+      "familyId": "recipe:1c09e12ef6ac",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 11,
+          "title": "Hipertér-ugrás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-5085afd436c1ec4b",
+      "title": "Neon horizont",
+      "role": "recipe",
+      "familyId": "recipe:8ddbd0a99962",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 12,
+          "title": "Neon horizont"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-5559ea35084be459",
+      "title": "Blob-követés",
+      "role": "recipe",
+      "familyId": "recipe:4e9e7abe360b",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 13,
+          "title": "Blob-követés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-01d49824bb7e71d9",
+      "title": "Csillagtérkép",
+      "role": "recipe",
+      "familyId": "recipe:768fd9b939ee",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 14,
+          "title": "Csillagtérkép"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-f8f67fd04632df72",
+      "title": "Galaxis",
+      "role": "recipe",
+      "familyId": "recipe:908a38493195",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 15,
+          "title": "Galaxis"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-1dbc79980a5a8843",
+      "title": "Részecskehullám",
+      "role": "recipe",
+      "familyId": "recipe:18cf3e6ea1d0",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 16,
+          "title": "Részecskehullám"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-51c1d92f4eb30010",
+      "title": "Lávalámpa",
+      "role": "recipe",
+      "familyId": "recipe:abeb2edb3909",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 17,
+          "title": "Lávalámpa"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-f48d92e2158ff7e7",
+      "title": "Metagömbök",
+      "role": "recipe",
+      "familyId": "recipe:abbbd2ccd964",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 18,
+          "title": "Metagömbök"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-495aec7851918c77",
+      "title": "Tóruszcsomó",
+      "role": "recipe",
+      "familyId": "recipe:347088691fa9",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 19,
+          "title": "Tóruszcsomó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-e01a8263db006c04",
+      "title": "ASCII-látomás",
+      "role": "recipe",
+      "familyId": "recipe:7aa16279952e",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 20,
+          "title": "ASCII-látomás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-4bc15a66bd5c67b5",
+      "title": "Lencsefény",
+      "role": "recipe",
+      "familyId": "recipe:55d5a22cd94e",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 21,
+          "title": "Lencsefény"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-cc7cfdccf032c5f9",
+      "title": "Féltónus-pop",
+      "role": "recipe",
+      "familyId": "recipe:21c80c199581",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 22,
+          "title": "Féltónus-pop"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-b499a33dddead0df",
+      "title": "Sejtszövet",
+      "role": "recipe",
+      "familyId": "recipe:0e8fbd512c08",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 23,
+          "title": "Sejtszövet"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-e1736809dced8ef7",
+      "title": "Pixelvilág",
+      "role": "recipe",
+      "familyId": "recipe:3e7a92e859c9",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 24,
+          "title": "Pixelvilág"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-2da5d6e1e532cc58",
+      "title": "Stúdió-szobor",
+      "role": "recipe",
+      "familyId": "recipe:b8ae132142cb",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 25,
+          "title": "Stúdió-szobor"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-42cbf1a9bcba27a3",
+      "title": "Gyöngy",
+      "role": "recipe",
+      "familyId": "recipe:c8f093c74407",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 26,
+          "title": "Gyöngy"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-bc73acc16777ac7d",
+      "title": "Szaturnusz napnyugtakor",
+      "role": "recipe",
+      "familyId": "recipe:825dd94f31bf",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 27,
+          "title": "Szaturnusz napnyugtakor"
+        },
+        {
+          "category": "world",
+          "index": 0,
+          "title": "Szaturnusz napnyugtakor"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-00690fcfc58ec568",
+      "title": "Óceánbolygó holddal",
+      "role": "recipe",
+      "familyId": "recipe:756e88d157c4",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 28,
+          "title": "Óceánbolygó holddal"
+        },
+        {
+          "category": "world",
+          "index": 1,
+          "title": "Óceánbolygó holddal"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-6b68add9d33efbcd",
+      "title": "Jégvilág",
+      "role": "recipe",
+      "familyId": "recipe:f87c4ca07a1d",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 29,
+          "title": "Jégvilág"
+        },
+        {
+          "category": "world",
+          "index": 2,
+          "title": "Jégvilág"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-5d3b8c6e02bc9da3",
+      "title": "Lávabolygó",
+      "role": "recipe",
+      "familyId": "recipe:a97aa222b70d",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 30,
+          "title": "Lávabolygó"
+        },
+        {
+          "category": "world",
+          "index": 3,
+          "title": "Lávabolygó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-22837efa0fffff86",
+      "title": "Csillagközi tájkép",
+      "role": "recipe",
+      "familyId": "recipe:a9788cf3dec9",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 31,
+          "title": "Csillagközi tájkép"
+        },
+        {
+          "category": "world",
+          "index": 4,
+          "title": "Csillagközi tájkép"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-823a76a2abc87a3b",
+      "title": "Cinematic cím",
+      "role": "recipe",
+      "familyId": "recipe:cb0d4ab169bf",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 32,
+          "title": "Cinematic cím"
+        },
+        {
+          "category": "motion",
+          "index": 8,
+          "title": "Cinematic cím"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-eb19500208f0a14b",
+      "title": "Kiolvasó felirat",
+      "role": "recipe",
+      "familyId": "recipe:c9d0eb4c9cd2",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 33,
+          "title": "Kiolvasó felirat"
+        },
+        {
+          "category": "motion",
+          "index": 9,
+          "title": "Kiolvasó felirat"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-a8de140b934abad2",
+      "title": "Belépő világ",
+      "role": "recipe",
+      "familyId": "recipe:50020ef2ba46",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 34,
+          "title": "Belépő világ"
+        },
+        {
+          "category": "motion",
+          "index": 10,
+          "title": "Belépő világ"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-ff608143bc50767b",
+      "title": "Részecske-lélek",
+      "role": "recipe",
+      "familyId": "recipe:90e4bc9f1c80",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 35,
+          "title": "Részecske-lélek"
+        },
+        {
+          "category": "motion",
+          "index": 11,
+          "title": "Részecske-lélek"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-c3e152bc1317872e",
+      "title": "Ütemre robbanó mag",
+      "role": "recipe",
+      "familyId": "recipe:91536d60b67b",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 36,
+          "title": "Ütemre robbanó mag"
+        },
+        {
+          "category": "motion",
+          "index": 12,
+          "title": "Ütemre robbanó mag"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-2dcc6fa917c4a760",
+      "title": "SDF-szobor",
+      "role": "recipe",
+      "familyId": "recipe:652825745547",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 37,
+          "title": "SDF-szobor"
+        },
+        {
+          "category": "3d",
+          "index": 9,
+          "title": "SDF-szobor"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-26e7f923c550af99",
+      "title": "Kristálytorony",
+      "role": "recipe",
+      "familyId": "recipe:2828da350739",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 38,
+          "title": "Kristálytorony"
+        },
+        {
+          "category": "3d",
+          "index": 10,
+          "title": "Kristálytorony"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-79237eb00813a5f8",
+      "title": "Bliss-dombok",
+      "role": "recipe",
+      "familyId": "recipe:72be5875f135",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 39,
+          "title": "Bliss-dombok"
+        },
+        {
+          "category": "world",
+          "index": 5,
+          "title": "Bliss-dombok"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-c87a9ff5ec73d4fe",
+      "title": "Arany naplemente",
+      "role": "recipe",
+      "familyId": "recipe:22d79c1a8025",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 40,
+          "title": "Arany naplemente"
+        },
+        {
+          "category": "world",
+          "index": 6,
+          "title": "Arany naplemente"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-5ac6ed610f3f4032",
+      "title": "Viharos ég",
+      "role": "recipe",
+      "familyId": "recipe:03421c33161b",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 41,
+          "title": "Viharos ég"
+        },
+        {
+          "category": "world",
+          "index": 7,
+          "title": "Viharos ég"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-8c34a3846a173e09",
+      "title": "Éjszakai égbolt",
+      "role": "recipe",
+      "familyId": "recipe:145e51c318b7",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 42,
+          "title": "Éjszakai égbolt"
+        },
+        {
+          "category": "world",
+          "index": 8,
+          "title": "Éjszakai égbolt"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-d4b9ebe1e668bb0f",
+      "title": "Sivatag délben",
+      "role": "recipe",
+      "familyId": "recipe:86602902c31d",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 43,
+          "title": "Sivatag délben"
+        },
+        {
+          "category": "world",
+          "index": 9,
+          "title": "Sivatag délben"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-a5747af10227dc2c",
+      "title": "Havas csúcsok",
+      "role": "recipe",
+      "familyId": "recipe:e962c45a360e",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 44,
+          "title": "Havas csúcsok"
+        },
+        {
+          "category": "world",
+          "index": 10,
+          "title": "Havas csúcsok"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-1354511d49fc21c0",
+      "title": "Bento-bemutató",
+      "role": "recipe",
+      "familyId": "recipe:00a47c6fdce4",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 45,
+          "title": "Bento-bemutató"
+        },
+        {
+          "category": "motion",
+          "index": 13,
+          "title": "Bento-bemutató"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-5fcb2db093b65a81",
+      "title": "Bento-átrendeződés",
+      "role": "recipe",
+      "familyId": "recipe:ed560e3b25ae",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 46,
+          "title": "Bento-átrendeződés"
+        },
+        {
+          "category": "motion",
+          "index": 14,
+          "title": "Bento-átrendeződés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-50acd039b38992bd",
+      "title": "Szerkesztői címlap (soronként)",
+      "role": "recipe",
+      "familyId": "recipe:a79dba367a45",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 47,
+          "title": "Szerkesztői címlap (soronként)"
+        },
+        {
+          "category": "motion",
+          "index": 15,
+          "title": "Szerkesztői címlap (soronként)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-6af8aecbadcfed99",
+      "title": "The End (vintage)",
+      "role": "recipe",
+      "familyId": "recipe:a1ead187a98b",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 48,
+          "title": "The End (vintage)"
+        },
+        {
+          "category": "motion",
+          "index": 16,
+          "title": "The End (vintage)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-2f60581fffe3525c",
+      "title": "Rugós cím",
+      "role": "recipe",
+      "familyId": "recipe:9c5fd92d31ef",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 49,
+          "title": "Rugós cím"
+        },
+        {
+          "category": "motion",
+          "index": 17,
+          "title": "Rugós cím"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-207b4c8d2975a50f",
+      "title": "Alsó harmad",
+      "role": "recipe",
+      "familyId": "recipe:4f31cc86ab58",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 50,
+          "title": "Alsó harmad"
+        },
+        {
+          "category": "motion",
+          "index": 18,
+          "title": "Alsó harmad"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-44c81ba8e6d550eb",
+      "title": "Bolygó rétegekből",
+      "role": "recipe",
+      "familyId": "recipe:3f3f60e8dfd2",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 51,
+          "title": "Bolygó rétegekből"
+        },
+        {
+          "category": "world",
+          "index": 11,
+          "title": "Bolygó rétegekből"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-d113c457061d5778",
+      "title": "Kulcskockás repülés",
+      "role": "recipe",
+      "familyId": "recipe:f098e093776b",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 52,
+          "title": "Kulcskockás repülés"
+        },
+        {
+          "category": "motion",
+          "index": 19,
+          "title": "Kulcskockás repülés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-recipe-c7bd1df810e4092d",
+      "title": "Parallax-repülés",
+      "role": "recipe",
+      "familyId": "recipe:adf4ca28a8a3",
+      "type": "group",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szerkeszthető receptcsoport.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-recipe",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "recipes",
+          "index": 53,
+          "title": "Parallax-repülés"
+        },
+        {
+          "category": "motion",
+          "index": 20,
+          "title": "Parallax-repülés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-efbab7744991d7e1",
+      "title": "Szerkeszthető 3D jelenet",
+      "role": "element",
+      "familyId": "element:sdfscene",
+      "type": "sdfscene",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [],
+      "description": "Szerkeszthető 3D: legfeljebb 8 alapforma (gömb, doboz, tórusz, henger, kapszula, oktaéder), amelyeket hozzáadsz, kivonsz vagy metszel, és agyagszerűen összeolvasztasz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 1,
+          "title": "Szerkeszthető 3D jelenet"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-19cfc622c38e20ac",
+      "title": "Gerincfelület (vörös stúdió)",
+      "role": "element",
+      "familyId": "element:surface3d",
+      "type": "surface3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [],
+      "description": "Valódi 3D felület egy szerkeszthető gerincgörbéből: széles, vékony, ívelt lap lekerekített éllel, fényes lakk/fém anyaggal, stúdiófénnyel, tükröző padlóval és a padlóba simulással. Háromszöghálóként renderelődik (gyors, élsimított), a kamera animálható; a 3D forgatás eszközzel (O) körbejárható.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 2,
+          "title": "Gerincfelület (vörös stúdió)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0465f2bcde9da20d",
+      "title": "3D Terep",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 3,
+          "title": "3D Terep"
+        },
+        {
+          "category": "gen",
+          "index": 0,
+          "title": "3D Terep"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-f60fd0b3fbd8acae",
+      "title": "Felhő",
+      "role": "element",
+      "familyId": "element:cloud3d",
+      "type": "cloud3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "felhő",
+        "cloud",
+        "puha tárgy"
+      ],
+      "description": "Önálló, puha, megvilágított felhő (nem égbolt): mozgatható, méretezhető, forgatható (O). Alak, sűrűség, puhaság, részletesség, gomolygás és látványbeli szél. A Jelenetfény hat rá. Húzd rá a Lufi Megjelenést: felfújt, fényes gumitest lesz ugyanabból az alakból.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 5,
+          "title": "Felhő"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-12075f5ce3a7ee1e",
+      "title": "Lapos felhő",
+      "role": "element",
+      "familyId": "element:cloud3d",
+      "type": "cloud3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "felhő",
+        "cloud",
+        "puha tárgy"
+      ],
+      "description": "Önálló, puha, megvilágított felhő (nem égbolt): mozgatható, méretezhető, forgatható (O). Alak, sűrűség, puhaság, részletesség, gomolygás és látványbeli szél. A Jelenetfény hat rá. Húzd rá a Lufi Megjelenést: felfújt, fényes gumitest lesz ugyanabból az alakból.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 6,
+          "title": "Lapos felhő"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-41bf30d6a1b65de3",
+      "title": "Tornyos felhő",
+      "role": "element",
+      "familyId": "element:cloud3d",
+      "type": "cloud3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "felhő",
+        "cloud",
+        "puha tárgy"
+      ],
+      "description": "Önálló, puha, megvilágított felhő (nem égbolt): mozgatható, méretezhető, forgatható (O). Alak, sűrűség, puhaság, részletesség, gomolygás és látványbeli szél. A Jelenetfény hat rá. Húzd rá a Lufi Megjelenést: felfújt, fényes gumitest lesz ugyanabból az alakból.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 7,
+          "title": "Tornyos felhő"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-da7a0b06e79e57a4",
+      "title": "Lufi-felhő",
+      "role": "element",
+      "familyId": "element:cloud3d",
+      "type": "cloud3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "felhő",
+        "cloud",
+        "puha tárgy"
+      ],
+      "description": "Önálló, puha, megvilágított felhő (nem égbolt): mozgatható, méretezhető, forgatható (O). Alak, sűrűség, puhaság, részletesség, gomolygás és látványbeli szél. A Jelenetfény hat rá. Húzd rá a Lufi Megjelenést: felfújt, fényes gumitest lesz ugyanabból az alakból.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 8,
+          "title": "Lufi-felhő"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-53c42c5f7bb24be1",
+      "title": "Hóember",
+      "role": "element",
+      "familyId": "element:sdfscene",
+      "type": "sdfscene",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [],
+      "description": "Szerkeszthető 3D: legfeljebb 8 alapforma (gömb, doboz, tórusz, henger, kapszula, oktaéder), amelyeket hozzáadsz, kivonsz vagy metszel, és agyagszerűen összeolvasztasz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 11,
+          "title": "Hóember"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-ca40871b0798f142",
+      "title": "CSG-kocka",
+      "role": "element",
+      "familyId": "element:sdfscene",
+      "type": "sdfscene",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [],
+      "description": "Szerkeszthető 3D: legfeljebb 8 alapforma (gömb, doboz, tórusz, henger, kapszula, oktaéder), amelyeket hozzáadsz, kivonsz vagy metszel, és agyagszerűen összeolvasztasz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 12,
+          "title": "CSG-kocka"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-09bacdee7221d89f",
+      "title": "Irizáló gömb",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 14,
+          "title": "Irizáló gömb"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-3a3b7707b68aa772",
+      "title": "Plazmatórusz",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 15,
+          "title": "Plazmatórusz"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-4d4e92d1bb902f22",
+      "title": "Krómkocka",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 16,
+          "title": "Krómkocka"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e38c57be5eb8f9c9",
+      "title": "Hologram-oktaéder",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 17,
+          "title": "Hologram-oktaéder"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-974f86ddf6d07f3c",
+      "title": "Merkaba",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 18,
+          "title": "Merkaba"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-56a660e2136034c0",
+      "title": "Giroid gömb",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 19,
+          "title": "Giroid gömb"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-82afa88511b58028",
+      "title": "Lávagömb",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 20,
+          "title": "Lávagömb"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2a9a5ac267b02901",
+      "title": "Tóruszcsomó",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 21,
+          "title": "Tóruszcsomó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e9f949010945999d",
+      "title": "Toon dodekaéder",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 22,
+          "title": "Toon dodekaéder"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-4cbd60405e8bff63",
+      "title": "Üveg ikozaéder",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 23,
+          "title": "Üveg ikozaéder"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-00ed60e684689bc3",
+      "title": "Metagömbök",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 24,
+          "title": "Metagömbök"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-085f1e22ef637629",
+      "title": "Normál-tórusz",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 25,
+          "title": "Normál-tórusz"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-75b5a4c22234bfd5",
+      "title": "Agyagszobor",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 26,
+          "title": "Agyagszobor"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-a80c491f0d7f0008",
+      "title": "Gyöngy",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 27,
+          "title": "Gyöngy"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-9455443d9f950d85",
+      "title": "Bársonytórusz",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 28,
+          "title": "Bársonytórusz"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-048e0187eaf3ffe2",
+      "title": "Krómcsomó",
+      "role": "element",
+      "familyId": "element:obj3d",
+      "type": "obj3d",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "3d",
+        "térbeli",
+        "test"
+      ],
+      "description": "Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 29,
+          "title": "Krómcsomó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-59a785d1f8b7ca08",
+      "title": "Giroid-barlang",
+      "role": "element",
+      "familyId": "element:gyroid",
+      "type": "gyroid",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Végtelen 3D járat izzó membránfalakkal — beljebb repülsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "3d",
+          "index": 30,
+          "title": "Giroid-barlang"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-7328b4bb35f5ab86",
+      "title": "Kör",
+      "role": "element",
+      "familyId": "element:shape:0",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 0,
+          "title": "Kör"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-597ddc7bdcbf2ca8",
+      "title": "Gyűrű",
+      "role": "element",
+      "familyId": "element:shape:1",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 1,
+          "title": "Gyűrű"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-152fb2a8cdcaff38",
+      "title": "Lekerekített négyzet",
+      "role": "element",
+      "familyId": "element:shape:2",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 2,
+          "title": "Lekerekített négyzet"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-59295903d4ae1807",
+      "title": "Háromszög",
+      "role": "element",
+      "familyId": "element:shape:3",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 3,
+          "title": "Háromszög"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0f6a2554d2f6972f",
+      "title": "Hatszög",
+      "role": "element",
+      "familyId": "element:shape:3",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 4,
+          "title": "Hatszög"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2de324ab008eb920",
+      "title": "Csillag",
+      "role": "element",
+      "familyId": "element:shape:4",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 5,
+          "title": "Csillag"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0f6b46b9e3618a13",
+      "title": "Félhold",
+      "role": "element",
+      "familyId": "element:shape:5",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 6,
+          "title": "Félhold"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d1e3b4b5fed299e0",
+      "title": "Vesica",
+      "role": "element",
+      "familyId": "element:shape:6",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 7,
+          "title": "Vesica"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-caf1b661366c7158",
+      "title": "Szív",
+      "role": "element",
+      "familyId": "element:shape:7",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 8,
+          "title": "Szív"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-713d5592e1e061f9",
+      "title": "Virág",
+      "role": "element",
+      "familyId": "element:shape:8",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 9,
+          "title": "Virág"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-82092e499e35fcab",
+      "title": "Spirál",
+      "role": "element",
+      "familyId": "element:shape:9",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 10,
+          "title": "Spirál"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-f5be2a33f13b5e67",
+      "title": "Szem",
+      "role": "element",
+      "familyId": "element:shape:10",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 11,
+          "title": "Szem"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-5b7f65cbba6c9151",
+      "title": "Kereszt",
+      "role": "element",
+      "familyId": "element:shape:11",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 12,
+          "title": "Kereszt"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e636c978b7fa65fd",
+      "title": "Végtelen",
+      "role": "element",
+      "familyId": "element:shape:12",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 13,
+          "title": "Végtelen"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-fff1f433552fdebd",
+      "title": "Fénykör",
+      "role": "element",
+      "familyId": "element:shape:0",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "shapes",
+          "index": 14,
+          "title": "Fénykör"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-aeb375b4095a9c06",
+      "title": "Plazma",
+      "role": "element",
+      "familyId": "element:plasma",
+      "type": "plasma",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Hullámzó, lágy színmező.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 1,
+          "title": "Plazma"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e14c5bd02912c576",
+      "title": "Tűz",
+      "role": "element",
+      "familyId": "element:fire",
+      "type": "fire",
+      "motion": null,
+      "topics": [
+        "fluid"
+      ],
+      "keywords": [],
+      "description": "Lobogó lángnyelvek alulról felfelé. A Palettás színezés a kiválasztott színekre hangolja.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 2,
+          "title": "Tűz"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-5c10e6951dbd8547",
+      "title": "Szélben lobogó láng",
+      "role": "element",
+      "familyId": "element:windflame",
+      "type": "windflame",
+      "motion": null,
+      "topics": [
+        "fluid"
+      ],
+      "keywords": [
+        "láng",
+        "szél",
+        "flame"
+      ],
+      "description": "Textúra alapú, időben mozgó láng. A szélesség, sebesség és fény külön állítható.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 3,
+          "title": "Szélben lobogó láng"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2b7d2302206069d2",
+      "title": "Sarki fény",
+      "role": "element",
+      "familyId": "element:aurora",
+      "type": "aurora",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Hullámzó fényfüggönyök éjszakai égbolton.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 4,
+          "title": "Sarki fény"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-b17ea4fe011464bd",
+      "title": "Galaxis",
+      "role": "element",
+      "familyId": "element:galaxy",
+      "type": "galaxy",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [],
+      "description": "Spirálkarú galaxis differenciális forgással és csillagporral (a three.js galaxis-generátor ihlette).",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 5,
+          "title": "Galaxis"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-089f9e218abb3763",
+      "title": "Részecskehullám",
+      "role": "element",
+      "familyId": "element:waves",
+      "type": "waves",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Perspektivikus pontmező, amely tengerként hullámzik (a three.js points/waves példa ihlette).",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 6,
+          "title": "Részecskehullám"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-61f0d50ffe70666a",
+      "title": "Lávalámpa",
+      "role": "element",
+      "familyId": "element:lava",
+      "type": "lava",
+      "motion": null,
+      "topics": [
+        "fluid"
+      ],
+      "keywords": [],
+      "description": "Lassan összeolvadó, lebegő metaball-cseppek, átlátszó háttérrel.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 7,
+          "title": "Lávalámpa"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2d70cde873f4cbb4",
+      "title": "Sejtszövet",
+      "role": "element",
+      "familyId": "element:cells",
+      "type": "cells",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Élő Voronoi-sejtek izzó határokkal — organikus sci-fi textúra.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 8,
+          "title": "Sejtszövet"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-207cfea1d2c37888",
+      "title": "Csillagköd",
+      "role": "element",
+      "familyId": "element:nebula",
+      "type": "nebula",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [],
+      "description": "Örvénylő ködfelhő pislákoló csillagokkal.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 9,
+          "title": "Csillagköd"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-9c227ec786972835",
+      "title": "Folyékony márvány",
+      "role": "element",
+      "familyId": "element:liquid",
+      "type": "liquid",
+      "motion": null,
+      "topics": [
+        "fluid"
+      ],
+      "keywords": [],
+      "description": "Önmagába tekeredő, olajszerű áramlás.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 10,
+          "title": "Folyékony márvány"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2de5bb49afc91044",
+      "title": "Féreglyuk",
+      "role": "element",
+      "familyId": "element:tunnel",
+      "type": "tunnel",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Végtelen téridő-alagút csavarodó gyűrűkkel.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 11,
+          "title": "Féreglyuk"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e2096849f0d97634",
+      "title": "Szent geometria",
+      "role": "element",
+      "familyId": "element:sacred",
+      "type": "sacred",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Életvirág, egymásba forduló háromszögek, pulzáló körök.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 12,
+          "title": "Szent geometria"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-ec499ae2bc825a40",
+      "title": "Fraktálvirág",
+      "role": "element",
+      "familyId": "element:kali",
+      "type": "kali",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Kaleidoszkopikus fraktál mélyülő indákkal.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 13,
+          "title": "Fraktálvirág"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-45590943d9565ecd",
+      "title": "Julia-portál",
+      "role": "element",
+      "familyId": "element:julia",
+      "type": "julia",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Folyton átalakuló Julia-halmaz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 14,
+          "title": "Julia-portál"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e8d68aa56f81a53d",
+      "title": "Interferencia",
+      "role": "element",
+      "familyId": "element:moire",
+      "type": "moire",
+      "motion": null,
+      "topics": [
+        "abstract"
+      ],
+      "keywords": [],
+      "description": "Mozgó hullámforrások moaré-mintázata.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 15,
+          "title": "Interferencia"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-56591caea5f1022e",
+      "title": "Hipertér",
+      "role": "element",
+      "familyId": "element:hyper",
+      "type": "hyper",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [],
+      "description": "Fénysebességű csillagcsíkok.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 16,
+          "title": "Hipertér"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-925d72439189e2b0",
+      "title": "Hologramrács",
+      "role": "element",
+      "familyId": "element:grid",
+      "type": "grid",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Végtelen sci-fi rácsmező csíkos nappal.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 17,
+          "title": "Hologramrács"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-87a49a3fff48fff6",
+      "title": "Eseményhorizont",
+      "role": "element",
+      "familyId": "element:blackhole",
+      "type": "blackhole",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [],
+      "description": "Fekete lyuk akkréciós koronggal és fényelhajlással.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 18,
+          "title": "Eseményhorizont"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-686153e25ae778ec",
+      "title": "Színátmenet",
+      "role": "element",
+      "familyId": "element:gradient",
+      "type": "gradient",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "gradiens",
+        "gradient",
+        "színátmenet"
+      ],
+      "description": "Lassan vándorló háttérszín a palettából.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 19,
+          "title": "Színátmenet"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-af380f9a5ada240e",
+      "title": "Lencsefény",
+      "role": "element",
+      "familyId": "element:flare",
+      "type": "flare",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Fényforrás sugarakkal, anamorf csíkkal és szellemképekkel. Húzd a fényforrást oda, ahová szeretnéd.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "gen",
+          "index": 20,
+          "title": "Lencsefény"
+        },
+        {
+          "category": "world",
+          "index": 38,
+          "title": "Lencsefény"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-154f0503daf91a84",
+      "title": "Liquid Glass",
+      "role": "appearance",
+      "familyId": "appearance:liquidglass",
+      "type": "liquidglass",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [
+        "üveg",
+        "glass",
+        "lencse"
+      ],
+      "description": "A kép egy mozgatható, fénytörő üveglencsén át látszik. Rétegre húzható; a réteg pozíciójával a lencsét helyezed el.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 0,
+          "title": "Liquid Glass"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-195f5b6334cbffab",
+      "title": "Blob-követés",
+      "role": "appearance",
+      "familyId": "appearance:blob",
+      "type": "blob",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Megkeresi és követi a fényes, sötét, mozgó vagy színes foltokat az alatta lévő képen, és HUD-jelölőkkel, vonalakkal, feliratokkal rajzolja meg őket. Rétegre húzva csak azt az egy réteget követi.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 1,
+          "title": "Blob-követés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-aa4a3c810bd50b40",
+      "title": "Textúra",
+      "role": "appearance",
+      "familyId": "appearance:texture",
+      "type": "texture",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Anyagszerűség a képen: papír, vászon, por és karcok, kőzet vagy finom zaj. Ettől lesz a kép tapintható.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 2,
+          "title": "Textúra"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-4150ee2a2d151297",
+      "title": "Elmosás",
+      "role": "appearance",
+      "familyId": "appearance:blur",
+      "type": "blur",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lágy Gauss-elmosás. Alakzatra húzva puha szélű maszkot kapsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 3,
+          "title": "Elmosás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-0f8129cd4e6abcf9",
+      "title": "Ragyogás",
+      "role": "appearance",
+      "familyId": "appearance:glow",
+      "type": "glow",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "ragyogás",
+        "glow",
+        "bloom"
+      ],
+      "description": "Puha, kétlépcsős Gauss-ragyogás: a fényes részek szétsugároznak.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 4,
+          "title": "Ragyogás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-509910ddf21f34a7",
+      "title": "Téridő-görbület",
+      "role": "appearance",
+      "familyId": "appearance:lens",
+      "type": "lens",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [],
+      "description": "Gravitációs lencse és téridő-hullámok a réteg középpontja körül. Húzd oda, ahol hajlítani akarsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 5,
+          "title": "Téridő-görbület"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-cba38d8fa2f55e5f",
+      "title": "Organikus torzítás",
+      "role": "appearance",
+      "familyId": "appearance:warp",
+      "type": "warp",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Zajjal hullámoztatja a képet. Maszkra húzva élő, lélegző széleket ad.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 6,
+          "title": "Organikus torzítás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-3019777d060c40fa",
+      "title": "Neon körvonal",
+      "role": "appearance",
+      "familyId": "appearance:edge",
+      "type": "edge",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Izzó vonalat rajzol a formák szélére. Alakzatokon és szövegen különösen szép.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 7,
+          "title": "Neon körvonal"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-4ccb3ea8fd98c942",
+      "title": "Fénysugarak",
+      "role": "appearance",
+      "familyId": "appearance:radial",
+      "type": "radial",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Isteni sugarak: a fények a középpontból sugároznak ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 8,
+          "title": "Fénysugarak"
+        },
+        {
+          "category": "world",
+          "index": 37,
+          "title": "Fénysugarak"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-0d624b921cbac7fa",
+      "title": "Kaleidoszkóp",
+      "role": "appearance",
+      "familyId": "appearance:kaleido",
+      "type": "kaleido",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Tükrös szeletekre bontja az alatta lévő képet.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 9,
+          "title": "Kaleidoszkóp"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-d4bea89f54b8d953",
+      "title": "Visszhang",
+      "role": "appearance",
+      "familyId": "appearance:feedback",
+      "type": "feedback",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Feedback-hurok: az előző képkocka nagyítva, forgatva visszaíródik — végtelen csóvák.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 10,
+          "title": "Visszhang"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-7392d2ee877d76ea",
+      "title": "Örvény",
+      "role": "appearance",
+      "familyId": "appearance:swirl",
+      "type": "swirl",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Spirálba csavarja a képet a középpont körül.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 11,
+          "title": "Örvény"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-56ef715846712ede",
+      "title": "Hullámzás",
+      "role": "appearance",
+      "familyId": "appearance:ripple",
+      "type": "ripple",
+      "motion": null,
+      "topics": [
+        "fluid"
+      ],
+      "keywords": [],
+      "description": "Koncentrikus vagy vízszerű hullámtorzítás.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 12,
+          "title": "Hullámzás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-c9cbfe9d1e166e5d",
+      "title": "ASCII",
+      "role": "appearance",
+      "familyId": "appearance:ascii",
+      "type": "ascii",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Karakterekből rakja ki az alatta lévő képet (a three.js AsciiEffect ihlette).",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 13,
+          "title": "ASCII"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-b604e62ee883c1e7",
+      "title": "Féltónus",
+      "role": "appearance",
+      "familyId": "appearance:halftone",
+      "type": "halftone",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Nyomdai raszterpöttyök — színes, RGB vagy újságpapír stílusban.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 14,
+          "title": "Féltónus"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-65a6800633148570",
+      "title": "Pixel art",
+      "role": "appearance",
+      "familyId": "appearance:pixelart",
+      "type": "pixelart",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Retró pixelgrafika színszint-csökkentéssel és Bayer-ditheringgel.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 15,
+          "title": "Pixel art"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-24c61f25c1920e87",
+      "title": "Tükör",
+      "role": "appearance",
+      "familyId": "appearance:mirror",
+      "type": "mirror",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szimmetria: félbe, négybe vagy nyolcba tükrözve.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 16,
+          "title": "Tükör"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-f7d4ce47be4cdc62",
+      "title": "Poláris tér",
+      "role": "appearance",
+      "familyId": "appearance:polar",
+      "type": "polar",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Az alsó képet körbe vagy alagútba hajlítja.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 17,
+          "title": "Poláris tér"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-170e6520fe5cb9da",
+      "title": "Kromatikus aberráció",
+      "role": "appearance",
+      "familyId": "appearance:chroma",
+      "type": "chroma",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Szétcsúsztatott RGB-csatornák.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 18,
+          "title": "Kromatikus aberráció"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-a436af15964341af",
+      "title": "Pszichedelikus színezés",
+      "role": "appearance",
+      "familyId": "appearance:psycolor",
+      "type": "psycolor",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "A fényerőt végigfuttatja a palettán.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 19,
+          "title": "Pszichedelikus színezés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-ef8042fe94877013",
+      "title": "Színkorrekció",
+      "role": "appearance",
+      "familyId": "appearance:grade",
+      "type": "grade",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Árnyalat, telítettség, kontraszt, fényerő.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 20,
+          "title": "Színkorrekció"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-26f99a37c5c7658d",
+      "title": "Glitch",
+      "role": "appearance",
+      "familyId": "appearance:glitch",
+      "type": "glitch",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Sávos elcsúszás, RGB-szakadás, pixelesítés.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 21,
+          "title": "Glitch"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-ebbf55f3d9d0f9d9",
+      "title": "Film és szemcse",
+      "role": "appearance",
+      "familyId": "appearance:film",
+      "type": "film",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Filmszemcse, képsorok, vignetta.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 22,
+          "title": "Film és szemcse"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-4c087b7453a0f1a1",
+      "title": "CRT-képernyő",
+      "role": "appearance",
+      "familyId": "appearance:crt",
+      "type": "crt",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [
+        "retro",
+        "tévé",
+        "monitor",
+        "crt"
+      ],
+      "description": "Régi tévé- vagy monitorképernyő: domború üveg, lekerekített sarkok, képsorok, RGB-maszk és enyhe villódzás. Szövegre, képre, csoportra vagy az egész jelenetre húzható.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 23,
+          "title": "CRT-képernyő"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-b7086a339fbbe256",
+      "title": "Színes vetett fény",
+      "role": "appearance",
+      "familyId": "appearance:castlight",
+      "type": "castlight",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "színes árnyék",
+        "fénycsóva",
+        "cast light"
+      ],
+      "description": "Hosszú, színes fénycsóva vagy árnyék a betűk és formák mögött; a körvonalat követi, a háttér átlátszó marad. Szövegre vagy alakra húzd.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 24,
+          "title": "Színes vetett fény"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-34eee1c155a40101",
+      "title": "Részecskékre bontás",
+      "role": "appearance",
+      "familyId": "appearance:pdisp",
+      "type": "pdisp",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "szétesés",
+        "részecske",
+        "szétrobbanó felirat"
+      ],
+      "description": "Ráhúzható Megjelenés: a réteg (szöveg, forma, kép) pontokra esik szét, majd visszaáll. Jelzésre (J), ismétlődve vagy kézzel. Szövegnél megadhatsz új szövegeket: az összeálláskor a következő szó jön, a felirat közben szerkeszthető marad.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 25,
+          "title": "Részecskékre bontás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-6d7fbbdc0c2285eb",
+      "title": "Lufi",
+      "role": "appearance",
+      "familyId": "appearance:balloon",
+      "type": "balloon",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "lufi",
+        "balloon",
+        "gumitest"
+      ],
+      "description": "Ráhúzható Megjelenés a Felhőre: a „Felfújtság” csúszkával a felhő felfújt, fényes, gumiszerű testté válik, ugyanabból az alakból. A Jelenetfény csillanása rajta; a gomolygást kikapcsolva álló lufi. (Szövegre és 2D formára később, a Térbeliséggel.)",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [
+        "cloud3d"
+      ],
+      "compatibilityStatus": "type-limited",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "fx",
+          "index": 26,
+          "title": "Lufi"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-f46c15aa8acbd6d4",
+      "title": "Égszín",
+      "role": "element",
+      "familyId": "element:skygrad",
+      "type": "skygrad",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Napszak szerinti égbolt-színátmenet: zenit, horizont, alkony, éjszaka. A Nap, a Felhőréteg, a Talaj és a Pára ugyanazt a Napszak és Horizont értéket használja, így egy makróval együtt mozognak.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 13,
+          "title": "Égszín"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-cd768ab6356c8f5a",
+      "title": "Nap",
+      "role": "element",
+      "familyId": "element:sun",
+      "type": "sun",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Fénygömb koronával. A Napszak és a Horizont ugyanaz, mint az Égszínnél, így együtt mozognak. Tedd fölé a Lencsefényt vagy a Fénysugarakat.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 14,
+          "title": "Nap"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-ca99837ddbbf27f9",
+      "title": "Felhő (önálló tárgy)",
+      "role": "element",
+      "familyId": "element:cloud3d",
+      "type": "cloud3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "felhő",
+        "cloud",
+        "puha tárgy"
+      ],
+      "description": "Önálló, puha, megvilágított felhő (nem égbolt): mozgatható, méretezhető, forgatható (O). Alak, sűrűség, puhaság, részletesség, gomolygás és látványbeli szél. A Jelenetfény hat rá. Húzd rá a Lufi Megjelenést: felfújt, fényes gumitest lesz ugyanabból az alakból.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 15,
+          "title": "Felhő (önálló tárgy)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-a0d3301a1ec7bd44",
+      "title": "Gomolyfelhők",
+      "role": "element",
+      "familyId": "element:clouds",
+      "type": "clouds",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Gomoly-, fátyol-, réteg- vagy viharfelhők a nap irányából megvilágítva. Perspektivikusan a horizont fölé, vagy laposan bárhová. A Mag melletti kockával új felhőket dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 16,
+          "title": "Gomolyfelhők"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-82639f9cf00c7c30",
+      "title": "Fátyolfelhők",
+      "role": "element",
+      "familyId": "element:clouds",
+      "type": "clouds",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Gomoly-, fátyol-, réteg- vagy viharfelhők a nap irányából megvilágítva. Perspektivikusan a horizont fölé, vagy laposan bárhová. A Mag melletti kockával új felhőket dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 17,
+          "title": "Fátyolfelhők"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-8a12756aaac66576",
+      "title": "Viharfelhők",
+      "role": "element",
+      "familyId": "element:clouds",
+      "type": "clouds",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Gomoly-, fátyol-, réteg- vagy viharfelhők a nap irányából megvilágítva. Perspektivikusan a horizont fölé, vagy laposan bárhová. A Mag melletti kockával új felhőket dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 18,
+          "title": "Viharfelhők"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-63dcde83a8fea233",
+      "title": "Lapos felhők",
+      "role": "element",
+      "familyId": "element:clouds",
+      "type": "clouds",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Gomoly-, fátyol-, réteg- vagy viharfelhők a nap irányából megvilágítva. Perspektivikusan a horizont fölé, vagy laposan bárhová. A Mag melletti kockával új felhőket dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 19,
+          "title": "Lapos felhők"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-1f82d3d0daefd682",
+      "title": "Dombvonal (maszk)",
+      "role": "element",
+      "familyId": "element:shape:13",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 20,
+          "title": "Dombvonal (maszk)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-a932cb48f0dd8a87",
+      "title": "Hegyvonal (maszk)",
+      "role": "element",
+      "familyId": "element:shape:13",
+      "type": "shape",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Vektoros forma. Maszkként is működik: a fölé tett rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 21,
+          "title": "Hegyvonal (maszk)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-8fdef88b0124d556",
+      "title": "3D Terep · hegyvidék",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 23,
+          "title": "3D Terep · hegyvidék"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-89b90a6caba337ee",
+      "title": "3D Terep · dűnék",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 24,
+          "title": "3D Terep · dűnék"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-9422bd9d0087a9a5",
+      "title": "3D Terep · sziget",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 25,
+          "title": "3D Terep · sziget"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-9025a22d5c3d9766",
+      "title": "3D Terep · kanyon",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 26,
+          "title": "3D Terep · kanyon"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0d65a1f13f43f956",
+      "title": "3D Terep · fennsík",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 27,
+          "title": "3D Terep · fennsík"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-66e49e33de283515",
+      "title": "3D Terep · kráteres",
+      "role": "element",
+      "familyId": "element:terrain3d",
+      "type": "terrain3d",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "terep",
+        "terrain",
+        "táj",
+        "hegy",
+        "dűne"
+      ],
+      "description": "Valódi 3D táj seedből: hegy, dűne, sziget, kanyon, fennsík vagy kráter, vízzel, égbolttal és vetett árnyékkal. A jelenetfényre reagál. A kockával új változatot dobsz; a vásznon húzva körbefordulsz, görgővel közelítesz. Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) alapján.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 28,
+          "title": "3D Terep · kráteres"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-ca10cb46636bd032",
+      "title": "Talaj · fű",
+      "role": "element",
+      "familyId": "element:terrain",
+      "type": "terrain",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Füves, száraz, homokos, sziklás vagy havas felület perspektívával. Tedd egy Dombvonal-alakzat fölé, és kapcsold be a vágást: a talaj csak a domb formájában látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 30,
+          "title": "Talaj · fű"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-58750f9d9e8f1ba2",
+      "title": "Talaj · száraz fű",
+      "role": "element",
+      "familyId": "element:terrain",
+      "type": "terrain",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Füves, száraz, homokos, sziklás vagy havas felület perspektívával. Tedd egy Dombvonal-alakzat fölé, és kapcsold be a vágást: a talaj csak a domb formájában látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 31,
+          "title": "Talaj · száraz fű"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d1de24c2e4cf8bb7",
+      "title": "Talaj · homok",
+      "role": "element",
+      "familyId": "element:terrain",
+      "type": "terrain",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Füves, száraz, homokos, sziklás vagy havas felület perspektívával. Tedd egy Dombvonal-alakzat fölé, és kapcsold be a vágást: a talaj csak a domb formájában látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 32,
+          "title": "Talaj · homok"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-6d6ebd755e042131",
+      "title": "Talaj · szikla",
+      "role": "element",
+      "familyId": "element:terrain",
+      "type": "terrain",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Füves, száraz, homokos, sziklás vagy havas felület perspektívával. Tedd egy Dombvonal-alakzat fölé, és kapcsold be a vágást: a talaj csak a domb formájában látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 33,
+          "title": "Talaj · szikla"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-4e2f491fdc7b4ef5",
+      "title": "Talaj · hó",
+      "role": "element",
+      "familyId": "element:terrain",
+      "type": "terrain",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [],
+      "description": "Füves, száraz, homokos, sziklás vagy havas felület perspektívával. Tedd egy Dombvonal-alakzat fölé, és kapcsold be a vágást: a talaj csak a domb formájában látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 34,
+          "title": "Talaj · hó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-8a287fcc7536bcca",
+      "title": "Pára",
+      "role": "appearance",
+      "familyId": "appearance:haze",
+      "type": "haze",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "pára",
+        "köd",
+        "fog",
+        "háttérbe simulás"
+      ],
+      "description": "Légköri pára a horizont körül, és talajköd. Tedd a táj rétegei közé: ami alatta van, az távolabbinak látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 35,
+          "title": "Pára"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-2b81dafcffb858d5",
+      "title": "Talajköd",
+      "role": "appearance",
+      "familyId": "appearance:haze",
+      "type": "haze",
+      "motion": null,
+      "topics": [
+        "nature"
+      ],
+      "keywords": [
+        "pára",
+        "köd",
+        "fog",
+        "háttérbe simulás"
+      ],
+      "description": "Légköri pára a horizont körül, és talajköd. Tedd a táj rétegei közé: ami alatta van, az távolabbinak látszik.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 36,
+          "title": "Talajköd"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-4ef17e6146ddd6ce",
+      "title": "Óceánbolygó",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 40,
+          "title": "Óceánbolygó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-faf734d2b04f4284",
+      "title": "Gázóriás gyűrűvel",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 41,
+          "title": "Gázóriás gyűrűvel"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-88f1b9edfa3979ee",
+      "title": "Jégvilág",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 42,
+          "title": "Jégvilág"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-6b6bbc7bcf009bc0",
+      "title": "Lávabolygó",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 43,
+          "title": "Lávabolygó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-a8449b9ca04a7489",
+      "title": "Sziklás hold",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 44,
+          "title": "Sziklás hold"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2e1180c71c74b508",
+      "title": "Sivatagbolygó",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 45,
+          "title": "Sivatagbolygó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-9c0781092c907c9f",
+      "title": "Erdőbolygó éjjel",
+      "role": "element",
+      "familyId": "element:planet",
+      "type": "planet",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "bolygó",
+        "planet",
+        "hold",
+        "moon",
+        "felszín",
+        "légkör"
+      ],
+      "description": "Bolygó-stúdió: hét bolygótípus, valódi légköri derengés, forgó felhők, éjszakai városfények, gyűrű árnyékkal. A Mag (seed) mellett a kockával új bolygót dobsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 46,
+          "title": "Erdőbolygó éjjel"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-30cb3d342a40bbd0",
+      "title": "Tejút",
+      "role": "element",
+      "familyId": "element:space",
+      "type": "space",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "űr",
+        "space",
+        "csillagháttér",
+        "univerzum"
+      ],
+      "description": "Csillagközi tájkép alapja: valós színű csillagok több mélységben, Tejút porsávokkal, csillagköd, diffrakciós tüskés fényes csillagok.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 47,
+          "title": "Tejút"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-53f6179c5edd4794",
+      "title": "Csillagköd-mező",
+      "role": "element",
+      "familyId": "element:space",
+      "type": "space",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "űr",
+        "space",
+        "csillagháttér",
+        "univerzum"
+      ],
+      "description": "Csillagközi tájkép alapja: valós színű csillagok több mélységben, Tejút porsávokkal, csillagköd, diffrakciós tüskés fényes csillagok.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 48,
+          "title": "Csillagköd-mező"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-3f50d1f35102c43c",
+      "title": "Mély űr",
+      "role": "element",
+      "familyId": "element:space",
+      "type": "space",
+      "motion": null,
+      "topics": [
+        "space"
+      ],
+      "keywords": [
+        "űr",
+        "space",
+        "csillagháttér",
+        "univerzum"
+      ],
+      "description": "Csillagközi tájkép alapja: valós színű csillagok több mélységben, Tejút porsávokkal, csillagköd, diffrakciós tüskés fényes csillagok.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 49,
+          "title": "Mély űr"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-05698b212c4ac644",
+      "title": "Bokeh",
+      "role": "element",
+      "familyId": "element:bokeh",
+      "type": "bokeh",
+      "motion": null,
+      "topics": [
+        "studio"
+      ],
+      "keywords": [],
+      "description": "Életlen fénykorongok sötét háttéren — mozi- és termékfilm-hangulat.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "world",
+          "index": 50,
+          "title": "Bokeh"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-motion-23b319f408a99c74",
+      "title": "Lebegés",
+      "role": "motion",
+      "familyId": "motion:float",
+      "type": "shape",
+      "motion": "float",
+      "topics": [],
+      "keywords": [],
+      "description": "Lassú, puha fel-le (vagy tetszőleges irányú) ringás.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "attach-motion",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 1,
+          "title": "Lebegés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-motion-e7b0ee8f1cc15948",
+      "title": "Forgás",
+      "role": "motion",
+      "familyId": "motion:spin",
+      "type": "shape",
+      "motion": "spin",
+      "topics": [],
+      "keywords": [],
+      "description": "Folyamatos forgás a réteg középpontja körül.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "attach-motion",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 2,
+          "title": "Forgás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-motion-a5613bcaf8d3be78",
+      "title": "Lüktetés",
+      "role": "motion",
+      "familyId": "motion:pulse",
+      "type": "shape",
+      "motion": "pulse",
+      "topics": [],
+      "keywords": [],
+      "description": "Ritmikus nagyobbodás és kisebbedés.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "attach-motion",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 3,
+          "title": "Lüktetés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-motion-df9b4226183c48ed",
+      "title": "Keringés",
+      "role": "motion",
+      "familyId": "motion:orbit",
+      "type": "shape",
+      "motion": "orbit",
+      "topics": [],
+      "keywords": [],
+      "description": "Körpályán kering a saját helye körül.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "attach-motion",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 4,
+          "title": "Keringés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-motion-0eb6fc83171ba585",
+      "title": "Remegés",
+      "role": "motion",
+      "familyId": "motion:shake",
+      "type": "shape",
+      "motion": "shake",
+      "topics": [],
+      "keywords": [],
+      "description": "Ideges, véletlenszerű remegés (mindig ugyanaz a minta).",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "attach-motion",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 5,
+          "title": "Remegés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-motion-4937e353339c4ff5",
+      "title": "Rugalmas beúszás",
+      "role": "motion",
+      "familyId": "motion:spring",
+      "type": "shape",
+      "motion": "spring",
+      "topics": [],
+      "keywords": [],
+      "description": "Megadott irányból rugalmasan érkezik a helyére. Az irányt a vásznon a nyíllal fogod meg.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "attach-motion",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 6,
+          "title": "Rugalmas beúszás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-e529b26a2fde15f1",
+      "title": "Bento · hős + 3",
+      "role": "element",
+      "familyId": "element:bento",
+      "type": "bento",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lekerekített dobozok kész rács-elrendezésben, amelyek rugóval kinyílnak, becsúsznak, felpattannak, és egyik elrendezésből a másikba rendeződnek át. Maszkként is működik: a fölötte lévő rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót, és a szöveg a dobozokon belül úszik be.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 22,
+          "title": "Bento · hős + 3"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2a75139051ca13a3",
+      "title": "Bento · 2 × 2 kinyílás",
+      "role": "element",
+      "familyId": "element:bento",
+      "type": "bento",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lekerekített dobozok kész rács-elrendezésben, amelyek rugóval kinyílnak, becsúsznak, felpattannak, és egyik elrendezésből a másikba rendeződnek át. Maszkként is működik: a fölötte lévő rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót, és a szöveg a dobozokon belül úszik be.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 23,
+          "title": "Bento · 2 × 2 kinyílás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-ac1b996f5771c0c9",
+      "title": "Bento · üveg kártyák",
+      "role": "element",
+      "familyId": "element:bento",
+      "type": "bento",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lekerekített dobozok kész rács-elrendezésben, amelyek rugóval kinyílnak, becsúsznak, felpattannak, és egyik elrendezésből a másikba rendeződnek át. Maszkként is működik: a fölötte lévő rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót, és a szöveg a dobozokon belül úszik be.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 24,
+          "title": "Bento · üveg kártyák"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-9a7350acb6c49c70",
+      "title": "Bento · átrendeződés",
+      "role": "element",
+      "familyId": "element:bento",
+      "type": "bento",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lekerekített dobozok kész rács-elrendezésben, amelyek rugóval kinyílnak, becsúsznak, felpattannak, és egyik elrendezésből a másikba rendeződnek át. Maszkként is működik: a fölötte lévő rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót, és a szöveg a dobozokon belül úszik be.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 25,
+          "title": "Bento · átrendeződés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-78b84f6cbf0332ab",
+      "title": "Bento · 3 × 3 körvonal",
+      "role": "element",
+      "familyId": "element:bento",
+      "type": "bento",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lekerekített dobozok kész rács-elrendezésben, amelyek rugóval kinyílnak, becsúsznak, felpattannak, és egyik elrendezésből a másikba rendeződnek át. Maszkként is működik: a fölötte lévő rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót, és a szöveg a dobozokon belül úszik be.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 26,
+          "title": "Bento · 3 × 3 körvonal"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-6145111f35583fd5",
+      "title": "Alsó harmad sáv",
+      "role": "element",
+      "familyId": "element:bento",
+      "type": "bento",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Lekerekített dobozok kész rács-elrendezésben, amelyek rugóval kinyílnak, becsúsznak, felpattannak, és egyik elrendezésből a másikba rendeződnek át. Maszkként is működik: a fölötte lévő rétegnél kapcsold be a „Vágás az alatta lévő rétegbe” opciót, és a szöveg a dobozokon belül úszik be.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 27,
+          "title": "Alsó harmad sáv"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-aa0ff7f3ecac4a25",
+      "title": "Méret- és fókuszpop",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 29,
+          "title": "Méret- és fókuszpop"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-98503c4f1e21c8bd",
+      "title": "Kemény vágás",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 30,
+          "title": "Kemény vágás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-117d7cc54dc72cdb",
+      "title": "Rugós ugrás",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 31,
+          "title": "Rugós ugrás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-7a0bed8836f7a785",
+      "title": "Beúszás oldalról",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 32,
+          "title": "Beúszás oldalról"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-7b59fdb97235d096",
+      "title": "Kibontás középről",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 33,
+          "title": "Kibontás középről"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-81a32742da77dfe9",
+      "title": "Boil (kézzel rajzolt)",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 34,
+          "title": "Boil (kézzel rajzolt)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d63bca83509d8261",
+      "title": "Ütemre lüktető",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 35,
+          "title": "Ütemre lüktető"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d3c936f3a41688ed",
+      "title": "Elmosásból élesedés",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 36,
+          "title": "Elmosásból élesedés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d1b5fa14989da99c",
+      "title": "Emelkedő szavak",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 37,
+          "title": "Emelkedő szavak"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d617d2a71adcc5b4",
+      "title": "Felcsúszás maszkolva",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 38,
+          "title": "Felcsúszás maszkolva"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-24139f8d58ea5b0d",
+      "title": "Pattanó betűk",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 39,
+          "title": "Pattanó betűk"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-efb18b7b841f666a",
+      "title": "Gépelés",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 40,
+          "title": "Gépelés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-8c450e2cccbb5262",
+      "title": "Kiolvasás (shimmer)",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 41,
+          "title": "Kiolvasás (shimmer)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0e20ac769c021a45",
+      "title": "Hullámzó szöveg",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 42,
+          "title": "Hullámzó szöveg"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-9b35e79a9ceaefff",
+      "title": "Átúszás",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 44,
+          "title": "Átúszás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-a24131f90d630c1d",
+      "title": "Elmosásos zoom",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 45,
+          "title": "Elmosásos zoom"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-3c5fb0f3cdab75b8",
+      "title": "Folyékony feltárás",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 46,
+          "title": "Folyékony feltárás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-2e5283ed058f7c86",
+      "title": "Kör-maszk",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 47,
+          "title": "Kör-maszk"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-b8bad5cfd62bb0ca",
+      "title": "Fényvillanás",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 48,
+          "title": "Fényvillanás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-64d550ef16ff3cbc",
+      "title": "Glitch-vágás",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 49,
+          "title": "Glitch-vágás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-da67cb165f38040e",
+      "title": "Csíkok",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 50,
+          "title": "Csíkok"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-7e220fe7eeb5624d",
+      "title": "Forma-morph",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 51,
+          "title": "Forma-morph"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-f23151d976fe899d",
+      "title": "Átrepülés",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 52,
+          "title": "Átrepülés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-f23ae94653f2842d",
+      "title": "Betolás rugóval",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 53,
+          "title": "Betolás rugóval"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-c253c49ed0930066",
+      "title": "Átlós seprés",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 54,
+          "title": "Átlós seprés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-3686ce80284190ad",
+      "title": "Panelek nyílása",
+      "role": "appearance",
+      "familyId": "appearance:reveal",
+      "type": "reveal",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Időzített átmenet az alatta lévő teljes képre: átúszás, elmosásos zoom, folyékony feltárás, kör-maszk, fényvillanás, glitch, csíkok. Be, ki, vagy be és ki.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 55,
+          "title": "Panelek nyílása"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-a75092e8a318635a",
+      "title": "Vetítő · szépia",
+      "role": "appearance",
+      "familyId": "appearance:projector",
+      "type": "projector",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Analóg filmvetítés az alatta lévő képre: por és karcok szaggatott tempóban, fényszivárgás (light leak), vibráló expozíció, filmkocka-ugrálás, kameralebegés, színszél és szemcse. A Képkocka-ütem adja a mozis darabosságot.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 57,
+          "title": "Vetítő · szépia"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-d780d1b29c09bff0",
+      "title": "Vetítő · fekete-fehér",
+      "role": "appearance",
+      "familyId": "appearance:projector",
+      "type": "projector",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Analóg filmvetítés az alatta lévő képre: por és karcok szaggatott tempóban, fényszivárgás (light leak), vibráló expozíció, filmkocka-ugrálás, kameralebegés, színszél és szemcse. A Képkocka-ütem adja a mozis darabosságot.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 58,
+          "title": "Vetítő · fekete-fehér"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-9e201db98b5ea94f",
+      "title": "Fényszivárgás",
+      "role": "appearance",
+      "familyId": "appearance:projector",
+      "type": "projector",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Analóg filmvetítés az alatta lévő képre: por és karcok szaggatott tempóban, fényszivárgás (light leak), vibráló expozíció, filmkocka-ugrálás, kameralebegés, színszél és szemcse. A Képkocka-ütem adja a mozis darabosságot.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 59,
+          "title": "Fényszivárgás"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-42f1b13667f2ab72",
+      "title": "Kameralebegés",
+      "role": "appearance",
+      "familyId": "appearance:projector",
+      "type": "projector",
+      "motion": null,
+      "topics": [
+        "retro"
+      ],
+      "keywords": [],
+      "description": "Analóg filmvetítés az alatta lévő képre: por és karcok szaggatott tempóban, fényszivárgás (light leak), vibráló expozíció, filmkocka-ugrálás, kameralebegés, színszél és szemcse. A Képkocka-ütem adja a mozis darabosságot.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "motion",
+          "index": 60,
+          "title": "Kameralebegés"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-f0200a53310ce742",
+      "title": "Szétrobbanó és visszaálló felirat",
+      "role": "element",
+      "familyId": "element:text",
+      "type": "text",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "text",
+        "felirat"
+      ],
+      "description": "Felirat palettás csillogással és ragyogással. Több sor is lehet (Enter), balra, középre vagy jobbra zárva.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "particles",
+          "index": 0,
+          "title": "Szétrobbanó és visszaálló felirat"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-appearance-3e2fef66523e9759",
+      "title": "Részecskékre bontás (Megjelenés)",
+      "role": "appearance",
+      "familyId": "appearance:pdisp",
+      "type": "pdisp",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "szétesés",
+        "részecske",
+        "szétrobbanó felirat"
+      ],
+      "description": "Ráhúzható Megjelenés: a réteg (szöveg, forma, kép) pontokra esik szét, majd visszaáll. Jelzésre (J), ismétlődve vagy kézzel. Szövegnél megadhatsz új szövegeket: az összeálláskor a következő szó jön, a felirat közben szerkeszthető marad.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "apply-to-target-or-explicit-filter",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "particles",
+          "index": 1,
+          "title": "Részecskékre bontás (Megjelenés)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-2bf37ce88c5fa939",
+      "title": "Részecskék (alatta lévő kép)",
+      "role": "element",
+      "familyId": "element:particles",
+      "type": "particles",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "részecske",
+        "particles",
+        "pontfelhő"
+      ],
+      "description": "Bármely kép vagy az alatta lévő rétegek pixeleiből 65–262 ezer részecske lesz. A fényességből mélység, a jelekre (kick, ütem) szétszóródás, áramlás, hullám.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "particles",
+          "index": 2,
+          "title": "Részecskék (alatta lévő kép)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-d44539cea9c82d73",
+      "title": "Részecskék saját képből",
+      "role": "element",
+      "familyId": "element:particles",
+      "type": "particles",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "részecske",
+        "particles",
+        "pontfelhő"
+      ],
+      "description": "Bármely kép vagy az alatta lévő rétegek pixeleiből 65–262 ezer részecske lesz. A fényességből mélység, a jelekre (kick, ütem) szétszóródás, áramlás, hullám.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "particles",
+          "index": 3,
+          "title": "Részecskék saját képből"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-6a017cae45120d85",
+      "title": "Ütemre robbanó",
+      "role": "element",
+      "familyId": "element:particles",
+      "type": "particles",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "részecske",
+        "particles",
+        "pontfelhő"
+      ],
+      "description": "Bármely kép vagy az alatta lévő rétegek pixeleiből 65–262 ezer részecske lesz. A fényességből mélység, a jelekre (kick, ütem) szétszóródás, áramlás, hullám.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "particles",
+          "index": 4,
+          "title": "Ütemre robbanó"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0ba1f93b19e9cbdb",
+      "title": "Lebegő porfelhő",
+      "role": "element",
+      "familyId": "element:particles",
+      "type": "particles",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "részecske",
+        "particles",
+        "pontfelhő"
+      ],
+      "description": "Bármely kép vagy az alatta lévő rétegek pixeleiből 65–262 ezer részecske lesz. A fényességből mélység, a jelekre (kick, ütem) szétszóródás, áramlás, hullám.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "particles",
+          "index": 5,
+          "title": "Lebegő porfelhő"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-0e55236abc2fc2fc",
+      "title": "Szöveg",
+      "role": "element",
+      "familyId": "element:text",
+      "type": "text",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "text",
+        "felirat"
+      ],
+      "description": "Felirat palettás csillogással és ragyogással. Több sor is lehet (Enter), balra, középre vagy jobbra zárva.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "media",
+          "index": 0,
+          "title": "Szöveg"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-75b322ea1956c204",
+      "title": "Animált szöveg",
+      "role": "element",
+      "familyId": "element:mtext",
+      "type": "mtext",
+      "motion": null,
+      "topics": [
+        "typography"
+      ],
+      "keywords": [
+        "szöveg",
+        "kinetikus",
+        "animált felirat"
+      ],
+      "description": "Kinetikus tipográfia betűnként vagy szavanként: elmosásból élesedés, emelkedés, maszkolt felcsúszás, rugós pattanás, méret- és fókuszpop, kemény vágás, oldalról maszkolt beúszás. Boil (kézi remegés), megnyúlás mozgás közben és ütemre lüktetés bármelyik mozdulathoz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "media",
+          "index": 1,
+          "title": "Animált szöveg"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-1dd6a824bec536a4",
+      "title": "Kép",
+      "role": "element",
+      "familyId": "element:image",
+      "type": "image",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "kép",
+        "photo",
+        "fotó"
+      ],
+      "description": "Saját kép rétegként — fotó, logó, textúra.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "media",
+          "index": 2,
+          "title": "Kép"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-23d7440830e0a45c",
+      "title": "Poly Haven textúrák",
+      "role": "element",
+      "familyId": "element:image",
+      "type": "image",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "kép",
+        "photo",
+        "fotó"
+      ],
+      "description": "Saját kép rétegként — fotó, logó, textúra.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": "polyhaven",
+      "sourceRows": [
+        {
+          "category": "media",
+          "index": 3,
+          "title": "Poly Haven textúrák"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-b99bc33e31e0a810",
+      "title": "Vektoranimáció (Lottie)",
+      "role": "element",
+      "familyId": "element:lottie",
+      "type": "lottie",
+      "motion": null,
+      "topics": [],
+      "keywords": [
+        "lottie",
+        "vektoranimáció"
+      ],
+      "description": "Saját vektoros Lottie-animáció. A média kezdése, sebessége és Loopja külön állítható a kulcsanimációtól.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": "lottie",
+      "sourceRows": [
+        {
+          "category": "media",
+          "index": 4,
+          "title": "Vektoranimáció (Lottie)"
+        }
+      ]
+    },
+    {
+      "proposedId": "draft-element-6e31434f4c846fc6",
+      "title": "Saját GLSL",
+      "role": "element",
+      "familyId": "element:custom",
+      "type": "custom",
+      "motion": null,
+      "topics": [],
+      "keywords": [],
+      "description": "Saját shader élőben. IN(uv) az alatta lévő kép, így szűrőt is írhatsz.",
+      "origin": "builtin",
+      "availability": "builtin-source",
+      "applyAction": "insert-element",
+      "accepts": [],
+      "compatibilityStatus": "requires-runtime-policy",
+      "special": null,
+      "sourceRows": [
+        {
+          "category": "media",
+          "index": 5,
+          "title": "Saját GLSL"
+        }
+      ]
+    }
+  ]
+}

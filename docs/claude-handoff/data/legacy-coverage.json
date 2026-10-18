@@ -1,0 +1,524 @@
+{
+  "schemaVersion": 1,
+  "source": "FUNKCIO-LELTAR.md",
+  "rows": [
+    {
+      "sourceKey": "legacy-1-1",
+      "sourceRow": 1,
+      "title": "Könyvtár bal oldalt a rétegek fölött, húzható elválasztó",
+      "sourceStatus": "**D (U3)**",
+      "workPackages": [
+        "CAT-01",
+        "UX-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-2-1",
+      "sourceRow": 2,
+      "title": "Megjelenés-audit, ráhúzható anyagok több 3D célon",
+      "sourceStatus": "**T/R**",
+      "workPackages": [
+        "MAT-01",
+        "COLOR-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-3-1",
+      "sourceRow": 3,
+      "title": "1. kép teljes lánca; 6. kép kapu",
+      "sourceStatus": "**R / T**",
+      "workPackages": [
+        "MAT-01",
+        "PATH-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-4-1",
+      "sourceRow": 4,
+      "title": "Több fény/fényforma, tükrözés/törés, padlótükör más tárgyon",
+      "sourceStatus": "**T** (1 fény: **D**)",
+      "workPackages": [
+        "MAT-01",
+        "BASE-02"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-5-1",
+      "sourceRow": 5,
+      "title": "Kapcsolatok három állapota, javaslat, panel/térkép, prioritás",
+      "sourceStatus": "**R**",
+      "workPackages": [
+        "LINK-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-6-1",
+      "sourceRow": 6,
+      "title": "Közös szerkeszthető útvonal (2D/maszk/szövegút/mozgáspálya/3D), forma-boole, üreg",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "PATH-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-7-1",
+      "sourceRow": 7,
+      "title": "Élő szöveg 3D test felületén; 3D szöveg-geometria",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "PATH-01",
+        "MEDIA-01",
+        "TEXT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-8-1",
+      "sourceRow": 8,
+      "title": "Gazdag tipográfia, a 4./5./7. kép mozgásai, Váltakozó szöveg",
+      "sourceStatus": "**R · K (hibákkal)**",
+      "workPackages": [
+        "TEXT-01",
+        "MOT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-9-1",
+      "sourceRow": 9,
+      "title": "Jelzés → szó/Mozgás/réteg hozzárendelés, hangjelek",
+      "sourceStatus": "**R**",
+      "workPackages": [
+        "MOT-01",
+        "LINK-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-10-1",
+      "sourceRow": 10,
+      "title": "Paraméter-Eljátszás, nyers/korrigált gesztus, impact megőrzése",
+      "sourceStatus": "**R · K (hibákkal)**",
+      "workPackages": [
+        "PATH-01",
+        "MOT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-11-1",
+      "sourceRow": 11,
+      "title": "Kamera célzás, követés, pálya, könnyű retime",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "MOT-01",
+        "BASE-02"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-12-1",
+      "sourceRow": 12,
+      "title": "Csoporthatár/forgáspont, kijelölési memória, jobb klikk mindenhol",
+      "sourceStatus": "**R**",
+      "workPackages": [
+        "UX-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-13-1",
+      "sourceRow": 13,
+      "title": "Források hangolása; karakter/szellem",
+      "sourceStatus": "**R/T**",
+      "workPackages": [
+        "WORLD-01",
+        "PART-01",
+        "CHARACTER-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-14-1",
+      "sourceRow": 14,
+      "title": "Részecske Forrás saját emitterrel; szél/3D/ütközés",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "PART-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-15-1",
+      "sourceRow": 15,
+      "title": "Fizikai tér, mezők, kontaktus→helyi Glow, valódi Liquid",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "PHYS-01",
+        "FLUID-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-16-1",
+      "sourceRow": 16,
+      "title": "Receptcsalád képarány- és szövegcsere-próbával; animált Random",
+      "sourceStatus": "**R**",
+      "workPackages": [
+        "RECIPE-01",
+        "LAYOUT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-17-1",
+      "sourceRow": 17,
+      "title": "Teljes 4K vászon és hangsávos videóexport nagy jelenettel",
+      "sourceStatus": "**R**",
+      "workPackages": [
+        "EXPORT-01",
+        "PERF-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-18-1",
+      "sourceRow": 18,
+      "title": "Import, hordozhatóság, formátumok",
+      "sourceStatus": "**R** (L1, PH1 demonstrálva)",
+      "workPackages": [
+        "BASE-01",
+        "MEDIA-01",
+        "VIDEO-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-19-1",
+      "sourceRow": 19,
+      "title": "**Jelenetek + átmenetek** (új, a felhasználó kérése)",
+      "sourceStatus": "**D (S1 első változat)**",
+      "workPackages": [
+        "LINK-01",
+        "RECIPE-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-20-1",
+      "sourceRow": 20,
+      "title": "Kulcskockázás és idővonal használhatósága",
+      "sourceStatus": "**D (U1)** · korábban K (hibákkal)",
+      "workPackages": [
+        "MOT-01",
+        "TEXT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-21-1",
+      "sourceRow": 21,
+      "title": "Jobb panel és a teljes UI rendezettsége (U1: jobb panel, U3: többi munkatér)",
+      "sourceStatus": "**D (U1+U3)**",
+      "workPackages": [
+        "UI-01",
+        "UX-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-22-1",
+      "sourceRow": 22,
+      "title": "LFO hibátlan körbeérés (loop)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "MOT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-23-1",
+      "sourceRow": 23,
+      "title": "**Szabály- és eseményvezérelt viselkedés** (a felhasználó kérése, 2026-10-18, későbbre; körbejárandó)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "LINK-01",
+        "PHYS-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-24-1",
+      "sourceRow": 24,
+      "title": "**Kapcsolat-zsinór és egységes Kapcsolat-rendszer** (`docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md` 2–3.)",
+      "sourceStatus": "**D (K1)**",
+      "workPackages": [
+        "LINK-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-25-1",
+      "sourceRow": 25,
+      "title": "**Mozgás árnyéka** (4.)",
+      "sourceStatus": "**R**",
+      "workPackages": [
+        "MOT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-26-1",
+      "sourceRow": 26,
+      "title": "**Mozgás átadása (Ritmus / Út / Teljes) és Sorrend festése** (5–6.)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "MOT-01",
+        "PATH-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-27-1",
+      "sourceRow": 27,
+      "title": "**Szerepérzékeny jelenetmozgás** (7.)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "RECIPE-01",
+        "MOT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-28-1",
+      "sourceRow": 28,
+      "title": "**Presetek kívülről (ChatGPT) + saját könyvtár + saját shader** (P1)",
+      "sourceStatus": "**D (P1)**",
+      "workPackages": [
+        "BASE-01",
+        "CAT-01",
+        "MEDIA-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-28-2",
+      "sourceRow": 28,
+      "title": "„Itt legyen ekkor” célállapot (8.)",
+      "sourceStatus": "**Felhasználói döntésre vár**",
+      "workPackages": [
+        "MOT-01",
+        "LINK-01"
+      ],
+      "note": "Külön felhasználói döntésre váró célállapot, nem ütemezett alapfunkció.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-29-1",
+      "sourceRow": 29,
+      "title": "**Mozgás polc = ráhúzható animációk, rétegenkénti Loop, Időzítés átalakítása** (a felhasználó kérése, 2026-10-18, kategóriák: `docs/spec/vel-mozgas-polc-kategoriak.md`; részben terv: „ráhúzható mozgás”, B szakasz)",
+      "sourceStatus": "**D (Mozgás v1.1 + G1 Gesztus)**",
+      "workPackages": [
+        "MOT-01",
+        "CAT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-30-1",
+      "sourceRow": 30,
+      "title": "**UI-tömörítés, szövegeszköztár, panelszerkezet, színhierarchia, action barok** (a felhasználó visszajelzése, 2026-10-18: `docs/spec/vel-ui-visszajelzes-2026-10-18.md`)",
+      "sourceStatus": "**R (U4: első rész D)**",
+      "workPackages": [
+        "COLOR-01",
+        "UI-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-31-1",
+      "sourceRow": 31,
+      "title": "**Város** – seedelt, kitalált városkép, valódi 3D házakkal (`docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md` 1.)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "BASE-02",
+        "MEDIA-01",
+        "RECIPE-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-32-1",
+      "sourceRow": 32,
+      "title": "**3D Terep** (ProceduralTerrains-port, MIT), később **Bolygó domborzata** (`docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md` 2.)",
+      "sourceStatus": "**R** (T1 3D Terep demonstrálva, 0.33.0-terep1; T2 Bolygó domborzata tervezett)",
+      "workPackages": [
+        "WORLD-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-33-1",
+      "sourceRow": 33,
+      "title": "**Folyadékmező** (three-fluid-fx Stable Fluids, MIT): Áramló tinta Forrás + Folyadékos torzítás/feltárás Megjelenés (`docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md` 3.)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "FLUID-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-34-1",
+      "sourceRow": 34,
+      "title": "**Anime.js mintamozgások**: Rugalmas beúszás, Kamerás ráúszás + fókuszváltás (`docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md` 4.)",
+      "sourceStatus": "**R (Rugalmas beúszás D)**",
+      "workPackages": [
+        "MOT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-35-1",
+      "sourceRow": 35,
+      "title": "**Skybox / Környezet** (FreeStylized, licenc tisztázandó) (`docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md` 5.)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "MAT-01",
+        "BASE-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-36-1",
+      "sourceRow": 36,
+      "title": "**Fizikai test** (Oimo.js, MIT) (`docs/spec/VEL-KULSO-FORRASOK-INTEGRACIO-CLAUDE-PROMPT.md` 6.)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "PHYS-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-37-1",
+      "sourceRow": 37,
+      "title": "**CRT-képernyő + Színes vetett fény** (R1; VFX-JS-demók mintájára, saját kód; `docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`)",
+      "sourceStatus": "**D (R1)**",
+      "workPackages": [
+        "MAT-01",
+        "RECIPE-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-38-1",
+      "sourceRow": 38,
+      "title": "**Magazinrács (WIDE) Recept + Szálakra bomlás / Szövött galéria (Unwoven, MIT)** (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "LAYOUT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-39-1",
+      "sourceRow": 39,
+      "title": "**Közös útvonal: Útvonalas forma (Tubes elve), Körpályás szöveg (3D Text Circle, MIT), Curve Gallery** (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "PATH-01",
+        "MEDIA-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-40-1",
+      "sourceRow": 40,
+      "title": "**3D anyagok: Rajzolt toll (R3F Sketch Material, MIT) + Hologram** (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "MAT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-41-1",
+      "sourceRow": 41,
+      "title": "**Kép újravilágítása** (codrops relighting, MIT, WebGPU → saját WebGL2-passz) (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "RELIGHT-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-42-1",
+      "sourceRow": 42,
+      "title": "**Beszélő karakter** (TalkingHead + HeadAudio, MIT) (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`)",
+      "sourceStatus": "**T**",
+      "workPackages": [
+        "CHARACTER-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    },
+    {
+      "sourceKey": "legacy-43-1",
+      "sourceRow": 43,
+      "title": "**Random minőségszűrő + ízlés** (Q1, 2026-10-18)",
+      "sourceStatus": "**D (Q1)**",
+      "workPackages": [
+        "RECIPE-01",
+        "PERF-01"
+      ],
+      "note": "A cél megmarad; konkrét szelet és bizonyíték a taskban.",
+      "implementationApproved": false
+    }
+  ]
+}
