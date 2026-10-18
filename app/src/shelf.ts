@@ -40,6 +40,7 @@ export function buildShelf(){
     const key=ikey(cat,i);if(thumbCache[key])c.getContext('2d').drawImage(thumbCache[key],0,0);
     else if(own&&item.thumb){const im=new Image();im.onload=()=>{const cnv=document.createElement('canvas');cnv.width=TW;cnv.height=TH;cnv.getContext('2d').drawImage(im,0,0,TW,TH);thumbCache[key]=cnv;c.getContext('2d').drawImage(cnv,0,0);};im.src=item.thumb;}
     else if(item.mo)drawMoThumb(c,item.mo,key);
+    else if(item.lottie)drawLottieThumb(c,key);
     else todo.push([i,c,key,cat]);
     const cc=cat;
     b.onmouseenter=()=>setAudition(cc,i);b.onmouseleave=()=>setAudition(null);b.onfocus=()=>setAudition(cc,i);b.onblur=()=>setAudition(null);
@@ -55,6 +56,7 @@ export function buildShelf(){
     if(++checked===todo.length&&pending.length)setTimeout(step,30);});}
 R.audition=null;export const audCache={};
 export function setAudition(c,i?){markDirty();if(c==null){R.audition=null;R.moAud=null;$('#audition').hidden=true;return;}
+  if(LIB[c][i].lottie){R.audition=null;R.moAud=null;const a=$('#audition');a.hidden=false;a.textContent='Vektoranimáció (Lottie) · kattints a helyi JSON-fájl kiválasztásához';return;}
   if(LIB[c][i].mo){const L=R.selId&&findItem(R.selId);const a=$('#audition');a.hidden=false;R.audition=null;
     if(L){R.moAud={id:L.it.id,mo:makeMo(LIB[c][i].mo,{at:0}),t0:performance.now()};a.textContent=`Előnézet: ${LIB[c][i].name} a(z) „${L.it.name}” rétegen · kattints vagy húzd rá`;}
     else{R.moAud=null;a.textContent=`${LIB[c][i].name}: jelölj ki egy réteget az előnézethez, vagy húzd rá egy rétegre`;}return;}const key=ikey(c,i);R.audition=audCache[key]||(audCache[key]=LIB[c][i].make());
@@ -64,3 +66,6 @@ export function setAudition(c,i?){markDirty();if(c==null){R.audition=null;R.moAu
 function drawMoThumb(c,t,key){const im=new Image();im.onload=()=>{const cnv=document.createElement('canvas');cnv.width=TW;cnv.height=TH;const x=cnv.getContext('2d');
   const g=x.createLinearGradient(0,0,TW,TH);g.addColorStop(0,'#1d1b33');g.addColorStop(1,'#0b0a14');x.fillStyle=g;x.fillRect(0,0,TW,TH);x.drawImage(im,TW/2-30,TH/2-30,60,60);thumbCache[key]=cnv;c.getContext('2d').drawImage(cnv,0,0);};
   im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(moIcon(t).replace('stroke="currentColor"','stroke="#b9b4ff"').replace(/fill="currentColor"/g,'fill="#b9b4ff"'));}
+function drawLottieThumb(c,key){const x=c.getContext('2d'),g=x.createLinearGradient(0,0,TW,TH);g.addColorStop(0,'#34315f');g.addColorStop(1,'#11101c');x.fillStyle=g;x.fillRect(0,0,TW,TH);
+  x.fillStyle='#c8bfff';x.beginPath();x.arc(TW*.5,TH*.5,Math.min(TW,TH)*.24,0,Math.PI*2);x.fill();x.fillStyle='#222038';x.beginPath();x.moveTo(TW*.46,TH*.36);x.lineTo(TW*.46,TH*.64);x.lineTo(TW*.63,TH*.5);x.closePath();x.fill();
+  const cnv=document.createElement('canvas');cnv.width=TW;cnv.height=TH;cnv.getContext('2d').drawImage(c,0,0);thumbCache[key]=cnv;}

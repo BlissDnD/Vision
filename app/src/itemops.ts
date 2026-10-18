@@ -19,6 +19,7 @@ export function insertItem(obj,refId){
   R.selId=obj.id;}
 const hostTarget=refId=>refId?findItem(refId):(R.selId?findItem(R.selId):null);
 export function addFromLib(c,i,refId){const li=LIB[c][i];if(li.mo){R.attachMo&&R.attachMo(i,refId);return;}const it=li.make();
+  if(it.type==='lottie'){R.openLottie&&R.openLottie();return;}
   if(EFFECTS[it.type]&&EFFECTS[it.type].host){const r=hostTarget(refId);if(r&&fxFits(it.type,r.it)){attachFx(c,i,r.it.id);return;}toast(`${it.name}: ${fxHostNote(it.type)}. Húzd egy ilyen rétegre, vagy jelöld ki, és kattints újra.`);return;}
   insertItem(it,refId);const Rc=it.recipe&&RECIPES.find(r=>r.n===it.recipe)||(li.cam?li:null);if(Rc&&Rc.cam){st.cam=normCam(Rc.cam);if(Rc.dur)st.dur=Rc.dur;}commit();renderAll();toast(Rc&&Rc.cam?`Hozzáadva: ${it.name} · a kamera bekapcsolva`:`Hozzáadva: ${it.name}`);if(it.type==='image')$('#fileImg').click();}
 export function attachFx(c,i,targetId){const r=findItem(targetId);if(!r)return;const f=LIB[c][i].make();if(!fxFits(f.type,r.it)){toast(`${f.name} nem került rá: ${fxHostNote(f.type)}.`);return;}r.it.fx.push(f);R.selId=r.it.id;SECOPEN.fx=true;commit();renderAll();toast(`${f.name} → ${r.it.name}`);}

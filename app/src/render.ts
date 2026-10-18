@@ -179,7 +179,7 @@ export function drawFx(L,target,ctx,t,inTex,prevTex,pass){
   setPal(p,L.pal||0);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
   for(const d of paramsOf(L)){const v=L.p[d.k];if(d.type==='color'){const c=hexRGB(v?v.v:d.def);gl.uniform3f(U(p,'p_'+d.k),c[0],c[1],c[2]);}
     else gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
-  const m=mediaFor(L,t);bindTex(0,inTex);bindTex(1,prevTex);bindTex(2,m&&m.tex);
+  const m=mediaFor(L,t,ctx);bindTex(0,inTex);bindTex(1,prevTex);bindTex(2,m&&m.tex);
   gl.uniform1i(U(p,'uInput'),0);gl.uniform1i(U(p,'uPrev'),1);gl.uniform1i(U(p,'uImage'),2);gl.uniform2f(U(p,'uImgSize'),m?m.w:1,m?m.h:1);
   bindTex(3,m&&m.aux);gl.uniform1i(U(p,'uAux'),3);{const I=m&&m.info?m.info:[0,0,0,0],G=m&&m.geo?m.geo:[1,0,1,1];gl.uniform4f(U(p,'uAuxInfo'),I[0],I[1],I[2]||0,0);gl.uniform4f(U(p,'uAux2'),G[0],G[1],G[2],G[3]);}
   if(def.setU)def.setU(p,L,t);

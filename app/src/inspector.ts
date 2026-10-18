@@ -19,6 +19,7 @@ import { childVariantSection, linkSection, variantSection } from './variantsui';
 import { linesSection } from './textlines';
 import { spineSection } from './spinegrips';
 import { lightSection, usesLight } from './lightui';
+import { lottieMeta } from './lottie';
 
 export function renderInsp(){
   if(R.updTextbar)R.updTextbar();
@@ -59,6 +60,17 @@ export function renderInsp(){
   // U4: motion params live on the Mozgás tab; a few main ones (DUP) stay here too and edit the same value
   const mainKeys=(L.type==='custom'&&PS!==d.params?PS.map(p=>p.k):d.main||PS.slice(0,3).map(p=>p.k)).filter(k=>!AK.includes(k)||DUP.includes(k));
   const mainKids=[];
+  if(L.type==='lottie'){
+    let meta:any=null;try{meta=lottieMeta(L.asset)?.meta;}catch(_){}
+    mainKids.push(h('p',{class:'small'},meta?`Vektoros Lottie · ${meta.width} × ${meta.height} · ${meta.duration.toFixed(1)} mp`:'Hiányzó vagy érvénytelen Lottie-asset. Nyisd meg újra az eredeti projektfájlt.'));
+    mainKids.push(h('button',{class:'btn',onclick:()=>R.openLottie&&R.openLottie()},'Másik vektoranimáció hozzáadása…'));
+    const start={v:L.media.start},speed={v:L.media.speed};
+    T('motion',section('Média időzítése','lottie-time',true,
+      h('p',{class:'small'},'A média saját ideje külön működik a jelenet és a kulcskockák Loopjától.'),
+      ctlSlider(start,{k:'start',l:'Kezdés (mp)',min:0,max:Math.max(600,st.dur),def:0,step:.01},{noAnim:true,onInput:()=>{L.media.start=start.v;markDirty();renderTimeline();}}),
+      ctlSlider(speed,{k:'speed',l:'Sebesség',min:.05,max:8,def:1,step:.01},{noAnim:true,onInput:()=>{L.media.speed=speed.v;markDirty();renderTimeline();}}),
+      ctlSwitch('Média Loop',L.media.loop,v=>{L.media.loop=v;commit();renderTimeline();})));
+  }
   if(L.type==='text'||L.type==='mtext'){const ti=h('textarea',{class:'txt',rows:String(Math.min(5,Math.max(1,String(L.text.str).split('\n').length))),'aria-label':'Felirat (Enter = új sor)'});ti.value=L.text.str;ti.oninput=()=>{L.text.str=ti.value;ti.rows=Math.min(5,Math.max(1,ti.value.split('\n').length));};ti.onchange=commit;
     const FONTS=['Bricolage Grotesque','Instrument Sans','Fraunces','Cinzel','Unbounded','Syne','Orbitron','Major Mono Display','Bodoni Moda'];
     const fs=h('select',{'aria-label':'Betűtípus'},...FONTS.map(f=>{const o=h('option',null,f);if(f===L.text.font)o.selected=true;return o;}));fs.onchange=()=>{L.text.font=fs.value;commit();};
@@ -137,7 +149,7 @@ export function placement(L,title){
     curves.appendChild(h('div',{class:'chips'},...ks.map(([k,l])=>{const b=h('button',{class:'chip',type:'button'},l+' görbéje');let ed=null;
       b.onclick=()=>{if(ed){ed.remove();ed=null;b.setAttribute('aria-pressed','false');return;}curves.querySelectorAll('.ked').forEach(x=>x.remove());curves.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed','false'));ed=keyEditor(L.n[k],BASEK[k],l);curves.appendChild(ed);b.setAttribute('aria-pressed','true');};return b;})));};
   const g=h('div',{class:'grid2'},scrubField('X',L.n.x,BASEK.x,.004,upd),scrubField('Y',L.n.y,BASEK.y,.004,upd),scrubField('Méret',L.n.s,BASEK.s,.006,upd),scrubField('Szög',L.n.r,BASEK.r,.5,upd),scrubField('Mélység',L.n.z,BASEK.z,.01,upd));upd();
-  const reset=h('button',{class:'btn',onclick:()=>{for(const k of ['x','y','r','spin'])L.n[k]=mkN(0);delete L.n.s.k;L.n.s=mkN(L.type==='text'?.16:L.type==='image'?.8:1);commit();renderInsp();}},'Alaphelyzet');
+  const reset=h('button',{class:'btn',onclick:()=>{for(const k of ['x','y','r','spin'])L.n[k]=mkN(0);delete L.n.s.k;L.n.s=mkN(L.type==='text'?.16:(L.type==='image'||L.type==='lottie')?.8:1);commit();renderInsp();}},'Alaphelyzet');
   return section(title,'place',['x','y','s','r'].some(k=>hasK(L.n[k])),g,curves,h('p',{class:'small'},'◆ = kulcskocka az aktuális időpontra (K: mind a négyre). Kulcskockás értéknél a vásznon húzva is kulcskocka keletkezik.'),ctlSlider(L.n.spin,BASEK.spin),h('div',{class:'btnrow'},reset));}
 
 /* ----- U1: tabbed inspector ----- */

@@ -531,6 +531,7 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .tlx-clip{position:absolute;top:3px;height:14px;border-radius:4px;cursor:grab;touch-action:none;overflow:hidden;font-size:10px;line-height:14px;color:var(--fg);
   background:linear-gradient(90deg,transparent 0,color-mix(in srgb,#ffb340 32%,transparent) var(--ri,0%),color-mix(in srgb,#ffb340 32%,transparent) calc(100% - var(--ro,0%)),transparent 100%);border:1px solid #ffb340}
 .tlx-clip.open{border-right-style:dashed;border-top-right-radius:0;border-bottom-right-radius:0}.tlx-clip.off{opacity:.4}
+.tlx-clip.lottie{background:color-mix(in srgb,#68cfd4 28%,var(--panel));border-color:#68cfd4;color:var(--fg)}
 .tlx-clip span{padding:0 8px;pointer-events:none;white-space:nowrap}
 .tlx-ce{position:absolute;top:0;bottom:0;width:6px;cursor:ew-resize}.tlx-ce.a{left:0}.tlx-ce.b{right:0}.tlx-ce:hover{background:color-mix(in srgb,#ffb340 70%,transparent)}
 .brand .ver{margin-left:6px;font-size:10.5px;font-weight:500;color:var(--fg2);opacity:.8;cursor:help}

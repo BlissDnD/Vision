@@ -1,8 +1,10 @@
-# Vel – átadó a folytatáshoz (2026-10-18, Mozgás v1 után)
+# Vel – átadó a folytatáshoz (2026-10-18, L1 Lottie után)
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**L1 Lottie (0.34.0-l1, 2026-10-18):** helyi, csak vektoros `.json` import előnézettel, saját réteg és Sávok-blokk, média-Kezdet/Sebesség/Loop, Megjelenések, jelenetidőből rajzolt kép, a projektbe ágyazott vektorasset és teljes automatikus mentés. Célzott teszt és teljes kör **38/38 zöld**; felhasználói próba hátra (`PROGRESS.md`, minta: `app/tests/fixtures/vel-lottie-circle.json`). Build: `app/dist/index.html`. Képes/szöveges/fontos/expression Lottie, online kereső és videóimport továbbra is későbbi szelet. Jóváhagyott javaslat: `docs/javaslatok/LOTTIE-MEDIA-IMPORT-ELSO-SZELET-JAVASLAT.md`; 8 pontos ellenőrzés: `docs/javaslatok/LOTTIE-ELSO-SZELET-ELLENORZES.md`.
+
 **Q1 Random minőségszűrő (2026-10-18):** a Random lemér minden dobást (10 tünet, `src/rndq.ts`), a gyengét újradobja vagy csak a hibás effektet gyengíti/veszi ki; Ronda/Tetszik ízlés (`src/taste.ts`, a projektfájl is viszi). Headless teszttel demonstrálva (`tests/rnd_quality.js`), felhasználói próba hátra (`PROGRESS.md`). Következő ebből (javaslat kell): küszöbök tanulása a jelzésekből, „Hatos rács”.
 
 **T1 3D Terep (0.33.0-terep1, 2026-10-18):** Források → 3D Terep: valódi táj-háló seedből (6 típus, 5 stílus, vízszint, vetett árnyék, jelenetfény, égbolt). Húzás = körbeforgatás, görgő = távolság. Headless teszttel demonstrálva (`tests/t1_terrain3d.js`); M1 Max frame-idő és felhasználói próba hátra. **Következő ehhez:** T2 Bolygó domborzata (vázlat: `docs/javaslatok/3D-TEREP-JAVASLAT.md`, prototípus + jóváhagyás kell).

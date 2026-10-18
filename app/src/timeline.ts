@@ -14,18 +14,20 @@ import { markDirty } from './loop';
 import { toast } from './modals';
 import { addCue, blockOf, removeCue, shiftBlock, stretchBlock } from './retime';
 import { MO, moClip, moParam } from './motion';
+import { lottieMeta } from './lottie';
 
 export const tlHeadEl=$('#tlHead'),tlTrack=$('#tlTrack');
 /* timing segments of a layer: [{a,b,cls,f:[[group,key],…]}] – f = fields that shift together when the bar is dragged */
 const moById=(L,g)=>(L.mo||[]).find(m=>'mo:'+m.id===g);
-const segGet=(L,g,k)=>g==='tm'?L.tm[k]:g.startsWith('mo:')?(moById(L,g)||{p:{[k]:{v:0}}}).p[k].v:L.p[k].v;
-const segSet=(L,g,k,v)=>{if(g==='tm')L.tm[k]=v;else if(g.startsWith('mo:')){const m=moById(L,g);if(m)m.p[k].v=v;}else L.p[k].v=v;};
+const segGet=(L,g,k)=>g==='tm'?L.tm[k]:g==='media'?L.media[k]:g.startsWith('mo:')?(moById(L,g)||{p:{[k]:{v:0}}}).p[k].v:L.p[k].v;
+const segSet=(L,g,k,v)=>{if(g==='tm')L.tm[k]=v;else if(g==='media')L.media[k]=v;else if(g.startsWith('mo:')){const m=moById(L,g);if(m)m.p[k].v=v;}else L.p[k].v=v;};
 const keyLoopRange=L=>{let a=Infinity,b=-Infinity;for(const q of paramList(L))if(q.o.k&&q.o.k.length){a=Math.min(a,q.o.k[0].t);b=Math.max(b,q.o.k[q.o.k.length-1].t);}return b>a?{a,b}:null;};
 export function layerSegs(L){const out=[];const add=(a,b,cls,f)=>{if(b>a)out.push({a,b,cls,f});};if(!L||L.type==='group'&&!L.tm&&!(L.mo&&L.mo.length))return out;
   const T=L.tm;if(T&&T.in)add(T.inAt,T.inAt+T.inDur,'',[['tm','inAt']]);if(T&&T.out)add(T.outAt,T.outAt+T.outDur,'out',[['tm','outAt']]);
   for(const m of L.mo||[])if(m.t==='spring'&&m.on!==false)add(m.p.at.v,m.p.at.v+m.p.dur.v,'mo',[['mo:'+m.id,'at']]);
   if(L._klSet){const kl=keyLoopRange(L);if(kl)add(kl.b,Math.max(kl.b+.01,st.dur),'kloop',[]);}
   if(L.type==='group')return out;const P=k=>L.p[k].v;
+  if(L.type==='lottie'){const meta=lottieMeta(L.asset)?.meta;const a=L.media?.start||0;const b=meta?a+meta.duration/Math.max(.05,L.media?.speed||1):st.dur;add(a,L.media?.loop?Math.max(a+.01,st.dur):b,'lottie',[['media','start']]);}
   if(L.type==='mtext'){const tc=textCache.get(L.id),u=Math.round(P('unit'));const n=tc&&tc.info?(u===0?tc.info[0]:u===1?tc.info[1]:tc.geo[0]):(L.text.str||'').length;
     add(P('start'),P('start')+P('dur')+P('stagger')*n,'',[['p','start']]);if(P('outAt')>0)add(P('outAt'),P('outAt')+P('dur')+P('stagger')*n,'out',[['p','outAt']]);}
   if(L.type==='bento'){const n=(BENTO[Math.round(P('layout'))]||BENTO[0])[1].length;if(Math.round(P('anim'))!==7)add(P('start'),P('start')+P('dur')+P('stagger')*n,'',[['p','start']]);
@@ -104,12 +106,17 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
   for(const {L,d} of rows){const isSel=L.id===R.selId;
     const name=h('div',{class:'tlx-name'+(L===st.cam?' cam':''),style:`padding-left:${8+d*14}px`,title:L.name},L.name);name.onclick=()=>{if(L===st.cam){openCam(name);return;}R.selId=L.id;renderAll();};
     const lane=h('div',{class:'tlx-lane','data-id':L.id});
+    if(L.type==='lottie'){
+      const meta=lottieMeta(L.asset)?.meta,a=L.media?.start||0,b=L.media?.loop?Math.max(st.dur,vb):(a+(meta?.duration||0)/Math.max(.05,L.media?.speed||1));
+      if(!(b<va||a>vb)){const l=Math.max(0,X(a)),r=Math.min(100,X(b));
+        const clip=h('i',{class:'tlx-clip lottie'+(L.media?.loop?' open':''),style:`left:${l}%;width:${Math.max(.6,r-l)}%`,title:`Vektoranimáció · ${fmtT(a)} kezdet · húzd az időzítéshez · média Loop ${L.media?.loop?'be':'ki'}`},h('span',null,'Vektoranimáció'));
+        clip.onpointerdown=ev=>mediaDrag(ev,L,lane);lane.appendChild(clip);}}
     const B=L===st.cam?null:blockOf(L);
     if(B&&B.b>B.a&&!(B.b<va||B.a>vb)){const l=Math.max(0,X(B.a)),r=Math.min(100,X(B.b));
       const blk=h('i',{class:'tlx-block'+(R.blockSel.has(L.id)?' on':''),style:`left:${l}%;width:${Math.max(.4,r-l)}%`,title:'Mozgásblokk · húzás: egészben eltolás · Shift+katt: több blokk · jobb szél: középrész nyújtása (Alt: zárás lassítása)'});
       const end=h('b',{class:'tlx-bend',title:'Húzd: a rugalmas közép nyúlik, a beúszás sebessége marad · Alt+húzás: zárás lassítása'});blk.appendChild(end);
       blk.onpointerdown=ev=>blockDrag(ev,L,lane,ev.target===end?(ev.altKey?'close':'hold'):'move');lane.appendChild(blk);}
-    for(const s of layerSegs(L)){if(s.b<va||s.a>vb)continue;const l=Math.max(0,X(s.a)),r=Math.min(100,X(s.b));if(r<=l)continue;
+    for(const s of layerSegs(L)){if(s.cls==='lottie'||s.b<va||s.a>vb)continue;const l=Math.max(0,X(s.a)),r=Math.min(100,X(s.b));if(r<=l)continue;
       const e=h('i',{class:'tlx-seg'+(s.cls?' '+s.cls:''),style:`left:${l}%;width:${r-l}%`,title:'Húzd az időzítés eltolásához'});e.onpointerdown=ev=>segDrag(ev,L,s,lane);lane.appendChild(e);}
     for(const [t,n] of layerKeyTimes(L)){if(!inV(t))continue;
       const e=h('i',{class:'tlx-key'+(isSelK(L.id,t)?' on':''),style:`left:${X(t)}%`,'data-t':String(t),title:`${n} kulcskocka @ ${fmtT(t)} · húzás: áthelyezés · Shift+katt: több · Alt+húzás: nyújtás (több kijelölt időpontnál) · ⌘/Ctrl+húzás: másolás · jobb klikk: görbe`});
@@ -205,6 +212,16 @@ export function segDrag(ev,L,s,lane){ev.stopPropagation();ev.preventDefault();co
   tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);if(!e.shiftKey){const sn=snapT(orig[0]+dt,lane);dt=sn-orig[0];}
     s.f.forEach(([g,k],i)=>{const v=Math.max(0,Math.round((orig[i]+dt)*100)/100);segSet(L,g,k,v);});markDirty();tgt.style.left=(l0+dt/(vb-va)*100)+'%';};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(moved){commit();renderInsp();}else{seekTo(s.a);}};}
+/** A Lottie clip moves only the media start. Keyframe and scene Loops remain independent. */
+export function mediaDrag(ev,L,lane){ev.stopPropagation();ev.preventDefault();const tgt=ev.currentTarget;try{tgt.setPointerCapture(ev.pointerId);}catch(_){}
+  const [va,vb]=viewAB(),a0=L.media.start;let moved=false;
+  if(R.selId!==L.id){R.selId=L.id;renderLayers();renderInsp();}
+  tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;
+    const r=lane.getBoundingClientRect(),raw=a0+(e.clientX-ev.clientX)/r.width*(vb-va);
+    L.media.start=Math.max(0,Math.round((e.shiftKey?raw:snapT(raw,lane))*100)/100);
+    tgt.style.left=Math.max(0,(L.media.start-va)/(vb-va)*100)+'%';markDirty();};
+  tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(moved){commit();renderInsp();renderTimeline();}
+    else seekTo(a0);};}
 /** Drag a motion clip: move it, or its start ('a') / end ('b'). The timed Rugalmas beúszás moves at / stretches dur;
  *  a continuous motion's end dragged to the scene end becomes open-ended again. */
 export function clipDrag(ev,L,m,lane,mode){ev.stopPropagation();ev.preventDefault();const tgt=ev.currentTarget;try{tgt.setPointerCapture(ev.pointerId);}catch(_){}const [va,vb]=viewAB();

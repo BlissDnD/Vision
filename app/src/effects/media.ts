@@ -16,6 +16,11 @@ image:{kind:'image',name:'Kép',desc:'Saját kép rétegként — fotó, logó, 
  code:`vec4 fx(){vec2 p=P(); float ia=uImgSize.x/max(uImgSize.y,1.0); vec2 uv=vec2(p.x/ia,p.y)+0.5;
   float inb=step(0.0,uv.x)*step(uv.x,1.0)*step(0.0,uv.y)*step(uv.y,1.0);
   vec4 c=texture(uImage,clamp(uv,0.0,1.0)); vec3 rgb=mix(vec3(luma(c.rgb)),c.rgb,p_sat)*p_bright; float A=c.a*inb; return vec4(rgb*A,A);}`},
+lottie:{kind:'image',name:'Vektoranimáció',desc:'Saját vektoros Lottie-animáció. A média kezdése, sebessége és Loopja külön állítható a kulcsanimációtól.',noPal:true,main:['bright','sat'],
+ params:[S('bright','Fényerő',0,3,1),S('sat','Telítettség',0,3,1)],
+ code:`vec4 fx(){vec2 p=P(); float ia=uImgSize.x/max(uImgSize.y,1.0); vec2 uv=vec2(p.x/ia,p.y)+0.5;
+  float inb=step(0.0,uv.x)*step(uv.x,1.0)*step(0.0,uv.y)*step(uv.y,1.0);
+  vec4 c=texture(uImage,clamp(uv,0.0,1.0)); vec3 rgb=mix(vec3(luma(c.rgb)),c.rgb,p_sat)*p_bright; float A=c.a*inb; return vec4(rgb*A,A);}`},
 custom:{kind:'gen',name:'Saját GLSL',desc:'Saját shader élőben. IN(uv) az alatta lévő kép, így szűrőt is írhatsz.',main:['a','b','c','d'],
  params:[S('a','p_a',0,1,.5),S('b','p_b',0,1,.5),S('c','p_c',0,1,.5),S('d','p_d',0,1,.5)],code:''}
 };

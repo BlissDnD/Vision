@@ -6,7 +6,7 @@ export const mkN=(v:any):NParam=>{if(!(v&&typeof v==='object'))return {v,a:0,f:.
 export function makeLayer(type:string,o:any={}):Layer{
   const d=EFFECTS[type];
   const L:Layer={id:uid(),type,name:o.name||d.name,vis:true,blend:o.blend||'normal',pal:o.pal??(d.kind==='fx'?0:12),clip:!!o.clip,maskOnly:!!o.maskOnly,n:{},p:{},fx:(o.fx||[]).map(([t,oo])=>makeLayer(t,oo))};
-  for(const b of BASE){let dv=b.def;if(type==='text'&&b.k==='s')dv=.16;if(type==='mtext'&&b.k==='s')dv=.2;if(type==='image'&&b.k==='s')dv=.8;L.n[b.k]=mkN(o[b.k]??dv);}
+  for(const b of BASE){let dv=b.def;if(type==='text'&&b.k==='s')dv=.16;if(type==='mtext'&&b.k==='s')dv=.2;if((type==='image'||type==='lottie')&&b.k==='s')dv=.8;L.n[b.k]=mkN(o[b.k]??dv);}
   if(type==='custom'&&Array.isArray(o.cp)&&o.cp.length)L.cp=o.cp.map(c=>({...c}));
   for(const p of paramsOf(L))L.p[p.k]=mkN(o.p?.[p.k]??p.def);
   if(type==='text')L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12,...(o.text||{})};
@@ -15,7 +15,8 @@ export function makeLayer(type:string,o:any={}):Layer{
   if(type==='particles')L.asset=o.asset||null;
   if(o.tm)L.tm={...o.tm};
   if(type==='custom')L.code=o.code||DEFAULT_CODE;
-  if(type==='image')L.asset=o.asset||null;
+  if(type==='image'||type==='lottie')L.asset=o.asset||null;
+  if(type==='lottie')L.media={start:Number.isFinite(+o.media?.start)?Math.max(0,+o.media.start):0,speed:Number.isFinite(+o.media?.speed)?Math.max(0,+o.media.speed):1,loop:o.media?.loop!==false};
   if(type==='blob')L.btext=o.btext??'{id} · {x}, {y}';
   if(type==='pdisp'&&Array.isArray(o.alts))L.alts=[...o.alts];
   if(d.spine)L.spine=JSON.parse(JSON.stringify(o.spine||d.spine));
@@ -27,7 +28,7 @@ export function normalize(L:any):Layer{
   for(const b of BASE)if(!L.n[b.k])L.n[b.k]=mkN(b.def);
   if(L.type==='group'){L.children=(L.children||[]).filter(c=>c.type!=='group'&&EFFECTS[c.type]).map(normalize);L.macros=L.macros||[];return L;}
   const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of paramsOf(L))if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);
-  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
+  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(L.type==='lottie'){L.media=L.media||{};L.media.start=Number.isFinite(+L.media.start)?Math.max(0,+L.media.start):0;L.media.speed=Number.isFinite(+L.media.speed)?Math.max(0,+L.media.speed):1;L.media.loop=L.media.loop!==false;}if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
 export const SIZES:[string,string[][]][]=[['Képernyő',[['1920x1080','16:9 · 1920 × 1080'],['1080x1080','1:1 · 1080 × 1080'],['1080x1350','4:5 · 1080 × 1350'],['1080x1920','9:16 · 1080 × 1920'],['3840x2160','4K · 3840 × 2160']]],
  ['Bannerek',[['300x250','300 × 250'],['300x600','300 × 600'],['728x90','728 × 90'],['970x250','970 × 250'],['160x600','160 × 600']]]];
 export const LOOKP=[S('exposure','Expozíció',-2,2,0),S('bloom','Bloom',0,2,.5),S('radius','Bloom-sugár',0,1,.6),S('thresh','Bloom-küszöb',0,2,.8),S('hal','Halation (filmes vörös derengés)',0,1.5,.3),
@@ -48,7 +49,7 @@ import type { Project, Layer, NParam } from './types';
 export const LIGHTP=[S('az','Irány (körbe, °)',-180,180,-39.81),S('el','Magasság (°)',-10,90,45.58),S('soft','Lágyabb árnyék',0,1,.5),S('size','Nagyobb csillanás',0,1,0),S('warm','Melegebb ↔ hidegebb',-1,1,0),S('pow','Erősség',0,3,1)];
 export function normLight(o){const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}return b;}
 export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),light:normLight(null),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[],scenes:[]};
-R.selId=null;export const assets={};export const imgTex=new Map();
+R.selId=null;export const assets={};export const vectorAssets:Record<string,string>={};export const imgTex=new Map();
 
 export function walk(list,fn,parent=null){for(const it of list){fn(it,list,parent);if(it.type==='group')walk(it.children,fn,it);}}
 export function findItem(id){let r=null;walk(st.layers,(it,list,parent)=>{if(it.id===id)r={it,list,parent,i:list.indexOf(it)};});return r;}

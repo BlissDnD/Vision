@@ -19,7 +19,10 @@ async def main():
         pg.on('console',lambda m: logs.append(f'[{m.type}] {m.text}'))
         pg.on('pageerror',lambda e: logs.append(f'[pageerror] {e}'))
         html=open(src).read()
-        await pg.set_content('<!doctype html><html><head><meta charset=utf-8><style>[hidden]{display:none!important}</style></head><body>'+html+'</body></html>',wait_until='domcontentloaded')
+        page_html='<!doctype html><html><head><meta charset=utf-8><style>[hidden]{display:none!important}</style></head><body>'+html+'</body></html>'
+        # A local HTTP origin enables IndexedDB and localStorage, which set_content(about:blank) blocks.
+        await pg.route('http://127.0.0.1:5189/',lambda route: route.fulfill(body=page_html,content_type='text/html'))
+        await pg.goto('http://127.0.0.1:5189/',wait_until='domcontentloaded')
         await pg.wait_for_timeout(1500)
         r=await pg.evaluate(wrap(js))
         print('EVAL:',r if isinstance(r,str) else json.dumps(r,ensure_ascii=False,indent=1)[:6000])

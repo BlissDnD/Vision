@@ -3,9 +3,10 @@
  * Versions:  v1/v2 = Látomás Stúdió (app:'latomas', ≤ v13) · v3 = Vel (app:'vel', shared scene clock)
  *            · v4 = + Közös alap / Változat (state.bases, group.variant) and Kapcsolat (state.links); older files: none. */
 import { EFFECTS } from './effects/index';
+import { parseVectorLottie } from './lottieCore';
 
 export const PROJECT_VER = 4;
-export interface Migrated { state: any; assets: Record<string, any>; from: number; dropped: string[]; ulib: any[] }
+export interface Migrated { state: any; assets: Record<string, any>; vectorAssets: Record<string,string>; from: number; dropped: string[]; missingMedia: string[]; ulib: any[] }
 
 export function migrateProject(obj: any): Migrated {
   if (!obj || typeof obj !== 'object') throw new Error('Ez nem Vel / Látomás projekt.');
@@ -38,5 +39,21 @@ export function migrateProject(obj: any): Migrated {
   state.ver = PROJECT_VER;
   // P1: library items the project uses (optional; older files: none). Merged into the user library, never overwriting.
   const ulib = Array.isArray(obj.ulib) ? obj.ulib.filter((x: any) => x && typeof x.id === 'string' && x.data != null) : [];
-  return { state, assets: obj.assets || {}, from, dropped, ulib };
+  const vectorAssets:Record<string,string> = {};
+  if (obj.vectorAssets && typeof obj.vectorAssets === 'object' && !Array.isArray(obj.vectorAssets)) {
+    for (const [id, source] of Object.entries(obj.vectorAssets).slice(0, 64)) {
+      if (!/^V[A-Za-z0-9_-]{3,40}$/.test(id) || typeof source !== 'string') { dropped.push(`Lottie asset (${id})`); continue; }
+      try { parseVectorLottie(source); vectorAssets[id] = source; }
+      catch (_) { dropped.push(`Érvénytelen Lottie asset (${id})`); }
+    }
+  }
+  const missing = new Set<string>();
+  const checkMedia = (layers: any[]) => { for (const layer of layers || []) {
+    if (layer.type === 'lottie' && !vectorAssets[layer.asset]) missing.add(layer.name || layer.asset || 'Vektoranimáció');
+    if (Array.isArray(layer.children)) checkMedia(layer.children);
+  } };
+  checkMedia(state.layers);
+  for (const scene of state.scenes || []) if (Array.isArray(scene?.layers)) checkMedia(scene.layers);
+  for (const base of Object.values(state.bases || {}) as any[]) if (Array.isArray(base?.children)) checkMedia(base.children);
+  return { state, assets: obj.assets || {}, vectorAssets, from, dropped, missingMedia: [...missing], ulib };
 }

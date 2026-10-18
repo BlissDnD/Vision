@@ -51,6 +51,7 @@ wrap.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('text
 wrap.addEventListener('dragleave',e=>{if(!wrap.contains(e.relatedTarget))$('#dropHint').hidden=true;});
 wrap.addEventListener('drop',e=>{e.preventDefault();$('#dropHint').hidden=true;const lib=e.dataTransfer.getData('text/x-latomas-lib');if(!lib)return;const [c,i]=lib.split(':');
   if(LIB[c]&&LIB[c][+i]&&LIB[c][+i].mo){R.dropMo&&R.dropMo(+i,e);return;}
+  if(LIB[c]&&LIB[c][+i]&&LIB[c][+i].make().type==='lottie'){addFromLib(c,+i,null);return;}
   const r=R.selId&&findItem(R.selId);addFromLib(c,+i,r&&!r.parent?r.it.id:null);
   const L=sel();if(L&&L.type!=='group'&&EFFECTS[L.type].kind!=='fx'){const p=toAsp(e);L.n.x.v=p.x;L.n.y.v=p.y;commit();}});
 export const m3x=(a,v)=>{const c=Math.cos(a),s=Math.sin(a);return [v[0],c*v[1]-s*v[2],s*v[1]+c*v[2]];};
@@ -64,7 +65,7 @@ export function primDrag(L,drag,p,e){const o=L.prims[L.psel];if(!o)return;markDi
   else if(drag.mode==='s'){const c=sdfProj(L,R.time);const d0=Math.hypot(drag.p0.x-c.x,drag.p0.y-c.y)||.01,f=Math.max(.05,Math.hypot(p.x-c.x,p.y-c.y)/d0);o.sx=drag.o.sx*f;o.sy=drag.o.sy*f;o.sz=drag.o.sz*f;}
   else if(drag.mode==='r'){const c=sdfProj(L,R.time);let r=90-Math.atan2(p.y-c.y,p.x-c.x)*180/Math.PI;r=((r+180)%360+360)%360-180;if(e.shiftKey)r=Math.round(r/15)*15;o.ry=r;}
   syncCtl();}
-export function gizmoRadius(L,t){const s=ev(L.n.s,BASEK.s,t);if(L.type==='shape')return L.p.size.v*s*Math.max(1,L.p.aspect.v);if(L.type==='obj3d')return .39*s;if(L.type==='text'||L.type==='mtext'){const m=textCache.get(L.id);return m?.5*s*Math.min(4,m.w/m.h):.5*s;}if(L.type==='image')return .55*s;return .3*s;}
+export function gizmoRadius(L,t){const s=ev(L.n.s,BASEK.s,t);if(L.type==='shape')return L.p.size.v*s*Math.max(1,L.p.aspect.v);if(L.type==='obj3d')return .39*s;if(L.type==='text'||L.type==='mtext'){const m=textCache.get(L.id);return m?.5*s*Math.min(4,m.w/m.h):.5*s;}if(L.type==='image'||L.type==='lottie')return .55*s;return .3*s;}
 export function updGizmo(t){const g=$('#gizmo');const L=sel();if(!L||R.seqPlay||!R.gizmoOn||!L.vis||R.tool==='orbit'||isSurf(L)||L.type==='terrain3d'){g.hidden=true;return;}g.hidden=false;
   const cr=cv.getBoundingClientRect(),wr=wrap.getBoundingClientRect();const {W,H}=outSize();
   let x=ev(L.n.x,BASEK.x,t),y=ev(L.n.y,BASEK.y,t),rr=(ev(L.n.r,BASEK.r,t)+L.n.spin.v*t),rw=gizmoRadius(L,t);

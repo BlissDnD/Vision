@@ -186,6 +186,7 @@ window.addEventListener('dragover', e => { if (isJsonFile(e) && !(e.target as an
 window.addEventListener('drop', e => {
   const f = e.dataTransfer && e.dataTransfer.files[0]; if (!f || (e.target as any).closest?.('#dlg') || !/\.json$/i.test(f.name)) return; e.preventDefault();
   f.text().then(t => { let o: any = null; try { o = JSON.parse(t); } catch (_) { /* maybe a ChatGPT answer with prose */ }
+    if (o && !o.app && !o.state && !o.kind && Array.isArray(o.layers) && ('fr' in o || 'op' in o)) { R.importLottieFile(f,t); return; }
     if (o && o.kind === 'userlib') return ulibImport(t).then(n => toast(n ? `${n} új elem került a saját könyvtárba.` : 'Nem volt új elem (mind megvolt már).'));
     if (o && o.state) { pasteModal(t); return; }
     pasteModal(t); }).catch(err => toast(err.message || 'A fájlt nem tudtam beolvasni.'));

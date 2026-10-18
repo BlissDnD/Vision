@@ -49,9 +49,11 @@ const headInner = idx.slice(idx.indexOf('<head>') + 6, idx.indexOf('</head>'))
 const bodyInner = idx.slice(idx.indexOf('<body>') + 6, idx.indexOf('</body>'))
   .replace(/<script type="module"[^>]*><\/script>\s*/i, '').trim();
 const safeJs = js.replace(/<\/script/gi, '<\\/script');
+const lottieLicense = fs.readFileSync(path.join(root, 'node_modules/lottie-web/LICENSE.md'), 'utf8');
+const licenseComment = `<!-- lottie-web license\n${lottieLicense}\n-->`;
 
-const fragment = `${headInner}\n<style>\n${css.trim()}\n</style>\n${bodyInner}\n<script>\n${safeJs}</script>\n`;
-const full = `<!doctype html>\n<html lang="hu">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<style>[hidden]{display:none!important}</style>\n${headInner}\n<style>\n${css.trim()}\n</style>\n</head>\n<body>\n${bodyInner}\n<script>\n${safeJs}</script>\n</body>\n</html>\n`;
+const fragment = `${licenseComment}\n${headInner}\n<style>\n${css.trim()}\n</style>\n${bodyInner}\n<script>\n${safeJs}</script>\n`;
+const full = `<!doctype html>\n<html lang="hu">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<style>[hidden]{display:none!important}</style>\n${licenseComment}\n${headInner}\n<style>\n${css.trim()}\n</style>\n</head>\n<body>\n${bodyInner}\n<script>\n${safeJs}</script>\n</body>\n</html>\n`;
 
 if (test) { fs.rmSync(entry); fs.mkdirSync(path.join(root, 'dist'), { recursive: true }); fs.writeFileSync(path.join(root, 'dist/latomas.test.html'), fragment); console.log('test build: dist/latomas.test.html'); process.exit(0); }
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });

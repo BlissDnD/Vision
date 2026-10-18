@@ -42,6 +42,7 @@ import './keyboard';
 import './linkcord';
 import './scenes';
 import './presets';
+import './lottieImport';
 import './textbar';
 import './moui';
 import './tap';

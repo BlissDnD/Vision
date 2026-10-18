@@ -13,11 +13,14 @@ import { setPlay } from './transport';
 import { setTlx } from './timeline';
 import { frame } from './loop';
 import { updLookLbl } from './popovers';
+import { readAuto } from './autosave';
 
-(function boot(){
+(async function boot(){
   let ok=false;
-  let a=null;try{a=localStorage.getItem('latomas2.auto');}catch(_){}
-  try{if(a){const m=applyProject(JSON.parse(a));ok=st.layers.length>0;if(m.dropped.length)setTimeout(()=>toast('Az automatikus mentésből kimaradt: '+m.dropped.join(', ')),1500);}}catch(e){console.warn('autosave',e);}
+  const a=await readAuto();
+  try{if(a){const m=applyProject(JSON.parse(a));ok=st.layers.length>0;
+    if(m.dropped.length||m.missingMedia.length)setTimeout(()=>toast('Az automatikus mentésben probléma: '+[...m.dropped,...m.missingMedia.map(n=>'hiányzó vektoranimáció: '+n)].join(', ')),1500);
+  }}catch(e){console.warn('autosave',e);}
   if(!ok)st.layers=[makeRecipe(RECIPES[0])];
   R.selId=(st.layers[st.layers.length-1]||{}).id||null;
   resizeMain();renderAll();commit();buildCats();buildShelf();setPlay(true);updLookLbl();setTlx(R.tlxOpen);

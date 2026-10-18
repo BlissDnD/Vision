@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — L1 Lottie vektoranimáció (0.34.0-l1)
+
+- **Források → Vektoranimáció (Lottie)** vagy Projekt → Vektoranimáció importálása: helyi, tisztán vektoros `.json` előnézete és hozzáadása; a fájl ablakra ejtése is ide jut, a Vel-projekt/preset továbbra is saját importútján marad.
+- A réteg Megjelenéseket fogad; saját média-Kezdet/Sebesség/Loop értékei vannak (a kulcs-Loop külön), a Sávokon húzható média-blokkal. Visszatekeréskor a Vel idejéből számított képkockát rajzolja; 4K kimenetnél nagyobb felbontású textúrát kér.
+- A projekt a használt Lottie-JSON-t magával viszi; az automatikus mentés IndexedDB-be írja a teljes projektet, sikertelenségnél teljes localStorage-mentést próbál, végső hibát láthatóan jelzi. Régi projekt tovább nyílik; hiányzó Lottie-assetet betöltéskor jelzi.
+- Célzott teszt: `tests/lottie_import.js` (import, vektoros rajz, undo/redo, idő/Loop, seek, projekt/automatikus mentés, régi/hiányzó és hibás fájl) zöld; teljes kör **38/38 zöld**. Typecheck és production build zöld. JS-bundle 1049 KB (korábbi 891 KB-os viszonyítás: +158 KB); egyetlen HTML 1,15 MB.
+- Próba: 1) Importáld az `app/tests/fixtures/vel-lottie-circle.json` mintát; 2) a Sávokon húzd a média-blokkot, állítsd a Sebességet és a média Loopját; 3) mentsd, nyisd újra, majd hasonlíts össze egy kiválasztott MP4-képkockát a vászonnal.
+- Korlát: képes/szöveges/fontos/expression Lottie nincs; nagy videóimport, LottieFiles kereső és általános médiatároló későbbi szelet. Valódi GPU-n 4K/10 réteg teljesítménye és az MP4 képkocka-egyezés felhasználói próbája hátra van.
+
 ## Állapot: 2026-10-18 — Q1 Random minőségszűrő
 
 - **Ronda dobások kiszűrése:** minden Random dobást kicsiben (≤640 px, két időpontban) lerenderel és lemér; 10 tünet: túl sötét, beégett, sáros, lapos, zajos (elszigetelt pöttyök, RGB-pöttyök is), zsúfolt, nincs fókusz, túl tarka, kemény egyenes vágás, pixeles (tört periódusú blokkhatárok is). Pontszám 0–100, küszöb a Szigorúság csúszkán (alap 60). A gyengét újradobja (max. 6 próba / ~0,7 mp, a legjobb nyer); a felirat írja, mit dobott el és miért.

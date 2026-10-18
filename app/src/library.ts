@@ -122,9 +122,9 @@ export const LIB={
   {name:'Részecskék saját képből',make:()=>makeLayer('particles',{pal:12,p:{source:1,hidesrc:0,depth:.5}})},
   {name:'Ütemre robbanó',make:()=>makeLayer('particles',{name:'Ütemre robbanó',pal:13,p:{explode:{v:0,s:'b:beat',sa:.3},swirl:.4,color:1}})},
   {name:'Lebegő porfelhő',make:()=>makeLayer('particles',{name:'Porfelhő',pal:14,p:{swirl:1.2,depth:.8,size:1.5,spin:.08,tilt:-20}})}],
- media:[{name:'Szöveg',make:()=>makeLayer('text',{pal:8})},{name:'Animált szöveg',make:()=>makeLayer('mtext')},{name:'Kép',make:()=>makeLayer('image')},{name:'Saját GLSL',make:()=>makeLayer('custom')}],
+ media:[{name:'Szöveg',make:()=>makeLayer('text',{pal:8})},{name:'Animált szöveg',make:()=>makeLayer('mtext')},{name:'Kép',make:()=>makeLayer('image')},{name:'Vektoranimáció (Lottie)',lottie:true,make:()=>makeLayer('lottie')},{name:'Saját GLSL',make:()=>makeLayer('custom')}],
 };
 // plan §5: users think in Receptek / Források / Formák / Megjelenések / Mozgás / Részecskék, not in shader kinds (keys stay stable)
-export const CATS=[['recipes','Receptek'],['gen','Források'],['shapes','2D Formák'],['3d','3D Formák'],['fx','Megjelenések'],['motion','Mozgás'],['particles','Részecskék'],['world','Világok'],['media','Szöveg és kép']];
+export const CATS=[['recipes','Receptek'],['gen','Források'],['shapes','2D Formák'],['3d','3D Formák'],['fx','Megjelenések'],['motion','Mozgás'],['particles','Részecskék'],['world','Világok'],['media','Szöveg és média']];
 export const CAT_HINT={world:'Kész tájak darabokból (bontsd ki és alakítsd), alattuk a darabok: égszín, nap, felhők, dombvonal + talaj, pára, bolygók.',motion:'Felül ráhúzható mozgások: húzd egy rétegre (vagy jelöld ki, és kattints); rámutatva a kijelölt rétegen előnézet. Alul mozgásos elemek: Bento, kinetikus szöveg, átmenetek, vetítő.',particles:'Képből részecske. Tedd egy kép vagy szöveg fölé.',recipes:'Kész kombinációk, mind továbbalakítható. Kattints, vagy húzd a vászonra.',fx:'Kattintás: új szűrőréteg · Rétegre húzva csak arra hat (a Blob-követés is)',shapes:'Formák rajzhoz vagy maszknak',
  '3d':'Elöl a szerkeszthető jelenet: alapformákból gyúrod össze, a vásznon húzva mozgatod. Mögötte kész 3D testek. A kamera a 3D forgatás eszközzel (O) kering.',gen:'Teljes képet adó források',media:'Szöveg, saját kép, saját shader'};
