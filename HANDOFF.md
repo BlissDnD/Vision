@@ -150,6 +150,10 @@ The user's latest instruction applies English default language to the **entire V
 
 A felhasználó a működést alapvetően jónak, a színeket jónak tartja, de a teljes UI túl zsúfolt. Rögzítve: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 6. fejezet, hét tartós képi referenciával. Közvetlen görbeszerkesztés és rajz → sima görbe, ritmusikonok, Tempó/Erő kapcsoló, színek csak a Színek alatt, paraméterhez illő vezérlők (szél: iránykör), levágásjavítás, ikonos toolbar és következetes kategóriaszínek; egész appra Apple-jellegű design system javasolt. Hiba a `BUGS.md`-ben is. Csak dokumentálva; következő lépés konkrét design system/UI-javaslat, implementáció külön jóváhagyással.
 
+## Prioritások — 2026-10-18
+
+Két prioritás: (1) UI-frissítés (`docs/final-updates/UI-UPDATE.md`, angol lezárása → WA1 → …), (2) addon-/presetcsomag (`docs/claude-handoff/CSOMAG-CHECKLIST.md`). Sorrendjük egymáshoz képest döntésre vár. Részletek: `docs/final-updates/README.md`.
+
 ## UI-alap: Web Awesome (WA1), nem Material 3 — 2026-10-18
 
 **FELÜLÍRVA (2026-10-18, felhasználói döntés): a UI-alap nem Material 3, hanem Web Awesome** (WA1: `docs/final-updates/MILESTONE-WA1.md`, `claude/project-organization-ui-update-746ad1` ág). A Material-anyag csak történeti hivatkozás.
