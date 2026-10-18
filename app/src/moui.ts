@@ -33,14 +33,14 @@ const svg = (p: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="current
 export function attachMo(i: number, refId?: string | null) {
   const li: any = (LIB.motion as any[])[i]; const r = refId ? findItem(refId) : (R.selId ? findItem(R.selId) : null);
   if (!li || !li.mo) return null;
-  if (!r) { toast(`${li.name}: jelölj ki egy réteget, vagy húzd rá egy rétegre (vásznon vagy a rétegsorban).`); return null; }
+  if (!r) { toast(`${li.name}: select a layer or drag it onto one (on the canvas or in the layer list).`); return null; }
   const L = r.it; const m: any = makeMo(li.mo, li.mo === 'spring' ? { at: Math.round(Math.max(0, R.time) * 100) / 100 } : {});
   if (MO[li.mo] && MO[li.mo].cont && loopOn()) m.lp = 1;  // Körbeér on by default when the project loops
-  if (li.mo === 'path' && R.pathFirst) { const id = R.pathFirst(L.id); if (id) (m as any).path = id; else toast('Útvonalon: előbb rajzolj egy Útvonalat (2D Formák → Útvonal), és válaszd ki a Mozgás fülön.'); }
+  if (li.mo === 'path' && R.pathFirst) { const id = R.pathFirst(L.id); if (id) (m as any).path = id; else toast("Follow path: draw a Path first (2D Shapes → Path), then choose it on the Motion tab."); }
   (L.mo = L.mo || []).push(m); R.moSel[L.id] = m.id; R.selId = L.id; R.moAud = null; R.itab = 'motion';
   try { localStorage.setItem('vel.itab', 'motion'); } catch (_) { /* ignore */ }
   commit(); renderAll(); markDirty(); const wasPlaying = !!R.playing; if (!wasPlaying && !R.noAutoPlay) setPlay(true);
-  toast(`${li.name} → ${L.name}${wasPlaying ? '' : ' · lejátszás indul, hogy lásd'} · ⌘Z visszavonja`); return m;
+  toast(`${li.name} → ${L.name}${wasPlaying ? '' : " · playback starts so you can see it"} · ⌘Z visszavonja`); return m;
 }
 R.attachMo = attachMo;
 /** Drop on the canvas: the item under the pointer (else the selected one). */
@@ -50,12 +50,12 @@ R.dropMo = (i: number, e: DragEvent) => {
   attachMo(i, id);
 };
 
-const legacy = (L: any) => { const T = L.tm || {}; const o: any[] = []; if (T.in) o.push({ id: 'tm:in', name: 'Beúszás', icon: TMI.in }); if (T.out) o.push({ id: 'tm:out', name: 'Kiúszás', icon: TMI.out }); return o; };
+const legacy = (L: any) => { const T = L.tm || {}; const o: any[] = []; if (T.in) o.push({ id: 'tm:in', name: "Entrance", icon: TMI.in }); if (T.out) o.push({ id: 'tm:out', name: "Exit", icon: TMI.out }); return o; };
 /** Legacy entry/exit settings (L.tm) as a motion body. */
 function tmBody(L: any, which: 'in' | 'out') {
   const T = L.tm; const X = (k: string) => ({ get v() { return T[k]; }, set v(x) { T[k] = x; renderTimeline(); } }); const mx = Math.max(10, st.dur || 10);
-  return which === 'in' ? [ctlSelect(X('in'), SEL('in', 'Mozdulat', MOVES, 0)), ctlSlider(X('inAt'), S('inAt', 'Kezdés (mp)', 0, mx, 0), { noAnim: true }), ctlSlider(X('inDur'), S('inDur', 'Időtartam (mp)', .05, 5, .8), { noAnim: true }), ctlSelect(X('ease'), SEL('ease', 'Görbe', EASES.map(e => e[0]), 0))]
-    : [ctlSelect(X('out'), SEL('out', 'Mozdulat', MOVES, 0)), ctlSlider(X('outAt'), S('outAt', 'Kezdés (mp)', 0, mx, 0), { noAnim: true }), ctlSlider(X('outDur'), S('outDur', 'Időtartam (mp)', .05, 5, .8), { noAnim: true }), ctlSelect(X('ease'), SEL('ease', 'Görbe', EASES.map(e => e[0]), 0))];
+  return which === 'in' ? [ctlSelect(X('in'), SEL('in', 'Mozdulat', MOVES, 0)), ctlSlider(X('inAt'), S('inAt', "Start (s)", 0, mx, 0), { noAnim: true }), ctlSlider(X('inDur'), S('inDur', "Duration (s)", .05, 5, .8), { noAnim: true }), ctlSelect(X('ease'), SEL('ease', "Easing", EASES.map(e => e[0]), 0))]
+    : [ctlSelect(X('out'), SEL('out', 'Mozdulat', MOVES, 0)), ctlSlider(X('outAt'), S('outAt', "Start (s)", 0, mx, 0), { noAnim: true }), ctlSlider(X('outDur'), S('outDur', "Duration (s)", .05, 5, .8), { noAnim: true }), ctlSelect(X('ease'), SEL('ease', "Easing", EASES.map(e => e[0]), 0))];
 }
 // v1.1: motion sliders are animatable (◆ / ∿, keys on the timeline under the motion row); the spring's timing stays on its clip
 const moCtl = (m: any, d: any, onInput?: () => void) => { const label = motionParam(m.t, d); return d.type === 'sel' ? ctlSelect(m.p[d.k], label) : ctlSlider(m.p[d.k], label, { noAnim: m.t === 'spring' && (d.k === 'at' || d.k === 'dur'), onInput }); };
@@ -67,8 +67,8 @@ function rhythmUI(L: any, m: any) {
   const k = m.ry ? m.ry.k : 0, pts = m.ry ? m.ry.pts : Array(RY_N).fill(1);
   const chips = h('div', { class: 'rychips', role: 'radiogroup', 'aria-label': 'Ritmus' },
     ...RY_PRE.map((P, i) => h('button', { class: 'rychip' + (i === k ? ' on' : ''), type: 'button', role: 'radio', 'aria-checked': String(i === k), title: P.tip, onclick: () => { setRy(m, i); commit(); renderInsp(); markDirty(); } }, P.name)),
-    k === 5 ? h('span', { class: 'rychip on', role: 'radio', 'aria-checked': 'true', title: 'Saját görbe (a szalagon húzva)' }, 'Egyéni') : null);
-  const strip = h('div', { class: 'rystrip', 'data-mo': m.id, title: 'Egy ütem: pont le = lassabb / megáll, fel = gyorsabb · a jobb szélt húzva az ütem hossza' });
+    k === 5 ? h('span', { class: 'rychip on', role: 'radio', 'aria-checked': 'true', title: "Custom curve (drag on the strip)" }, "Custom") : null);
+  const strip = h('div', { class: 'rystrip', 'data-mo': m.id, title: "One cycle: drag a point down to slow or pause, up to speed up. Drag the right edge to change cycle length." });
   strip.innerHTML = `<svg viewBox="0 0 200 48" preserveAspectRatio="none"><line x1="0" x2="200" y1="24" y2="24" class="rymid"/><path class="rycv" d="${ryPath(pts)}"/></svg>`;
   const cvp: any = strip.querySelector('.rycv');
   const ensure = () => { if (!m.ry) m.ry = { k: 5, cyc: 5, tgt: 0, rnd: 0, seed: 1, pts: [...pts] }; m.ry.k = 5; return m.ry; };
@@ -80,18 +80,18 @@ function rhythmUI(L: any, m: any) {
       pt.onpointerup = () => { pt.onpointermove = pt.onpointerup = null; commit(); renderInsp(); }; };
     strip.appendChild(pt); });
   const cyc = m.ry ? m.ry.cyc : 5;
-  const edge = h('b', { class: 'ryedge', title: 'Húzd: az ütem hossza' }, h('span', null, `${cyc.toFixed(1).replace('.', ',')} mp`));
+  const edge = h('b', { class: 'ryedge', title: "Drag to change cycle length" }, h('span', null, `${cyc.toFixed(1).replace('.', ',')} mp`));
   edge.onpointerdown = (e: PointerEvent) => { e.preventDefault(); e.stopPropagation(); edge.setPointerCapture(e.pointerId); const ry = ensure(); if (k) ry.k = k; const c0 = ry.cyc, x0 = e.clientX, w = strip.getBoundingClientRect().width || 1;
     edge.onpointermove = (ev: PointerEvent) => { ry.cyc = Math.max(.5, Math.min(30, Math.round(c0 * (w + ev.clientX - x0) / w * 10) / 10)); (edge.firstChild as any).textContent = `${ry.cyc.toFixed(1).replace('.', ',')} mp`; markDirty(); };
     edge.onpointerup = () => { edge.onpointermove = edge.onpointerup = null; commit(); renderInsp(); }; };
   strip.append(edge, h('i', { class: 'rydot' }));
   const kids: any[] = [chips, strip];
   if (m.ry && m.t !== 'spin') { const tg = m.ry.tgt === 1 ? 1 : 0;
-    kids.push(h('div', { class: 'seg rytgt', role: 'radiogroup', 'aria-label': 'Mire hat a ritmus' }, ...['Tempó (megáll, ahol van)', 'Erő (visszatér nyugalomba)'].map((l, i) =>
+    kids.push(h('div', { class: 'seg rytgt', role: 'radiogroup', 'aria-label': 'Mire hat a ritmus' }, ...["Speed (holds its position when paused)", "Strength (returns to rest)"].map((l, i) =>
       h('button', { type: 'button', role: 'radio', class: i === tg ? 'on' : '', 'aria-checked': String(i === tg), 'aria-pressed': String(i === tg), onclick: () => { m.ry.tgt = i; commit(); renderInsp(); markDirty(); } }, l)))); }
-  if (m.ry && m.ry.rnd) kids.push(h('button', { class: 'btn', type: 'button', title: 'Más, de ugyanúgy ismételhető szünetminta', onclick: () => { m.ry.seed = (m.ry.seed || 1) + 1; commit(); markDirty(); toast('Új szünetminta: ' + m.ry.seed); } }, '🎲 Új minta'));
+  if (m.ry && m.ry.rnd) kids.push(h('button', { class: 'btn', type: 'button', title: "Different, repeatable pause pattern", onclick: () => { m.ry.seed = (m.ry.seed || 1) + 1; commit(); markDirty(); toast("New pause pattern: " + m.ry.seed); } }, "🎲 New pattern"));
   const C = moClip(m);
-  kids.push(h('p', { class: 'small' }, `Sáv: ${C.a.toFixed(1).replace('.', ',')} mp – ${C.b == null ? 'végig (nyitott vég)' : C.b.toFixed(1).replace('.', ',') + ' mp'}. A Sávokon a réteg ▸ alatt húzhatod; a végein puhán indul és áll le.`));
+  kids.push(h('p', { class: 'small' }, `Clip: ${C.a.toFixed(1).replace('.', ',')} mp – ${C.b == null ? "throughout (open end)" : C.b.toFixed(1).replace('.', ',') + ' mp'}. Drag it under the layer ▸ in Tracks; it eases in and out at the ends.`));
   return h('div', { class: 'ryw' }, h('div', { class: 'rylab' }, 'Ritmus'), ...kids);
 }
 /** Live dot on the rhythm strip (called every frame from the render loop). */
@@ -104,30 +104,30 @@ R.updMoRy = (t: number) => { const s: any = document.querySelector('#insp .rystr
 /* Körbeér (row 22): whole cycles per loop, so the loop export joins exactly; the stored Ütem is not rewritten */
 const loopTip = (m: any) => { const el = document.getElementById('moLoopInfo'); if (el) el.textContent = m.lp ? moLoopInfo(m) || '' : ''; };
 function loopRow(m: any) {
-  const sw = ctlSwitch('Körbeér (egész kör a loopban)', !!m.lp, v => { if (v) m.lp = 1; else delete m.lp; commit(); renderInsp(); markDirty(); });
-  sw.title = 'A tempó a legközelebbi olyan értékre igazodik, amelynél egész számú kör fér a projekt (jelenet) hosszába: a loop vége pontosan az elejébe ér.';
+  const sw = ctlSwitch("Seamless loop (whole cycles)", !!m.lp, v => { if (v) m.lp = 1; else delete m.lp; commit(); renderInsp(); markDirty(); });
+  sw.title = "Speed snaps to fit a whole number of cycles in the scene, so the end of the loop meets its beginning.";
   return h('div', { class: 'moloop' }, sw, h('p', { class: 'small', id: 'moLoopInfo' }, m.lp ? moLoopInfo(m) || '' : ''));
 }
 export function motionsUI(L: any) {
   const mos = L.mo || [], leg = legacy(L); let cur = R.moSel[L.id];
   const all = [...leg.map(x => x.id), ...mos.map((m: any) => m.id)]; if (!all.includes(cur)) cur = all[0] || null;
-  const row = h('div', { class: 'fxrow', role: 'toolbar', 'aria-label': 'Mozgások' });
+  const row = h('div', { class: 'fxrow', role: 'toolbar', 'aria-label': "Motions" });
   const pick = (id: string) => { R.moSel[L.id] = id; renderInsp(); markDirty(); };
   for (const x of leg) row.appendChild(h('button', { class: 'fxic' + (x.id === cur ? ' on' : ''), type: 'button', 'aria-pressed': String(x.id === cur), title: x.name, 'aria-label': x.name, html: svg(x.icon), onclick: () => pick(x.id) }));
-  mos.forEach((m: any) => { const b = h('button', { class: 'fxic' + (m.id === cur ? ' on' : '') + (m.on === false ? ' off' : ''), type: 'button', 'aria-pressed': String(m.id === cur), title: `${motionName(m.t)} · erősség ${Math.round(m.p.amt.v * 100)}%`, 'aria-label': motionName(m.t), html: moIcon(m.t), onclick: () => pick(m.id) }); ring(b, m.p.amt.v); row.appendChild(b); });
-  const add = h('button', { class: 'fxic add', type: 'button', title: 'Mozgás hozzáadása', 'aria-label': 'Mozgás hozzáadása', 'aria-expanded': 'false' }, '+'); row.appendChild(add);
-  const grid = h('div', { class: 'fxgrid', hidden: true, role: 'menu', 'aria-label': 'Mozgások' },
+  mos.forEach((m: any) => { const b = h('button', { class: 'fxic' + (m.id === cur ? ' on' : '') + (m.on === false ? ' off' : ''), type: 'button', 'aria-pressed': String(m.id === cur), title: `${motionName(m.t)} · strength ${Math.round(m.p.amt.v * 100)}%`, 'aria-label': motionName(m.t), html: moIcon(m.t), onclick: () => pick(m.id) }); ring(b, m.p.amt.v); row.appendChild(b); });
+  const add = h('button', { class: 'fxic add', type: 'button', title: "Add motion", 'aria-label': "Add motion", 'aria-expanded': 'false' }, '+'); row.appendChild(add);
+  const grid = h('div', { class: 'fxgrid', hidden: true, role: 'menu', 'aria-label': "Motions" },
     ...MO_ORDER.map(t => h('button', { class: 'fxg', type: 'button', role: 'menuitem', title: motionDescription(t), onclick: () => { const i = LIB.motion.findIndex((x: any) => x.mo === t); attachMo(i, L.id); } }, h('span', { class: 'gi', html: moIcon(t) }), h('span', null, motionName(t)))),
-    ...(['in', 'out'] as const).filter(w => !(L.tm && L.tm[w])).map(w => h('button', { class: 'fxg', type: 'button', role: 'menuitem', title: w === 'in' ? 'Egyszerű belépés (átúszás, emelkedés, oldalról …)' : 'Egyszerű kilépés', onclick: () => {
-      L.tm = L.tm || { in: 0, inAt: 0, inDur: .8, out: 0, outAt: Math.max(0, (st.dur || 10) - 1), outDur: .8, ease: 0 }; L.tm[w] = 1; R.moSel[L.id] = 'tm:' + w; commit(); renderInsp(); } }, h('span', { class: 'gi', html: svg(TMI[w]) }), h('span', null, w === 'in' ? 'Beúszás' : 'Kiúszás'))));
+    ...(['in', 'out'] as const).filter(w => !(L.tm && L.tm[w])).map(w => h('button', { class: 'fxg', type: 'button', role: 'menuitem', title: w === 'in' ? "Simple entrance (fade, rise, slide…)" : "Simple exit", onclick: () => {
+      L.tm = L.tm || { in: 0, inAt: 0, inDur: .8, out: 0, outAt: Math.max(0, (st.dur || 10) - 1), outDur: .8, ease: 0 }; L.tm[w] = 1; R.moSel[L.id] = 'tm:' + w; commit(); renderInsp(); } }, h('span', { class: 'gi', html: svg(TMI[w]) }), h('span', null, w === 'in' ? "Entrance" : "Exit"))));
   add.onclick = () => { grid.hidden = !grid.hidden; add.setAttribute('aria-expanded', String(!grid.hidden)); };
   const kids: any[] = [R.koSection ? R.koSection(L) : null, row, grid];
   if (cur && cur.startsWith('tm:')) { const w = cur.slice(3) as 'in' | 'out';
-    kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, w === 'in' ? 'Beúszás' : 'Kiúszás'), h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás', onclick: () => { L.tm[w] = 0; commit(); renderInsp(); } }, '×')),
+    kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, w === 'in' ? "Entrance" : "Exit"), h('button', { class: 'eye', 'aria-label': "Remove", title: "Remove", onclick: () => { L.tm[w] = 0; commit(); renderInsp(); } }, '×')),
       h('div', { class: 'fxb' }, ...tmBody(L, w)))); }
   else if (cur) { const m = mos.find((x: any) => x.id === cur), d = MO[m.t]; const i = mos.indexOf(m);
-    const eye = h('button', { class: 'eye', 'aria-label': 'Be/ki', title: m.on === false ? 'Bekapcsolás' : 'Kikapcsolás' }, m.on === false ? '○' : '●'); eye.onclick = () => { m.on = m.on === false; commit(); renderInsp(); markDirty(); };
-    const del = h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás' }, '×'); del.onclick = () => { mos.splice(i, 1); commit(); renderInsp(); markDirty(); };
+    const eye = h('button', { class: 'eye', 'aria-label': 'Be/ki', title: m.on === false ? "Enable" : "Disable" }, m.on === false ? '○' : '●'); eye.onclick = () => { m.on = m.on === false; commit(); renderInsp(); markDirty(); };
+    const del = h('button', { class: 'eye', 'aria-label': "Remove", title: "Remove" }, '×'); del.onclick = () => { mos.splice(i, 1); commit(); renderInsp(); markDirty(); };
     const ic = row.children[leg.length + i];
     // XF1: a linked motion shows only its own fields (the rest comes from the source); own(0) = rhythm/loop/clip are its own
     const XS = m.src ? xfSrc(m) : null, xmd = XS && XS.xf ? XS.xf.md | 0 : -1;
@@ -135,22 +135,22 @@ export function motionsUI(L: any) {
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, motionName(m.t)), eye, del),
       h('div', { class: 'fxb' }, h('p', { class: 'small' }, motionDescription(m.t)), m.t === 'path' && R.pathPick ? R.pathPick(m, 'path', L.id) : null, R.xfSection ? R.xfSection(L, m) : null, d.cont && !own(0) ? null : d.cont ? rhythmUI(L, m) : null, ...d.params.filter((q: any) => own(1, q.k)).map((q: any) => moCtl(m, q, d.cont ? () => loopTip(m) : undefined)), d.cont && own(0) ? loopRow(m) : null, own(1, 'amt') ? ctlSlider(m.p.amt, { ...AMT, l: 'Strength' }, { onInput: () => ring(ic, m.p.amt.v) }) : null,
         m.t === 'phys' ? physRow(L, m) : null,
-        m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a nyíl végét húzva állítod, honnan érkezik; ⌘ + fel/le a tempó, ⌘ + oldalra a karakter, ⌥ vagy a nyíl közepe: ív, ⇧: 15°-os szögek.') : null,
-        h('button', { class: 'btn mobake', type: 'button', title: 'A mozgást valódi X / Y / Méret / Szög / Átlátszóság kulcsokká alakítja (a mozgás eltűnik; ⌘Z visszavonja)', onclick: () => {
-          const n = bakeMo(L, m); delete R.moSel[L.id]; commit(); renderAll(); markDirty(); toast(`${d.name} → ${n} kulcskocka a réteg saját értékein · ⌘Z visszavonja`); } }, 'Kulcsokká alakítás')))); }
-  else kids.push(h('p', { class: 'small' }, 'Még nincs mozgás. A „+” vagy a Mozgás polcról ráhúzott mozgás hozzáad egyet (Lebegés, Forgás, Lüktetés, Keringés, Remegés, Rugalmas beúszás).'));
+        m.t === 'spring' ? h('p', { class: 'small' }, "Tip: drag the arrow end on the canvas to set the arrival direction. ⌘ + up/down changes speed; ⌘ + left/right changes character; ⌥ or the arrow centre adjusts the curve; ⇧ snaps to 15° angles.") : null,
+        h('button', { class: 'btn mobake', type: 'button', title: "Convert this motion to X / Y / Scale / Angle / Opacity keyframes. The motion is removed; ⌘Z undoes it.", onclick: () => {
+          const n = bakeMo(L, m); delete R.moSel[L.id]; commit(); renderAll(); markDirty(); toast(`${d.name} → ${n} keyframes on the layer's own values · ⌘Z to undo`); } }, "Convert to keyframes")))); }
+  else kids.push(h('p', { class: 'small' }, "No motion yet. Click + or drag a motion from the Motion shelf onto this layer."));
   // per-layer key Loop
   const keyed = paramList(L).filter(q => q.o.k && q.o.k.length > 1);
   if (keyed.length) { const KL = L.kloop || { on: false, ret: .5 };
     const ret = { get v() { return KL.ret ?? .5; }, set v(x) { KL.ret = x; L.kloop = KL; markDirty(); } };
-    kids.push(ctlSwitch('⟲ Kulcsanimáció ismétlése (csak ez a réteg)', !!KL.on, v => { L.kloop = { ...KL, on: v }; commit(); renderInsp(); markDirty(); }));
-    if (KL.on) kids.push(ctlSlider(ret, S('ret', 'Visszatérés az elejére (mp)', .05, 5, .5), { noAnim: true }));
+    kids.push(ctlSwitch("⟲ Repeat keyframes (this layer only)", !!KL.on, v => { L.kloop = { ...KL, on: v }; commit(); renderInsp(); markDirty(); }));
+    if (KL.on) kids.push(ctlSlider(ret, S('ret', "Return to start (s)", .05, 5, .5), { noAnim: true }));
     const T = Math.max(...keyed.map(q => q.o.k[q.o.k.length - 1].t)), late = keyed.reduce((s, q) => s + q.o.k.filter((k: any) => k.t > st.dur + 1e-6).length, 0);
-    if (late && st.loop && !KL.on) kids.push(h('p', { class: 'small warn' }, `${late} kulcs a projekt hossza (${st.dur} mp) után van, Loopnál ezek nem játszódnak le. `,
+    if (late && st.loop && !KL.on) kids.push(h('p', { class: 'small warn' }, `${late} kulcs a projekt hossza (${st.dur} s) and will not play when Loop is on. `,
       h('button', { class: 'btn', onclick: () => { st.dur = Math.ceil(T); commit(); renderAll(); } }, `Hossz: ${Math.ceil(T)} mp`))); }
   // Képkocka-ütem: shown with its default, written into the layer only on the first change
-  if (L.type !== 'group') { const T: any = L.tm || { fps: 0 }; kids.push(ctlSelect(fpsObj(T, () => { if (!L.tm) L.tm = { in: 0, inAt: 0, inDur: .8, out: 0, outAt: Math.max(0, (st.dur || 10) - 1), outDur: .8, ease: 0, fps: T.fps }; renderTimeline(); }), SEL('fps', 'Képkocka-ütem', FPS_OPTS.map(o => o[1]), 0))); }
-  return section('Mozgások', 'mos', true, ...kids);
+  if (L.type !== 'group') { const T: any = L.tm || { fps: 0 }; kids.push(ctlSelect(fpsObj(T, () => { if (!L.tm) L.tm = { in: 0, inAt: 0, inDur: .8, out: 0, outAt: Math.max(0, (st.dur || 10) - 1), outDur: .8, ease: 0, fps: T.fps }; renderTimeline(); }), SEL('fps', "Frame rate", FPS_OPTS.map(o => o[1]), 0))); }
+  return section("Motions", 'mos', true, ...kids);
 }
 R.moUI = motionsUI;
 /** Main settings: the strength of each motion (the same value as on the Mozgás tab). */
@@ -159,7 +159,7 @@ R.moMain = (L: any) => (L.mo || []).map((m: any) => ctlSlider(m.p.amt, { ...AMT,
 /** Fizikai test: whether the body has left the canvas by the end of the scene, with a one-click Visszahozás (walls back on). */
 function physRow(L: any, m: any) {
   const o = physOut(L, Math.max(R.time, st.dur)); if (o < 0) return null;
-  return h('div', { class: 'small physout' }, `A test a vásznon kívül kerül (${o.toFixed(1)} mp-től). `,
-    h('button', { class: 'btn', type: 'button', title: 'A vászon szélét újra fallá teszi, így a test bent marad', onclick: () => { m.p.walls.v = 0; commit(); renderInsp(); markDirty(); toast('Fizikai test: visszahozva (a vászon széle fal)'); } }, 'Visszahozás'));
+  return h('div', { class: 'small physout' }, `The body leaves the canvas at ${o.toFixed(1)} s. `,
+    h('button', { class: 'btn', type: 'button', title: "Turn the canvas edge back into a wall to keep the body inside", onclick: () => { m.p.walls.v = 0; commit(); renderInsp(); markDirty(); toast("Physics body restored (canvas edge is a wall)"); } }, "Bring back"));
 }
 /* The on-canvas arrow (Rugalmas beúszás, Beúszás/Kiúszás) and the handles of the continuous motions live in gesture.ts. */

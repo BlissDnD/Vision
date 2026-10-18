@@ -52,7 +52,7 @@
  const r3=checkPreset(JSON.stringify({layers:[{type:'custom',name:'Hibás',code:'vec4 fx(){\n  vec2 p=P();\n  return vec3(1.0);\n}'}]}),{noCost:true});
  info.err=r3.errors[0]&&r3.errors[0].err.slice(0,160);if(!r3.errors.length||!/sorban/.test(r3.errors[0].err))bad.push('hibaüzenet: '+info.err);
  if(!/3\. sorban/.test(r3.errors[0]&&r3.errors[0].err||''))bad.push('a hiba sora nem a kód sora: '+info.err);
- if(!/Javítsd/.test(errText(r3)))bad.push('errText');
+ if(!/Fix it/.test(errText(r3)))bad.push('errText');
  try{checkPreset('nem json');bad.push('nem JSON elfogadva');}catch(e){info.notJson=e.message;}
  // 6) save as preset → shelf → insert from shelf → the project file carries it → reopening restores a deleted library item
  const x=await saveAsPreset(C2,'Izzó shader','gen');if(!x||x.kind!=='shader'||!x.thumb)bad.push('mentés presetként: '+JSON.stringify(x&&{k:x.kind,t:!!x.thumb}));
@@ -67,11 +67,11 @@
  // 8) the instructions
  const cp=chatText();info.prompt=cp.length;for(const w of ['SHADER CONTRACT','vec4 fx()','"macros"','p_<k>','custom [gen]','float fbm(vec2 p)'])if(!cp.includes(w))bad.push('ChatGPT-utasításból hiányzik: '+w);
  if(descPrompt('x',8).includes('custom [gen]'))bad.push('a Claude-leírás ne kínáljon saját shadert');
- projModal();if(!/Utasítás ChatGPT-nek/.test(document.querySelector('#dlg').textContent))bad.push('Projekt menü gomb');closeModal();
+ projModal();if(!/Prompt for ChatGPT/.test(document.querySelector('#dlg').textContent))bad.push('Projekt menü gomb');closeModal();
  pasteModal();if(!document.querySelector('#dlg textarea.dropzone'))bad.push('beillesztő ablak');closeModal();
  // A full Vel project mistakenly pasted into the preset dialog must offer a project-open action.
  const projectBefore=projectJSON();pasteModal(projectBefore);await new Promise(r=>setTimeout(r,40));
- const openProject=[...document.querySelectorAll('#dlg button')].find(b=>b.textContent.includes('Projekt megnyitása'));
+ const openProject=[...document.querySelectorAll('#dlg button')].find(b=>b.textContent.includes('Open project'));
  if(!openProject||openProject.disabled||document.querySelector('#dlg').textContent.includes('nincs rétegleírás'))bad.push('projektfájl a presetablakban');
  if(openProject){openProject.click();if(!st.layers.length||st.layers[0].type!=='custom')bad.push('projekt megnyitása a presetablakból');}
  }catch(e){bad.push('ERR '+e.message+' '+(e.stack||'').slice(0,300));}

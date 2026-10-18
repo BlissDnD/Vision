@@ -119,7 +119,7 @@ export const sceneStart = (i: number) => scenes().slice(0, i).reduce((a, s) => a
 R.seqPlay = false; R.seqDurSave = 10;
 export function setSeqPlay(on: boolean) {
   if (on === !!R.seqPlay) return;
-  if (on) { if (!scenes().length) { toast('Előbb ments el legalább egy jelenetet.'); return; } R.seqDurSave = st.dur; R.seqPlay = true; st.dur = Math.max(.1, seqTotal()); R.time = 0; }
+  if (on) { if (!scenes().length) { toast("Save at least one scene first."); return; } R.seqDurSave = st.dur; R.seqPlay = true; st.dur = Math.max(.1, seqTotal()); R.time = 0; }
   else { R.seqPlay = false; st.dur = R.seqDurSave; R.time = 0; }
   resetFeedback(); markDirty(); renderStrip(); renderAll();
   const d = $('#tlDur') as HTMLInputElement; if (d) d.value = String(+st.dur.toFixed(2));
@@ -144,48 +144,48 @@ function sceneCard(s: Scene, el: HTMLElement) {
   du.onchange = () => { s.dur = Math.min(120, Math.max(.5, +du.value || s.dur)); syncTotal(); done(); };
   openCard(el, h('div', { class: 'pl' }, 'Jelenet'), h('div', { class: 'pc' }, nm, h('div', { class: 'row2' }, h('span', null, 'Hossz (mp)'), du)),
     h('div', { class: 'btnrow' },
-      h('button', { class: 'btn', title: 'A jelenet a vászonra kerül szerkesztésre (visszavonható)', onclick: () => { loadScene(s.id); closeScnCard(); commit(); renderAll(); renderStrip(); toast(`Betöltve: ${s.name}. Szerkeszd, majd „Felülírás a vászonnal”.`); } }, 'Betöltés a vászonra'),
-      h('button', { class: 'btn', title: 'A jelenet tartalma a mostani vászon lesz', onclick: () => { overwriteScene(s.id); closeScnCard(); done(`${s.name}: felülírva a vászonnal.`); } }, 'Felülírás a vászonnal')),
+      h('button', { class: 'btn', title: "Load this scene onto the canvas for editing (undoable)", onclick: () => { loadScene(s.id); closeScnCard(); commit(); renderAll(); renderStrip(); toast(`Loaded: ${s.name}. Edit it, then choose “Replace with canvas”.`); } }, "Load onto canvas"),
+      h('button', { class: 'btn', title: "Replace this scene with the current canvas", onclick: () => { overwriteScene(s.id); closeScnCard(); done(`${s.name}: replaced with the current canvas.`); } }, "Replace with canvas")),
     h('div', { class: 'btnrow' },
-      h('button', { class: 'btn', 'aria-label': 'Előrébb', onclick: () => { moveScene(s.id, -1); closeScnCard(); done(); } }, '← Előrébb'),
-      h('button', { class: 'btn', 'aria-label': 'Hátrébb', onclick: () => { moveScene(s.id, 1); closeScnCard(); done(); } }, 'Hátrébb →'),
-      h('button', { class: 'btn', onclick: () => { removeScene(s.id); closeScnCard(); done('Jelenet törölve.'); renderAll(); } }, 'Törlés')));
+      h('button', { class: 'btn', 'aria-label': "Earlier", onclick: () => { moveScene(s.id, -1); closeScnCard(); done(); } }, "← Earlier"),
+      h('button', { class: 'btn', 'aria-label': "Later", onclick: () => { moveScene(s.id, 1); closeScnCard(); done(); } }, "Later →"),
+      h('button', { class: 'btn', onclick: () => { removeScene(s.id); closeScnCard(); done("Scene deleted."); renderAll(); } }, "Delete")));
 }
 function transCard(i: number, el: HTMLElement) {
   const S = scenes(), s = S[i], P = S[i - 1];
-  const len = h('input', { type: 'range', min: 0, max: 3, step: .1, value: s.trans.dur, 'aria-label': 'Átmenet hossza' }) as HTMLInputElement;
+  const len = h('input', { type: 'range', min: 0, max: 3, step: .1, value: s.trans.dur, 'aria-label': "Transition duration" }) as HTMLInputElement;
   const lv = h('b', null, s.trans.dur.toFixed(1) + ' mp');
   len.oninput = () => { s.trans.dur = Math.min(+len.value, s.dur); lv.textContent = s.trans.dur.toFixed(1) + ' mp'; markDirty(); renderStrip(); }; len.onchange = () => done();
-  const es = h('select', { 'aria-label': 'Átmenet görbéje' }, ...EASE_NAMES.map((n, k) => { const o = h('option', { value: k }, n) as HTMLOptionElement; if (k === s.trans.ease) o.selected = true; return o; })) as HTMLSelectElement;
+  const es = h('select', { 'aria-label': "Transition curve" }, ...EASE_NAMES.map((n, k) => { const o = h('option', { value: k }, n) as HTMLOptionElement; if (k === s.trans.ease) o.selected = true; return o; })) as HTMLSelectElement;
   es.onchange = () => { s.trans.ease = +es.value; done(); };
   const auto = matchLayers(P.layers, s.layers, {});
   const rows = s.layers.filter((b: any) => b.vis).slice().reverse().map((b: any) => {
-    const ap = auto.find(p => p.b === b), an = ap && ap.a ? `Automatikus: ${ap.a.name}` : 'Automatikus: beúszik';
-    const sel = h('select', { 'aria-label': `${b.name} párja` }, h('option', { value: '*' }, an), h('option', { value: '' }, 'Nincs pár: beúszik'),
+    const ap = auto.find(p => p.b === b), an = ap && ap.a ? `Automatikus: ${ap.a.name}` : "Automatic: enters";
+    const sel = h('select', { 'aria-label': `${b.name} matches` }, h('option', { value: '*' }, an), h('option', { value: '' }, "No match: enters"),
       ...P.layers.filter((a: any) => a.vis).slice().reverse().map((a: any) => h('option', { value: a.id }, '← ' + a.name))) as HTMLSelectElement;
     sel.value = s.trans.pairs[b.id] === undefined ? '*' : s.trans.pairs[b.id];
     sel.onchange = () => { if (sel.value === '*') delete s.trans.pairs[b.id]; else s.trans.pairs[b.id] = sel.value; done(); };
     return h('div', { class: 'row2' }, h('span', null, b.name), h('div', { class: 'pop' }, sel));
   });
-  openCard(el, h('div', { class: 'pl' }, `Átmenet · ${P.name} → ${s.name}`),
-    h('div', { class: 'pc' }, h('div', { class: 'row2' }, h('span', null, 'Hossz'), lv), len, h('div', { class: 'row2' }, h('span', null, 'Görbe'), h('div', { class: 'pop' }, es))),
-    h('p', { class: 'small' }, 'Ami mindkét jelenetben szerepel, odamozog és átalakul; ami csak az egyikben, be- vagy kiúszik. Párosítás:'),
+  openCard(el, h('div', { class: 'pl' }, `Transition · ${P.name} → ${s.name}`),
+    h('div', { class: 'pc' }, h('div', { class: 'row2' }, h('span', null, 'Hossz'), lv), len, h('div', { class: 'row2' }, h('span', null, "Curve"), h('div', { class: 'pop' }, es))),
+    h('p', { class: 'small' }, "Items in both scenes move and transform; items in only one scene enter or exit. Matching:"),
     h('div', { class: 'pc' }, ...rows),
-    h('div', { class: 'btnrow' }, h('button', { class: 'btn accent', onclick: () => { closeScnCard(); setSeqPlay(true); R.time = Math.max(0, sceneStart(i) - .6); resetFeedback(); setPlay(true); } }, 'Átmenet lejátszása')));
+    h('div', { class: 'btnrow' }, h('button', { class: 'btn accent', onclick: () => { closeScnCard(); setSeqPlay(true); R.time = Math.max(0, sceneStart(i) - .6); resetFeedback(); setPlay(true); } }, "Play transition")));
 }
 export function renderStrip() {
   if (!strip) return; strip.replaceChildren(); const S = scenes(), f = R.seqPlay ? seqFrame(R.time) : null;
-  strip.appendChild(h('button', { class: 'ib scplay', 'aria-pressed': String(!!R.seqPlay), title: 'Jelenetsor: a jelenetek egymás után, átmenettel (az idővonal a teljes sor). Kikapcsolva a vászon szerkeszthető.', onclick: () => { setSeqPlay(!R.seqPlay); if (R.seqPlay) setPlay(true); } },
+  strip.appendChild(h('button', { class: 'ib scplay', 'aria-pressed': String(!!R.seqPlay), title: "Scene sequence: play scenes in order with transitions (the timeline spans the whole sequence). Turn it off to edit the canvas.", onclick: () => { setSeqPlay(!R.seqPlay); if (R.seqPlay) setPlay(true); } },
     h('span', { html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="6" width="7" height="12" rx="1.5"/><rect x="14" y="6" width="7" height="12" rx="1.5"/><path d="m11 12 2 0"/></svg>' })));
   const row = h('div', { class: 'scrow' });
   S.forEach((s, i) => {
-    if (i > 0) { const t = h('button', { class: 'sct', title: `Átmenet: ${s.trans.dur.toFixed(1)} mp · kattints a hosszhoz, görbéhez, párosításhoz` }, `⟷ ${s.trans.dur.toFixed(1).replace('.', ',')}`); t.onclick = () => transCard(i, t); row.appendChild(t); }
-    const b = h('button', { class: 'scb' + (f && f.i === i ? ' on' : ''), style: `flex:${s.dur} 1 0`, title: `${s.name} · ${s.dur} mp · kattints a beállításokhoz` }, h('b', null, s.name), h('small', null, s.dur.toFixed(1).replace('.', ',') + ' mp'));
+    if (i > 0) { const t = h('button', { class: 'sct', title: `Transition: ${s.trans.dur.toFixed(1)} s · click to edit duration, curve and matching` }, `⟷ ${s.trans.dur.toFixed(1).replace('.', ',')}`); t.onclick = () => transCard(i, t); row.appendChild(t); }
+    const b = h('button', { class: 'scb' + (f && f.i === i ? ' on' : ''), style: `flex:${s.dur} 1 0`, title: `${s.name} · ${s.dur} s · click for settings` }, h('b', null, s.name), h('small', null, s.dur.toFixed(1).replace('.', ',') + ' mp'));
     b.onclick = () => sceneCard(s, b); row.appendChild(b);
   });
-  if (!S.length) row.appendChild(h('span', { class: 'small scempty' }, 'Még nincs jelenet. Rakd össze a kompozíciót, és mentsd el jelenetként; utána változtass rajta, és mentsd a következőt.'));
+  if (!S.length) row.appendChild(h('span', { class: 'small scempty' }, "No scenes yet. Build a composition and save it as a scene. Change the canvas, then save the next scene."));
   strip.appendChild(row);
-  strip.appendChild(h('button', { class: 'btn scadd', title: 'A mostani vászon új jelenetként a sor végére kerül', onclick: () => { const s = saveScene(); done(`Mentve: ${s.name}. Változtass a vásznon, és mentsd a következőt.`); } }, '+ Jelenetként mentés'));
+  strip.appendChild(h('button', { class: 'btn scadd', title: "Add the current canvas as a new scene at the end", onclick: () => { const s = saveScene(); done(`Mentve: ${s.name}. Change the canvas and save the next scene.`); } }, "+ Save as scene"));
 }
 export function setStrip(on: boolean) { strip.hidden = !on; btn.setAttribute('aria-pressed', String(on)); $('#wrap').classList.toggle('scn-on', on); try { localStorage.setItem('vel.scn', on ? '1' : '0'); } catch (_) { } if (on) renderStrip(); }
 btn.onclick = () => setStrip(strip.hidden);

@@ -37,7 +37,7 @@
  // 5) strip UI: blocks, transition chip, its card edits the pairing
  setStrip(true);info.ui=[document.querySelectorAll('#scn .scb').length,document.querySelectorAll('#scn .sct').length];
  if(info.ui.join()!=='2,1')bad.push('sáv: '+info.ui);
- document.querySelector('#scn .sct').click();const sels=[...document.querySelectorAll('.scard select')].filter(s=>/párja/.test(s.getAttribute('aria-label')));
+ document.querySelector('#scn .sct').click();const sels=[...document.querySelectorAll('.scard select')].filter(s=>/matches/.test(s.getAttribute('aria-label')));
  info.cardRows=sels.length;if(sels.length!==3)bad.push('párosítás sorai: '+sels.length);
  else{const sc=sels.find(s=>s.getAttribute('aria-label').startsWith('Kör'));sc.value=bg.id;sc.onchange();if(s2.trans.pairs[C.id]!==bg.id)bad.push('kártya nem írta a párosítást');delete s2.trans.pairs[C.id];}
  closeScnCard();

@@ -1,3 +1,8 @@
+## 2026-10-18 — Fast English UI pass
+- Converted visible strings in export, settings popovers, presets, scenes, Motion and timeline (including interpolated messages); persisted IDs remain unchanged.
+- Typecheck and production build pass. Nine affected browser tests pass after updating two obsolete Hungarian-label assertions.
+- The whole editor is still mixed-language; recipe content and other panels remain for the next pass.
+
 ## 2026-10-18 — English motion metadata and timeline labels
 - Eight persisted motion types and 42 parameters now have display-only English names, descriptions, and select options keyed by motion type and parameter key.
 - The Motion Inspector and timeline use those labels without rewriting saved motion data; targeted browser check passes.
