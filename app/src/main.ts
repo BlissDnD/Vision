@@ -41,4 +41,5 @@ import './keyboard';
 import './linkcord';
 import './scenes';
 import './presets';
+import './textbar';
 import './boot';

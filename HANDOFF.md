@@ -1,9 +1,9 @@
-# Vel – átadó a folytatáshoz (2026-10-18, P1 után)
+# Vel – átadó a folytatáshoz (2026-10-18, U4 után)
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
-Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A **P1** (presetek kívülről ChatGPT-vel, tartós saját könyvtár, saját shader elnevezett csúszkákkal) kész, headless tesztekkel demonstrálva. **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
+Verzió **0.28.0-u4**, a teljes tesztkör (30 teszt) zöld, minden commitolva. Kész és headless tesztekkel demonstrálva: **P1** (presetek ChatGPT-vel, saját könyvtár, saját shader csúszkákkal) és **U4** (tömörebb jobb panel, felső szövegsáv, effekt-ikonsor; `docs/spec/vel-ui-visszajelzes-2026-10-18.md` első fele). **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
 
 **CodePen-könyvtári integráció (2026-10-18):** a Liquid Glass a Megjelenések között ráhúzható effekt; a Szélben lobogó láng a Források között van. Két új szerkeszthető recept is készült. A shaderfordítás, könyvtári beillesztés, rétegre húzás és mentés–újranyitás célzott böngészős tesztje zöld; a felhasználói látványpróba még hátra van. Az eredeti portfájlok megmaradtak. A láng műterméke és a licenc kérdése nyitott.
 
@@ -12,7 +12,7 @@ Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A
 **Betöltési UX-javítás (2026-10-18):** a Preset beillesztése ablakba adott teljes Vel-projektet a felület felismeri, és külön „Projekt megnyitása (a jelenlegit lecseréli)” gombot ad; a célzott P1 böngészős teszt zöld. A vászonra ejtett projektfájl is erre az útvonalra jut. A felhasználónál a friss `app/dist/index.html` újratöltése után próbálandó.
 
 ## Mire vár jóváhagyás (ne kezdd el nélküle)
-**Következő: U2** – rövid javaslat és újbóli jóváhagyás kell indítás előtt (lásd lent).
+**Következő: U5** (a UI-visszajelzés második fele: színösszesítő + színforrás-szabály, gradiens/színválasztó, testreszabható felső action bar) vagy **U2**. Mindkettőhöz rövid javaslat és jóváhagyás kell. Az U5 színszabály-javaslata (a felhasználónak már leírva): alul a paletta, rá a réteg saját színe, rá a csoport/Kapcsolat, legfelül a Megjelenés; az összesítő mutatja, melyik érvényes, és egy kattintással felülre tehető egy másik.
 
 **P1 nyitott korlátai / következő szeletre:** ráhúzható saját Megjelenés (fx-típusú saját shader, ami egy rétegre húzva csak arra hat) még nincs, a saját shader most önálló réteg (`IN(uv)`-vel az alatta lévőt szűrheti); a gépigény-mérés egyszeri, kis felbontású próbarender; a könyvtár más elemfajtái (paletta, mozgás) tárolhatók, de még nincs polcuk. Formátum: `docs/VEL-PRESET-FORMATUM.md` (a build generálja).
 
@@ -28,6 +28,7 @@ Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A
 - **Szabály- és eseményvezérelt viselkedés** (`FUNKCIO-LELTAR.md` 23. sor): „kövesse ezt”, „lebegjen e körül”, „reagáljon a szélre”, „erősödjön a Glow érintkezéskor”. Nincs előre beírt kulcssoruk, szabály vagy esemény vezérli őket, és a Loop kikapcsolása után is élnek. Mielőtt bármi épül, külön végig kell gondolni a felhasználóval (kulcsokkal való viszony, jelölés, export, kapcsolat a Kapcsolatokkal és az E szakasszal).
 
 ## Mi történt legutóbb
+- U4: egysoros csúszkák, Részletek a Fő beállítások alatt, mozgásparaméterek a Mozgás fülön (szinkron fő vezérlőkkel), effekt-ikonsor + ikonrács (`fxicons.ts`), felső szövegsáv (`textbar.ts`). Technikai jegyzet: `app/README.md` „U4”.
 - P1: saját könyvtár + polcok, Mentés presetként (☆), Projekt → Utasítás ChatGPT-nek / Preset beillesztése, vezérlők a formátumban, saját shader elnevezett csúszkákkal. Technikai jegyzet: `app/README.md` „P1”.
 - U3: könyvtár balra a rétegek fölé, húzható elválasztó, rétegjelvények, kártyacímkék, egységes tooltip, gyorsbillentyű-panel (`workspace.ts`).
 - K1: Kapcsolat-zsinór ⇢ pontból, előnézetes választókártya, Napfény→Ég, Kövesse, mini-kártya (`linkcord.ts`, `variants.ts`).
@@ -48,6 +49,7 @@ Verzió **0.27.0-p1**, a teljes tesztkör (29 teszt) zöld, minden commitolva. A
 | U3 | B | bal oszlop, jelvények, tooltip, gyorsbillentyűk (`workspace.ts`) | B részben (felhasználói próba hiányzik) |
 | K1 | A/B | Kapcsolat-zsinór, Napfény→Ég, Kövesse (`linkcord.ts`) | Kapcsolatok részben |
 | S1 | B | Jelenetek + átmenetek (`scenes.ts`, `frameAt`, `_toff`) | jelenetek első változat |
+| U4 | B | kompakt jobb panel, `animKeysOf`/`mainDupOf`, `syncTwins`, effekt-ikonsor (`fxicons.ts`), szövegsáv (`textbar.ts`) | UI-visszajelzés első fele |
 | P1 | B/G | saját könyvtár (`userlib.ts`), polcok, ChatGPT-utasítás és beillesztés (`presets.ts`, `presetfmt.ts`), saját shader csúszkái (`paramsOf`) | presetek első változat |
 | M8–M10 | E/F/G | fizika és mezők; folyadék; receptcsalád, Random | nincs elkezdve |
 

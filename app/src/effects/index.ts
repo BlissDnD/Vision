@@ -119,3 +119,16 @@ export const SVG_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 
 export const kindOf=it=>it.type==='group'?'group':EFFECTS[it.type].kind;
 export const iconKind=k=>ICONS[k]||ICONS.gen;
 
+/** U4: which params are motion settings (they live on the Mozgás tab). Timed effects list theirs; elsewhere tempo-like keys.
+ *  MAIN_DUP: motion params that also stay among the main settings (both controls edit the same value). */
+const ANIM_P:Record<string,string[]>={
+  mtext:['anim','unit','order','start','dur','stagger','outAt','ease','shimmer','shimspeed','boil','boilfps','stretch','pulse'],
+  reveal:['mode','dir','at','dur','outAt','ease'],
+  bento:['anim','order','start','dur','stagger','ease','layout2','morphAt','morphDur','outAt'],
+  pdisp:['trig','out','hold','back','every','speed'],
+};
+const MAIN_DUP:Record<string,string[]>={mtext:['anim','dur'],reveal:['mode','dur'],bento:['anim'],pdisp:['trig']};
+const TEMPO=new Set(['speed','spin','bspeed','cloudspeed','shimspeed','drift','twinkle','wobble','rate','wind','boil','boilfps','pulse']);
+export function animKeysOf(L:any):string[]{const ps=paramsOf(L).map(p=>p.k);return ANIM_P[L.type]?ANIM_P[L.type].filter(k=>ps.includes(k)):L.type==='custom'?[]:ps.filter(k=>TEMPO.has(k));}
+/** Motion params shown among the main settings too: the listed ones, or a tempo param the effect already treats as main. */
+export function mainDupOf(L:any):string[]{const d=EFFECTS[L.type];if(MAIN_DUP[L.type])return MAIN_DUP[L.type];return animKeysOf(L).filter(k=>(d.main||[]).includes(k));}

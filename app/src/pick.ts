@@ -77,11 +77,11 @@ function openPick(e: MouseEvent, hits: any[]) {
 
 const wrap = $('#wrap');
 wrap.addEventListener('contextmenu', (e: MouseEvent) => {
-  const p = uvOf(e); if (!p.inside || (e.target as HTMLElement).closest('.hudbar,.hud,.tl,.tlx,.kmenu')) return;
+  const p = uvOf(e); if (!p.inside || (e.target as HTMLElement).closest('.hudbar,.hud,.tl,.tlx,.kmenu,.textbar')) return;
   e.preventDefault(); openPick(e, hitsAt(p.u, p.v));
 });
 wrap.addEventListener('pointerdown', (e: PointerEvent) => {
-  if (e.button !== 0 || (e.target as HTMLElement).closest('.hudbar,.hud,.tl,.tlx,.kmenu') || (e.target as HTMLElement).dataset.h) return;
+  if (e.button !== 0 || (e.target as HTMLElement).closest('.hudbar,.hud,.tl,.tlx,.kmenu,.textbar') || (e.target as HTMLElement).dataset.h) return;
   if (!e.altKey && sel()) return;                                   // sticky selection: drag the selected item
   const p = uvOf(e); if (!p.inside) return;
   const hit = hitsAt(p.u, p.v)[0];

@@ -11,6 +11,7 @@ import { commit } from './history';
 import { AUD, sigLabel, sigList } from './signals';
 import { queueTL, renderTimeline } from './timeline';
 import { toast } from './modals';
+import { fxIcon } from './fxicons';
 
 R.liveCtl=[];R.liveFields=[];
 export function fmt(v,d){if(d.type==='sel')return d.opts[Math.round(v)]||'';const r=d.max-d.min;const dg=d.step>=1||r>=50?0:2;return (+v).toFixed(dg);}
@@ -28,13 +29,14 @@ export function ctlSlider(obj,d,{big,onInput,noAnim,dice}:any={}){
   const kbtn=noAnim?null:keyButton(obj,d.l,()=>{box.classList.toggle('keyed',hasK(obj));if(ked&&!hasK(obj)){ked.remove();ked=null;}});
   const dz=dice?h('button',{class:'anb',style:'opacity:1',title:'Új véletlen','aria-label':'Új véletlen mag',html:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>',onclick:()=>{obj.v=Math.floor(Math.random()*1000);rng.value=obj.v;setFill(rng);val.value=fmt(obj.v,d);onInput&&onInput();commit();}}):null;
   const ab=noAnim?null:h('span',{class:'abadge'});
-  const box=h('div',{class:'ctl'+(big?' big':'')+(obj.a||obj.s?' anim':'')+(hasK(obj)?' keyed':'')},h('div',{class:'top'},h('span',{class:'lab'},h('span',null,d.l),ab),dz,kgr,kbtn,anb,val),h('div',{class:'rngw'},rng,mod));
+  // U4: one row (name · slider · icons · value); big controls (group Vezérlők) keep the slider on its own line
+  const box=h('div',{class:'ctl'+(big?' big':'')+(obj.a||obj.s?' anim':'')+(hasK(obj)?' keyed':'')},h('div',{class:'top'},h('span',{class:'lab',title:d.l},h('span',{class:'lt'},d.l),ab,h('span',{class:'ics'},dz,kgr,kbtn,anb)),h('div',{class:'rngw'},rng,mod),val));
   const put=v=>{if(noAnim)obj.v=v;else setVal(obj,v);};
   if(kgr)kgr.onclick=()=>{if(ked){ked.remove();ked=null;return;}if(!hasK(obj)){toast('Előbb tegyél kulcskockát a ◆ gombbal.');return;}ked=keyEditor(obj,d,d.l);box.appendChild(ked);};
   const live={obj,d,mod,rng,val,kbtn,ab,box,busy:false,ak:null};
   rng.addEventListener('pointerdown',()=>{live.busy=true;});const unbusy=()=>{live.busy=false;};rng.addEventListener('pointerup',unbusy);rng.addEventListener('pointercancel',unbusy);rng.addEventListener('blur',unbusy);
-  rng.oninput=()=>{const v=+rng.value;put(v);val.value=fmt(v,d);setFill(rng);onInput&&onInput();if(hasK(obj)){box.classList.add('keyed');queueTL();}};rng.onchange=()=>{live.busy=false;commit();};
-  val.onchange=()=>{const v=parseFloat(String(val.value).replace(',','.'));if(isFinite(v)){put(v);rng.value=v;setFill(rng);onInput&&onInput();commit();}val.value=fmt(curV(obj),d);};
+  rng.oninput=()=>{const v=+rng.value;put(v);val.value=fmt(v,d);setFill(rng);onInput&&onInput();syncTwins(live);if(hasK(obj)){box.classList.add('keyed');queueTL();}};rng.onchange=()=>{live.busy=false;commit();};
+  val.onchange=()=>{const v=parseFloat(String(val.value).replace(',','.'));if(isFinite(v)){put(v);rng.value=v;setFill(rng);onInput&&onInput();syncTwins(live);commit();}val.value=fmt(curV(obj),d);};
   val.onkeydown=e=>{if(e.key==='Enter')val.blur();};
   if(anb){let pane=null;anb.onclick=()=>{if(pane){pane.remove();pane=null;return;}
     const a=h('input',{type:'range',min:0,max:1,step:.005,value:obj.a,'aria-label':'Mélység'}),f=h('input',{type:'range',min:.01,max:3,step:.01,value:obj.f,'aria-label':'Ütem'});
@@ -49,14 +51,18 @@ export function ctlSlider(obj,d,{big,onInput,noAnim,dice}:any={}){
     box.ondragleave=()=>box.classList.remove('sigdrop');
     box.ondrop=e=>{const k=e.dataTransfer.getData('text/x-latomas-sig');box.classList.remove('sigdrop');if(!k)return;e.preventDefault();obj.s=k;if(obj.sa==null)obj.sa=.5;box.classList.add('anim');commit();toast(`${sigLabel(k)} → ${d.l}`);};}
   R.liveCtl.push(live);return box;}
+/** U4: the same value shown in two places (main settings + Mozgás tab) follows the one being edited. */
+export function syncTwins(src){for(const c of R.liveCtl)if(c!==src&&c.obj===src.obj){const v=curV(c.obj);c.rng.value=v;setFill(c.rng);c.val.value=fmt(v,c.d);}}
 /** ◆ ∿ ♪ ⇢ badges next to a parameter label: what animates it. Updated live from the frame loop (cheap string compare). */
 export function paintBadge(el,kinds){if(!el||el.dataset.k===kinds)return;el.dataset.k=kinds;el.textContent=[...kinds].map(c=>ANIM_SYM[c]).join(' ');el.title=kinds?'Animálva: '+[...kinds].map(c=>ANIM_TIP[c]).join(', '):'';}
 export const liveKinds=o=>animKinds(o);
 export function ctlSelect(obj,d){
-  if(d.opts.length<=3){const seg=h('div',{class:'seg',role:'group','aria-label':d.l});d.opts.forEach((o,i)=>seg.appendChild(h('button',{'aria-pressed':String(Math.round(obj.v)===i),onclick:()=>{obj.v=i;[...seg.children].forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i)));commit();}},o)));
-    return h('div',{class:'row2'},h('span',null,d.l),seg);}
-  const s=h('select',{'aria-label':d.l},...d.opts.map((o,i)=>{const op=h('option',{value:i},o);if(Math.round(obj.v)===i)op.selected=true;return op;}));s.onchange=()=>{obj.v=+s.value;commit();};
-  return h('div',{class:'row2'},h('span',null,d.l),h('div',{class:'pop'},s));}
+  if(!R.liveSel)R.liveSel=[];const me:any={obj};const twins=()=>{for(const t of R.liveSel)if(t!==me&&t.obj===obj)t.set(Math.round(obj.v));};
+  if(d.opts.length<=3){const seg=h('div',{class:'seg',role:'group','aria-label':d.l});me.set=i=>[...seg.children].forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i)));
+    d.opts.forEach((o,i)=>seg.appendChild(h('button',{'aria-pressed':String(Math.round(obj.v)===i),onclick:()=>{obj.v=i;me.set(i);twins();commit();}},o)));
+    R.liveSel.push(me);return h('div',{class:'row2'},h('span',null,d.l),seg);}
+  const s=h('select',{'aria-label':d.l},...d.opts.map((o,i)=>{const op=h('option',{value:i},o);if(Math.round(obj.v)===i)op.selected=true;return op;}));me.set=i=>{s.value=String(i);};s.onchange=()=>{obj.v=+s.value;twins();commit();};
+  R.liveSel.push(me);return h('div',{class:'row2'},h('span',null,d.l),h('div',{class:'pop'},s));}
 export function ctlColor(obj,d){const c=h('input',{type:'color',class:'cwell',value:obj.v,'aria-label':d.l});c.oninput=()=>{obj.v=c.value;};c.onchange=commit;return h('div',{class:'row2'},h('span',null,d.l),c);}
 export function ctlSwitch(label,checked,on){const s=h('input',{type:'checkbox',class:'sw','aria-label':label});s.checked=!!checked;s.onchange=()=>on(s.checked);return h('label',{class:'row2'},h('span',null,label),s);}
 export function ctlParam(L,d,big?){const o=L.p[d.k];if(d.type==='sel')return ctlSelect(o,d);if(d.type==='color')return ctlColor(o,d);return ctlSlider(o,d,{big,dice:d.k==='seed'});}
@@ -72,25 +78,41 @@ export function palettePicker(L){const box=h('div',{class:'swatches',role:'group
   b.onclick=()=>{L.pal=i;[...box.children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));commit();};box.appendChild(b);});return box;}
 export function blendRow(L){const s=h('select',{'aria-label':'Keverési mód'},...BLENDS.map(b=>{const o=h('option',{value:b[0]},b[1]);if(b[0]===L.blend)o.selected=true;return o;}));
   s.onchange=()=>{L.blend=s.value;commit();renderLayers();};return h('div',{class:'row2'},h('span',null,'Keverés'),h('div',{class:'pop'},s));}
+/** U4: the layer's appearance chain as an icon row (order = chain order, drag to reorder; dimmed = off). The chosen icon
+ *  opens one detail strip (name, order, on/off, remove, its settings). „+” opens an icon grid instead of a long list. */
+R.fxSel={};R.fxBody={};
 export function fxListUI(L){
-  const list=h('div',{class:'fxl'});
-  L.fx.forEach((F,i)=>{const d=EFFECTS[F.type];let open=false;const body=h('div',{class:'fxb',hidden:true});
-    const tog=h('button',{class:'chev',html:SVG_CHEV,'aria-label':d.name+' beállításai'});
-    const eye=h('button',{class:'eye','aria-label':'Be/ki',html:F.vis?SVG_EYE:SVG_EYEOFF});eye.onclick=()=>{F.vis=!F.vis;eye.innerHTML=F.vis?SVG_EYE:SVG_EYEOFF;commit();};
-    const del=h('button',{class:'eye','aria-label':'Eltávolítás',html:SVG_X});del.onclick=()=>{L.fx.splice(i,1);commit();renderInsp();renderLayers();};
+  const list=h('div',{class:'fxl'});const n=L.fx.length;let si=Math.min(R.fxSel[L.id]??0,n-1);
+  const row=h('div',{class:'fxrow',role:'toolbar','aria-label':'Rétegeffektek sorrendben'});
+  L.fx.forEach((F,i)=>{const d=EFFECTS[F.type];
+    const b=h('button',{class:'fxic'+(F.vis?'':' off')+(i===si?' on':'')+(fxFits(F.type,L)?'':' bad'),type:'button',draggable:'true','aria-pressed':String(i===si),title:`${i+1}. ${d.name}${F.vis?'':' (kikapcsolva)'} · húzd az átrendezéshez`,'aria-label':d.name,html:fxIcon(F.type,d.name)});
+    b.appendChild(h('i',{class:'fxno'},String(i+1)));
+    b.onclick=()=>{R.fxSel[L.id]=i;if(i===si)R.fxBody[L.id]=!R.fxBody[L.id];renderInsp();};
+    b.ondragstart=e=>{e.dataTransfer.setData('text/x-vel-fx',String(i));e.dataTransfer.effectAllowed='move';};
+    b.ondragover=e=>{if([...e.dataTransfer.types].includes('text/x-vel-fx')){e.preventDefault();b.classList.add('dropat');}};
+    b.ondragleave=()=>b.classList.remove('dropat');
+    b.ondrop=e=>{b.classList.remove('dropat');const from=+e.dataTransfer.getData('text/x-vel-fx');if(!isFinite(from)||from===i)return;e.preventDefault();const [m]=L.fx.splice(from,1);L.fx.splice(i,0,m);R.fxSel[L.id]=i;commit();renderInsp();renderLayers();};
+    row.appendChild(b);});
+  const add=h('button',{class:'fxic add',type:'button',title:'Megjelenés hozzáadása','aria-label':'Megjelenés hozzáadása','aria-expanded':'false'},'+');row.appendChild(add);
+  list.appendChild(row);
+  const grid=h('div',{class:'fxgrid',hidden:true,role:'menu','aria-label':'Megjelenések'},...LIB.fx.map((it:any,i)=>{if(it.head)return null;const ty=it.make().type,ok=fxFits(ty,L);
+    return h('button',{class:'fxg',type:'button',role:'menuitem',disabled:!ok,title:ok?it.name:`${it.name}: ${fxHostNote(ty)}`,onclick:()=>{L.fx.push(LIB.fx[i].make());R.fxSel[L.id]=L.fx.length-1;R.fxBody[L.id]=true;commit();renderInsp();renderLayers();}},
+      h('span',{class:'gi',html:fxIcon(ty,it.name)}),h('span',null,it.name));}));
+  add.onclick=()=>{grid.hidden=!grid.hidden;add.setAttribute('aria-expanded',String(!grid.hidden));};
+  list.appendChild(grid);
+  if(n){const i=si,F=L.fx[i],d=EFFECTS[F.type];const open=!!R.fxBody[L.id];
+    const mv=dir=>{const j=i+dir;if(j<0||j>=L.fx.length)return;[L.fx[i],L.fx[j]]=[L.fx[j],L.fx[i]];R.fxSel[L.id]=j;commit();renderInsp();renderLayers();};
+    const tog=h('button',{class:'chev'+(open?' open':''),html:SVG_CHEV,'aria-label':d.name+' beállításai','aria-expanded':String(open)});
     const nm=h('span',{class:'ln'},h('span',{class:'fxn'},(i+1)+'.'),' ',d.name);
-    // order matters (top = applied first): move up / down in the chain
-    const mv=(dir)=>{const j=i+dir;if(j<0||j>=L.fx.length)return;[L.fx[i],L.fx[j]]=[L.fx[j],L.fx[i]];commit();renderInsp();renderLayers();};
-    const up=L.fx.length>1?h('button',{class:'eye','aria-label':'Előrébb a láncban',title:'Előrébb',disabled:i===0},'▲'):null;if(up)up.onclick=()=>mv(-1);
-    const dn=L.fx.length>1?h('button',{class:'eye','aria-label':'Hátrébb a láncban',title:'Hátrébb',disabled:i===L.fx.length-1},'▼'):null;if(dn)dn.onclick=()=>mv(1);
-    const hd=h('header',null,tog,nm,up,dn,eye,del);
-    const toggle=()=>{open=!open;body.hidden=!open;tog.classList.toggle('open',open);if(open&&!body.childElementCount){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));if(!fxFits(F.type,L))body.appendChild(h('p',{class:'small warn'},'Ezen a rétegen nem hat: '+fxHostNote(F.type)+'.'));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}};
-    tog.onclick=toggle;nm.onclick=toggle;
-    list.appendChild(h('div',{class:'fxi'},hd,body));});
-  const s=h('select',{'aria-label':'Megjelenés hozzáadása'},h('option',{value:''},'Megjelenés hozzáadása…'),...LIB.fx.map((it,i)=>{const ty=it.make().type,ok=fxFits(ty,L);return h('option',{value:i,disabled:!ok},ok?it.name:it.name+' ('+fxHostNote(ty)+')');}));
-  s.onchange=()=>{if(s.value==='')return;L.fx.push(LIB.fx[+s.value].make());commit();renderInsp();renderLayers();};
-  list.appendChild(h('div',{class:'addfx'},h('div',{class:'pop'},s)));
-  list.appendChild(h('p',{class:'small'},'A lánc felülről lefelé hat. Tipp: húzz egy Megjelenést a könyvtárból közvetlenül erre a rétegre.'));return list;}
+    const up=n>1?h('button',{class:'eye','aria-label':'Előrébb a láncban',title:'Előrébb',disabled:i===0},'◀'):null;if(up)up.onclick=()=>mv(-1);
+    const dn=n>1?h('button',{class:'eye','aria-label':'Hátrébb a láncban',title:'Hátrébb',disabled:i===n-1},'▶'):null;if(dn)dn.onclick=()=>mv(1);
+    const eye=h('button',{class:'eye','aria-label':'Be/ki',html:F.vis?SVG_EYE:SVG_EYEOFF});eye.onclick=()=>{F.vis=!F.vis;commit();renderInsp();renderLayers();};
+    const del=h('button',{class:'eye','aria-label':'Eltávolítás',html:SVG_X});del.onclick=()=>{L.fx.splice(i,1);R.fxSel[L.id]=Math.max(0,i-1);commit();renderInsp();renderLayers();};
+    const body=h('div',{class:'fxb',hidden:!open});
+    if(open){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));if(!fxFits(F.type,L))body.appendChild(h('p',{class:'small warn'},'Ezen a rétegen nem hat: '+fxHostNote(F.type)+'.'));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}
+    const toggle=()=>{R.fxBody[L.id]=!open;renderInsp();};tog.onclick=toggle;nm.onclick=toggle;
+    list.appendChild(h('div',{class:'fxi'},h('header',null,tog,nm,up,dn,eye,del),body));}
+  list.appendChild(h('p',{class:'small'},n?'Balról jobbra hatnak. Ikonra kattintva a beállításai, húzva a sorrend. Könyvtárból is ráhúzhatsz egy Megjelenést erre a rétegre.':'Még nincs rétegeffekt. A „+” vagy a könyvtárból ráhúzott Megjelenés hozzáad egyet.'));return list;}
 
 /** Részecskékre bontás: new texts for the scatter → reassemble cycle (text layers only) + a hint about cues. */
 function pdispExtra(L,F){const isT=L.text&&(L.type==='text'||L.type==='mtext');const kids=[];

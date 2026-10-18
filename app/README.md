@@ -120,3 +120,9 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `effects/index.ts` `paramsOf(L)` / `pdefOf(L,k)`: rétegenkénti paraméterdefiníció (custom + `L.cp`; WeakMap-cache, ezért a `L.cp` tömböt mindig cserélni kell, nem helyben módosítani). `gl.progKey` a csúszkák aláírását is tartalmazza.
 - `presets.ts`: Mentés presetként, saját elem menü, Preset beillesztése (`checkPreset`, `measureCost` – vásznon `present` + `readPixels`, Plazmához viszonyítva; `L.cw` a `cost.itemCost`-ban), ChatGPT-utasítás, könyvtárfájl, `.json` ejtés, `cpEditor` (az inspector `R.cpEditor`-on át hívja).
 
+## U4 (2026-10-18)
+- `controls.ctlSlider`: egysoros elrendezés (`.top` = `.lab` [benne `.ics` ikonok] · `.rngw` · `.val`); `syncTwins(live)` a ugyanarra az `obj`-ra mutató többi csúszkát frissíti; `ctlSelect` `R.liveSel`-be regisztrál, ugyanígy szinkronizál (`renderInsp` üríti).
+- `effects/index.ts` `animKeysOf(L)` (időzített effektek listája, máshol tempó-kulcsok), `mainDupOf(L)` (a Fő beállításokban is maradó mozgásparaméterek). Az inspector ezek alapján osztja szét a Tartalom és a Mozgás fül között (8 fölött „Mozgás finomhangolása”, csukva).
+- `controls.fxListUI`: ikonsor (`.fxrow .fxic`, húzás `text/x-vel-fx`), kiválasztás `R.fxSel[L.id]`, lenyitás `R.fxBody[L.id]`, „+” ikonrács (`.fxgrid`). Ikonok: `fxicons.ts` `fxIcon(type,name)` (ismeretlen típus: monogram).
+- `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
+

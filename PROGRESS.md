@@ -19,6 +19,18 @@ Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; a
 - `presets/egyedi/lang-eredeti-demo.vel.json`: a CodePenben használt zajtextúrát a projektbe ágyazva futtatja az eredeti lángképlet portját. A saját shader képbemenetéhez `mediaFor()` most elfogad `asset` mezőt. A lángban még látszik egy függőleges műtermék; az eredeti Shadertoy-kód licence sem tisztázott. Részletek: `presets/egyedi/EREDETI-PORTOK.md` és `BUGS.md`.
 - Ellenőrzés: TypeScript typecheck és production build sikeres; mindkét projektnél böngészős shaderfordítás és betöltési próba hibamentes. Felhasználói, valós GPU-s összevetés még nincs.
 
+## Állapot: 2026-10-18 — U4 „Tömörebb jobb panel, szövegsáv, effekt-ikonsor”: 0.28.0-u4
+
+- **Egysoros csúszkák:** név (38%) · vékony sáv · érték egy sorban (16 px magas); az animálás/kulcs ikonjai rámutatáskor a név végén jelennek meg (animált/kulcsolt értéknél mindig). A csoportok nagy Vezérlői maradtak kétsorosak. Szorosabb szakaszok.
+- **Jobb panel sorrendje:** Tartalom fül: Fő beállítások → közvetlenül alatta Részletek → a leírás alul.
+- **Mozgás fül:** az animációs paraméterek (Animált szöveg: Mozdulat, Egység, Sorrend, Kezdés, Időtartam, Lépcsőzés, Kilépés, Görbe; Feltárás, Bento, Részecskés szétesés; máshol a tempó jellegűek: Sebesség, Pörgés, Szél …) a Mozgás fülre kerültek („Szövegmozgás” / „Mozgás beállításai”, a ritkábbak a „Mozgás finomhangolása” alatt). A fő mozgásvezérlők (pl. Mozdulat, Időtartam, Sebesség) a Fő beállításokban is megmaradnak, és a két vezérlő együtt mozog (`syncTwins`, `R.liveSel`). Besorolás: `effects/index.ts` `animKeysOf` / `mainDupOf`.
+- **Rétegeffektek ikonsorként:** minden Megjelenés saját ikonnal (`src/fxicons.ts`), sorszámmal, kikapcsolva halványan, nem illő célon piros kerettel; kattintás = kiválasztás (alatta név, ◀ ▶, be/ki, törlés, a beállítások lenyitva), húzás = átrendezés (visszavonható); „+” = ikonrács a lenyíló lista helyett (a nem illők tiltva).
+- **Felső szövegsáv** (`src/textbar.ts`): szöveg kijelölésekor a vászon tetején: betűtípus, **B**, szín (Animált szövegnél Szín 1, egyszínűre vált; Szövegnél a Szín fülre ugrik), balra/középre/jobbra, Méret · Sortáv · Betűköz húzható mezők, „↯ Mozdulat” chip a Mozgás fülre, ⋯ a többi szövegbeállításhoz.
+- **Mérés (animált szöveg, Tartalom fül magassága):** előtte 1015 px, most 686 px (a mozgásbeállítások a Mozgás fülön: 554 px, a ritkábbak csukva). Egy csúszka sora 16 px.
+- Teszt: `tests/u4_ui.js` (sorrend, egysoros csúszka, magasság, Mozgás fül, kettőzött vezérlők szinkronja csúszkán és listán, Plazma sebesség két helyen, ikonsor, ikonrács + tiltás, hozzáadás, húzásos átrendezés + undo, szövegsáv: B, igazítás, betűtípus, szín, eltűnés). **30/30 zöld.**
+- **Felhasználói próba (3 perc):** 1) Animált szöveg → felül a szövegsávban B, szín, középre, Méret húzása; a jobb panel Tartalom füle görgetés nélkül elfér. 2) Mozgás fül: Szövegmozgás → Időtartam; a Tartalom fülön ugyanaz az érték. 3) Húzz két Megjelenést egy rétegre → Effektek fül: ikonsor, húzd át a sorrendet, kattints az egyikre; „+” ikonrács.
+- Korlát: a Belépés/Kilépés Időzítés szekció marad (a Mozgás polc váltja ki); a szövegsáv nem kezel soronkénti formázást (⋯ → Tartalom fül); az ikonok egyszerű saját jelek.
+
 ## Állapot: 2026-10-18 — P1 „Presetek kívülről (ChatGPT) + saját shader”: 0.27.0-p1
 
 - **Saját könyvtár** (`src/userlib.ts`): általános, tartós tár (IndexedDB `vel-userlib`, memóriában is), elem: `{id, kind:'preset'|'shader'|…, cat, name, created, data, thumb}`; ismeretlen fajták megmaradnak (későbbi felhasználásra). Projekt menü: könyvtár mentése fájlba / betöltése (sosem ír felül, csak hozzáad); a projektfájl `ulib` mezője viszi a benne használt elemeket (v4 marad, régi fájl: nincs).
