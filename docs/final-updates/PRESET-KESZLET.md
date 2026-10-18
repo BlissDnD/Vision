@@ -3,7 +3,7 @@
 Egyszerű menet, nincs kézi fájlírás. A ChatGPT egy JSON-t ír, a Vel ellenőrzi és beteszi a Könyvtárba.
 
 ## 1. Egyszeri beállítás (a ChatGPT-ben, új beszélgetés)
-1. Vel → **Project → Instruction for ChatGPT** (régi nevén „Utasítás ChatGPT-nek"): a vágólapra kerül a teljes, naprakész utasítás (effektlista, paraméterek, formátum, shader-szerződés).
+1. Vel → **Prompt for ChatGPT** gomb (Project menü / Paste preset ablak; régi nevén „Utasítás ChatGPT-nek"): a vágólapra kerül a teljes, naprakész utasítás (effektlista, paraméterek, formátum, shader-szerződés).
    - Ha a böngészős ChatGPT-ben ez nem fér be, töltsd fel helyette a `docs/VEL-PRESET-FORMATUM.md` fájlt (kb. 23 KB, a build generálja, mindig friss).
 2. Közvetlenül utána küldd el a lenti **Szabályzat** blokkot is (ugyanabban a beszélgetésben).
 
