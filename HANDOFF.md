@@ -5,6 +5,8 @@ Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl c
 **Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 28 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
 
 ## Állapot egy mondatban
+**TRIAGE-01 kész (2026-10-18):** csomagkártyák vs. valós kód és a kimaradt M6–M10 (C–G) befejezési terve a mai újításokkal: `docs/claude-handoff/TRIAGE-01-EREDMENY-2026-10-18.md`. Javasolt következő: STAB-01 mini (3 adatvesztési hiba), majd U5 vagy M6b „1. kép összeáll”; jóváhagyásra vár.
+
 **Önálló sorozat (2026-10-18, a felhasználó előre jóváhagyta):** Részecske emitter → Közös útvonal → Kamera → Folyadék → Fizika → Szöveg 3D; a szabályvezérelt viselkedés kimarad. Javaslatok: `docs/javaslatok/E1-…`, stb. Ezen az ágon (`claude/possible-features-af7e04`) kész: E1, P2, K3, T6 (teljes kör 44/44). A Folyadék (F1) és a Fizika (F2) a párhuzamos munkamenet ágán készült (`claude/vel-fluid-797dca`), a felhasználó kérésére ide összefésülve (0.41.0-merge).
 
 **T6 Szöveg 3D (0.40.0-t6, 2026-10-18):** Térbeli szöveg polc: Szöveg hengeren/gömbön/Szalaggyűrű, Kihúzott 3D szöveg, Szöveg útvonalon; élő, átírható. Headless teszttel demonstrálva (`tests/t6_text3d.js`), felhasználói próba hátra.

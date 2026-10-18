@@ -4,7 +4,7 @@
 
 | Hullám | Nagy task | Gazda | Függő segítő feladat | Státusz | Következő lépés |
 |---|---|---|---|---|---|
-| 0 | TRIAGE-01 | még nincs kiosztva | pillanatkép és készfeltétel | előkészítve | Aktuális kód ellenőrzése, közös szeletjavaslat |
+| 0 | TRIAGE-01 | Claude | – | **kész (2026-10-18)** | Eredmény: `TRIAGE-01-EREDMENY-2026-10-18.md`; következő: STAB-01 mini, majd U5 vagy M6b (felhasználói döntés) |
 
 ## Foglalások
 
