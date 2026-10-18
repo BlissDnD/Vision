@@ -67,9 +67,9 @@ export function closePick() { if (menu) { menu.remove(); menu = null; } }
 function openPick(e: MouseEvent, hits: any[]) {
   closePick();
   const rows = hits.map((x, i) => h('button', { class: 'mi pickrow' + (x.it.id === R.selId ? ' cur' : ''), onclick: () => { closePick(); select(x.it); } },
-    x.prev, h('span', { class: 'lic', html: iconKind(kindOf(x.it)) }), h('span', null, x.it.name, h('small', null, ' ' + [i === 0 ? 'legfelül' : (KIND_LABEL as any)[kindOf(x.it)] || '', x.edge ? 'a kerete alatt' : ''].filter(Boolean).join(' · ')))));
-  menu = h('div', { class: 'popover pickmenu', role: 'menu', 'aria-label': 'Rétegek a kattintás alatt' },
-    h('div', { class: 'pl' }, hits.length ? `A pont alatt: ${hits.length} réteg` : 'A pont alatt nincs réteg'), ...rows);
+    x.prev, h('span', { class: 'lic', html: iconKind(kindOf(x.it)) }), h('span', null, x.it.name, h('small', null, ' ' + [i === 0 ? 'on top' : (KIND_LABEL as any)[kindOf(x.it)] || '', x.edge ? 'a kerete alatt' : ''].filter(Boolean).join(' · ')))));
+  menu = h('div', { class: 'popover pickmenu', role: 'menu', 'aria-label': 'Layers under the click' },
+    h('div', { class: 'pl' }, hits.length ? `Under the point: ${hits.length} layers` : 'No layer under the point'), ...rows);
   document.body.appendChild(menu);
   menu.style.left = Math.min(innerWidth - menu.offsetWidth - 8, e.clientX + 4) + 'px'; menu.style.top = Math.min(innerHeight - menu.offsetHeight - 8, e.clientY + 4) + 'px';
   setTimeout(() => document.addEventListener('pointerdown', function off(ev) { if (menu && !menu.contains(ev.target as Node)) { closePick(); document.removeEventListener('pointerdown', off); } }), 0);
@@ -85,6 +85,6 @@ wrap.addEventListener('pointerdown', (e: PointerEvent) => {
   if (!e.altKey && sel()) return;                                   // sticky selection: drag the selected item
   const p = uvOf(e); if (!p.inside) return;
   const hit = hitsAt(p.u, p.v)[0];
-  if (hit) { select(hit.it); if (e.altKey) { e.stopImmediatePropagation(); toast(`Kijelölve: ${hit.it.name}. Jobb gomb: minden réteg a pont alatt.`); } }
+  if (hit) { select(hit.it); if (e.altKey) { e.stopImmediatePropagation(); toast(`Selected: ${hit.it.name}. Right-click: every layer under the point.`); } }
 }, { capture: true });
 R.hitsAt=hitsAt;

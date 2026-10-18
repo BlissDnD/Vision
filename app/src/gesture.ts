@@ -16,19 +16,19 @@ import { gizmoRadius, toAsp } from './stage';
 import { textCache } from './text';
 import { markDirty } from './loop';
 
-const TAU = Math.PI * 2, NG = 8, CHAR = ['Lágy', 'Ütés', 'Rugó'];
+const TAU = Math.PI * 2, NG = 8, CHAR = ['Soft', 'Hit', 'Spring'];
 const NS = 'http://www.w3.org/2000/svg';
 const ov = h('div', { class: 'moarrow', hidden: true });
 ov.innerHTML = '<svg><g class="moghosts"></g><path class="mopath"/><path class="moshape"/><path class="mohit"/></svg>'
-  + '<i class="mohandle"></i><i class="momid" title="Húzd oldalra: ív"></i><span class="motip" hidden></span><span class="molab" hidden></span>';
+  + '<i class="mohandle"></i><i class="momid" title="Drag sideways: arc"></i><span class="motip" hidden></span><span class="molab" hidden></span>';
 $('#wrap').appendChild(ov);
 const sv: any = ov.querySelector('svg'), gh: any = ov.querySelector('.moghosts'), pth: any = ov.querySelector('.mopath'), shp: any = ov.querySelector('.moshape'), hit: any = ov.querySelector('.mohit');
 const hd: any = ov.querySelector('.mohandle'), mid: any = ov.querySelector('.momid'), tip: any = ov.querySelector('.motip'), lab: any = ov.querySelector('.molab');
 for (let i = 0; i < NG; i++) gh.appendChild(document.createElementNS(NS, 'rect'));
 const TIPS: Record<string, string> = {
-  spring: '⌘ tempó · ⌥ ív · ⇧ szög', in: 'húzd: irány · ⌘ tempó · ⌘↔ görbe', out: 'húzd: irány · ⌘ tempó · ⌘↔ görbe',
-  float: 'húzd: kitérés + irány · ⌘ tempó · ⇧ szög', orbit: 'húzd: sugár · ⌘ tempó · ⌥ irány', spin: 'húzd körbe: sebesség + irány · ⇧ 15°',
-  pulse: 'húzd: erő · ⌘ ütem', shake: 'húzd: erő · ⌘ gyorsaság',
+  spring: '⌘ tempo · ⌥ arc · ⇧ angle', in: 'drag: direction · ⌘ tempo · ⌘↔ curve', out: 'drag: direction · ⌘ tempo · ⌘↔ curve',
+  float: 'drag: distance + direction · ⌘ tempo · ⇧ angle', orbit: 'drag: radius · ⌘ tempo · ⌥ direction', spin: 'drag around: speed + direction · ⇧ 15°',
+  pulse: 'drag: strength · ⌘ beat', shake: 'drag: strength · ⌘ rate',
 };
 const f2 = (v: number, d = 1) => v.toFixed(d).replace('.', ',');
 const cl = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
@@ -116,24 +116,24 @@ function move(e: PointerEvent) {
   if (mode === 'scrub') { const ts = scrubT(c, dx, dy); if (ts != null) R.moScrub = { id: L.id, t: ts }; }
   else if (kind === 'spring') {
     if (mode === 'cmd') { m.p.dur.v = tempo(v0.dur, .1, 4); m.p.char.v = cl(Math.round(v0.char + ddx / 45), 0, 2); label = `${f2(m.p.dur.v, 2)} mp · ${CHAR[m.p.char.v]}`; }
-    else if (mode === 'alt' || part === 'mid') { const { S, n, D } = springGeo(m); if (D > 1e-4) m.p.bend.v = cl(r2(2 * ((dx - S[0] / 2) * n[0] + (dy - S[1] / 2) * n[1]) / D), -1.5, 1.5); label = `ív ${Math.round(m.p.bend.v * 100)}%`; }
+    else if (mode === 'alt' || part === 'mid') { const { S, n, D } = springGeo(m); if (D > 1e-4) m.p.bend.v = cl(r2(2 * ((dx - S[0] / 2) * n[0] + (dy - S[1] / 2) * n[1]) / D), -1.5, 1.5); label = `arc ${Math.round(m.p.bend.v * 100)}%`; }
     else { m.p.dist.v = Math.min(2, r2(Math.hypot(dx, dy), 1000)); m.p.ang.v = sh ? snap15(deg) : deg; if (sh) label = `${m.p.ang.v}°`; } }
   else if (kind === 'in' || kind === 'out') { const k = kind === 'in' ? 'inDur' : 'outDur';
     if (mode === 'cmd') { T[k] = tempo(v0[k], .05, 5); T.ease = cl(Math.round((v0.ease | 0) + ddx / 45), 0, EASES.length - 1); label = `${f2(T[k], 2)} mp · ${EASES[T.ease][0]}`; }
-    else if (Math.hypot(dx, dy) > .04) { const a = (deg + 360) % 360; T[kind] = a < 45 || a >= 315 ? 5 : a < 135 ? 3 : a < 225 ? 4 : 2; if (sh) label = ['', '', 'Emelkedés', 'Süllyedés', 'Balról', 'Jobbról'][T[kind]]; } }
+    else if (Math.hypot(dx, dy) > .04) { const a = (deg + 360) % 360; T[kind] = a < 45 || a >= 315 ? 5 : a < 135 ? 3 : a < 225 ? 4 : 2; if (sh) label = ['', '', 'Rise', 'Sink', 'From left', 'From right'][T[kind]]; } }
   else if (kind === 'float') {
-    if (mode === 'cmd') { m.p.period.v = tempo(v0.period, .3, 12); label = `${f2(m.p.period.v, 2)} mp / kör`; }
+    if (mode === 'cmd') { m.p.period.v = tempo(v0.period, .3, 12); label = `${f2(m.p.period.v, 2)} s / turn`; }
     else { m.p.amp.v = Math.min(.5, r2(Math.hypot(dx, dy), 1000)); m.p.ang.v = sh ? snap15(deg) : deg; if (sh) label = `${m.p.ang.v}°`; } }
   else if (kind === 'orbit') {
-    if (mode === 'cmd') { m.p.period.v = tempo(v0.period, .3, 20); label = `${f2(m.p.period.v, 2)} mp / kör`; }
+    if (mode === 'cmd') { m.p.period.v = tempo(v0.period, .3, 20); label = `${f2(m.p.period.v, 2)} s / turn`; }
     else if (mode === 'alt') { G.rot += turn(ang);
-      if (Math.abs(G.rot) > .15) m.p.dir.v = G.rot > 0 ? 1 : 0; label = Math.round(m.p.dir.v) ? '↺ Ellentétesen' : '↻ Óramutatóval'; }
+      if (Math.abs(G.rot) > .15) m.p.dir.v = G.rot > 0 ? 1 : 0; label = Math.round(m.p.dir.v) ? '↺ Counterclockwise' : '↻ Clockwise'; }
     else m.p.radius.v = Math.min(.6, r2(Math.hypot(dx, dy), 1000)); }
   else if (kind === 'spin') { G.rot += turn(ang);
     // the handle sits at the arc end: dragging it around adds the swept angle (counter-clockwise = positive)
     let s = v0.speed + G.rot * 180 / Math.PI; s = cl(Math.round(s), -360, 360); if (sh) { s = snap15(s); label = `${s}°/mp`; } m.p.speed.v = s; }
   else if (kind === 'pulse') {
-    if (mode === 'cmd') { m.p.period.v = tempo(v0.period, .2, 8); label = `${f2(m.p.period.v, 2)} mp / ütem`; }
+    if (mode === 'cmd') { m.p.period.v = tempo(v0.period, .2, 8); label = `${f2(m.p.period.v, 2)} s / beat`; }
     else { const gr = Math.max(.03, gizmoRadius(L, R.time)); m.p.amp.v = cl(r2(Math.hypot(dx, dy) / gr - 1), 0, 1); } }
   else if (kind === 'shake') {
     if (mode === 'cmd') { m.p.rate.v = cl(r2(v0.rate * Math.pow(2, -ddy / 90), 10), .5, 30); label = `${f2(m.p.rate.v)} Hz`; }

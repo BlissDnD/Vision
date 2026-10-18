@@ -175,7 +175,7 @@ function progs() { if (PR) return PR === 'err' ? null : PR;
     const f = gl.createVertexArray(); gl.bindVertexArray(f); const fb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, fb); const S = 120;
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-S, 0, -S, S, 0, -S, -S, 0, S, S, 0, -S, S, 0, S, -S, 0, S]), gl.STATIC_DRAW); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0); PR.floorVao = f;
     gl.bindVertexArray(null); return PR; }
-  catch (e) { console.warn('Gerincfelület shader:', e); PR = 'err'; R.meshErr = String(e); return null; } }
+  catch (e) { console.warn('Spine surface shader:', e); PR = 'err'; R.meshErr = String(e); return null; } }
 
 /* ---------------- per-context targets ---------------- */
 export function targets(ctx: any) {

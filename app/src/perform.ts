@@ -91,17 +91,17 @@ function finish() {
   gest = null; R.perfHook = null; if (!take) return;
   const T = take; take = null; setPlay(false);
   for (const n of T.objs) delete n._pv;
-  if (T.S.length < 3) { seekTo(T.t0); markDirty(); toast('Túl rövid mozdulat: tartsd lenyomva és mozgasd egy kicsit tovább.'); return; }
+  if (T.S.length < 3) { seekTo(T.t0); markDirty(); toast('Gesture too short: hold it down and keep moving a little longer.'); return; }
   const n = applyTakeN(T.objs, T.S, R.perfSmooth, T.sc); const L = sel();
   R.lastTake = { id: L && L.id, objs: T.objs, S: T.S, sc: T.sc }; seekTo(T.t0); commit(); renderInsp();
-  toast(`Eljátszva: ${(T.S[T.S.length - 1].t - T.S[0].t).toFixed(1)} mp → ${n} kulcskocka${T.objs.length > 1 ? ' paraméterenként' : ''} (simítás ${Math.round(R.perfSmooth * 100)}%). A lejátszófej visszaugrott a felvétel elejére; a csúszkával utólag is simíthatsz.`);
+  toast(`Performed: ${(T.S[T.S.length - 1].t - T.S[0].t).toFixed(1)} s → ${n} keyframes${T.objs.length > 1 ? ' per parameter' : ''} (smoothing ${Math.round(R.perfSmooth * 100)}%). The playhead jumped back to the start of the take; you can smooth it afterwards with the slider.`);
 }
 document.addEventListener('pointerdown', (e: PointerEvent) => { if (!R.perform || e.button !== 0) return; if ((e.target as HTMLElement).closest('#perfBtn,#perfSmooth,#playBtn')) return; gest = { id: e.pointerId }; R.perfHook = hook; }, { capture: true });
 document.addEventListener('pointerup', () => { if (gest) finish(); }, { capture: true });
 document.addEventListener('pointercancel', () => { if (gest) finish(); }, { capture: true });
 
 export function setPerform(on: boolean) { R.perform = on; $('#perfBtn').setAttribute('aria-pressed', String(on)); $('#perfSmooth').hidden = !on;
-  if (on) { if (R.playing) setPlay(false); toast('Eljátszás élesítve: a lejátszás áll. Fogj meg valamit (réteg a vásznon, csúszka, szám): az első mozdulatra indul a lejátszás és a felvétel, elengedéskor leáll. Kikapcsolás: E.'); } }
+  if (on) { if (R.playing) setPlay(false); toast('Perform armed: playback is stopped. Grab something (a layer on the canvas, a slider, a number): playback and recording start on the first move and stop when you release. Turn off: E.'); } }
 $('#perfBtn').onclick = () => setPerform(!R.perform);
 $('#perfSmooth').oninput = (e: any) => { R.perfSmooth = +e.target.value; const T = R.lastTake;
   if (T && T.objs) { applyTakeN(T.objs, T.S, R.perfSmooth, T.sc); markDirty(); } };

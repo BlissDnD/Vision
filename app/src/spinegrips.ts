@@ -64,7 +64,7 @@ export function updSpineGrips(t: number) {
   box.hidden = false;
   const S = spineOf(L), C = camOf(L, t, EFFECTS[L.type], asp()), arch = P(L, 'arch', t);
   while (box.childElementCount - 1 < S.length) {
-    const g = h('button', { class: 'sgrip', type: 'button', 'data-h': 'spine', 'aria-label': 'Gerincpont', title: 'Húzd: a pont mozgatása a kamerával szemközti síkban. Shift: vízszintesen (a magasság marad).' });
+    const g = h('button', { class: 'sgrip', type: 'button', 'data-h': 'spine', 'aria-label': 'Gerincpont', title: 'Drag: move the point in the plane facing the camera. Shift: horizontally (height stays).' });
     g.addEventListener('pointerdown', down); box.appendChild(g);
   }
   const pts: string[] = [];
@@ -120,7 +120,7 @@ export function panDrag(L: any, s0: any, dx: number, dy: number) {   // dx/dy in
 }
 export function wheelDist(L: any, dy: number) { const d = EFFECTS[L.type].params.find((x: any) => x.k === 'dist'); setVal(L.p.dist, Math.min(d.max, Math.max(d.min, P(L, 'dist', R.time) * Math.exp(dy * 0.0012)))); }
 
-/** Inspector: the spine itself (replaces "Elhelyezés" for mesh layers). */
+/** Inspector: the spine itself (replaces "Placement" for mesh layers). */
 export function spineSection(L: any) {
   const S = spineOf(L), i = Math.min(R.spSel, S.length - 1);
   const redo = () => { commit(); markDirty(); import('./inspector').then(m => m.renderInsp()); };
@@ -129,12 +129,12 @@ export function spineSection(L: any) {
   const del = () => { if (S.length <= 3) return; S.splice(i, 1); R.spSel = Math.max(0, i - 1); redo(); };
   const reset = () => { L.spine = JSON.parse(JSON.stringify(DEF_SPINE)); R.spSel = 0; redo(); };
   return section('Gerinc (a forma vonala)', 'spine', true,
-    h('p', { class: 'small' }, `${S.length} pont. A vásznon húzd a kék pontokat (Shift: vízszintesen). Üres helyen húzva a kamera célpontja mozog, görgővel a távolsága változik; körbejárás: 3D forgatás eszköz (O).`),
-    h('p', { class: 'small' }, `Kijelölt: ${i + 1}. pont (${S[i].map((v: number) => v.toFixed(2).replace('.', ',')).join('; ')})`),
+    h('p', { class: 'small' }, `${S.length} points. Drag the blue points on the canvas (Shift: horizontally). Dragging on empty space moves the camera target, the wheel changes its distance; to orbit: the 3D Orbit tool (O).`),
+    h('p', { class: 'small' }, `Selected: point ${i + 1} (${S[i].map((v: number) => v.toFixed(2)).join('; ')})`),
     h('div', { class: 'btnrow' },
-      h('button', { class: 'btn', onclick: add }, 'Új pont utána'),
-      h('button', { class: 'btn', disabled: S.length <= 3, onclick: del }, 'Pont törlése'),
+      h('button', { class: 'btn', onclick: add }, 'New point after'),
+      h('button', { class: 'btn', disabled: S.length <= 3, onclick: del }, 'Delete point'),
       h('button', { class: 'btn', onclick: reset }, 'Alapgerinc')),
-    h('div', { class: 'btnrow' }, h('button', { class: 'btn' + (R.glint ? ' accent' : ''), 'aria-pressed': String(!!R.glint), title: 'Bekapcsolva a felületen húzva a mennyezeti fénycsík oda kerül, hogy a csillanás az egér alatt legyen.',
-      onclick: () => { R.glint = !R.glint; import('./inspector').then(m => m.renderInsp()); } }, R.glint ? 'Csillanás húzása: be' : 'Csillanás húzása a vásznon')));
+    h('div', { class: 'btnrow' }, h('button', { class: 'btn' + (R.glint ? ' accent' : ''), 'aria-pressed': String(!!R.glint), title: 'When on, dragging on the surface moves the ceiling light strip so the glint stays under the pointer.',
+      onclick: () => { R.glint = !R.glint; import('./inspector').then(m => m.renderInsp()); } }, R.glint ? 'Glint drag: on' : 'Drag the glint on the canvas')));
 }

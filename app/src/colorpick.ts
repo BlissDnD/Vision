@@ -22,9 +22,9 @@ export function swatch(hex: string, onPick?: (h: string) => void, title?: string
 
 function build() {
   const sv = h('canvas', { class: 'cp-sv', width: 200, height: 140 }), hue = h('canvas', { class: 'cp-hue', width: 200, height: 12 }), alp = h('canvas', { class: 'cp-alpha', width: 200, height: 12 });
-  const hex = h('input', { class: 'val cp-hex', 'aria-label': 'Hex szín', spellcheck: 'false' }), drop = h('button', { class: 'btn cp-eye', title: 'Pipetta: szín a képernyőről' }, '◉');
+  const hex = h('input', { class: 'val cp-hex', 'aria-label': 'Hex color', spellcheck: 'false' }), drop = h('button', { class: 'btn cp-eye', title: 'Eyedropper: pick a color from the screen' }, '◉');
   const sw = h('div', { class: 'cp-sw' }), knob = h('i', { class: 'cp-knob' });
-  const el = h('div', { class: 'cpick', role: 'dialog', 'aria-label': 'Színválasztó', hidden: true }, h('div', { class: 'cp-svw' }, sv, knob), hue, alp, h('div', { class: 'cp-row' }, hex, drop), sw);
+  const el = h('div', { class: 'cpick', role: 'dialog', 'aria-label': 'Color picker', hidden: true }, h('div', { class: 'cp-svw' }, sv, knob), hue, alp, h('div', { class: 'cp-row' }, hex, drop), sw);
   document.body.appendChild(el);
   const P: any = { el, sv, hue, alp, hex, drop, sw, knob, hsv: [0, 0, 0], a: 1, o: null as Opts | null, start: '' };
   const paintSV = () => { const g = sv.getContext('2d')!, [r, gg, b] = hsvToRgb(P.hsv[0], 1, 1); g.fillStyle = `rgb(${r * 255},${gg * 255},${b * 255})`; g.fillRect(0, 0, 200, 140);
@@ -43,7 +43,7 @@ function build() {
   drag(hue, x => { P.hsv[0] = Math.min(.999, x); }); drag(alp, x => { P.a = x; });
   hex.onchange = () => { const v = String(hex.value).trim(); if (/^#?[0-9a-f]{3}([0-9a-f]{3})?([0-9a-f]{2})?$/i.test(v)) { P.set((v[0] === '#' ? '' : '#') + v); P.emit(); } else hex.value = P.cur(); };
   hex.onkeydown = (e: KeyboardEvent) => { if (e.key === 'Enter') hex.blur(); };
-  drop.onclick = async () => { const ED = (window as any).EyeDropper; if (!ED) { drop.title = 'Ez a böngésző nem tud pipettázni'; return; } try { const r = await new ED().open(); P.set(r.sRGBHex); P.emit(); } catch (_) { /* cancelled */ } };
+  drop.onclick = async () => { const ED = (window as any).EyeDropper; if (!ED) { drop.title = 'This browser cannot use the eyedropper'; return; } try { const r = await new ED().open(); P.set(r.sRGBHex); P.emit(); } catch (_) { /* cancelled */ } };
   const outside = (e: PointerEvent) => { if (!P.el.hidden && !P.el.contains(e.target as Node) && e.target !== P.anchor) closePicker(); };
   document.addEventListener('pointerdown', outside, true);
   document.addEventListener('keydown', (e: KeyboardEvent) => { if (!P.el.hidden && (e.key === 'Escape' || e.key === 'Enter')) { e.stopPropagation(); closePicker(); } }, true);
@@ -56,7 +56,7 @@ export function openPicker(anchor: HTMLElement, o: Opts) {
   if (POP && !POP.el.hidden) closePicker(); const P = POP || (POP = build());
   P.o = o; P.anchor = anchor; P.alp.hidden = !o.alpha; P.set(o.value || '#ffffff'); P.start = P.cur();
   P.sw.innerHTML = ''; const pick = (v: string) => { P.set(v); P.emit(); };
-  const proj = projectColors(); if (proj.length) P.sw.append(h('span', { class: 'cp-lbl' }, 'A projekt színei'), h('div', { class: 'cp-swr' }, ...proj.map(c => swatch(c, pick))));
+  const proj = projectColors(); if (proj.length) P.sw.append(h('span', { class: 'cp-lbl' }, 'Project colors'), h('div', { class: 'cp-swr' }, ...proj.map(c => swatch(c, pick))));
   if (o.extra && o.extra.length) P.sw.append(h('span', { class: 'cp-lbl' }, 'Paletta'), h('div', { class: 'cp-swr' }, ...o.extra.map(c => swatch(c, pick))));
   P.el.hidden = false; const r = anchor.getBoundingClientRect(), W = 224, H = P.el.offsetHeight || 300;
   P.el.style.left = Math.max(8, Math.min(innerWidth - W - 8, r.left + r.width / 2 - W / 2)) + 'px';
@@ -64,8 +64,8 @@ export function openPicker(anchor: HTMLElement, o: Opts) {
   return P;
 }
 /** The swatch button used everywhere a colour is edited. get/set read and write '#rrggbb(aa)'; done(changed) commits. */
-export function colorWell(get: () => string, set: (v: string) => void, done: (changed: boolean) => void, label = 'Szín', o: { alpha?: boolean; extra?: () => string[] } = {}) {
-  const b = h('button', { class: 'cwell cwb', 'aria-label': label, title: label + ' · kattints: színválasztó · húzz rá színt' });
+export function colorWell(get: () => string, set: (v: string) => void, done: (changed: boolean) => void, label = 'Color', o: { alpha?: boolean; extra?: () => string[] } = {}) {
+  const b = h('button', { class: 'cwell cwb', 'aria-label': label, title: label + ' · click: color picker · drop a color on it' });
   const paint = () => { b.style.background = get(); }; paint();
   b.onclick = () => openPicker(b, { value: get(), alpha: o.alpha, label, extra: o.extra ? o.extra() : undefined, onInput: v => { set(v); paint(); }, onDone: (_v, ch) => { paint(); done(ch); } });
   b.ondragover = (e: DragEvent) => { if (e.dataTransfer && [...e.dataTransfer.types].includes(COLOR_MIME)) { e.preventDefault(); b.classList.add('drop'); } };

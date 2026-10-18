@@ -43,7 +43,7 @@ export function renderInsp(){
     T('fx',section('Csoporteffektek','fx',true,fxListUI(L)));
     T('motion',motionSummary(L));T('motion',R.moUI?R.moUI(L):timingSection(L));
     T('place',placement(L,'Placement (whole group)'));
-    T('content',section('Layers','grp',true,h('p',{class:'small'},`${L.children.length} réteg van benne. Nyisd ki a rétegfában, és bármelyiket finomhangolhatod.`),
+    T('content',section('Layers','grp',true,h('p',{class:'small'},`It contains ${L.children.length} layers. Open it in the layer tree to fine-tune any of them.`),
       h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>{L.open=!L.open;renderLayers();renderInsp();}},L.open?'Hide layers':'Show layers'),h('button',{class:'btn',onclick:()=>ungroup(L)},'Ungroup'))));
     T('content',variantSection(L));T('motion',linkSection(L));
     tabbed(P,L,TB);return;}
