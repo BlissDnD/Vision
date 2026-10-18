@@ -2,6 +2,14 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — R1 CRT-képernyő + Színes vetett fény: 0.31.0-r1
+
+- **Megjelenések → CRT-képernyő** (`crt`): domborúság, lekerekített sarok (kívül átlátszó), RGB-elcsúszás, képsorok (szám a vászonhoz kötve, 1080p és 4K azonos), RGB-maszk, zaj/villódzás a jelenetidőhöz kötve, vignetta. A meglévő Glitch/Kromatikus aberráció/Film mellé, nem helyettük.
+- **Megjelenések → Színes vetett fény** (`castlight`): a réteg alfájából hosszú csóva, Irány/Hossz/Erősség/Lecsengés, közeli és távoli szín. Két lépcső × 16 minta = 256 lépés, így a költség nem nő a hosszal; a réteg keretén túl is látszik, a háttér átlátszó marad.
+- Új referencialista: `FUNKCIO-LELTAR.md` 37–42. sor (forrás: `docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`).
+- Teszt: `tests/r1_crt_light.js` zöld (irány, túloldal/sarok üres, irányváltás, mozgatás, CRT-ugrás azonos, csoport, újranyitás, könyvtár). SwiftShader 960×540: szöveg 39 ms, +CRT 61 ms, +vetett fény 138 ms (CPU, csak arány). Valódi GPU/4K nincs mérve.
+- Felhasználói próba: 1) Megjelenések → Színes vetett fény egy szövegre, Irány és Hossz csúszka; 2) Megjelenések → CRT-képernyő egy fotóra vagy csoportra (sarkok, színes perem?); 3) idővonalon ugrálás: a CRT-zaj ugyanaz; 4) 4K export.
+
 ## Állapot: 2026-10-18 — Mozgás v1.1: 0.30.0-mo11
 
 - **Ritmus** a folytonos mozgásokon (Lebegés, Forgás, Lüktetés, Keringés, Remegés): chipek (Folyamatos · Megáll időnként · Lassul–gyorsul · Elcsendesedik · Véletlen szünetek), szerkeszthető együtemes **ritmus-szalag** (pont le = lassabb/megáll, fel = gyorsabb, jobb szél = ütemhossz, élő pötty), **Tempó** (ott áll meg, ahol van) / **Erő** (nyugalomba tér). Projekt-Looptól független, ugrás = export = élő (analitikus fázisintegrál).

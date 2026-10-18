@@ -127,6 +127,10 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
 - `textbar.ts` `editTextInPlace(L)` / `closeTextEdit(keep)`: `.tedit` textarea a réteg vászonbeli helyén (kamera nélkül számolva); `#wrap` dblclick → `hitsAt` első szövegtalálata (vagy a kijelölt szöveg). Erősség-gyűrű: `.fxic` `--s` + `::after` conic-gradient maszk.
 
+## R1 (2026-10-18): CRT-képernyő, Színes vetett fény
+- `effects/filters.ts` `crt`: hordótorzítás `uv=0.5+0.5q(1+c·r²/4)/(1+c/4)` (élközép a helyén, sarok kívül), lekerekített-doboz SDF-perem; RGB-eltolás és sor-/maszkszám a vászonhoz relatív (felbontásfüggetlen); alfa = a három minta maximuma (mint `chroma`).
+- `castlight` (`passes:2`): az 1. lépés 16 mintát vesz 1/256 lépésközzel (r = legjobb találat távolsága ×16, a = legjobb alfa), a 2. lépés 16-os lépésekkel 16-ot a köztes képen. A max·exp(-λk) szorzatos lecsengés miatt ez pontosan 256 minta maximuma. Az eredeti kép az `uPrev`-ből jön (a `runChain` a 2. lépésnek adja), a teljesen fedett képpont korán kilép.
+
 ## Mozgás v1.1 (2026-10-18)
 - `motion.ts`: `m.ry = {k, cyc, pts[RY_N=10] 0..2, tgt 0 Tempó/1 Erő, rnd, seed}`; a pontok közt smoothstep, a fázis (`ryTau`) a görbe zárt alakú integrálja (Véletlennél a kihagyott ütemek megszámolva) → `moTime(m,t) = {tau, amp}`; a sáv `m.a`/`m.b` (hiányzó = 0 / nyitott), a végeken `RAMP` puha felfutás (ott Simpson-integrál). `bakeMo` mintavételez + RDP-egyszerűsít, lineáris kulcsok.
 - `timeline.ts`: `paramList` a mozgásparamétereket is adja (`mo:<id>.p.<k>`, `objAt` kezeli) → kulcsmozgatás/nyújtás/kijelölés a meglévő úton; `renderTracks` mozgássorok (`.tlx-clip`, `clipDrag`), `R.tlxOpenIds` kulcsa a mozgássornál `L.id|m.id`.
