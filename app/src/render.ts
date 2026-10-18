@@ -29,7 +29,7 @@ export function setXform(p,L,t){const n=L.n,B=behav(L,t);let ox=ev(n.x,BASEK.x,t
   gl.uniform2f(U(p,'uOff'),ox,oy);gl.uniform1f(U(p,'uScale'),Math.max(1e-4,sc));
   gl.uniform1f(U(p,'uRot'),rot*Math.PI/180);}
 /* ----- 2.5D camera: per-layer depth (n.z), parallax + depth of field on top-level layers ----- */
-export const CAMP=[S('x','Kamera X',-3,3,0),S('y','Kamera Y',-2,2,0),S('zoom','Zoom',.2,5,1),S('f','Fókusztáv (látószög)',.5,8,2.5),S('focus','Élességi sík (Z)',-1.5,8,0),S('ap','Mélységélesség (blende)',0,3,0),S('roll','Döntés °',-45,45,0),S('shake','Kézikamera',0,1,0),S('lag','Követés késése (mp)',0,2,.35),S('trans','Célváltás ideje (mp)',.1,4,1.2),S('pper','Útvonal bejárása (mp)',.5,60,8)];
+export const CAMP=[S('x','Kamera X',-3,3,0),S('y','Kamera Y',-2,2,0),S('zoom','Zoom',.2,5,1),S('f','Focal length (field of view)',.5,8,2.5),S('focus','Focal plane (Z)',-1.5,8,0),S('ap','Depth of field (aperture)',0,3,0),S('roll','Tilt °',-45,45,0),S('shake','Handheld',0,1,0),S('lag','Follow delay (s)',0,2,.35),S('trans','Target change time (s)',.1,4,1.2),S('pper','Path travel time (s)',.5,60,8)];
 export const CAMK=Object.fromEntries(CAMP.map(d=>[d.k,d]));
 export function mkCam():Camera{const n={};for(const d of CAMP)n[d.k]=mkN(d.def);return <Camera>{id:'__cam',name:'Kamera',type:'cam',vis:true,on:false,n,p:{}};}
 export function normCam(o){const c=mkCam();if(!o)return c;c.on=!!o.on;for(const d of CAMP)if(o.n&&o.n[d.k])c.n[d.k]=mkN(o.n[d.k]);
@@ -48,8 +48,8 @@ export function dofLayer(id,r){let F=dofCache.get(id);if(!F){F=makeLayer('blur')
 export function openCam(anchor){
   const C=st.cam;const on=ctlSwitch('Kamera bekapcsolva',C.on,v=>{C.on=v;commit();renderTimeline();});
   const sl=CAMP.map(d=>ctlSlider(C.n[d.k],d,{onInput:markDirty}));
-  openPop(anchor,h('div',{class:'pl'},'Kamera · 2,5D tér'),h('div',{class:'pc'},on,R.camExtra?R.camExtra(()=>openCam(anchor)):null,...sl,
-    h('p',{class:'small'},'Minden réteg Elhelyezés szekciójában van egy Mélység (Z) érték: 0 a képsík, a pozitív hátrébb, a negatív előrébb van. Kameramozgásnál a távoli rétegek lassabban mozognak (parallaxis), a blende az élességi síktól távoli rétegeket elmossa. A ◆ gombokkal a kamera is kulcskockázható, a Sávok panelen külön sora van.')));}
+  openPop(anchor,h('div',{class:'pl'},'Camera · 2.5D space'),h('div',{class:'pc'},on,R.camExtra?R.camExtra(()=>openCam(anchor)):null,...sl,
+    h('p',{class:'small'},'Every layer has a Depth (Z) value in its Placement section: 0 is the image plane, positive is further back, negative is closer. When the camera moves, distant layers move more slowly (parallax), and the aperture blurs layers far from the focal plane. The ◆ buttons keyframe the camera too; it has its own row in the Tracks panel.')));}
 st.cam=mkCam();
 /* ----- behaviours (enter / exit) ----- */
 export const easeSpringJ=(x,z,w)=>{if(x>=1)return 1;const wd=w*Math.sqrt(1-z*z);return 1-Math.exp(-z*w*x)*(Math.cos(wd*x)+(z*w/wd)*Math.sin(wd*x));};
@@ -59,7 +59,7 @@ export const EASE_FNS:((x:number)=>number)[]=[x=>1-Math.pow(1-x,3),x=>x>=1?1:1-M
  x=>x<=0?0:x>=1?1:Math.pow(2,-10*x)*Math.sin((x*10-.75)*2.0943951)+1,easeBounceJ,x=>x<=0?0:x>=1?1:x<.5?Math.pow(2,20*x-10)/2:(2-Math.pow(2,-20*x+10))/2,x=>Math.min(1,Math.floor(x*6)/5)];
 export const EASES:[string,(x:number)=>number][]=EASE_NAMES.map((n,i)=>[n,(x:number)=>EASE_FNS[i](Math.min(1,Math.max(0,x)))]);
 export const easeJ=(k,x)=>(EASES[Math.round(k)]||EASES[0])[1](x);
-export const MOVES=['Nincs','Átúszás','Emelkedés','Süllyedés','Balról','Jobbról','Ráközelítés','Távolodás','Pattanás'];
+export const MOVES=['Nincs','Átúszás','Rise','Sink','From left','From right','Zoom in','Zoom out','Bounce'];
 export function moveFx(type,e){const r={op:1,dx:0,dy:0,sc:1};if(!type)return r;const u=1-e,o=Math.max(0,Math.min(1,e*1.5));
   switch(type){case 1:r.op=Math.max(0,Math.min(1,e));break;case 2:r.op=o;r.dy=-u*.12;break;case 3:r.op=o;r.dy=u*.12;break;case 4:r.op=o;r.dx=-u*.35;break;case 5:r.op=o;r.dx=u*.35;break;
     case 6:r.op=o;r.sc=.7+.3*e;break;case 7:r.op=o;r.sc=1.4-.4*e;break;case 8:r.op=Math.max(0,Math.min(1,e*3));r.sc=Math.max(.001,e);break;}return r;}

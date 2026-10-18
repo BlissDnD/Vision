@@ -19,6 +19,8 @@ import { toast } from './modals';
 import { fxIcon } from './fxicons';
 import { effectName, effectParam } from './effectcopy';
 import { cyclesIn, loopLen, loopOn } from './time';
+import { animMenu, animItems, segIcons, switchRow } from './ui/common';
+import { WAVE_ICON } from './ui/icons';
 
 R.liveCtl=[];R.liveFields=[];
 export function fmt(v,d){if(d.type==='sel')return d.opts[Math.round(v)]||'';const r=d.max-d.min;const dg=d.step>=1||r>=50?0:2;return (+v).toFixed(dg);}
@@ -31,13 +33,15 @@ export function ctlSlider(obj,d,{big,onInput,noAnim,dice}:any={}){
   const rng=h('input',{type:'range',min:d.min,max:d.max,step,value:obj.v,'aria-label':d.l});setFill(rng);
   const val=h('input',{class:'val',value:fmt(obj.v,d),'aria-label':d.l+' value'});
   const mod=h('i',{class:'mod',hidden:true});
-  const anb=noAnim?null:h('button',{class:'anb',title:'Animate',html:SVG_WAVE,'aria-label':d.l+' animate'});
+  // WA1: the ◇ animate menu replaces the old ∿ button; the wave pane is still what „Wave” opens
+  const anb=noAnim?null:h('button',{class:'anb',title:'Animate',html:SVG_WAVE,'aria-label':d.l+' animate',hidden:true});
   let ked=null;const kgr=noAnim?null:h('button',{class:'kb kgr',type:'button',title:'Keyframes and curve',html:SVG_CURVE,'aria-label':d.l+' curve'});
   const kbtn=noAnim?null:keyButton(obj,d.l,()=>{box.classList.toggle('keyed',hasK(obj));if(ked&&!hasK(obj)){ked.remove();ked=null;}});
   const dz=dice?h('button',{class:'anb',style:'opacity:1',title:'New random value','aria-label':'New random seed',html:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>',onclick:()=>{obj.v=Math.floor(Math.random()*1000);rng.value=obj.v;setFill(rng);val.value=fmt(obj.v,d);onInput&&onInput();commit();}}):null;
   const ab=noAnim?null:h('span',{class:'abadge'});
+  const ics=h('span',{class:'ics'},dz,kbtn,anb);
   // U4: one row (name · slider · icons · value); big controls (group Vezérlők) keep the slider on its own line
-  const box=h('div',{class:'ctl'+(big?' big':'')+(obj.a||obj.s?' anim':'')+(hasK(obj)?' keyed':'')},h('div',{class:'top'},h('span',{class:'lab',title:d.l},h('span',{class:'lt'},d.l),ab,h('span',{class:'ics'},dz,kgr,kbtn,anb)),h('div',{class:'rngw'},rng,mod),val));
+  const box=h('div',{class:'ctl'+(big?' big':'')+(obj.a||obj.s?' anim':'')+(hasK(obj)?' keyed':'')},h('div',{class:'top'},h('span',{class:'lab',title:d.l},h('span',{class:'lt'},d.l),ab,ics),h('div',{class:'rngw'},rng,mod),val));
   const put=v=>{if(noAnim)obj.v=v;else setVal(obj,v);};
   if(kgr)kgr.onclick=()=>{if(ked){ked.remove();ked=null;return;}if(!hasK(obj)){toast('Add a keyframe with ◆ first.');return;}ked=keyEditor(obj,d,d.l);box.appendChild(ked);};
   const live={obj,d,mod,rng,val,kbtn,ab,box,busy:false,ak:null};
@@ -47,17 +51,28 @@ export function ctlSlider(obj,d,{big,onInput,noAnim,dice}:any={}){
   val.onkeydown=e=>{if(e.key==='Enter')val.blur();};
   if(anb){let pane=null;anb.onclick=()=>{if(pane){pane.remove();pane=null;return;}
     const a=h('input',{type:'range',min:0,max:1,step:.005,value:obj.a,'aria-label':'Depth'}),f=h('input',{type:'range',min:.01,max:3,step:.01,value:obj.f,'aria-label':'Rhythm'});
-    const w=h('select',{'aria-label':'Waveform'},...WAVES.map((x,i)=>{const o=h('option',{value:i},x);if(obj.w===i)o.selected=true;return o;}));
+    // WA1: the waveform is an icon group (the icon draws the wave), so the names cannot truncate
+    const w=segIcons('Waveform',WAVES.map((x,i)=>({icon:WAVE_ICON[i]||WAVE_ICON[0],tip:x,name:x})),Math.max(0,obj.w|0),i=>{obj.w=i;commit();});
     // Körbeér (row 22): whole cycles per loop; the stored Ütem stays, the snap happens in ev()
     const lpI=h('span',{class:'small lpinfo'}),lpInfo=()=>{const L=loopLen();lpI.textContent=!obj.lp?'':L>0?`${cyclesIn(obj.f,L)} cycles / ${+L.toFixed(2)} s`:'No loop to align with';};
-    const lp=h('input',{type:'checkbox',class:'sw','aria-label':'Seamless loop',title:'The wave completes a whole number of cycles during the scene so its end matches its beginning.'});lp.checked=!!obj.lp;
-    lp.onchange=()=>{if(lp.checked)obj.lp=1;else delete obj.lp;lpInfo();commit();};
-    a.oninput=()=>{obj.a=+a.value;setFill(a);box.classList.toggle('anim',obj.a>0);};a.onchange=commit;f.oninput=()=>{obj.f=+f.value;setFill(f);lpInfo();};f.onchange=commit;w.onchange=()=>{obj.w=+w.value;commit();};
+    const lpRow:any=switchRow('Seamless loop','The wave completes a whole number of cycles during the scene so its end matches its beginning.',!!obj.lp,v=>{if(v)obj.lp=1;else delete obj.lp;lpInfo();commit();});const lp=lpRow.velSwitch;
+    a.oninput=()=>{obj.a=+a.value;setFill(a);box.classList.toggle('anim',obj.a>0);};a.onchange=commit;f.oninput=()=>{obj.f=+f.value;setFill(f);lpInfo();};f.onchange=commit;
     const sg=h('select',{'aria-label':'Jel'},h('option',{value:''},'— none —'),...sigList().map(([k,l])=>{const o=h('option',{value:k},l);if(obj.s===k)o.selected=true;return o;}));
     const sa=h('input',{type:'range',min:-1,max:1,step:.01,value:obj.sa??.5,'aria-label':'Signal strength'});
     sg.onchange=()=>{obj.s=sg.value;if(obj.sa==null)obj.sa=.5;box.classList.toggle('anim',!!(obj.a||obj.s));commit();};sa.oninput=()=>{obj.sa=+sa.value;setFill(sa);};sa.onchange=commit;
-    pane=h('div',{class:'lfo'},h('span',null,'Wave'),h('div',{class:'pop'},w),h('span',null,'Depth'),a,h('span',null,'Rhythm'),f,h('span',null,'Seamless loop'),h('div',{class:'lprow'},lp,lpI),h('span',null,'Jel'),h('div',{class:'pop'},sg),h('span',null,'Signal strength'),sa);box.appendChild(pane);
+    pane=h('div',{class:'lfo'},h('span',null,'Wave'),w,h('span',null,'Depth'),a,h('span',null,'Rhythm'),f,h('div',{class:'lprow'},lpRow,lpI),h('span',null,'Jel'),h('div',{class:'pop'},sg),h('span',null,'Signal strength'),sa);box.appendChild(pane);
     if(!obj.a&&!obj.s&&!AUD.buf&&!AUD.stems.length){obj.a=.25;a.value=.25;if(loopOn()){obj.lp=1;lp.checked=true;}box.classList.add('anim');commit();}lpInfo();setFill(a);setFill(f);setFill(sa);};}
+  if(!noAnim){
+    const paneOpen=()=>!!box.querySelector(':scope > .lfo');
+    const openPane=()=>{if(!paneOpen())anb.click();};
+    ics.appendChild(animMenu(d.l+' — animate',animItems({
+      wave:()=>anb.click(),
+      loop:()=>{openPane();const sw:any=box.querySelector('.lfo wa-switch');if(sw&&!sw.checked){sw.checked=true;sw.dispatchEvent(new Event('change'));}},
+      loopOn:!!obj.lp,
+      keys:()=>{if(kgr)kgr.onclick(null as any);},
+      link:()=>{openPane();const sg:any=box.querySelector('.lfo select');if(sg)sg.focus();},
+    })));
+  }
   if(!noAnim){box.ondragover=e=>{if([...e.dataTransfer.types].includes('text/x-latomas-sig')){e.preventDefault();box.classList.add('sigdrop');}};
     box.ondragleave=()=>box.classList.remove('sigdrop');
     box.ondrop=e=>{const k=e.dataTransfer.getData('text/x-latomas-sig');box.classList.remove('sigdrop');if(!k)return;e.preventDefault();obj.s=k;if(obj.sa==null)obj.sa=.5;box.classList.add('anim');commit();toast(`${sigLabel(k)} → ${d.l}`);};}

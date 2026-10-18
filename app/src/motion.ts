@@ -14,37 +14,37 @@ import { cyclesIn, loopLen, snapRate } from './time';
 const TAU = Math.PI * 2;
 export interface MoDef { name: string; icon: string; cont: boolean; params: any[]; main: string[]; desc: string }
 export const MO: Record<string, MoDef> = {
-  float: { name: 'Lebegés', cont: true, main: ['amp', 'period'], desc: 'Lassú, puha fel-le (vagy tetszőleges irányú) ringás.',
+  float: { name: 'Lebegés', cont: true, main: ['amp', 'period'], desc: 'Slow, gentle sway up and down, or in any direction.',
     icon: '<path d="M4 14c2.5-4 5.5-4 8 0s5.5 4 8 0"/><path d="M12 4v4M10 6l2-2 2 2"/>',
-    params: [S('amp', 'Kitérés', 0, .5, .04), S('period', 'Ütem (mp / kör)', .3, 12, 3), S('ang', 'Irány °', -180, 180, 90), S('phase', 'Fáziseltolás', 0, 1, 0)] },
-  spin: { name: 'Forgás', cont: true, main: ['speed'], desc: 'Folyamatos forgás a réteg középpontja körül.',
+    params: [S('amp', 'Distance', 0, .5, .04), S('period', 'Cycle (s)', .3, 12, 3), S('ang', 'Direction °', -180, 180, 90), S('phase', 'Phase', 0, 1, 0)] },
+  spin: { name: 'Forgás', cont: true, main: ['speed'], desc: 'Continuous rotation around the layer center.',
     icon: '<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/>',
-    params: [S('speed', 'Sebesség °/mp', -360, 360, 45)] },
-  pulse: { name: 'Lüktetés', cont: true, main: ['amp', 'period'], desc: 'Ritmikus nagyobbodás és kisebbedés.',
+    params: [S('speed', 'Speed °/s', -360, 360, 45)] },
+  pulse: { name: 'Lüktetés', cont: true, main: ['amp', 'period'], desc: 'Rhythmic growing and shrinking.',
     icon: '<circle cx="12" cy="12" r="3.5"/><circle cx="12" cy="12" r="8" stroke-dasharray="2.5 2.5"/>',
-    params: [S('amp', 'Erő', 0, 1, .08), S('period', 'Ütem (mp / kör)', .2, 8, 1.2), S('phase', 'Fáziseltolás', 0, 1, 0)] },
-  orbit: { name: 'Keringés', cont: true, main: ['radius', 'period'], desc: 'Körpályán kering a saját helye körül.',
+    params: [S('amp', 'Strength', 0, 1, .08), S('period', 'Cycle (s)', .2, 8, 1.2), S('phase', 'Phase', 0, 1, 0)] },
+  orbit: { name: 'Keringés', cont: true, main: ['radius', 'period'], desc: 'Orbits its own position on a circular path.',
     icon: '<circle cx="12" cy="12" r="7"/><circle cx="19" cy="12" r="2" fill="currentColor"/>',
-    params: [S('radius', 'Sugár', 0, .6, .08), S('period', 'Kör ideje (mp)', .3, 20, 4), SEL('dir', 'Irány', ['Óramutatóval', 'Ellentétesen'], 1), S('phase', 'Fáziseltolás', 0, 1, 0)] },
-  shake: { name: 'Remegés', cont: true, main: ['amp', 'rate'], desc: 'Ideges, véletlenszerű remegés (mindig ugyanaz a minta).',
+    params: [S('radius', 'Radius', 0, .6, .08), S('period', 'Orbit time (s)', .3, 20, 4), SEL('dir', 'Direction', ['Clockwise', 'Counterclockwise'], 1), S('phase', 'Phase', 0, 1, 0)] },
+  shake: { name: 'Remegés', cont: true, main: ['amp', 'rate'], desc: 'Nervous, random jitter (always the same pattern).',
     icon: '<path d="M3 12h3l2-5 3 10 3-8 2 5 2-2h3"/>',
-    params: [S('amp', 'Erő', 0, .1, .01), S('rate', 'Gyorsaság (Hz)', .5, 30, 12), S('rot', 'Billegés °', 0, 20, 2), S('seed', 'Minta', 0, 99, 7, 1)] },
-  spring: { name: 'Rugalmas beúszás', cont: false, main: ['dur', 'char'], desc: 'Megadott irányból rugalmasan érkezik a helyére. Az irányt a vásznon a nyíllal fogod meg.',
+    params: [S('amp', 'Strength', 0, .1, .01), S('rate', 'Rate (Hz)', .5, 30, 12), S('rot', 'Tilt °', 0, 20, 2), S('seed', 'Seed', 0, 99, 7, 1)] },
+  spring: { name: 'Rugalmas beúszás', cont: false, main: ['dur', 'char'], desc: 'Arrives elastically from a chosen direction. Grab the direction with the arrow on the canvas.',
     icon: '<path d="M3 12h9"/><path d="M12 12c1.5-3 2.5-3 3 0s1.5 3 2.5 0 1.5-3 2.5 0"/><path d="M6 9l-3 3 3 3"/>',
-    params: [S('at', 'Kezdés (mp)', 0, 60, 0), S('dur', 'Időtartam (mp)', .1, 4, .9), SEL('char', 'Karakter', ['Lágy', 'Ütés', 'Rugó'], 2), S('dist', 'Távolság', 0, 2, .45), S('ang', 'Érkezés iránya °', -180, 180, 180), S('fade', 'Beúszó áttetszőség', 0, 1, 1), S('from', 'Kezdő méret', .2, 2, 1), S('bend', 'Ív', -1.5, 1.5, 0)] },
-  path: { name: 'Útvonalon', cont: true, main: ['period', 'orient'], desc: 'Végigmegy egy Útvonal rétegen (2D Formák → Útvonal): a réteg a vonalra kerül, és körbe, oda-vissza vagy egyszer bejárja. Ha átrajzolod az útvonalat, követi.',
+    params: [S('at', 'Start (s)', 0, 60, 0), S('dur', 'Duration (s)', .1, 4, .9), SEL('char', 'Character', ['Soft', 'Hit', 'Spring'], 2), S('dist', 'Distance', 0, 2, .45), S('ang', 'Arrival direction °', -180, 180, 180), S('fade', 'Fade-in opacity', 0, 1, 1), S('from', 'Start size', .2, 2, 1), S('bend', 'Ív', -1.5, 1.5, 0)] },
+  path: { name: 'Útvonalon', cont: true, main: ['period', 'orient'], desc: 'Travels along a Path layer (2D Shapes → Path): the layer snaps onto the line and loops, ping-pongs or travels it once. If you redraw the path, it follows.',
     icon: '<path d="M4 18c3-9 7 3 10-6s4-5 6-6"/><circle cx="4" cy="18" r="1.6" fill="currentColor"/>',
-    params: [S('period', 'Bejárás ideje (mp)', .3, 30, 4), SEL('loop', 'Ismétlés', ['Körbe', 'Oda-vissza', 'Egyszer'], 0), SEL('orient', 'Irányba fordul', ['Nem', 'Igen'], 0), S('phase', 'Kezdőpont', 0, 1, 0)] },
-  phys: { name: 'Fizikai test', cont: false, main: ['grav', 'bounce', 'push'], desc: 'Merev testté teszi a réteget: a vászon széle fal, a testek egymásról lepattannak, gurulnak. A Gravitáció alapból kikapcsolt. Ugrás és export ugyanazt adja (t = 0-tól számolva).',
+    params: [S('period', 'Travel time (s)', .3, 30, 4), SEL('loop', 'Repeat', ['Loop', 'Ping-pong', 'Once'], 0), SEL('orient', 'Turns to direction', ['No', 'Yes'], 0), S('phase', 'Start point', 0, 1, 0)] },
+  phys: { name: 'Fizikai test', cont: false, main: ['grav', 'bounce', 'push'], desc: 'Turns the layer into a rigid body: the canvas edge is a wall, bodies bounce off each other and roll. Gravity is off by default. Seeking and export give the same result (computed from t = 0).',
     icon: '<circle cx="9" cy="7" r="3.5"/><rect x="11" y="13" width="8" height="7" rx="1"/><path d="M3 21h18"/><path d="M9 12v3M7.5 13.5L9 15l1.5-1.5"/>',
-    params: [SEL('shape', 'Alak', ['Automatikus', 'Kör', 'Doboz'], 0), S('grav', 'Gravitáció', 0, 3, 0), S('gang', 'Gravitáció iránya °', -180, 180, -90), S('mass', 'Tömeg', .1, 10, 1),
-      S('bounce', 'Pattanás', 0, 1, .5), S('fric', 'Súrlódás', 0, 1, .4), S('push', 'Kezdő lökés', 0, 3, 0), S('pang', 'Lökés iránya °', -180, 180, 30), S('spinv', 'Pörgetés °/mp', -720, 720, 0),
-      SEL('coll', 'Ütközés', ['Mindennel', 'Csak a csoportjával', 'Semmivel'], 0), S('group', 'Csoport', 1, 4, 1, 1), SEL('fixed', 'Test', ['Szabad', 'Rögzített'], 0),
-      SEL('walls', 'Vászon széle', ['Fal', 'Átengedi'], 0), S('at', 'Kezdés (mp)', 0, 60, 0)] },
+    params: [SEL('shape', 'Shape', ['Automatic', 'Kör', 'Box'], 0), S('grav', 'Gravity', 0, 3, 0), S('gang', 'Gravity direction °', -180, 180, -90), S('mass', 'Mass', .1, 10, 1),
+      S('bounce', 'Bounce', 0, 1, .5), S('fric', 'Friction', 0, 1, .4), S('push', 'Initial push', 0, 3, 0), S('pang', 'Push direction °', -180, 180, 30), S('spinv', 'Spin °/s', -720, 720, 0),
+      SEL('coll', 'Collision', ['With everything', 'Only with its group', 'With nothing'], 0), S('group', 'Group', 1, 4, 1, 1), SEL('fixed', 'Body', ['Free', 'Fixed'], 0),
+      SEL('walls', 'Canvas edge', ['Wall', 'Passes through'], 0), S('at', 'Start (s)', 0, 60, 0)] },
 };
 export const MO_ORDER = ['float', 'spin', 'pulse', 'orbit', 'shake', 'spring', 'path', 'phys'];
 export const moIcon = (t: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${(MO[t] || MO.float).icon}</svg>`;
-export const AMT = S('amt', 'Erősség', 0, 1, 1);
+export const AMT = S('amt', 'Strength', 0, 1, 1);
 /** A new motion item (all params as animatable values, so later slices can key them). */
 export function makeMo(t: string, o: any = {}) {
   const d = MO[t]; const p: any = { amt: mkN(o.amt ?? 1) }; for (const q of d.params) p[q.k] = mkN(o[q.k] ?? q.def);
@@ -79,11 +79,11 @@ export const spinSnap = (sp: number, Ln: number) => Ln > 0 && sp ? Math.sign(sp)
 export const RY_N = 10, RAMP = .6;
 const sm = (x: number) => x * x * (3 - 2 * x), smI = (x: number) => x * x * x - x * x * x * x / 2;
 export const RY_PRE: { name: string; tip: string; ry?: any }[] = [
-  { name: 'Folyamatos', tip: 'Egyenletesen fut, ahogy eddig.' },
-  { name: 'Megáll időnként', tip: '5 mp-enként lelassul, kb. 1,5 mp-re megáll, aztán puhán újraindul.', ry: { cyc: 5, tgt: 0, rnd: 0, pts: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1] } },
-  { name: 'Lassul–gyorsul', tip: 'Lélegző tempó: lassabb és gyorsabb szakaszok váltják egymást.', ry: { cyc: 6, tgt: 0, rnd: 0, pts: Array.from({ length: RY_N }, (_, i) => Math.round((1 + .65 * Math.sin(TAU * i / RY_N)) * 100) / 100) } },
-  { name: 'Elcsendesedik', tip: 'A kitérés elhalkul, majd visszatér; a ritmus közben fut tovább.', ry: { cyc: 8, tgt: 1, rnd: 0, pts: [1, 1, .8, .4, .1, 0, .1, .4, .8, 1] } },
-  { name: 'Véletlen szünetek', tip: 'Néha megáll, néha nem. A minta ismételhető (mindig ugyanaz).', ry: { cyc: 3.5, tgt: 0, rnd: 1, seed: 1, pts: [1, 1, 1, 1, 0, 0, 0, 1, 1, 1] } },
+  { name: 'Steady', tip: 'Runs evenly, as before.' },
+  { name: 'Pauses now and then', tip: 'Every 5 s it slows down, stops for about 1.5 s, then restarts softly.', ry: { cyc: 5, tgt: 0, rnd: 0, pts: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1] } },
+  { name: 'Slows and speeds up', tip: 'Breathing tempo: slower and faster stretches alternate.', ry: { cyc: 6, tgt: 0, rnd: 0, pts: Array.from({ length: RY_N }, (_, i) => Math.round((1 + .65 * Math.sin(TAU * i / RY_N)) * 100) / 100) } },
+  { name: 'Calms down', tip: 'The amplitude fades and then returns; the rhythm keeps running.', ry: { cyc: 8, tgt: 1, rnd: 0, pts: [1, 1, .8, .4, .1, 0, .1, .4, .8, 1] } },
+  { name: 'Random pauses', tip: 'Sometimes stops, sometimes not. The pattern is repeatable (always the same).', ry: { cyc: 3.5, tgt: 0, rnd: 1, seed: 1, pts: [1, 1, 1, 1, 0, 0, 0, 1, 1, 1] } },
 ];
 /** Apply rhythm preset k to a motion (0 removes the rhythm). */
 export function setRy(m: any, k: number) { if (!k) { delete m.ry; return; } const P = RY_PRE[k].ry; m.ry = { k, cyc: P.cyc, tgt: P.tgt, rnd: P.rnd, seed: m.ry?.seed ?? P.seed ?? 1, pts: [...P.pts] }; }
@@ -124,20 +124,20 @@ export function moTime(m: any, t: number) {
 /** Körbeér label of a continuous motion: how many cycles fit the loop (null for timed motions). */
 export function moLoopInfo(m: any): string | null {
   const d = MO[m.t]; if (!d || !d.cont) return null; const Ln = loopLen();
-  if (!Ln) return 'Loop nélkül nincs mihez igazodni (kapcsold be a Loopot)';
+  if (!Ln) return 'Without a loop there is nothing to align to (turn Loop on)';
   const v = (k: string) => m.p[k] ? m.p[k].v : moParam(m, k).def, sec = +Ln.toFixed(2);
   const n = m.t === 'spin' ? Math.max(1, Math.round(Math.abs(v('speed') * v('amt')) * Ln / 360)) : m.t === 'shake' ? cyclesIn(v('rate'), Ln) : cyclesIn(1 / Math.max(.05, v('period')), Ln);
-  let s = `${n} ${m.t === 'spin' ? 'fordulat' : 'kör'} / ${sec} mp`;
-  if (m.ry && m.ry.k && (m.ry.tgt !== 1 || m.t === 'spin')) s += ' · Ritmussal csak közelítőleg';
-  if ((m.a || 0) > 0 || m.b != null) s += ' · vágott mozgásnál csak közelítőleg';
+  let s = `${n} ${m.t === 'spin' ? 'turns' : 'loops'} / ${sec} s`;
+  if (m.ry && m.ry.k && (m.ry.tgt !== 1 || m.t === 'spin')) s += ' · Only approximate with Rhythm';
+  if ((m.a || 0) > 0 || m.b != null) s += ' · Only approximate for trimmed motion';
   return s;
 }
 
 /* ---------- XF1 Mozgás átadása (row 26): a source motion m.xf = {md, gap, ids} hands its Ritmus / Út / Teljes to target layers;
  * a target motion m.src = {l, m} is read through at evaluation time (effMo), so later edits on the source are followed and
  * nothing is copied in secret. Target i (1-based in ids) runs dl = i·gap later; m.dl is a plain time offset of any motion. */
-export const XF_MODES = ['Ritmus', 'Út', 'Teljes'];
-export const XF_GETS = ['Ritmust kap', 'Utat kap', 'Teljes mozgást kap'];
+export const XF_MODES = ['Rhythm', 'Path', 'Full'];
+export const XF_GETS = ['Gets rhythm', 'Gets a path', 'Gets the full motion'];
 const XF_TIME = ['at', 'dur', 'char', 'period', 'rate', 'speed', 'phase'];
 const XF_SPACE = ['dist', 'ang', 'bend', 'amp', 'radius', 'dir', 'rot', 'from', 'fade'];
 const XF_SCALE = ['dist', 'amp', 'radius'];

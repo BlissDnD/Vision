@@ -19,7 +19,7 @@ import { readAuto } from './autosave';
   let ok=false;
   const a=await readAuto();
   try{if(a){const m=applyProject(JSON.parse(a));ok=st.layers.length>0;
-    if(m.dropped.length||m.missingMedia.length)setTimeout(()=>toast('Az automatikus mentésben probléma: '+[...m.dropped,...m.missingMedia.map(n=>'hiányzó vektoranimáció: '+n)].join(', ')),1500);
+    if(m.dropped.length||m.missingMedia.length)setTimeout(()=>toast('Problem with the autosave: '+[...m.dropped,...m.missingMedia.map(n=>'missing vector animation: '+n)].join(', ')),1500);
   }}catch(e){console.warn('autosave',e);}
   if(!ok)st.layers=[makeRecipe(RECIPES[0])];
   R.selId=(st.layers[st.layers.length-1]||{}).id||null;

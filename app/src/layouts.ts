@@ -32,7 +32,7 @@ export const COMPS = [
   [[0, 0, 48, 100], [52, 0, 48, 100], [38, 64, 24, 31]],
   [[0, 28, 65, 72], [70, 0, 30, 55], [70, 61, 30, 39]],
 ];
-export const COMP_NAMES = ['Nagy + két kicsi', 'Lépcső', 'Teljes kép', 'Kettős', 'Oszlop'];
+export const COMP_NAMES = ['Large + two small', 'Staircase', 'Full image', 'Double', 'Column'];
 export const ASPECTS: [string, string][] = [['1080x1080', '1:1'], ['1080x1350', '4:5'], ['1080x1920', '9:16'], ['1920x1080', '16:9']];
 const aspectOf = () => { const [w, h] = String(st.size || '1920x1080').split('x').map(Number); return w > 0 && h > 0 ? w / h : 16 / 9; };
 
@@ -51,12 +51,12 @@ export function relayout(g: any) {
   if (sub) { sub.n.x.v = 0; sub.n.y.v = band - .055; sub.n.s.v = Math.min(.026, BW * .9 / Math.max(10, String(sub.text && sub.text.str || '').length)); }
 }
 export function makeMagazine(comp = 0) {
-  const bg = makeLayer('gradient', { name: 'Papír', pal: 17, p: { span: .35, speed: 0, mode: 1 } });
-  const imgs = [0, 1, 2].map(i => { const L: any = makeLayer('image', { name: `Kép ${i + 1}`, asset: placeholderAsset(i) }); L.role = 'img'; L.p.round.v = .006;
+  const bg = makeLayer('gradient', { name: 'Paper', pal: 17, p: { span: .35, speed: 0, mode: 1 } });
+  const imgs = [0, 1, 2].map(i => { const L: any = makeLayer('image', { name: `Image ${i + 1}`, asset: placeholderAsset(i) }); L.role = 'img'; L.p.round.v = .006;
     L.tm = { in: [2, 5, 4][i], inAt: .15 + i * .22, inDur: .9, out: 0, outAt: 9, outDur: .8, ease: 0 }; return L; });
-  const title: any = makeLayer('mtext', { name: 'Cím', text: { str: 'NYÁRI KOLLEKCIÓ', font: 'Bricolage Grotesque', weight: '800', track: -.02, align: 'center' }, p: { anim: 2, unit: 1, start: .8, dur: .7, stagger: .08, ease: 5, fill: 0, color1: '#141216' } });
+  const title: any = makeLayer('mtext', { name: 'Title', text: { str: 'SUMMER COLLECTION', font: 'Bricolage Grotesque', weight: '800', track: -.02, align: 'center' }, p: { anim: 2, unit: 1, start: .8, dur: .7, stagger: .08, ease: 5, fill: 0, color1: '#141216' } });
   title.role = 'title';
-  const sub: any = makeLayer('mtext', { name: 'Alcím', text: { str: 'VOL. 01 · SZERKESZTŐI VÁLOGATÁS', font: 'Inter', weight: '500', track: .05, align: 'center' }, p: { anim: 1, start: 1.3, dur: .6, fill: 0, color1: '#3a3438' } });
+  const sub: any = makeLayer('mtext', { name: 'Subtitle', text: { str: 'VOL. 01 · EDITOR’S SELECTION', font: 'Inter', weight: '500', track: .05, align: 'center' }, p: { anim: 1, start: 1.3, dur: .6, fill: 0, color1: '#3a3438' } });
   sub.role = 'sub';
   const g: any = makeGroup('Magazinrács', [bg, ...imgs, title, sub], { open: true }); g.recipe = 'Magazinrács'; g.layout = { k: 'wide', comp };
   relayout(g); return g;
@@ -71,22 +71,22 @@ export function layoutControls(g: any, h: any) {
   const seg = (labels: string[], cur: number, on: (i: number) => void) => h('div', { class: 'seg', role: 'group' }, ...labels.map((l, i) => h('button', { 'aria-pressed': String(i === cur), onclick: () => on(i) }, l)));
   const done = () => { relayout(g); commit(); R.renderInsp && R.renderInsp(); };
   const title = g.children.find((k: any) => k.role === 'title');
-  const ti = h('input', { class: 'txt', value: title ? title.text.str : '', 'aria-label': 'Cím' }); ti.onchange = () => { if (title) title.text.str = ti.value; done(); };
+  const ti = h('input', { class: 'txt', value: title ? title.text.str : '', 'aria-label': 'Title' }); ti.onchange = () => { if (title) title.text.str = ti.value; done(); };
   const curA = ASPECTS.findIndex(a => a[0] === st.size);
   return h('div', { class: 'fxb' },
-    h('div', { class: 'row2' }, h('span', null, 'Kompozíció'), seg(['1', '2', '3', '4', '5'], g.layout.comp, i => { g.layout.comp = i; done(); })),
+    h('div', { class: 'row2' }, h('span', null, 'Composition'), seg(['1', '2', '3', '4', '5'], g.layout.comp, i => { g.layout.comp = i; done(); })),
     h('p', { class: 'small' }, COMP_NAMES[g.layout.comp] || ''),
-    h('div', { class: 'row2' }, h('span', null, 'Képarány'), seg(ASPECTS.map(a => a[1]), curA, i => { st.size = ASPECTS[i][0]; resizeMain(); relayoutAll(); commit(); R.renderInsp && R.renderInsp(); })),
-    h('div', { class: 'row2' }, h('span', null, 'Cím'), ti),
-    h('p', { class: 'small' }, 'Képcsere: jelöld ki a képet a rétegek között, és tölts be sajátot. A cím mérete a hosszához igazodik.'));
+    h('div', { class: 'row2' }, h('span', null, 'Aspect ratio'), seg(ASPECTS.map(a => a[1]), curA, i => { st.size = ASPECTS[i][0]; resizeMain(); relayoutAll(); commit(); R.renderInsp && R.renderInsp(); })),
+    h('div', { class: 'row2' }, h('span', null, 'Title'), ti),
+    h('p', { class: 'small' }, 'Swapping images: select the image among the layers and load your own. The title size adapts to its length.'));
 }
 
 /* ---------- Szövött galéria (Unwoven port) ---------- */
-EFFECTS.unwoven = { kind: 'gen', name: 'Szövött galéria', noPal: true, desc: 'Képkártyák sora, amely a vászon szélén szálakra bomlik (Unwoven, Clément Grellier, MIT). Visszatekerhető; a képek cserélhetők.',
+EFFECTS.unwoven = { kind: 'gen', name: 'Szövött galéria', noPal: true, desc: 'A row of image cards that unravels into threads at the canvas edge (Unwoven, Clément Grellier, MIT). Scrubbable; the images can be replaced.',
   main: ['speed', 'strength', 'zone', 'cardh'],
-  params: [S('speed', 'Sodródás (egység/mp)', -1, 1, .12), S('strength', 'Bomlás', 0, 1, 1), S('zone', 'Bomlási sáv', .05, .6, .28), S('wobble', 'Lebegés', 0, 2, 1),
-    S('cardh', 'Kártya magasság', .2, 1, .62), S('cardw', 'Kártya szélesség (× magasság)', .4, 1.6, .78), S('gap', 'Térköz', 0, .2, .035), S('radius', 'Sarok', 0, .08, .018),
-    S('threads', 'Szálak', 8, 96, 48), S('seed', 'Véletlen', 0, 99, 7), S('offset', 'Eltolás', -4, 4, 0)],
+  params: [S('speed', 'Drift (units/s)', -1, 1, .12), S('strength', 'Unraveling', 0, 1, 1), S('zone', 'Unraveling band', .05, .6, .28), S('wobble', 'Lebegés', 0, 2, 1),
+    S('cardh', 'Card height', .2, 1, .62), S('cardw', 'Card width (× height)', .4, 1.6, .78), S('gap', 'Spacing', 0, .2, .035), S('radius', 'Corner', 0, .08, .018),
+    S('threads', 'Threads', 8, 96, 48), S('seed', 'Random', 0, 99, 7), S('offset', 'Offset', -4, 4, 0)],
   code: 'vec4 fx(){return vec4(0.0);}' } as any;
 const VS = `#version 300 es
 precision highp float;

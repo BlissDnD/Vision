@@ -10,9 +10,9 @@ import { openPop } from './popovers';
 import { toast } from './modals';
 
 export const AUD:any={buf:null,name:'',rate:100,sig:{},stems:[],vol:.9,mute:false,srcs:[],ctx:null,gain:null,t0:0,c0:0};export const TAPS=[];
-export const SIG_BASE=[['a:level','Hangerő'],['a:kick','Kick'],['a:snare','Pergő'],['a:hihat','Hihat'],['a:bass','Basszus'],['a:mid','Közép'],['a:high','Magas']];
-export const SIG_BEAT=[['b:beat','Ütem'],['b:half','Fél ütem'],['b:bar','Ütem /4'],['b:phase','Ütemfázis']];
-export function sigList(){return [...SIG_BASE,...AUD.stems.flatMap((s,i)=>[[`s${i}:level`,`${s.name} · szint`],[`s${i}:hit`,`${s.name} · ütés`]]),...SIG_BEAT];}
+export const SIG_BASE=[['a:level','Level'],['a:kick','Kick'],['a:snare','Snare'],['a:hihat','Hihat'],['a:bass','Bass'],['a:mid','Mid'],['a:high','High']];
+export const SIG_BEAT=[['b:beat','Ütem'],['b:half','Half beat'],['b:bar','Ütem /4'],['b:phase','Beat phase']];
+export function sigList(){return [...SIG_BASE,...AUD.stems.flatMap((s,i)=>[[`s${i}:level`,`${s.name} · szint`],[`s${i}:hit`,`${s.name} · hit`]]),...SIG_BEAT];}
 export function sigLabel(k){const x=sigList().find(s=>s[0]===k);return x?x[1]:k;}
 export function arrAt(a,t){if(!a||!a.length)return 0;const x=t*AUD.rate;if(x<=0)return a[0];const i=Math.floor(x);if(i>=a.length-1)return i>=a.length?0:a[a.length-1];const f=x-i;return a[i]*(1-f)+a[i+1]*f;}
 export function sigVal(k,t){
@@ -44,7 +44,7 @@ export function audioRestart(){audioStop();if(!AUD.ctx||!R.playing||R.snapping)r
 const readURL=(f:Blob)=>new Promise<string>((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result));r.onerror=()=>no(r.error);r.readAsDataURL(f);});
 /** Decode + analyse one audio file. fresh = a new import (sets length/BPM, commits); otherwise a project reopen (state already holds them). */
 async function addAudio(ab:ArrayBuffer,name:string,url:string,stem:boolean,fresh:boolean){
-  ensureAC();const buf=await AUD.ctx.decodeAudioData(ab);if(fresh)toast('Hang elemzése…');
+  ensureAC();const buf=await AUD.ctx.decodeAudioData(ab);if(fresh)toast('Analyzing audio…');
   if(stem){const lv=await bandEnv(buf,[]);AUD.stems.push({name:name.replace(/\.[^.]+$/,'').slice(0,18),file:name,url,buf,sig:{level:smoothEnv(lv),hit:pulseEnv(lv,.85)}});
     if(fresh&&!AUD.buf){st.dur=Math.round(Math.max(...AUD.stems.map(s=>s.buf.duration))*10)/10;}}
   else{const F={level:[],kick:[['lowpass',110]],bass:[['lowpass',250],['highpass',50]],snare:[['bandpass',1800,.7]],hihat:[['highpass',7500]],mid:[['bandpass',1000,.6]],high:[['highpass',4000]]};
@@ -53,8 +53,8 @@ async function addAudio(ab:ArrayBuffer,name:string,url:string,stem:boolean,fresh
     if(fresh){const b=estimateBpm(AUD.sig.kick);if(b){st.bpm=b.bpm;st.bpmOff=b.off;}st.dur=Math.round(buf.duration*10)/10;st.loop=true;}}}
 export async function loadAudioFile(f,stem){
   try{const url=await readURL(f);await addAudio(await f.arrayBuffer(),f.name,url,stem,true);
-    R.time=0;resetFeedback();audioRestart();commit();renderTimeline();toast(stem?`Stem betöltve: ${f.name}`:`Hang betöltve · ${st.bpm} BPM`);
-  }catch(e){toast('A hangfájlt nem sikerült megnyitni: '+(e&&e.message||e));}}
+    R.time=0;resetFeedback();audioRestart();commit();renderTimeline();toast(stem?`Stem loaded: ${f.name}`:`Audio loaded · ${st.bpm} BPM`);
+  }catch(e){toast('Could not open the audio file: '+(e&&e.message||e));}}
 export function audioClear(){audioStop();AUD.buf=null;AUD.name='';AUD.url='';AUD.sig={};AUD.stems=[];}
 /** STAB: the audio travels in the project file as the original file (data URL, encoded once at import, not per save). */
 R.audioExport=()=>{const o:any={};if(AUD.buf&&AUD.url)o.main={name:AUD.name,url:AUD.url};const st2=AUD.stems.filter(s=>s.url).map(s=>({name:s.file||s.name,url:s.url}));if(st2.length)o.stems=st2;return o.main||o.stems?o:null;};
@@ -62,26 +62,26 @@ R.audioExport=()=>{const o:any={};if(AUD.buf&&AUD.url)o.main={name:AUD.name,url:
 R.audioApply=(a:any)=>{audioClear();R.audioReady=null;if(!a)return;const tok=R.audioTok=(R.audioTok||0)+1;
   const one=async(x:any,stem:boolean)=>{if(!x||typeof x.url!=='string'||!x.url.startsWith('data:'))return;const ab=await (await fetch(x.url)).arrayBuffer();if(tok!==R.audioTok)return;await addAudio(ab,String(x.name||'hang'),x.url,stem,false);};
   R.audioReady=(async()=>{try{await one(a.main,false);for(const s of Array.isArray(a.stems)?a.stems:[])await one(s,true);if(tok!==R.audioTok)return;audioRestart();renderTimeline();markDirty();}
-    catch(e){toast('A projekt hangját nem sikerült visszaállítani: '+(e&&e.message||e));}})();};
+    catch(e){toast('Could not restore the project’s audio: '+(e&&e.message||e));}})();};
 export async function exportAudioBuffer(){if(AUD.buf)return AUD.buf;if(!AUD.stems.length)return null;const sr=AUD.stems[0].buf.sampleRate;const len=Math.max(...AUD.stems.map(s=>s.buf.length));
   const oc=new OfflineAudioContext(2,len,sr);for(const s of AUD.stems){const b=oc.createBufferSource();b.buffer=s.buf;b.connect(oc.destination);b.start();}return oc.startRendering();}
 export function openAudio(anchor){
   const fileIn=h('input',{type:'file',accept:'audio/*',hidden:true});fileIn.onchange=()=>{const f=fileIn.files[0];if(f)loadAudioFile(f,false).then(()=>openAudio(anchor));};
   const stemIn=h('input',{type:'file',accept:'audio/*',multiple:true,hidden:true});stemIn.onchange=async()=>{for(const f of stemIn.files)await loadAudioFile(f,true);openAudio(anchor);};
   const has=!!(AUD.buf||AUD.stems.length);
-  const info=h('p',{class:'small'},has?(AUD.buf?`${AUD.name} · ${fmtT(AUD.buf.duration)} · ${st.bpm} BPM`:`${AUD.stems.length} stem · ${st.bpm} BPM`):'Tölts be egy MP3-at vagy WAV-ot. A program sávokra bontja (kick, pergő, hihat, basszus…), felismeri a tempót, és az idővonalat a szám hosszához igazítja. A legpontosabb, ha az Abletonből külön sávokat (stem-eket) töltesz be.');
-  const bpmIn=h('input',{class:'val',value:st.bpm,'aria-label':'Tempó (BPM)'});bpmIn.onchange=()=>{const v=parseFloat(String(bpmIn.value).replace(',','.'));if(isFinite(v)&&v>20&&v<400){st.bpm=v;commit();renderTimeline();}bpmIn.value=st.bpm;};
+  const info=h('p',{class:'small'},has?(AUD.buf?`${AUD.name} · ${fmtT(AUD.buf.duration)} · ${st.bpm} BPM`:`${AUD.stems.length} stem · ${st.bpm} BPM`):'Load an MP3 or WAV. The app splits it into bands (kick, snare, hihat, bass…), detects the tempo and fits the timeline to the track length. It is most accurate if you load separate stems from Ableton.');
+  const bpmIn=h('input',{class:'val',value:st.bpm,'aria-label':'Tempo (BPM)'});bpmIn.onchange=()=>{const v=parseFloat(String(bpmIn.value).replace(',','.'));if(isFinite(v)&&v>20&&v<400){st.bpm=v;commit();renderTimeline();}bpmIn.value=st.bpm;};
   const tap=h('button',{class:'btn',onclick:()=>{const now=performance.now();if(TAPS.length&&now-TAPS.at(-1)>2000)TAPS.length=0;TAPS.push(now);while(TAPS.length>6)TAPS.shift();
-    if(TAPS.length>=3){const iv=(TAPS.at(-1)-TAPS[0])/(TAPS.length-1);st.bpm=Math.round(60000/iv*10)/10;st.bpmOff=R.time%(60/st.bpm);bpmIn.value=st.bpm;commit();renderTimeline();}}},'Koppintás');
+    if(TAPS.length>=3){const iv=(TAPS.at(-1)-TAPS[0])/(TAPS.length-1);st.bpm=Math.round(60000/iv*10)/10;st.bpmOff=R.time%(60/st.bpm);bpmIn.value=st.bpm;commit();renderTimeline();}}},'Tap');
   const vol={get v(){return AUD.vol;},set v(x){AUD.vol=x;if(AUD.gain)AUD.gain.gain.value=AUD.mute?0:x;}};
-  const chips=h('div',{class:'sigs'},...sigList().map(([k,l])=>{const c=h('button',{class:'sigchip',draggable:'true','data-sig':k,title:'Húzd rá egy csúszkára'},l,h('i'));
+  const chips=h('div',{class:'sigs'},...sigList().map(([k,l])=>{const c=h('button',{class:'sigchip',draggable:'true','data-sig':k,title:'Drag onto a slider'},l,h('i'));
     c.ondragstart=e=>{e.dataTransfer.setData('text/x-latomas-sig',k);e.dataTransfer.effectAllowed='link';};return c;}));
-  openPop(anchor,'wide',h('div',{class:'pl'},'Hang és jelek'),h('div',{class:'pc'},info,
-    h('div',{class:'btnrow'},h('button',{class:'btn accent',onclick:()=>fileIn.click()},AUD.buf?'Másik hangfájl…':'Hangfájl…'),h('button',{class:'btn',onclick:()=>stemIn.click()},'Stem-ek…'),
-      has?h('button',{class:'btn',onclick:()=>{audioClear();renderTimeline();openAudio(anchor);markDirty();commit();}},'Eltávolítás'):null,fileIn,stemIn),
-    has?ctlSlider(vol,{k:'vol',l:'Hangerő',min:0,max:1},{noAnim:true}):null,
-    has?ctlSwitch('Némítás',AUD.mute,v=>{AUD.mute=v;if(AUD.gain)AUD.gain.gain.value=v?0:AUD.vol;}):null,
-    h('div',{class:'row2'},h('span',null,'Tempó (BPM)'),h('div',{class:'btnrow'},bpmIn,tap)),
-    h('div',{class:'pl',style:'padding:6px 0 0'},'Jelek · húzd rá bármelyik csúszkára'),chips,
-    h('p',{class:'small'},'Az ütem-jelek hang nélkül is működnek a megadott tempóval. A csúszkák hullám-ikonjánál is kiválaszthatod a jelet.')));}
+  openPop(anchor,'wide',h('div',{class:'pl'},'Audio and signals'),h('div',{class:'pc'},info,
+    h('div',{class:'btnrow'},h('button',{class:'btn accent',onclick:()=>fileIn.click()},AUD.buf?'Another audio file…':'Audio file…'),h('button',{class:'btn',onclick:()=>stemIn.click()},'Stem-ek…'),
+      has?h('button',{class:'btn',onclick:()=>{audioClear();renderTimeline();openAudio(anchor);markDirty();commit();}},'Remove'):null,fileIn,stemIn),
+    has?ctlSlider(vol,{k:'vol',l:'Level',min:0,max:1},{noAnim:true}):null,
+    has?ctlSwitch('Mute',AUD.mute,v=>{AUD.mute=v;if(AUD.gain)AUD.gain.gain.value=v?0:AUD.vol;}):null,
+    h('div',{class:'row2'},h('span',null,'Tempo (BPM)'),h('div',{class:'btnrow'},bpmIn,tap)),
+    h('div',{class:'pl',style:'padding:6px 0 0'},'Signals · drag onto any slider'),chips,
+    h('p',{class:'small'},'Beat signals also work without audio at the given tempo. You can also pick a signal from the wave icon of any slider.')));}
 $('#audBtn').onclick=e=>openAudio(e.currentTarget);

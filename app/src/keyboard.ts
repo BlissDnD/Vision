@@ -27,9 +27,9 @@ document.addEventListener('keydown',e=>{
   if(mod&&k==='y'){e.preventDefault();redo();return;}
   if(mod&&k==='d'){e.preventDefault();dupSel();return;}
   if(mod&&k==='g'){e.preventDefault();groupSel();return;}
-  if(mod&&k==='c'){const L=sel();if((R.tlxSels.length||L)&&copyKeys(L,R.time)){e.preventDefault();toast(`${R.keyClip.length} kulcskocka másolva`);}return;}
+  if(mod&&k==='c'){const L=sel();if((R.tlxSels.length||L)&&copyKeys(L,R.time)){e.preventDefault();toast(`${R.keyClip.length} keyframes copied`);}return;}
   if(mod&&k==='v'){const L=sel();if(L&&R.keyClip){e.preventDefault();const n=pasteKeys(L,R.time);if(n){commit();renderInsp();toast(`${n} kulcskocka beillesztve @ ${fmtT(R.time)}`);}}return;}
-  if(mod&&k==='a'&&R.tlxOpen){e.preventDefault();R.tlxSels=[];const L=sel();for(const r of trackRows())if(!L||r.L.id===L.id)for(const t of layerKeyTimes(r.L).keys())R.tlxSels.push({id:r.L.id,t});renderTracks();toast(`${R.tlxSels.length} kulcskocka-időpont kijelölve`);return;}
+  if(mod&&k==='a'&&R.tlxOpen){e.preventDefault();R.tlxSels=[];const L=sel();for(const r of trackRows())if(!L||r.L.id===L.id)for(const t of layerKeyTimes(r.L).keys())R.tlxSels.push({id:r.L.id,t});renderTracks();toast(`${R.tlxSels.length} keyframe times selected`);return;}
   if(mod)return;
   if(e.key==='?'){setKeyHelp(!keyHelpOn());return;}
   if(e.key===' '){e.preventDefault();setPlay(!R.playing);}
@@ -39,12 +39,12 @@ document.addEventListener('keydown',e=>{
   else if(k==='a'){import('./animate').then(m=>m.setAnimMode(!R.animMode));}
   else if(k==='t'){if(R.tapSetArm)R.tapSetArm(!R.tapArm);}
   else if(k==='j'&&R.tapArm&&R.tapNow){R.tapNow();}
-  else if(k==='j'){const c=addCue(R.time);if(c){commit();renderTracks();toast(`Jelzés @ ${fmtT(R.time)} · a kulcskockák ide tapadnak`);}}
+  else if(k==='j'){const c=addCue(R.time);if(c){commit();renderTracks();toast(`Cue @ ${fmtT(R.time)} · keyframes snap here`);}}
   else if(k==='h'){const L=sel();if(L){L.vis=!L.vis;commit();renderLayers();}}
-  else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();if(R.tlxSels.length){const n=deleteSelKeys();commit();renderInsp();toast(`${n} kulcskocka törölve`);}else delSel();}
+  else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();if(R.tlxSels.length){const n=deleteSelKeys();commit();renderInsp();toast(`${n} keyframes deleted`);}else delSel();}
   else if(e.key===']')moveSel(1);else if(e.key==='[')moveSel(-1);
   else if(e.key==='Home'){R.time=0;resetFeedback();audioRestart();}
-  else if(k==='k'){const L=sel();if(L){const on=keyIdx(L.n.x,R.time)>=0;for(const q of ['x','y','s','r']){const i=keyIdx(L.n[q],R.time);if(on){if(i>=0)delKey(L.n[q],i);}else setKey(L.n[q],R.time,curV(L.n[q]));}commit();renderInsp();toast(on?'Elhelyezés-kulcskocka törölve':`Elhelyezés-kulcskocka @ ${fmtT(R.time)}`);}}
+  else if(k==='k'){const L=sel();if(L){const on=keyIdx(L.n.x,R.time)>=0;for(const q of ['x','y','s','r']){const i=keyIdx(L.n[q],R.time);if(on){if(i>=0)delKey(L.n[q],i);}else setKey(L.n[q],R.time,curV(L.n[q]));}commit();renderInsp();toast(on?'Placement keyframe deleted':`Placement keyframe @ ${fmtT(R.time)}`);}}
   else if(e.key===','||e.key==='.'){const L=sel();if(L){const ts=[];for(const q of paramList(L))if(hasK(q.o))q.o.k.forEach(x=>ts.push(x.t));ts.sort((a,b)=>a-b);
     const nx=e.key==='.'?ts.find(x=>x>R.time+KEY_EPS):[...ts].reverse().find(x=>x<R.time-KEY_EPS);if(nx!=null)seekTo(nx);}}
   markDirty();

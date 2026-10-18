@@ -8,18 +8,18 @@ import { commit, renderAll } from './history';
 import { closeModal, openModal, toast } from './modals';
 
 export const POLY_HAVEN_TEXTURES = [
-  ['marble_01', 'Márvány', 'kő fehér elegáns'],
-  ['dark_wood', 'Sötét fa', 'fa barna'],
-  ['concrete_floor_01', 'Beton', 'szürke építészet'],
-  ['rusty_metal', 'Rozsdás fém', 'fém ipari'],
-  ['denim_fabric', 'Farmeranyag', 'textil kék'],
-  ['aerial_sand', 'Homok felülről', 'táj sivatag'],
-  ['aerial_beach_01', 'Tengerpart felülről', 'táj víz'],
-  ['red_bricks_04', 'Vörös tégla', 'fal építészet'],
-  ['mossy_rock', 'Mohás szikla', 'természet kő'],
-  ['oak_wood_planks', 'Tölgyfa deszkák', 'fa barna'],
-  ['blue_metal_plate', 'Kék fémlemez', 'fém ipari'],
-  ['fabric_leather_01', 'Bőr', 'textil barna']
+  ['marble_01', 'Marble', 'stone white elegant marble'],
+  ['dark_wood', 'Dark wood', 'wood brown fa'],
+  ['concrete_floor_01', 'Concrete', 'gray architecture concrete beton'],
+  ['rusty_metal', 'Rusty metal', 'metal industrial'],
+  ['denim_fabric', 'Denim', 'textile blue denim'],
+  ['aerial_sand', 'Sand from above', 'landscape desert sand'],
+  ['aerial_beach_01', 'Beach from above', 'landscape water beach'],
+  ['red_bricks_04', 'Red brick', 'wall architecture brick'],
+  ['mossy_rock', 'Mossy rock', 'nature stone rock'],
+  ['oak_wood_planks', 'Oak wood planks', 'wood brown fa'],
+  ['blue_metal_plate', 'Blue sheet metal', 'metal industrial'],
+  ['fabric_leather_01', 'Leather', 'textile brown leather']
 ] as const;
 
 export const polyHavenImageURL = (id: string) =>
@@ -35,18 +35,18 @@ async function downloadImage(url: string): Promise<Blob> {
   try {
     const response = await fetch(url, { signal: controller.signal, redirect: 'error' });
     if (!response.ok || !response.headers.get('content-type')?.toLowerCase().startsWith('image/jpeg'))
-      throw new Error('A kép nem érhető el a Poly Havenről.');
+      throw new Error('The image is not available from Poly Haven.');
     if (Number(response.headers.get('content-length') || 0) > MAX_DOWNLOAD)
-      throw new Error('A kép túl nagy az importhoz.');
+      throw new Error('The image is too large to import.');
     const blob = await response.blob();
-    if (blob.size > MAX_DOWNLOAD) throw new Error('A kép túl nagy az importhoz.');
+    if (blob.size > MAX_DOWNLOAD) throw new Error('The image is too large to import.');
     return blob;
   } finally { clearTimeout(timeout); }
 }
 
 export async function addPolyHavenTexture(id: string) {
   const entry = POLY_HAVEN_TEXTURES.find(e => e[0] === id);
-  if (!entry) throw new Error('Ismeretlen Poly Haven elem.');
+  if (!entry) throw new Error('Unknown Poly Haven item.');
   const bitmap = await createImageBitmap(await downloadImage(polyHavenImageURL(id)));
   try {
     const canvas = document.createElement('canvas');
@@ -60,15 +60,15 @@ export async function addPolyHavenTexture(id: string) {
     layer.source = { provider: 'Poly Haven', id, url: sourceURL(id), license: 'CC0' };
     if (!same) { assets[assetId] = encoded; imgTex.set(assetId, { tex: texFromCanvas(canvas), w: canvas.width, h: canvas.height }); }
     insertItem(layer, null); commit(); renderAll(); closeModal();
-    toast(`${entry[1]} hozzáadva · Poly Haven CC0`);
+    toast(`${entry[1]} added · Poly Haven CC0`);
     return layer;
   } finally { bitmap.close(); }
 }
 
 export function openPolyHaven() {
-  const search = h('input', { class: 'txt', type: 'search', placeholder: 'Keresés: márvány, fa, homok…', 'aria-label': 'Poly Haven textúrák keresése' }) as HTMLInputElement;
+  const search = h('input', { class: 'txt', type: 'search', placeholder: 'Search: marble, wood, sand…', 'aria-label': 'Search Poly Haven textures' }) as HTMLInputElement;
   const results = h('div', { style: 'display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;max-height:48vh;overflow:auto' });
-  const status = h('p', { class: 'small', role: 'status' }, 'Válassz egy textúrát.');
+  const status = h('p', { class: 'small', role: 'status' }, 'Choose a texture.');
   let busy = false;
   const draw = () => {
     const query = fold(search.value.trim());
@@ -80,25 +80,25 @@ export function openPolyHaven() {
       const card = h('button', { class: 'btn', style: 'display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:5px',
         onclick: async () => {
           if (busy) return;
-          busy = true; status.textContent = `${name} letöltése…`;
+          busy = true; status.textContent = `Downloading ${name}…`;
           try { await addPolyHavenTexture(id); }
-          catch (error) { status.textContent = `Nem sikerült: ${error instanceof Error ? error.message : String(error)}`; }
+          catch (error) { status.textContent = `Failed: ${error instanceof Error ? error.message : String(error)}`; }
           finally { busy = false; }
         } },
         h('img', { src: thumbnailURL(id), alt: '', loading: 'lazy', style: 'width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px' }),
         h('span', null, name));
       results.appendChild(card);
     }
-    if (!count) results.appendChild(h('p', { class: 'small' }, 'Nincs találat ebben a válogatásban.'));
+    if (!count) results.appendChild(h('p', { class: 'small' }, 'No results in this selection.'));
   };
   search.oninput = draw;
   openModal(h('h2', null, 'Poly Haven · textúrák'),
-    h('p', null, 'Kurált CC0-válogatás. A kiválasztott kép saját rétegként, a projektbe mentve kerül a vászonra.'),
-    h('p', { class: 'small' }, 'Ez most 2D képréteg; PBR-anyag és 3D skybox még nincs bekötve.'),
+    h('p', null, 'Curated CC0 selection. The chosen image is placed on the canvas as its own layer, saved in the project.'),
+    h('p', { class: 'small' }, 'This is a 2D image layer for now; PBR material and 3D skybox are not wired up yet.'),
     search, results, status,
     h('div', { class: 'bar2' },
       h('a', { class: 'btn', href: 'https://polyhaven.com/textures', target: '_blank', rel: 'noopener noreferrer' }, 'Poly Haven ↗'),
-      h('button', { class: 'btn', onclick: closeModal }, 'Bezárás')));
+      h('button', { class: 'btn', onclick: closeModal }, 'Close')));
   draw(); search.focus();
 }
 R.openPolyHaven = openPolyHaven;

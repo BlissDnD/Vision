@@ -17,7 +17,7 @@ import { toAsp, wrap } from './stage';
 
 export function setAnimMode(on: boolean) {
   R.animMode = on; $('#animBtn').setAttribute('aria-pressed', String(on)); wrap.classList.toggle('animon', on);
-  if (on) toast('Animálás: amit most állítasz (vásznon húzás, csúszka, szám), kulcskocka lesz az aktuális időponton. Lépj máshová az idővonalon, és állítsd tovább. Kikapcsolás: A.');
+  if (on) toast('Animate: whatever you adjust now (canvas drag, slider, number) becomes a keyframe at the current time. Move elsewhere on the timeline and keep adjusting. Turn off: A.');
 }
 $('#animBtn').onclick = () => setAnimMode(!R.animMode);
 
@@ -59,7 +59,7 @@ export function updPath(t: number) {
     while (dots.childNodes.length < ts.length) { const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', '5.5'); c.setAttribute('class', 'mp-dot'); c.addEventListener('pointerdown', dotDown); dots.appendChild(c); }
     ts.forEach((kt, i) => { const q = pathPos(L, kt); const [px, py] = P(q.x, q.y); const c = dots.childNodes[i] as SVGCircleElement;
       c.setAttribute('cx', px.toFixed(1)); c.setAttribute('cy', py.toFixed(1)); c.dataset.t = String(kt);
-      const tt = document.createElementNS(NS, 'title'); tt.textContent = `Pozíció-kulcs @ ${kt.toFixed(2)} mp · húzd az áthelyezéshez`; c.replaceChildren(tt); });
+      const tt = document.createElementNS(NS, 'title'); tt.textContent = `Position key @ ${kt.toFixed(2)} s · drag to move it`; c.replaceChildren(tt); });
   }
   dots.childNodes.forEach((c: any) => c.classList.toggle('on', Math.abs(+c.dataset.t - t) < KEY_EPS));
 }

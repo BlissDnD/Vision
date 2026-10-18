@@ -1,4 +1,4 @@
-/** KO1 Koreográfia (row 27, first slice): one scene-motion block st.ko = {prof, at, amt (Mérték), sp (Ritmus = spacing), acc
+/** KO1 Koreográfia (row 27, first slice): one scene-motion block st.ko = {prof, at, amt (Amount), sp (Ritmus = spacing), acc
  *  (Hangsúly), ids (participants in play order), roles {id: role}, w / d {role: weight / delay}}. Each participant gets ordinary
  *  motions (Rugalmas beúszás, Lebegés) built from its role at evaluation time (R.koMos → motion.moEval), so seek = export = reopen.
  *  The ✦ Koreográfia card suggests roles and previews (R.koPv) before Elfogadás (one undo step). */
@@ -15,9 +15,9 @@ import { markDirty } from './loop';
 import { toast } from './modals';
 import { setPlay } from './transport';
 
-export const ROLES: [string, string][] = [['bg', 'Háttér'], ['title', 'Főcím'], ['sub', 'Kísérő szöveg'], ['main', 'Fő forma'], ['deco', 'Díszítő forma'], ['img', 'Kép/Videó'], ['part', 'Részecske']];
+export const ROLES: [string, string][] = [['bg', 'Background'], ['title', 'Headline'], ['sub', 'Supporting text'], ['main', 'Main shape'], ['deco', 'Decorative shape'], ['img', 'Image/Video'], ['part', 'Particles']];
 const RK = ROLES.map(r => r[0]), roleName = (r: string) => (ROLES.find(x => x[0] === r) || ['', r])[1];
-export const PROFILES: Record<string, string> = { ed: 'Editorial érkezés' };
+export const PROFILES: Record<string, string> = { ed: 'Editorial arrival' };
 const FULL3D = ['terrain3d', 'gyroid', 'sdfscene', 'surface3d'], PART = ['particles', 'bokeh', 'waves'];
 
 /** Suggested role of every visible top-level layer (type, size and order; never written until Elfogadás). */
@@ -83,11 +83,11 @@ export function koEnd(K: any) { let e = K.at; for (const id of K.ids) for (const
 const wrapEl = $('#wrap') as HTMLElement; let card: HTMLElement | null = null;
 const prox = (o: any, k: string) => ({ get v() { return o[k]; }, set v(x) { o[k] = x; markDirty(); } });
 export function koOpen() {
-  koClose(); if (!st.layers.length) { toast('Előbb tegyél elemeket a vászonra.'); return; }
+  koClose(); if (!st.layers.length) { toast('Add some elements to the canvas first.'); return; }
   const D = st.ko ? JSON.parse(JSON.stringify(st.ko)) : newKo();
   // layers added since: suggested role, not participating until ticked
   const sug = suggestRoles(); for (const id in sug) if (!D.roles[id]) D.roles[id] = sug[id];
-  R.koPv = D; card = h('div', { class: 'xfcard kocard', role: 'dialog', 'aria-label': 'Koreográfia' }); wrapEl.appendChild(card); drawKo();
+  R.koPv = D; card = h('div', { class: 'xfcard kocard', role: 'dialog', 'aria-label': 'Choreography' }); wrapEl.appendChild(card); drawKo();
   R.time = D.at; if (!R.noAutoPlay) setPlay(true); markDirty();
 }
 R.koOpen = koOpen;
@@ -96,37 +96,37 @@ function drawKo() {
   const D = R.koPv; if (!card || !D) return; card.innerHTML = '';
   const reorder = () => { D.ids = ordered(D.ids, D.roles); };
   const rows = st.layers.filter((L: any) => D.roles[L.id]).map((L: any) => {
-    const sel = h('select', { 'aria-label': 'Szerep: ' + L.name }, ...ROLES.map(([k, n]) => { const o = h('option', { value: k }, n); if (D.roles[L.id] === k) o.selected = true; return o; }));
+    const sel = h('select', { 'aria-label': 'Role: ' + L.name }, ...ROLES.map(([k, n]) => { const o = h('option', { value: k }, n); if (D.roles[L.id] === k) o.selected = true; return o; }));
     sel.onchange = () => { D.roles[L.id] = sel.value; reorder(); markDirty(); drawKo(); };
-    const cb = h('input', { type: 'checkbox', class: 'sw', 'aria-label': 'Részt vesz: ' + L.name }); cb.checked = D.ids.includes(L.id);
+    const cb = h('input', { type: 'checkbox', class: 'sw', 'aria-label': 'Takes part: ' + L.name }); cb.checked = D.ids.includes(L.id);
     cb.onchange = () => { D.ids = cb.checked ? ordered([...D.ids, L.id], D.roles) : D.ids.filter((x: string) => x !== L.id); markDirty(); };
     return h('div', { class: 'korow' }, h('span', { class: 'kon', title: L.name }, L.name), sel, cb);
   });
   const used = RK.filter(r => D.ids.some((id: string) => D.roles[id] === r));
-  const wd = h('details', { class: 'kodet' }, h('summary', null, 'Szerepsúlyok és késés'),
+  const wd = h('details', { class: 'kodet' }, h('summary', null, 'Role weights and delay'),
     ...used.flatMap(r => { const w = { get v() { return D.w[r] ?? 1; }, set v(x) { D.w[r] = x; markDirty(); } }, d = { get v() { return D.d[r] ?? 0; }, set v(x) { D.d[r] = x; markDirty(); } };
-      return [ctlSlider(w, S('w', roleName(r) + ': részvétel', 0, 2, 1, .05), { noAnim: true }), ctlSlider(d, S('d', roleName(r) + ': késés (mp)', -1, 2, 0, .05), { noAnim: true })]; }));
-  card.append(h('div', { class: 'xfhd' }, h('b', null, '✦ Jelenetmozgás'), h('span', { class: 'small' }, ' · ' + PROFILES[D.prof])),
-    h('p', { class: 'small' }, `${D.ids.length} elem, szerepenként eltérő érkezéssel. Előnézet fut; a projekt az Elfogadásig nem változik.`),
-    ctlSlider(prox(D, 'amt'), S('amt', 'Mérték', 0, 2, 1, .05), { noAnim: true }),
-    ctlSlider(prox(D, 'sp'), S('sp', 'Ritmus (térköz)', .3, 3, 1, .05), { noAnim: true }),
-    ctlSlider(prox(D, 'acc'), S('acc', 'Hangsúly', 0, 1, .5, .05), { noAnim: true }),
-    h('details', { class: 'kodet' }, h('summary', null, `Szerepek (${rows.length})`), ...rows), wd,
+      return [ctlSlider(w, S('w', roleName(r) + ': participation', 0, 2, 1, .05), { noAnim: true }), ctlSlider(d, S('d', roleName(r) + ': delay (s)', -1, 2, 0, .05), { noAnim: true })]; }));
+  card.append(h('div', { class: 'xfhd' }, h('b', null, '✦ Scene motion'), h('span', { class: 'small' }, ' · ' + PROFILES[D.prof])),
+    h('p', { class: 'small' }, `${D.ids.length} elements, each role arriving differently. A preview is running; the project does not change until you accept.`),
+    ctlSlider(prox(D, 'amt'), S('amt', 'Amount', 0, 2, 1, .05), { noAnim: true }),
+    ctlSlider(prox(D, 'sp'), S('sp', 'Rhythm (spacing)', .3, 3, 1, .05), { noAnim: true }),
+    ctlSlider(prox(D, 'acc'), S('acc', 'Emphasis', 0, 1, .5, .05), { noAnim: true }),
+    h('details', { class: 'kodet' }, h('summary', null, `Roles (${rows.length})`), ...rows), wd,
     h('div', { class: 'xfbtns' },
-      st.ko ? h('button', { class: 'btn', type: 'button', title: 'A jelenetmozgás eltávolítása', onclick: koRemove }, 'Törlés') : null,
-      h('button', { class: 'btn', type: 'button', onclick: koClose }, 'Mégse'),
-      h('button', { class: 'btn accent', type: 'button', onclick: koAccept }, 'Elfogadás')));
+      st.ko ? h('button', { class: 'btn', type: 'button', title: 'Remove the scene motion', onclick: koRemove }, 'Delete') : null,
+      h('button', { class: 'btn', type: 'button', onclick: koClose }, 'Cancel'),
+      h('button', { class: 'btn accent', type: 'button', onclick: koAccept }, 'Accept')));
 }
 export function koAccept() {
   const D = R.koPv; if (!D) return; R.koPv = null; if (card) { card.remove(); card = null; }
   const ko = R.normKo(D); if (!ko || !ko.ids.length) { delete st.ko; commit(); renderAll(); return; }
-  st.ko = ko; commit(); renderAll(); markDirty(); toast(`Jelenetmozgás (${PROFILES[ko.prof]}) · ${ko.ids.length} elem · ⌘Z visszavonja`);
+  st.ko = ko; commit(); renderAll(); markDirty(); toast(`Scene motion (${PROFILES[ko.prof]}) · ${ko.ids.length} elements · ⌘Z undoes it`);
 }
-function koRemove() { R.koPv = null; if (card) { card.remove(); card = null; } delete st.ko; commit(); renderAll(); markDirty(); toast('Jelenetmozgás törölve · ⌘Z visszavonja'); }
+function koRemove() { R.koPv = null; if (card) { card.remove(); card = null; } delete st.ko; commit(); renderAll(); markDirty(); toast('Scene motion removed · ⌘Z undoes it'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && R.koPv) { e.stopPropagation(); koClose(); } }, true);
 // the button in the Rétegek header
 { const ph = $('#layerCount') && ($('#layerCount') as HTMLElement).parentElement;
-  if (ph) ph.appendChild(h('button', { class: 'ib kobtn', type: 'button', title: 'Koreográfia: a Vel szerepenként összehangolt érkezést javasol a jelenetre (előnézet, majd Elfogadás)', 'aria-label': 'Koreográfia', onclick: koOpen }, '✦')); }
+  if (ph) ph.appendChild(h('button', { class: 'ib kobtn', type: 'button', title: 'Choreography: Vel suggests an arrival coordinated by role for the scene (preview, then Accept)', 'aria-label': 'Choreography', onclick: koOpen }, '✦')); }
 
 /** Önálló mozgássá: this layer's part becomes ordinary, editable motions and leaves the block. */
 export function koDetach(L: any) {
@@ -137,26 +137,26 @@ export function koDetach(L: any) {
 R.koSection = (L: any) => {
   const K = st.ko; if (!K || !L || L.type === 'camera' || !st.layers.includes(L)) return null;
   const role = K.roles[L.id] || suggestRoles()[L.id] || 'deco', inK = K.ids.includes(L.id);
-  const sel = h('select', { 'aria-label': 'Szerep ebben a jelenetben' }, ...ROLES.map(([k, n]) => { const o = h('option', { value: k }, n); if (role === k) o.selected = true; return o; }));
+  const sel = h('select', { 'aria-label': 'Role in this scene' }, ...ROLES.map(([k, n]) => { const o = h('option', { value: k }, n); if (role === k) o.selected = true; return o; }));
   sel.onchange = () => { K.roles[L.id] = sel.value; if (inK) K.ids = ordered(K.ids, K.roles); commit(); renderAll(); markDirty(); };
-  const cb = h('input', { type: 'checkbox', class: 'sw', 'aria-label': 'Részt vesz a jelenetmozgásban' }); cb.checked = inK;
+  const cb = h('input', { type: 'checkbox', class: 'sw', 'aria-label': 'Takes part in the scene motion' }); cb.checked = inK;
   cb.onchange = () => { K.roles[L.id] = K.roles[L.id] || role; K.ids = cb.checked ? ordered([...K.ids, L.id], K.roles) : K.ids.filter((x: string) => x !== L.id); commit(); renderAll(); markDirty(); };
-  return h('div', { class: 'xfbox kobox' }, h('p', { class: 'xfgets' }, '✦ Jelenetmozgás: ', h('b', null, PROFILES[K.prof])),
-    h('label', { class: 'row2' }, h('span', null, 'Szerep ebben a jelenetben'), sel), h('label', { class: 'row2' }, h('span', null, 'Részt vesz'), cb),
-    h('div', { class: 'xfbtns' }, h('button', { class: 'btn', type: 'button', onclick: koOpen }, 'Jelenetmozgás…'),
-      inK ? h('button', { class: 'btn', type: 'button', title: 'A réteg része valódi, szerkeszthető mozgás lesz, és kilép a blokkból', onclick: () => { koDetach(L); commit(); renderAll(); markDirty(); toast('Önálló mozgás lett · ⌘Z visszavonja'); } }, 'Önálló mozgássá') : null));
+  return h('div', { class: 'xfbox kobox' }, h('p', { class: 'xfgets' }, '✦ Scene motion: ', h('b', null, PROFILES[K.prof])),
+    h('label', { class: 'row2' }, h('span', null, 'Role in this scene'), sel), h('label', { class: 'row2' }, h('span', null, 'Takes part'), cb),
+    h('div', { class: 'xfbtns' }, h('button', { class: 'btn', type: 'button', onclick: koOpen }, 'Scene motion…'),
+      inK ? h('button', { class: 'btn', type: 'button', title: 'The layer\'s part becomes real, editable motion and leaves the block', onclick: () => { koDetach(L); commit(); renderAll(); markDirty(); toast('Now independent motion · ⌘Z undoes it'); } }, 'Make independent motion') : null));
 };
 
 /* ---------- Sávok: one collapsible Jelenetmozgás block (move = at, right edge = Ritmus spacing), role rows when open ---------- */
 R.koRows = (va: number, vb: number, X: (t: number) => number) => {
   const K = st.ko; if (!K || !K.ids.length) return [];
   const a = K.at, b = Math.max(a + .1, koEnd(K)), open = !!R.koTlOpen;
-  const ch = h('button', { class: 'tlx-chev' + (open ? ' open' : ''), type: 'button', 'aria-expanded': String(open), 'aria-label': 'Szerepcsoportok', title: 'Szerepcsoportok' }, '›');
+  const ch = h('button', { class: 'tlx-chev' + (open ? ' open' : ''), type: 'button', 'aria-expanded': String(open), 'aria-label': 'Role groups', title: 'Role groups' }, '›');
   ch.onclick = (e: Event) => { e.stopPropagation(); R.koTlOpen = !open; renderTracks(); };
   const lane = h('div', { class: 'tlx-lane tlx-molane' });
   const blk = h('i', { class: 'tlx-clip tlx-ko', style: `left:${Math.max(0, X(a))}%;width:${Math.max(.6, Math.min(100, X(b)) - Math.max(0, X(a)))}%`,
-    title: `Jelenetmozgás · ${PROFILES[K.prof]} · ${K.ids.length} elem · húzás: eltolás · jobb szél: ritmus nyújtása · dupla katt: beállítások` }, h('span', null, '✦ ' + PROFILES[K.prof]));
-  const eb = h('b', { class: 'tlx-ce b', title: 'Ritmus nyújtása (a belépések sebessége marad)' }); blk.appendChild(eb);
+    title: `Scene motion · ${PROFILES[K.prof]} · ${K.ids.length} elements · drag: shift · right edge: stretch rhythm · double-click: settings` }, h('span', null, '✦ ' + PROFILES[K.prof]));
+  const eb = h('b', { class: 'tlx-ce b', title: 'Stretch rhythm (entrance speed stays)' }); blk.appendChild(eb);
   blk.ondblclick = () => koOpen();
   blk.onpointerdown = (ev: PointerEvent) => { ev.stopPropagation(); ev.preventDefault(); try { blk.setPointerCapture(ev.pointerId); } catch (_) { /* ignore */ }
     const r0 = lane.getBoundingClientRect(), at0 = K.at, sp0 = K.sp, len0 = b - a, edge = ev.target === eb; let moved = false;
@@ -164,7 +164,7 @@ R.koRows = (va: number, vb: number, X: (t: number) => number) => {
       if (edge) K.sp = Math.max(.3, Math.min(3, Math.round(sp0 * Math.max(.05, len0 + dt) / len0 * 100) / 100)); else K.at = Math.max(0, Math.round((at0 + dt) * 100) / 100); markDirty(); };
     blk.onpointerup = () => { blk.onpointermove = blk.onpointerup = null; if (moved) { commit(); renderTracks(); } }; };
   lane.appendChild(blk);
-  const out = [h('div', { class: 'tlx-row tlx-morow tlx-korow' }, h('div', { class: 'tlx-name tlx-moname', title: 'Jelenetmozgás' }, ch, h('span', null, 'Jelenetmozgás')), lane)];
+  const out = [h('div', { class: 'tlx-row tlx-morow tlx-korow' }, h('div', { class: 'tlx-name tlx-moname', title: 'Scene motion' }, ch, h('span', null, 'Scene motion')), lane)];
   if (open) for (const r of RK) { const ids = K.ids.filter((id: string) => K.roles[id] === r); if (!ids.length) continue;
     const ln = h('div', { class: 'tlx-lane tlx-molane' });
     for (const id of ids) { const P = (koParts(K, id) || []).find(x => x.t === 'spring'); const it = findItem(id); if (!P || !it) continue;

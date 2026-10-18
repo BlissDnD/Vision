@@ -34,7 +34,7 @@ export const stateJSON=()=>({...JSON.parse(snapshot()),exp:{...EXP}});
 export const projectJSON=()=>{const o:any={app:'vel',v:PROJECT_VER,state:stateJSON(),assets:usedAssets(),vectorAssets:usedVectorAssets(),ulib:ulibUsed()};const au=R.audioExport?R.audioExport():null;if(au)o.audio=au;const tt=tasteExport();if(tt)o.taste=tt;return JSON.stringify(o);};
 R.saveT=undefined;export function scheduleSave(){clearTimeout(R.saveT);R.saveT=setTimeout(async()=>{
   try { if(await saveAuto(projectJSON()))return; } catch (_) {}
-  const el=document.querySelector('#toast') as HTMLElement;if(el){el.textContent='Az automatikus mentés nem sikerült. Mentsd a projektet fájlba.';el.hidden=false;}
+  const el=document.querySelector('#toast') as HTMLElement;if(el){el.textContent='Autosave failed. Save the project to a file.';el.hidden=false;}
 },700);}
 /** Apply a project object (file, autosave). Returns the migration report. */
 export function applyProject(obj){const m=migrateProject(obj);if(m.ulib.length)ulibMerge(m.ulib);if(obj&&obj.taste)tasteMerge(obj.taste);
@@ -45,13 +45,13 @@ export function applyProject(obj){const m=migrateProject(obj);if(m.ulib.length)u
   R.selId=(st.layers[st.layers.length-1]||{}).id||null;R.time=0;return m;}
 export function loadProject(obj){const m=applyProject(obj);resetFeedback();resizeMain();renderAll();commit();
   R.lastLoad=m;return m;}
-export function loadMsg(){const m=R.lastLoad;if(!m)return 'Betöltve.';const old=m.from<3?` (régi, v${m.from} formátum, átalakítva)`:'';
+export function loadMsg(){const m=R.lastLoad;if(!m)return 'Loaded.';const old=m.from<3?` (old, v${m.from} format, converted)`:'';
   const dropped=m.dropped.length?` Nem ismert elem kimaradt: ${m.dropped.slice(0,4).join(', ')}${m.dropped.length>4?' …':''}.`:'';
-  const missing=m.missingMedia?.length?` Hiányzó vektoranimáció: ${m.missingMedia.slice(0,4).join(', ')}${m.missingMedia.length>4?' …':''}.`:'';
-  return `Betöltve${old}.${dropped}${missing}`;}
+  const missing=m.missingMedia?.length?` Missing vector animation: ${m.missingMedia.slice(0,4).join(', ')}${m.missingMedia.length>4?' …':''}.`:'';
+  return `Loaded${old}.${dropped}${missing}`;}
 export function renderAll(){renderLayers();renderInsp();}
 /** bases + links (v4). Missing in older files = none. */
-export function setShared(o){o=o||{};st.bases={};for(const id in (o.bases||{})){const b=o.bases[id];if(b&&Array.isArray(b.children))st.bases[id]={id,name:b.name||'Közös alap',children:b.children.map(normalize)};}
+export function setShared(o){o=o||{};st.bases={};for(const id in (o.bases||{})){const b=o.bases[id];if(b&&Array.isArray(b.children))st.bases[id]={id,name:b.name||'Shared base',children:b.children.map(normalize)};}
   st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to):[];attachLinks(ev);
   st.ko=R.normKo?R.normKo(o.ko):null;if(!st.ko)delete st.ko;st.cues=Array.isArray(o.cues)?o.cues.filter(c=>c&&isFinite(c.t)).map(c=>({id:c.id||'C'+Math.random().toString(36).slice(2,8),t:+c.t,label:c.label||''})):[];}
 /** S1 scenes (saved compositions in order, each with its incoming transition). Missing in older files = none. */

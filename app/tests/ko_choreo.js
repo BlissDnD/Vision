@@ -39,7 +39,7 @@
  const sel2=row('Pötty').querySelector('select');sel2.value='deco';sel2.onchange();
  const cb=row('Dátum').querySelector('input');cb.checked=false;cb.onchange();if(moEval(S2,.5))bad.push('kivett elem mozog');
  // 6) Elfogadás = one undo
- [...document.querySelectorAll('.kocard button')].find(b=>b.textContent==='Elfogadás').click();
+ [...document.querySelectorAll('.kocard button')].find(b=>b.textContent==='Accept').click();
  if(R.koPv||document.querySelector('.kocard'))bad.push('a kártya nem zárult');if(R.hi!==hi0+1)bad.push('nem egy undo-lépés: '+(R.hi-hi0));
  info.ko=st.ko&&{ids:st.ko.ids.length,acc:st.ko.acc};if(!st.ko||st.ko.ids.length!==5||st.ko.ids.includes(S2.id)||st.ko.acc!==1)bad.push('st.ko: '+JSON.stringify(st.ko));
  const det=[.2,.5,1,2.5].map(t=>B(T,t).dy);if(det.some((v,i)=>v!==B(T,[.2,.5,1,2.5][i]).dy))bad.push('nem determinisztikus');
@@ -58,7 +58,7 @@
  else{const s=kb.querySelector('select');if(s.value!=='sub')bad.push('Mozgás fül szerepe: '+s.value);s.value='deco';s.onchange();if(st.ko.roles[S1.id]!=='deco')bad.push('szerepváltás a rétegen');
   const c=document.querySelector('#insp .kobox input[type=checkbox]');c.checked=false;c.onchange();if(st.ko.ids.includes(S1.id))bad.push('részvétel kikapcsolása');}
  R.selId=T.id;renderInsp();const tb=[.2,.5,.9,2].map(t=>B(T,t));
- [...document.querySelectorAll('#insp .kobox button')].find(b=>b.textContent==='Önálló mozgássá').click();
+ [...document.querySelectorAll('#insp .kobox button')].find(b=>b.textContent==='Make independent motion').click();
  const ta=[.2,.5,.9,2].map(t=>B(T,t));if(!(L(T.id).mo||[]).some(m=>m.t==='spring')||st.ko.ids.includes(T.id))bad.push('Önálló mozgássá: '+JSON.stringify(L(T.id).mo));
  if(tb.some((b,i)=>!near(b.dy,ta[i].dy)||!near(b.sc,ta[i].sc)||!near(b.op,ta[i].op)))bad.push('önálló mozgás más: '+JSON.stringify([tb[1],ta[1]]));
  // 9) Esc closes a new preview without change; save → open keeps the block; undo works

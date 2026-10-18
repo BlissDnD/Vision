@@ -1,4 +1,5 @@
 import './dom';
+import './wa';
 import './style.css';
 import './workspace';
 import './palettes';

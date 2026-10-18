@@ -38,25 +38,25 @@ function hitLayer(p: { x: number; y: number }, srcId: string) {
 export function xfStart(L: any, m: any) {
   if (!L || !m || m.src) return; xfClose();
   const X = m.xf || {}; R.xfPv = { L, m, md: X.md | 0, gap: X.gap ?? .12, ids: [...(X.ids || [])] };
-  card = h('div', { class: 'xfcard', role: 'dialog', 'aria-label': 'Mozgás átadása' });
+  card = h('div', { class: 'xfcard', role: 'dialog', 'aria-label': 'Transfer motion' });
   wrapEl.appendChild(card); drawCard(); markDirty();
-  toast(`Húzz végig a célokon (vagy kattints rájuk): a sorrend a festés sorrendje · ⇧ hozzáfűz · Esc: mégse`);
+  toast(`Drag across the targets (or click them): the order is the painting order · ⇧ appends · Esc cancels`);
 }
 R.xfStart = xfStart;
 function drawCard() {
   const P = R.xfPv; if (!card || !P) return; card.innerHTML = '';
-  const chips = h('div', { class: 'rychips', role: 'radiogroup', 'aria-label': 'Mit adjon át' },
+  const chips = h('div', { class: 'rychips', role: 'radiogroup', 'aria-label': 'What to transfer' },
     ...XF_MODES.map((nm, i) => h('button', { class: 'rychip' + (P.md === i ? ' on' : ''), type: 'button', role: 'radio', 'aria-checked': String(P.md === i),
-      title: ['A célok a saját helyükre érkeznek, a forrás időzítésével és karakterével', 'A célok a forrás irányát, távolságát és ívét kapják, a saját méretükhöz arányosítva', 'Minden: idő, tér és erősség'][i],
+      title: ['Targets arrive at their own positions, with the source\'s timing and character', 'Targets get the source\'s direction, distance and arc, scaled to their own size', 'Everything: time, space and strength'][i],
       onclick: () => { P.md = i; drawCard(); markDirty(); } }, nm)));
   const gap = { get v() { return P.gap; }, set v(x) { P.gap = x; markDirty(); } };
-  const names = P.ids.map((id: string, i: number) => { const r = findItem(id); return `${i + 1}. ${r ? r.it.name : '(hiányzik)'}`; });
-  card.append(h('div', { class: 'xfhd' }, h('b', null, `${MO[P.m.t].name} átadása`), h('span', { class: 'small' }, ` · forrás: ${P.L.name}`)),
-    h('p', { class: 'small' }, P.ids.length ? names.join(' · ') : 'Fesd végig a célokat a vásznon (kattintás is jó). ⇧: hozzáfűzés.'),
-    chips, ctlSlider(gap, S('gap', 'Késés (mp / cél)', 0, 1, .12, .01), { noAnim: true }),
+  const names = P.ids.map((id: string, i: number) => { const r = findItem(id); return `${i + 1}. ${r ? r.it.name : '(missing)'}`; });
+  card.append(h('div', { class: 'xfhd' }, h('b', null, `Transfer ${MO[P.m.t].name}`), h('span', { class: 'small' }, ` · source: ${P.L.name}`)),
+    h('p', { class: 'small' }, P.ids.length ? names.join(' · ') : 'Paint across the targets on the canvas (clicking works too). ⇧: append.'),
+    chips, ctlSlider(gap, S('gap', 'Delay (s / target)', 0, 1, .12, .01), { noAnim: true }),
     h('div', { class: 'xfbtns' },
-      h('button', { class: 'btn', type: 'button', onclick: xfClose }, 'Mégse'),
-      h('button', { class: 'btn accent', type: 'button', onclick: xfAccept }, P.ids.length || P.m.xf ? 'Elfogadás' : 'Kész')));
+      h('button', { class: 'btn', type: 'button', onclick: xfClose }, 'Cancel'),
+      h('button', { class: 'btn accent', type: 'button', onclick: xfAccept }, P.ids.length || P.m.xf ? 'Accept' : 'Done')));
 }
 /** Close without changing the project. */
 export function xfClose() { R.xfPv = null; stroke = false; if (card) { card.remove(); card = null; } markDirty(); }
@@ -71,7 +71,7 @@ export function xfAccept() {
   if (ids.length) m.xf = { md: P.md, gap: Math.round(P.gap * 1000) / 1000, ids }; else delete m.xf;
   if (card) { card.remove(); card = null; }
   commit(); renderAll(); markDirty();
-  if (ids.length) toast(`${MO[m.t].name} → ${ids.length} cél (${XF_MODES[P.md]}, ${f2(P.gap)} mp lépcső) · ⌘Z visszavonja`);
+  if (ids.length) toast(`${MO[m.t].name} → ${ids.length} targets (${XF_MODES[P.md]}, ${f2(P.gap)} s step) · ⌘Z undoes it`);
 }
 
 // painting: capture-phase so the stage does not move the selected layer
@@ -107,25 +107,25 @@ R.updXf = (t: number) => {
 export function xfSection(L: any, m: any): HTMLElement | null {
   if (!MO[m.t]) return null;
   if (m.src) { const S = xfSrc(m);
-    if (!S) return h('div', { class: 'xfbox' }, h('p', { class: 'small' }, 'Átadott mozgás, de a forrása megszűnt: a saját értékeivel fut.'),
-      h('button', { class: 'btn', type: 'button', onclick: () => { delete m.src; commit(); renderAll(); } }, 'Leválasztás'));
+    if (!S) return h('div', { class: 'xfbox' }, h('p', { class: 'small' }, 'Transferred motion, but its source is gone: it runs on its own values.'),
+      h('button', { class: 'btn', type: 'button', onclick: () => { delete m.src; commit(); renderAll(); } }, 'Detach'));
     const i = S.xf ? S.xf.ids.indexOf(L.id) : -1, E = effMo(m, L);
-    return h('div', { class: 'xfbox' }, h('p', { class: 'xfgets' }, `${XF_GETS[S.xf ? S.xf.md | 0 : 0]} ettől: `, h('b', null, S.L.name)),
-      h('p', { class: 'small' }, i >= 0 ? `${i + 1}. a sorban · ${f2(E && E.dl || 0)} mp késéssel · a forrás javítását követi` : 'Nincs a forrás sorrendjében: most nem fut.'),
+    return h('div', { class: 'xfbox' }, h('p', { class: 'xfgets' }, `${XF_GETS[S.xf ? S.xf.md | 0 : 0]} from: `, h('b', null, S.L.name)),
+      h('p', { class: 'small' }, i >= 0 ? `${i + 1}. in the queue · ${f2(E && E.dl || 0)} s delay · follows the source's edits` : 'Not in the source\'s order: not running now.'),
       h('div', { class: 'xfbtns' },
-        h('button', { class: 'btn', type: 'button', title: 'A forrásmozgás megnyitása', onclick: () => { R.selId = S.L.id; R.moSel[S.L.id] = S.m.id; renderAll(); } }, 'Forrás'),
-        h('button', { class: 'btn', type: 'button', title: 'Önálló mozgás lesz a most látható értékekkel (a forrás változását már nem követi)', onclick: () => { xfDetach(L, m); commit(); renderAll(); markDirty(); toast('Leválasztva: önálló mozgás · ⌘Z visszavonja'); } }, 'Leválasztás')));
+        h('button', { class: 'btn', type: 'button', title: 'Open the source motion', onclick: () => { R.selId = S.L.id; R.moSel[S.L.id] = S.m.id; renderAll(); } }, 'Source'),
+        h('button', { class: 'btn', type: 'button', title: 'Becomes independent motion with the values you see now (no longer follows the source)', onclick: () => { xfDetach(L, m); commit(); renderAll(); markDirty(); toast('Detached: independent motion · ⌘Z undoes it'); } }, 'Detach')));
   }
-  const X = m.xf, kids: any[] = [h('button', { class: 'btn xfgo', type: 'button', title: 'Végigfested a vásznon a többi elemet: ugyanez a mozgás a festés sorrendjében, lépcsőzve jut el hozzájuk', onclick: () => xfStart(L, m) }, X ? '⇢ Sorrend újrafestése' : '⇢ Átadás / Sorrend festése')];
+  const X = m.xf, kids: any[] = [h('button', { class: 'btn xfgo', type: 'button', title: 'Paint across the other elements on the canvas: the same motion reaches them in painting order, staggered', onclick: () => xfStart(L, m) }, X ? '⇢ Repaint the order' : '⇢ Transfer / Paint the order')];
   if (X) { const miss = X.ids.filter((id: string) => !findItem(id)).length;
     const gap = { get v() { return X.gap; }, set v(x) { X.gap = x; markDirty(); } };
-    kids.push(h('div', { class: 'rychips', role: 'radiogroup', 'aria-label': 'Mit ad át' }, ...XF_MODES.map((nm, i) => h('button', { class: 'rychip' + ((X.md | 0) === i ? ' on' : ''), type: 'button', role: 'radio', 'aria-checked': String((X.md | 0) === i), onclick: () => { X.md = i; commit(); renderAll(); markDirty(); } }, nm))),
-      ctlSlider(gap, S('gap', 'Késés (mp / cél)', 0, 1, .12, .01), { noAnim: true }),
+    kids.push(h('div', { class: 'rychips', role: 'radiogroup', 'aria-label': 'What it transfers' }, ...XF_MODES.map((nm, i) => h('button', { class: 'rychip' + ((X.md | 0) === i ? ' on' : ''), type: 'button', role: 'radio', 'aria-checked': String((X.md | 0) === i), onclick: () => { X.md = i; commit(); renderAll(); markDirty(); } }, nm))),
+      ctlSlider(gap, S('gap', 'Delay (s / target)', 0, 1, .12, .01), { noAnim: true }),
       h('ol', { class: 'xflist' }, ...X.ids.map((id: string) => { const r = findItem(id);
-        return h('li', { class: r ? '' : 'miss' }, h('span', null, r ? r.it.name : '(hiányzó cél)'), h('button', { class: 'eye', type: 'button', 'aria-label': 'Kivétel a sorból', title: 'Kivétel a sorból (a cél mozgása megszűnik)', onclick: () => {
+        return h('li', { class: r ? '' : 'miss' }, h('span', null, r ? r.it.name : '(missing target)'), h('button', { class: 'eye', type: 'button', 'aria-label': 'Remove from queue', title: 'Remove from queue (the target\'s motion ends)', onclick: () => {
           X.ids = X.ids.filter((x: string) => x !== id); if (r) { const has = (r.it.mo || []).find((x: any) => x.src && x.src.m === m.id); if (has) r.it.mo.splice(r.it.mo.indexOf(has), 1); }
           if (!X.ids.length) delete m.xf; commit(); renderAll(); markDirty(); } }, '×')); })),
-      miss ? h('p', { class: 'small warn' }, `${miss} cél hiányzik (törölt réteg). A × kiveszi a sorból.`) : null);
+      miss ? h('p', { class: 'small warn' }, `${miss} targets missing (deleted layers). × removes them from the queue.`) : null);
   }
   return h('div', { class: 'xfbox' }, ...kids);
 }

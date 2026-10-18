@@ -31,14 +31,14 @@
  if(!near(dx(B.id,.12),-.45,1e-3))bad.push('Ritmus: nem a saját távolságából indul: '+dx(B.id,.12));
  // 4) Út: source direction / distance, scaled by the target size
  const chip=t=>[...document.querySelectorAll('.xfcard .rychip')].find(c=>c.textContent===t);
- sm().p.ang.v=90;L(B.id).n.s.v=2*L(S.id).n.s.v;chip('Út').click();
+ sm().p.ang.v=90;L(B.id).n.s.v=2*L(S.id).n.s.v;chip('Path').click();
  info.ut=[dx(B.id,.17),dy(B.id,.17),dy(S.id,.05)];if(!near(dx(B.id,.17),0,1e-6)||!near(dy(B.id,.17),2*dy(S.id,.05),1e-6))bad.push('Út: '+info.ut);
- chip('Teljes').click();if(!near(dy(B.id,.17),dy(S.id,.05),1e-6))bad.push('Teljes: nem a forrás tere');
- chip('Ritmus').click();sm().p.ang.v=180;L(B.id).n.s.v=L(S.id).n.s.v;
+ chip('Full').click();if(!near(dy(B.id,.17),dy(S.id,.05),1e-6))bad.push('Teljes: nem a forrás tere');
+ chip('Rhythm').click();sm().p.ang.v=180;L(B.id).n.s.v=L(S.id).n.s.v;
  // Késés slider on the card
  const gs=card.querySelector('input[type=range]');gs.value=.2;gs.oninput();if(!near(R.xfPv.gap,.2))bad.push('Késés csúszka: '+R.xfPv.gap);
  // 5) Elfogadás = one undo step, links written
- [...card.querySelectorAll('button')].find(b=>b.textContent==='Elfogadás').click();
+ [...card.querySelectorAll('button')].find(b=>b.textContent==='Accept').click();
  if(R.xfPv||document.querySelector('.xfcard'))bad.push('a kártya nem zárult');
  if(R.hi!==hi0+1)bad.push('nem egy undo-lépés: '+(R.hi-hi0));
  const X=sm().xf;info.xf=X;if(!X||X.md!==0||!near(X.gap,.2)||X.ids.length!==3)bad.push('m.xf: '+JSON.stringify(X));
@@ -50,7 +50,7 @@
  sm().p.dur.v=.9;commit();
  // 7) target card: what it gets, only own fields
  R.selId=B.id;R.moSel[B.id]=L(B.id).mo[0].id;setITab('motion');renderInsp();
- const gets=document.querySelector('#insp .xfgets');info.gets=gets&&gets.textContent;if(!gets||!/Ritmust kap ettől: Címszó/.test(gets.textContent))bad.push('cél kártyája: '+info.gets);
+ const gets=document.querySelector('#insp .xfgets');info.gets=gets&&gets.textContent;if(!gets||!/Gets rhythm from: Címszó/.test(gets.textContent))bad.push('cél kártyája: '+info.gets);
  const labs=[...document.querySelectorAll('#insp .fxi .ctl .lt')].map(x=>x.textContent);info.labs=labs;
  if(labs.includes('Duration (s)')||!labs.includes('Distance'))bad.push('cél mezői: '+labs);
  // 8) timeline: spread block under the source, ticks, right edge stretches the delay
@@ -69,7 +69,7 @@
  if(R.xfPv||projectJSON()!==j1)bad.push('Esc után változott');
  // 10) re-paint: Három → Egy; Kettő loses its linked motion
  document.querySelector('#insp .xfgo').click();pe('pointerdown',.6,0);pe('pointermove',-.2,0);pe('pointerup',-.2,0);
- [...document.querySelectorAll('.xfcard button')].find(b=>b.textContent==='Elfogadás').click();
+ [...document.querySelectorAll('.xfcard button')].find(b=>b.textContent==='Accept').click();
  info.re=sm().xf.ids.map(id=>L(id).name);if(info.re.join()!=='Három,Egy')bad.push('újrafestés: '+info.re);
  if((L(B.id).mo||[]).some(m=>m.src))bad.push('kimaradt cél mozgása megmaradt');
  // 11) × on the source list removes one target
@@ -77,17 +77,17 @@
  if(sm().xf.ids.join()!==A.id||(L(D.id).mo||[]).some(m=>m.src))bad.push('kivétel a sorból');
  // 12) Leválasztás: same motion, ordinary fields (incl. delay)
  const before=[.1,.3,.5,1].map(t=>dx(A.id,t));R.selId=A.id;R.moSel[A.id]=L(A.id).mo[0].id;renderInsp();
- [...document.querySelectorAll('#insp .xfbox button')].find(b=>b.textContent==='Leválasztás').click();
+ [...document.querySelectorAll('#insp .xfbox button')].find(b=>b.textContent==='Detach').click();
  const am=L(A.id).mo[0];if(am.src||!am.dl)bad.push('leválasztás: '+JSON.stringify({src:am.src,dl:am.dl}));
  const after=[.1,.3,.5,1].map(t=>dx(A.id,t));if(before.some((v,i)=>!near(v,after[i])))bad.push('leválasztás után más: '+before+' / '+after);
  if(sm().xf)bad.push('a forrás sora nem ürült ki');
  // 13) save → open keeps xf / src / dl; a deleted target is flagged, not dropped
  R.selId=S.id;renderInsp();document.querySelector('#insp .xfgo').click();pe('pointerdown',.2,0);pe('pointermove',.6,0);pe('pointerup',.6,0);
- [...document.querySelectorAll('.xfcard button')].find(b=>b.textContent==='Elfogadás').click();
+ [...document.querySelectorAll('.xfcard button')].find(b=>b.textContent==='Accept').click();
  loadProject(JSON.parse(projectJSON()));const s2=st.layers[0].mo[0];
  if(!s2.xf||s2.xf.ids.length!==2||!st.layers[2].mo[0].src||!st.layers[1].mo[0].dl)bad.push('mentés után: '+JSON.stringify(s2.xf));
  st.layers=st.layers.filter(x=>x.id!==D.id);commit();R.selId=S.id;R.moSel[S.id]=st.layers[0].mo[0].id;setITab('motion');renderInsp();
- const w=document.querySelector('#insp .xfbox .warn');if(!w||!/1 cél hiányzik/.test(w.textContent))bad.push('hiányzó cél jelzése');if(st.layers[0].mo[0].xf.ids.length!==2)bad.push('a hiányzó cél csendben törlődött');
+ const w=document.querySelector('#insp .xfbox .warn');if(!w||!/1 targets missing/.test(w.textContent))bad.push('hiányzó cél jelzése');if(st.layers[0].mo[0].xf.ids.length!==2)bad.push('a hiányzó cél csendben törlődött');
  // 14) old project: no new fields
  const O=normalize({type:'shape',name:'régi',vis:true,blend:'normal',clip:false,n:{},fx:[],mo:[{id:'Mold',t:'spring',on:true,p:{amt:{v:1},at:{v:0},dur:{v:.9}}}]});
  if(['xf','src','dl'].some(k=>k in O.mo[0]))bad.push('régi projekt: új mezők');

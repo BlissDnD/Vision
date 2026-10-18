@@ -9,9 +9,9 @@ export function makeLayer(type:string,o:any={}):Layer{
   for(const b of BASE){let dv=b.def;if(type==='text'&&b.k==='s')dv=.16;if(type==='mtext'&&b.k==='s')dv=.2;if((type==='image'||type==='lottie')&&b.k==='s')dv=.8;L.n[b.k]=mkN(o[b.k]??dv);}
   if(type==='custom'&&Array.isArray(o.cp)&&o.cp.length)L.cp=o.cp.map(c=>({...c}));
   for(const p of paramsOf(L))L.p[p.k]=mkN(o.p?.[p.k]??p.def);
-  if(type==='text')L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12,...(o.text||{})};
-  if(type==='mtext')L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01,...(o.text||{})};
-  if(d.usesText)L.text={str:'VEL · ÉLŐ SZÖVEG · ',font:'Unbounded',weight:'700',track:.06,...(o.text||{})};
+  if(type==='text')L.text={str:'AWAKENING',font:'Cinzel',weight:'700',track:.12,...(o.text||{})};
+  if(type==='mtext')L.text={str:'New vision',font:'Bricolage Grotesque',weight:'800',track:-.01,...(o.text||{})};
+  if(d.usesText)L.text={str:'VEL · LIVE TEXT · ',font:'Unbounded',weight:'700',track:.06,...(o.text||{})};
   if(type==='sdfscene'){L.prims=JSON.parse(JSON.stringify(o.prims||DEF_PRIMS));L.psel=0;}
   if(type==='particles')L.asset=o.asset||null;
   if(type==='pathshape')L.pts=(o.pts||[[-.55,-.12],[-.2,.16],[.18,-.14],[.55,.1]]).map(p=>[p[0],p[1]]);
@@ -31,11 +31,11 @@ export function normalize(L:any):Layer{
   if(L.type==='group'){L.children=(L.children||[]).filter(c=>c.type!=='group'&&EFFECTS[c.type]).map(normalize);L.macros=L.macros||[];return L;}
   const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of paramsOf(L))if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);
   if(L.type==='pathshape'&&!(Array.isArray(L.pts)&&L.pts.length>=2&&L.pts.every(p=>Array.isArray(p)&&isFinite(p[0])&&isFinite(p[1]))))L.pts=[[-.55,-.12],[-.2,.16],[.18,-.14],[.55,.1]];
-  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(d&&d.usesText&&!L.text)L.text={str:'VEL · ÉLŐ SZÖVEG · ',font:'Unbounded',weight:'700',track:.06};if(L.type==='lottie'){L.media=L.media||{};L.media.start=Number.isFinite(+L.media.start)?Math.max(0,+L.media.start):0;L.media.speed=Number.isFinite(+L.media.speed)?Math.max(0,+L.media.speed):1;L.media.loop=L.media.loop!==false;}if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
-export const SIZES:[string,string[][]][]=[['Képernyő',[['1920x1080','16:9 · 1920 × 1080'],['1080x1080','1:1 · 1080 × 1080'],['1080x1350','4:5 · 1080 × 1350'],['1080x1920','9:16 · 1080 × 1920'],['3840x2160','4K · 3840 × 2160']]],
- ['Bannerek',[['300x250','300 × 250'],['300x600','300 × 600'],['728x90','728 × 90'],['970x250','970 × 250'],['160x600','160 × 600']]]];
-export const LOOKP=[S('exposure','Expozíció',-2,2,0),S('bloom','Bloom',0,2,.5),S('radius','Bloom-sugár',0,1,.6),S('thresh','Bloom-küszöb',0,2,.8),S('hal','Halation (filmes vörös derengés)',0,1.5,.3),
- S('grain','Filmszemcse',0,1.5,.25),S('vig','Vignetta',0,1,.35),S('chroma','Lencsehiba',0,1,.1),S('contrast','Kontraszt',.6,1.6,1.05),S('sat','Telítettség',0,1.8,.95),S('temp','Színhőmérséklet',-1,1,.08),S('fade','Fakítás',0,1,.03),S('sharpen','Élesítés',0,1,.15)];
+  if(L.type==='text'&&!L.text)L.text={str:'AWAKENING',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'New vision',font:'Bricolage Grotesque',weight:'800',track:-.01};if(d&&d.usesText&&!L.text)L.text={str:'VEL · LIVE TEXT · ',font:'Unbounded',weight:'700',track:.06};if(L.type==='lottie'){L.media=L.media||{};L.media.start=Number.isFinite(+L.media.start)?Math.max(0,+L.media.start):0;L.media.speed=Number.isFinite(+L.media.speed)?Math.max(0,+L.media.speed):1;L.media.loop=L.media.loop!==false;}if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
+export const SIZES:[string,string[][]][]=[['Screen',[['1920x1080','16:9 · 1920 × 1080'],['1080x1080','1:1 · 1080 × 1080'],['1080x1350','4:5 · 1080 × 1350'],['1080x1920','9:16 · 1080 × 1920'],['3840x2160','4K · 3840 × 2160']]],
+ ['Banners',[['300x250','300 × 250'],['300x600','300 × 600'],['728x90','728 × 90'],['970x250','970 × 250'],['160x600','160 × 600']]]];
+export const LOOKP=[S('exposure','Exposure',-2,2,0),S('bloom','Bloom',0,2,.5),S('radius','Bloom radius',0,1,.6),S('thresh','Bloom threshold',0,2,.8),S('hal','Halation (filmic red glow)',0,1.5,.3),
+ S('grain','Film grain',0,1.5,.25),S('vig','Vignette',0,1,.35),S('chroma','Lens flaw',0,1,.1),S('contrast','Kontraszt',.6,1.6,1.05),S('sat','Saturation',0,1.8,.95),S('temp','Color temperature',-1,1,.08),S('fade','Fade',0,1,.03),S('sharpen','Sharpen',0,1,.15)];
 export const LOOKS={
  'Filmes':{tone:1,exposure:0,bloom:.5,radius:.6,thresh:.8,hal:.3,grain:.25,vig:.35,chroma:.1,contrast:1.05,sat:.95,temp:.08,fade:.03,sharpen:.15},
  'Tiszta':{tone:2,exposure:.1,bloom:.35,radius:.5,thresh:.9,hal:0,grain:.06,vig:.15,chroma:0,contrast:1.04,sat:1.05,temp:0,fade:0,sharpen:.25},
@@ -49,7 +49,7 @@ export function normLook(o){if(!o||!o.p)return mkLook('Filmes');const b=mkLook(L
 import type { Project, Layer, NParam } from './types';
 /** Global scene light (C / M6): drives the key light, its shadow and the studio glint of obj3d / sdfscene layers.
  * Defaults reproduce the old fixed light (dir normalize(-0.5,0.8,0.6), shadow k 10, colour (1,.97,.92)). */
-export const LIGHTP=[S('az','Irány (körbe, °)',-180,180,-39.81),S('el','Magasság (°)',-10,90,45.58),S('soft','Lágyabb árnyék',0,1,.5),S('size','Nagyobb csillanás',0,1,0),S('warm','Melegebb ↔ hidegebb',-1,1,0),S('pow','Erősség',0,3,1),SEL('shape','Forma (a tükörképben)',['Kör','Csík','Négyzet','Gyűrű'],0)];
+export const LIGHTP=[S('az','Direction (around, °)',-180,180,-39.81),S('el','Height (°)',-10,90,45.58),S('soft','Softer shadow',0,1,.5),S('size','Larger glint',0,1,0),S('warm','Warmer ↔ cooler',-1,1,0),S('pow','Strength',0,3,1),SEL('shape','Shape (in the reflection)',['Kör','Strip','Square','Gyűrű'],0)];
 /** FÉNY2: further lights (st.light.more, max 3): no shadow of their own; same keys as the main light minus 'soft'. */
 export const XLIGHT_K=['az','el','pow','warm','size','shape'],XLIGHT_MAX=3;
 const normX=(o:any)=>{const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP)if(XLIGHT_K.includes(d.k)){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}return b;};

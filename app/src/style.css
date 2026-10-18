@@ -637,3 +637,16 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 @media(max-width:719px){.help-card{max-height:55vh}}
 
 .help-card .help-inline{display:inline;padding:0;border:0;border-radius:2px;background:transparent;text-decoration:underline;text-underline-offset:3px}
+
+/* WA1: shared controls in the existing panels (tokens and base look: src/vel-theme.css) */
+.vel-ibw{display:inline-flex;align-items:center}
+.ctl .ics .vel-ib{min-width:18px;min-height:18px;padding:0}
+.ctl .ics .vel-ib svg{width:14px;height:14px}
+.lfo .vel-seg{justify-self:start}
+.lfo .lprow{grid-column:1/-1}
+.lfo .lprow .vel-row{min-height:22px;gap:6px}
+#cats .vel-ib{gap:2px}
+#cats .vel-ib svg{width:15px;height:15px;color:var(--vel-cc,currentColor)}
+.rychipw{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.rytgt.vel-row{margin-top:4px}
+.moloop .vel-row{min-height:24px}

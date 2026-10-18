@@ -8,10 +8,10 @@
   if(!card)bad.push('shelf card missing');else card.click();
   const dlg=document.querySelector('#dlg');const search=dlg?.querySelector('input[type="search"]');
   if(!search||!dlg.textContent.includes('CC0'))bad.push('catalog dialog missing');
-  if(search){search.value='marvany';search.dispatchEvent(new Event('input',{bubbles:true}));}
+  if(search){search.value='marble';search.dispatchEvent(new Event('input',{bubbles:true}));}
   const choices=[...dlg.querySelectorAll('button')].filter(x=>x.querySelector('img'));
   info.search=choices.map(x=>x.textContent.trim());
-  if(choices.length!==1||!choices[0].textContent.includes('Márvány'))bad.push('catalog search');
+  if(choices.length!==1||!choices[0].textContent.includes('Marble'))bad.push('catalog search');
   const sample=document.createElement('canvas');sample.width=32;sample.height=32;
   const cx=sample.getContext('2d');cx.fillStyle='#a83242';cx.fillRect(0,0,32,32);
   const blob=await new Promise(resolve=>sample.toBlob(resolve,'image/jpeg',.9));

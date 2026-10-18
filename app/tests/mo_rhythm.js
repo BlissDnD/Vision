@@ -10,11 +10,11 @@
  // 1) chips on the Mozgás tab; Folyamatos = no rhythm field written on open
  R.moSel[L.id]=m.id;setITab('motion');renderInsp();
  if(m.ry)bad.push('megnyitáskor ritmus íródott a projektbe');
- const chips=[...document.querySelectorAll('#insp .rychip')];info.chips=chips.map(c=>c.textContent);
+ const chips=[...document.querySelectorAll('#insp .rychipw .vel-seg button')];info.chips=chips.map(c=>c.getAttribute('aria-label'));
  if(chips.length!==5)bad.push('ritmus-chipek: '+info.chips);
  if(!document.querySelector('#insp .rystrip .rypt'))bad.push('nincs ritmus-szalag');
  const cont=[dy(3.2),dy(3.8)];
- chips.find(c=>/Megáll/.test(c.textContent)).click();L=st.layers[0];m=L.mo[0];
+ chips.find(c=>/Pauses now and then/.test(c.getAttribute('aria-label'))).click();L=st.layers[0];m=L.mo[0];
  if(!m.ry||m.ry.k!==1)bad.push('Megáll chip: '+JSON.stringify(m.ry));
  // 2) Megáll időnként: stopped in [3,4] and [8,9] (5 s cycle), moving otherwise, smooth restart
  const fr1=[3.05,3.4,3.95].map(dy),fr2=[8.05,8.5,8.95].map(dy);info.frozen=[fr1,fr2];
@@ -32,16 +32,16 @@
   document.querySelectorAll('#insp .rytgt button')[0].click();m=st.layers[0].mo[0];}
  if(Math.abs(fr1[0])<1e-3)info.warnFrozenZero=true;
  // 4) other presets: Lassul–gyorsul keeps average tempo, Elcsendesedik = strength, Véletlen = repeatable and seeded
- renderInsp();[...document.querySelectorAll('#insp .rychip')].find(c=>/Lassul/.test(c.textContent)).click();m=st.layers[0].mo[0];
+ renderInsp();[...document.querySelectorAll('#insp .rychipw .vel-seg button')].find(c=>/Slows and speeds up/.test(c.getAttribute('aria-label'))).click();m=st.layers[0].mo[0];
  if(m.ry.k!==2||Math.abs(moTime(m,6).tau-6)>1e-6)bad.push('Lassul–gyorsul átlaga: '+moTime(m,6).tau);
- renderInsp();[...document.querySelectorAll('#insp .rychip')].find(c=>/Elcsend/.test(c.textContent)).click();m=st.layers[0].mo[0];
+ renderInsp();[...document.querySelectorAll('#insp .rychipw .vel-seg button')].find(c=>/Calms down/.test(c.getAttribute('aria-label'))).click();m=st.layers[0].mo[0];
  if(m.ry.tgt!==1||Math.abs(moTime(m,4).amp)>1e-9||Math.abs(moTime(m,8).amp-1)>1e-9)bad.push('Elcsendesedik: '+moTime(m,4).amp);
- renderInsp();[...document.querySelectorAll('#insp .rychip')].find(c=>/Véletlen/.test(c.textContent)).click();m=st.layers[0].mo[0];
+ renderInsp();[...document.querySelectorAll('#insp .rychipw .vel-seg button')].find(c=>/Random pauses/.test(c.getAttribute('aria-label'))).click();m=st.layers[0].mo[0];
  {const stops=[];for(let c=0;c<12;c++)stops.push(sp(c*3.5+3.5*.5)<1e-6);info.rndStops=stops.map(x=>x?1:0).join('');
   const t1=moTime(m,40).tau,t2=moTime(m,40).tau;m.ry.seed=5;const t3=moTime(m,40).tau;m.ry.seed=1;
   if(t1!==t2||!stops.some(x=>x)||stops.every(x=>x)||t1===t3)bad.push('Véletlen szünetek: '+info.rndStops+' '+[t1,t3]);}
  // 5) seek determinism by pixels (rhythm on)
- renderInsp();[...document.querySelectorAll('#insp .rychip')].find(c=>/Megáll/.test(c.textContent)).click();m=st.layers[0].mo[0];m.p.amp.v=.3;
+ renderInsp();[...document.querySelectorAll('#insp .rychipw .vel-seg button')].find(c=>/Pauses now and then/.test(c.getAttribute('aria-label'))).click();m=st.layers[0].mo[0];m.p.amp.v=.3;
  const px=t=>{const out=renderScene(st.layers,R.main,t,'#000');present(R.main,out.t,null,cv.width,cv.height,t);const b=new Uint8Array(4*64*8);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.readPixels((cv.width>>1)-32,(cv.height>>1)-60,64,8,gl.RGBA,gl.UNSIGNED_BYTE,b);return b.reduce((s,v,i)=>s+v*(i%7+1),0);};
  const p1=px(7.3);px(12);px(.4);const p2=px(7.3);if(p1!==p2)bad.push('ugrás után más kép: '+p1+' / '+p2);
  // 6) clip start / end with soft ramps; spin freezes after its end

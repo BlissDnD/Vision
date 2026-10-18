@@ -28,7 +28,7 @@
  if(!(info.badges['Animált'].includes('anim:◆')&&info.badges['Animált'].includes('lnk:⇢')))bad.push('Animált jelvényei: '+info.badges['Animált']);
  if(!(info.badges.Effektes.includes('anim:◆')&&info.badges.Effektes.includes('fxb:✦')))bad.push('Effektes jelvényei: '+info.badges.Effektes);
  if(!info.badges.Poszt.includes('var:⧉'))bad.push('Változat jelvény: '+info.badges.Poszt);
- const tipB=[...document.querySelectorAll('#ltree .bdg.anim')].map(b=>b.getAttribute('title')||b.dataset.tip);info.animTips=tipB;if(!tipB.some(t=>/kulcskock/.test(t))||!tipB.some(t=>/hullám/.test(t)))bad.push('◆ magyarázat hiányzik');
+ const tipB=[...document.querySelectorAll('#ltree .bdg.anim')].map(b=>b.getAttribute('title')||b.dataset.tip);info.animTips=tipB;if(!tipB.some(t=>/keyframes/.test(t))||!tipB.some(t=>/wave/.test(t)))bad.push('◆ magyarázat hiányzik');
  renderAll();if(projectJSON()!==before)bad.push('a jelvények/panel módosították a projektet');
  // 4) library cards say where they can go
  R.cat='fx';R.libQ='';buildShelf();

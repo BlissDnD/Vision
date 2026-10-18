@@ -214,9 +214,9 @@ export function addEffectLink(kind: 'sunsky' | 'follow', fromId: string, toId: s
 export function removeLink(id: string) { st.links = (st.links || []).filter((l: Link) => l.id !== id); }
 /** One-line human description of a link (badge card, inspector list). */
 export function describeLink(lk: Link) {
-  const nameOf = (id: string) => { const r = findItem(id); return r ? r.it.name : '(törölve)'; }, A = nameOf(lk.from.id), B = nameOf(lk.to.id);
-  if (lk.kind === 'sunsky') return `${A} fénye → ${B}`;
-  if (lk.kind === 'follow') return `${B} követi: ${A}`;
+  const nameOf = (id: string) => { const r = findItem(id); return r ? r.it.name : '(deleted)'; }, A = nameOf(lk.from.id), B = nameOf(lk.to.id);
+  if (lk.kind === 'sunsky') return `${A} light → ${B}`;
+  if (lk.kind === 'follow') return `${B} follows: ${A}`;
   const a = findItem(lk.from.id), b = findItem(lk.to.id);
   const pl = (x: any, g: any, k: any): string => { const d = x && paramDef(x.it, g, k); return d ? d.l : k; };
   return `${A} · ${pl(a, lk.from.g, lk.from.k)} → ${B} · ${pl(b, lk.to.g, lk.to.k)}`;

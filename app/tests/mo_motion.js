@@ -5,7 +5,7 @@
  try{
  const idx=t=>LIB.motion.findIndex(x=>x.mo===t);
  // 1) shelf
- info.shelf=LIB.motion.filter(x=>x.mo).map(x=>x.name);if(info.shelf.length!==8||LIB.motion[0].head!=='Ráhúzható mozgások')bad.push('Mozgás polc: '+info.shelf);
+ info.shelf=LIB.motion.filter(x=>x.mo).map(x=>x.name);if(info.shelf.length!==8||LIB.motion[0].head!=='Drag-on motions')bad.push('Mozgás polc: '+info.shelf);
  R.cat='motion';R.libQ='';buildCats();buildShelf();const cards=[...document.querySelectorAll('#items .item')].filter(b=>/on layer/.test(b.textContent));if(cards.length<6)bad.push('rétegre-címke: '+cards.length);
  // 2) hover preview on the selected layer, click attaches
  const A=makeLayer('shape',{name:'Kör',p:{kind:0,size:.15}});st.layers=[A];R.selId=A.id;commit();renderAll();
