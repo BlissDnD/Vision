@@ -11,6 +11,12 @@ import { commit } from './history';
 import { renderInsp, setITab } from './inspector';
 import { markDirty } from './loop';
 import { S } from './effects/index';
+import { cv } from './gl';
+import { outSize } from './render';
+import { ev } from './evaluation';
+import { hitsAt } from './pick';
+import { findItem } from './state';
+import { renderAll } from './history';
 
 export const TB_FONTS = ['Bricolage Grotesque', 'Instrument Sans', 'Fraunces', 'Cinzel', 'Unbounded', 'Syne', 'Orbitron', 'Major Mono Display', 'Bodoni Moda'];
 const AL: [string, string, string][] = [
@@ -50,3 +56,39 @@ export function updTextbar() {
   for (const k of kids) bar.appendChild(k);
 }
 R.updTextbar = updTextbar;
+
+/* ---------- double click on a text on the canvas: edit it in place ---------- */
+let ed: any = null;
+/** Open the in-place editor over text layer L (Enter = new line, ⌘/Ctrl+Enter or click outside = done, Esc = cancel). */
+export function editTextInPlace(L: any) {
+  closeTextEdit(true); if (!L || !L.text) return null;
+  const wrapEl = $('#wrap'), cr = cv.getBoundingClientRect(), wr = wrapEl.getBoundingClientRect(); const { W, H } = outSize(); const t = R.time;
+  const x = ev(L.n.x, BASEK.x, t), y = ev(L.n.y, BASEK.y, t), s = ev(L.n.s, BASEK.s, t);
+  const px = cr.left - wr.left + (x / (W / H) + .5) * cr.width, py = cr.top - wr.top + (.5 - y) * cr.height;
+  const fs = Math.max(14, Math.min(72, s * cr.height * .42));
+  const ta = h('textarea', { class: 'tedit', spellcheck: 'false', 'aria-label': 'Felirat szerkesztése a vásznon', title: 'Enter: új sor · ⌘Enter vagy kattintás mellé: kész · Esc: mégse' }) as HTMLTextAreaElement;
+  ta.value = L.text.str; const before = L.text.str;
+  ta.style.cssText = `font-family:'${L.text.font}',system-ui;font-weight:${L.text.weight};font-size:${fs}px;text-align:${L.text.align || 'center'};`;
+  const fit = () => { const n = ta.value.split('\n'); ta.rows = Math.max(1, n.length); const w = Math.min(wr.width - 24, Math.max(160, Math.max(...n.map(l => l.length)) * fs * .62 + 24));
+    ta.style.width = w + 'px'; ta.style.left = Math.max(8, Math.min(wr.width - w - 8, px - w / 2)) + 'px'; ta.style.top = Math.max(8, py - (fs * 1.15 * Math.max(1, n.length)) / 2 - 6) + 'px'; };
+  fit(); wrapEl.appendChild(ta);
+  ta.oninput = () => { L.text.str = ta.value; fit(); markDirty(); };
+  ta.onkeydown = (e: KeyboardEvent) => { e.stopPropagation(); if (e.key === 'Escape') { L.text.str = before; closeTextEdit(false); markDirty(); } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); closeTextEdit(true); } };
+  ta.onblur = () => closeTextEdit(true);
+  ta.onpointerdown = (e: Event) => e.stopPropagation();
+  ed = { ta, L, before }; setTimeout(() => { ta.focus(); ta.select(); }, 0); return ta;
+}
+export function closeTextEdit(keep: boolean) {
+  if (!ed) return; const { ta, L, before } = ed; ed = null; ta.onblur = null; ta.remove();
+  if (keep && L.text.str !== before) { if (!L.text.str.trim()) L.text.str = before; commit(); renderInsp(); }
+}
+$('#wrap').addEventListener('dblclick', (e: MouseEvent) => {
+  if (R.seqPlay || (e.target as HTMLElement).closest('.hudbar,.hud,.tl,.tlx,.kmenu,.textbar,.scn,.tedit')) return;
+  const r = cv.getBoundingClientRect(); const u = (e.clientX - r.left) / r.width, v = (e.clientY - r.top) / r.height; if (u < 0 || u > 1 || v < 0 || v > 1) return;
+  const cur: any = sel(); let L: any = null;
+  try { const hit = hitsAt(u, v).map((x: any) => x.it).find((it: any) => it.type === 'text' || it.type === 'mtext'); L = hit || null; } catch (_) { /* picking unavailable */ }
+  if (!L && cur && (cur.type === 'text' || cur.type === 'mtext')) L = cur;
+  if (!L) return; e.preventDefault();
+  if (R.selId !== L.id) { R.selId = L.id; renderAll(); }
+  editTextInPlace(findItem(L.id) ? findItem(L.id).it : L);
+});

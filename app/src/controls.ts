@@ -85,8 +85,8 @@ export function fxListUI(L){
   const list=h('div',{class:'fxl'});const n=L.fx.length;let si=Math.min(R.fxSel[L.id]??0,n-1);
   const row=h('div',{class:'fxrow',role:'toolbar','aria-label':'Rétegeffektek sorrendben'});
   L.fx.forEach((F,i)=>{const d=EFFECTS[F.type];
-    const b=h('button',{class:'fxic'+(F.vis?'':' off')+(i===si?' on':'')+(fxFits(F.type,L)?'':' bad'),type:'button',draggable:'true','aria-pressed':String(i===si),title:`${i+1}. ${d.name}${F.vis?'':' (kikapcsolva)'} · húzd az átrendezéshez`,'aria-label':d.name,html:fxIcon(F.type,d.name)});
-    b.appendChild(h('i',{class:'fxno'},String(i+1)));
+    const b=h('button',{class:'fxic'+(F.vis?'':' off')+(i===si?' on':'')+(fxFits(F.type,L)?'':' bad'),type:'button',draggable:'true','aria-pressed':String(i===si),title:`${i+1}. ${d.name}${F.vis?'':' (kikapcsolva)'} · erősség ${Math.round(curV(F.n.opacity)*100)}% · húzd az átrendezéshez`,'aria-label':d.name,html:fxIcon(F.type,d.name)});
+    b.appendChild(h('i',{class:'fxno'},String(i+1)));b.style.setProperty('--s',String(Math.max(0,Math.min(1,curV(F.n.opacity)))));
     b.onclick=()=>{R.fxSel[L.id]=i;if(i===si)R.fxBody[L.id]=!R.fxBody[L.id];renderInsp();};
     b.ondragstart=e=>{e.dataTransfer.setData('text/x-vel-fx',String(i));e.dataTransfer.effectAllowed='move';};
     b.ondragover=e=>{if([...e.dataTransfer.types].includes('text/x-vel-fx')){e.preventDefault();b.classList.add('dropat');}};
@@ -109,7 +109,7 @@ export function fxListUI(L){
     const eye=h('button',{class:'eye','aria-label':'Be/ki',html:F.vis?SVG_EYE:SVG_EYEOFF});eye.onclick=()=>{F.vis=!F.vis;commit();renderInsp();renderLayers();};
     const del=h('button',{class:'eye','aria-label':'Eltávolítás',html:SVG_X});del.onclick=()=>{L.fx.splice(i,1);R.fxSel[L.id]=Math.max(0,i-1);commit();renderInsp();renderLayers();};
     const body=h('div',{class:'fxb',hidden:!open});
-    if(open){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));if(!fxFits(F.type,L))body.appendChild(h('p',{class:'small warn'},'Ezen a rétegen nem hat: '+fxHostNote(F.type)+'.'));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'}));}
+    if(open){if(F.type==='pdisp')body.appendChild(pdispExtra(L,F));if(!fxFits(F.type,L))body.appendChild(h('p',{class:'small warn'},'Ezen a rétegen nem hat: '+fxHostNote(F.type)+'.'));for(const pd of d.params)body.appendChild(ctlParam(F,pd));if(d.usesPal)body.appendChild(palettePicker(F));body.appendChild(ctlSlider(F.n.opacity,{...BASEK.opacity,l:'Erősség'},{onInput:()=>{const ic=row.children[i];if(ic)ic.style.setProperty('--s',String(Math.max(0,Math.min(1,curV(F.n.opacity)))));}}));}
     const toggle=()=>{R.fxBody[L.id]=!open;renderInsp();};tog.onclick=toggle;nm.onclick=toggle;
     list.appendChild(h('div',{class:'fxi'},h('header',null,tog,nm,up,dn,eye,del),body));}
   list.appendChild(h('p',{class:'small'},n?'Balról jobbra hatnak. Ikonra kattintva a beállításai, húzva a sorrend. Könyvtárból is ráhúzhatsz egy Megjelenést erre a rétegre.':'Még nincs rétegeffekt. A „+” vagy a könyvtárból ráhúzott Megjelenés hozzáad egyet.'));return list;}

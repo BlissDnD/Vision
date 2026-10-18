@@ -495,3 +495,8 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .tbchip{border:0;border-radius:999px;background:var(--fill2);color:var(--fg2);padding:4px 10px;font-size:11.5px;cursor:pointer;white-space:nowrap}
 .tbchip:hover{color:var(--fg);background:var(--fill)}
 .textbar .scrub{width:96px}
+/* U4+: strength ring around each effect icon (Erősség 0..1 = 0..360°) */
+.fxic::after{content:"";position:absolute;inset:0;border-radius:9px;padding:2px;background:conic-gradient(from -90deg,var(--accent) calc(var(--s,1)*360deg),transparent 0);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);pointer-events:none;opacity:.75}
+.fxic.add::after{display:none}
+/* inline text editing on the canvas */
+.tedit{position:absolute;z-index:6;min-width:120px;resize:none;border:1.5px solid var(--accent);border-radius:8px;background:rgba(10,10,16,.72);color:#fff;padding:4px 8px;line-height:1.15;outline:none;box-shadow:0 6px 24px rgba(0,0,0,.4);overflow:hidden}

@@ -125,4 +125,4 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `effects/index.ts` `animKeysOf(L)` (időzített effektek listája, máshol tempó-kulcsok), `mainDupOf(L)` (a Fő beállításokban is maradó mozgásparaméterek). Az inspector ezek alapján osztja szét a Tartalom és a Mozgás fül között (8 fölött „Mozgás finomhangolása”, csukva).
 - `controls.fxListUI`: ikonsor (`.fxrow .fxic`, húzás `text/x-vel-fx`), kiválasztás `R.fxSel[L.id]`, lenyitás `R.fxBody[L.id]`, „+” ikonrács (`.fxgrid`). Ikonok: `fxicons.ts` `fxIcon(type,name)` (ismeretlen típus: monogram).
 - `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
-
+- `textbar.ts` `editTextInPlace(L)` / `closeTextEdit(keep)`: `.tedit` textarea a réteg vászonbeli helyén (kamera nélkül számolva); `#wrap` dblclick → `hitsAt` első szövegtalálata (vagy a kijelölt szöveg). Erősség-gyűrű: `.fxic` `--s` + `::after` conic-gradient maszk.

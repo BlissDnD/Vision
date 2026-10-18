@@ -45,6 +45,20 @@
   const f=document.querySelector('#textbar select');f.value='Fraunces';f.dispatchEvent(new Event('change'));if(T.text.font!=='Fraunces')bad.push('betűtípus');
   const c=document.querySelector('#textbar input[type=color]');c.value='#ff0000';c.dispatchEvent(new Event('input'));c.dispatchEvent(new Event('change'));if(T.p.color1.v!=='#ff0000'||Math.round(T.p.fill.v)!==0)bad.push('szín');
   undo();if(T.text.font!=='Fraunces'&&st.layers[0].text.font!=='Fraunces')bad.push('undo szín után a betű');}
+ // 5) strength ring on the effect icons
+ {const P2=makeLayer('plasma',{fx:[['blur',{}]]});P2.fx[0].n.opacity.v=.25;st.layers=[P2];R.selId=P2.id;commit();renderInsp();const ic=document.querySelector('#insp .fxrow .fxic:not(.add)');
+  if(!ic||Math.abs(parseFloat(ic.style.getPropertyValue('--s'))-.25)>1e-6)bad.push('erősség-gyűrű: '+(ic&&ic.style.getPropertyValue('--s')));
+  if(getComputedStyle(ic,'::after').content==='none')bad.push('nincs gyűrű');}
+ // 6) double click on a text: in-place editing, ⌘Enter keeps, Esc cancels, one undo step
+ {const X=makeLayer('text',{text:{str:'Régi',font:'Cinzel',weight:'700',track:.1}});st.layers=[makeLayer('plasma'),X];R.selId=null;commit();renderInsp();
+  const r=cv.getBoundingClientRect();document.querySelector('#wrap').dispatchEvent(new MouseEvent('dblclick',{bubbles:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));
+  const ta=document.querySelector('#wrap textarea.tedit');info.dbl={sel:R.selId===X.id,ed:!!ta};
+  if(!ta||R.selId!==X.id)bad.push('dupla kattintás nem nyit szerkesztőt: '+JSON.stringify(info.dbl));
+  else{ta.value='Új\nsor';ta.dispatchEvent(new Event('input'));if(X.text.str!=='Új\nsor')bad.push('élő átírás');
+   ta.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',metaKey:true,bubbles:true}));if(document.querySelector('#wrap textarea.tedit'))bad.push('⌘Enter nem zár');
+   undo();if(st.layers[1].text.str!=='Régi')bad.push('undo a helyben szerkesztés után: '+st.layers[1].text.str);
+   const X2=st.layers[1];editTextInPlace(X2);const t2=document.querySelector('#wrap textarea.tedit');t2.value='Eldobva';t2.dispatchEvent(new Event('input'));
+   t2.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));if(X2.text.str!=='Régi')bad.push('Esc nem állította vissza');}}
  const Q=makeLayer('plasma');st.layers=[Q];R.selId=Q.id;renderInsp();if(!document.querySelector('#textbar').hidden)bad.push('a szövegsáv nem tűnik el');
  R.selId=null;renderInsp();
  }catch(e){bad.push('ERR '+e.message+' '+(e.stack||'').slice(0,300));}
