@@ -39,7 +39,7 @@
  const sel2=row('Pötty').querySelector('select');sel2.value='deco';sel2.onchange();
  const cb=row('Dátum').querySelector('input');cb.checked=false;cb.onchange();if(moEval(S2,.5))bad.push('kivett elem mozog');
  // 6) Elfogadás = one undo
- [...document.querySelectorAll('.kocard button')].find(b=>b.textContent==='Elfogadás').click();
+ [...document.querySelectorAll('.kocard button')].find(b=>b.textContent==='Accept').click();
  if(R.koPv||document.querySelector('.kocard'))bad.push('a kártya nem zárult');if(R.hi!==hi0+1)bad.push('nem egy undo-lépés: '+(R.hi-hi0));
  info.ko=st.ko&&{ids:st.ko.ids.length,acc:st.ko.acc};if(!st.ko||st.ko.ids.length!==5||st.ko.ids.includes(S2.id)||st.ko.acc!==1)bad.push('st.ko: '+JSON.stringify(st.ko));
  const det=[.2,.5,1,2.5].map(t=>B(T,t).dy);if(det.some((v,i)=>v!==B(T,[.2,.5,1,2.5][i]).dy))bad.push('nem determinisztikus');

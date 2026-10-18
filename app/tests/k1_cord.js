@@ -28,7 +28,7 @@
  dot.onpointerup(pe('pointerup',cx,cy));
  const card=document.querySelector('.kcard');if(!card)bad.push('nincs választókártya');
  else{const opt=card.querySelector('.kopt[data-kind=sunsky]');info.label=opt&&opt.querySelector('b').textContent;
-  if(!opt||!/Napfény/.test(info.label))bad.push('Napfény opció: '+info.label);
+  if(!opt||!/Sunlight/.test(info.label))bad.push('Napfény opció: '+info.label);
   // preview on hover: the sky reacts, but nothing is committed; leaving drops it
   const h0=P(sky,'sunh');sun.n.y.v=-.4;opt.onmouseenter();const hp=P(sky,'sunh');opt.onmouseleave();const h1=P(sky,'sunh');
   info.preview=[h0,hp,h1].map(v=>+v.toFixed(3));if(!(Math.abs(hp-h0)>.05&&Math.abs(h1-h0)<1e-9))bad.push('előnézet: '+info.preview);

@@ -49,7 +49,7 @@
 
  // 4) Loop button explains itself
  st.loop=false;renderTimeline();const tOff=$('#loopBtn').title;st.loop=true;renderTimeline();const tOn=$('#loopBtn').title;info.loopTitle={off:tOff,on:tOn};
- if(!/ki/.test(tOff)||!/be/.test(tOn)||tOff===tOn)bad.push('a Loop gomb nem mondja meg az állapotát');
+ if(!/^Loop: off/.test(tOff)||!/^Loop: on/.test(tOn)||tOff===tOn)bad.push('a Loop gomb nem mondja meg az állapotát');
 
  st.layers=[];st.look=look;st.q=saveQ;resizeMain();R.snapping=false;
  return {bad,info};})()
