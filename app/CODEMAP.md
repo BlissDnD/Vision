@@ -34,12 +34,12 @@
 | `effects/filters.ts` | 19 | effect defs: blur, glow, lens, kaleido, feedback, swirl, warp, ripple, radial, edge, mirror, polar, chroma, psycolor, grade, glitch, film, crt, castlight, texture, … | filters |  |
 | `effects/generators.ts` | 16 | effect defs: plasma, fire, aurora, nebula, liquid, tunnel, sacred, kali, julia, moire, hyper, grid, blackhole, gradient, galaxy, waves, lava, cells, flare | generators |  |
 | `effects/helpers.ts` | 3 | S/SEL/COL param constructors, shared GLSL libs | S, SEL, COL, SKYLIB, CLOUDLIB, BENTO, BENTO_NAMES, BENTO_ANIMS |  |
-| `effects/index.ts` | 12 | EFFECTS registry, BASE params, paramsOf/pdefOf (per-layer params), animKeysOf/mainDupOf, icons, DEFAULT_CODE | EFFECTS, fxFits, fxHostNote, BLOB_PD, DEFAULT_CODE, CP_MAX, CP_KEY, cpDefs, paramsOf, pdefOf, SDF_MAP, SDF_RENDER, DEF_PRIMS, PRIM_T … (+18) |  |
+| `effects/index.ts` | 13 | EFFECTS registry, BASE params, paramsOf/pdefOf (per-layer params), animKeysOf/mainDupOf, icons, DEFAULT_CODE | EFFECTS, fxFits, fxHostNote, BLOB_PD, DEFAULT_CODE, CP_MAX, CP_KEY, cpDefs, paramsOf, pdefOf, SDF_MAP, SDF_RENDER, DEF_PRIMS, PRIM_T … (+18) |  |
 | `effects/mat3d.ts` | 6 | MAT1 · 3D material interface (GLSL side). One block shared by every 3D render path: the SDF raymarchers (obj3d, sdfscene) and the triangle mesh (surface3d). A host … | MAT_GLSL |  |
 | `effects/media.ts` | 2 | effect defs: text, image, lottie, custom | media |  |
 | `effects/motionDesign.ts` | 7 | effect defs: bento, projector | motionDesign |  |
 | `effects/motionText.ts` | 9 | effect defs: mtext, reveal | motionText |  |
-| `effects/objects3d.ts` | 16 | effect defs: surface3d, terrain3d, obj3d, gyroid, inksketch, hologram | objects3d |  |
+| `effects/objects3d.ts` | 20 | effect defs: surface3d, terrain3d, obj3d, gyroid, inksketch, hologram | objects3d |  |
 | `effects/particles.ts` | 3 | effect defs: pdisp, particles, sdfscene | particles |  |
 | `effects/shapes.ts` | 4 | effect defs: shape | shapes |  |
 | `effects/soft3d.ts` | 7 | effect defs: cloud3d, balloon | soft3d |  |
@@ -56,8 +56,8 @@
 | `itemops.ts` | 4 | insert/remove/duplicate/group items, addFromLib/attachFx | insertItem, addFromLib, attachFx, removeItem, delSel, dupSel, moveSel, groupSel, ungroup, moveItemTo | selId |
 | `keyboard.ts` | 4 | keyboard shortcuts |  | tlxSels, time |
 | `layers.ts` | 5 | layer tree (left column): rows, badges, drag/drop | layerBadges, renderLayers | selId |
-| `library.ts` | 15 | built-in shelves: LIB[cat] entries {name, make}, CATS, CAT_HINT | L3, LS, LG, LIB, CATS, CAT_HINT |  |
-| `lightui.ts` | 3 | M6 · Jelenetfény: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first ("lágyabb", "nagyobb csillanás", "melegebb"), global and … | usesLight, lightFromGlint, glint3, lightSection | glint |
+| `library.ts` | 16 | built-in shelves: LIB[cat] entries {name, make}, CATS, CAT_HINT | L3, LS, LG, LIB, CATS, CAT_HINT |  |
+| `lightui.ts` | 6 | M6 · Jelenetfény: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first ("lágyabb", "nagyobb csillanás", "melegebb"), global and … | usesLight, activeLight, addLight, removeLight, lightFromGlint, glint3, lightSection | lightSel, glint |
 | `linkcord.ts` | 17 | K1 · Kapcsolat-zsinór (spec: vel-intuitiv-mozgas-es-kapcsolatok.md 2–3., 9.) The selected element shows a small ⇢ point next to its gizmo. Dragging it draws a thin … | placeable, anchorOf, driverOf, Opt, linkOptions, paramChoices, applyOpt, startCord, closeCard, openChoice, openLinkCard, updCords | kdrag, selId, openLinkCard, updCords |
 | `loop.ts` | 5 | frame loop (rAF): render, gizmo, live control sync, markDirty | markDirty, frame | snapping, dirty, refine, editT, last, time, fpsAcc, fpsN … |
 | `lottie.ts` | 4 | Seekable Lottie Canvas → WebGL adapter; one paused player per asset and render size. | createLottiePlayer, clearLottieCache, lottieMeta, lottieMediaFor |  |
@@ -83,7 +83,7 @@
 | `random.ts` | 25 | Random (moods, seeds) | AXES, MOODS, PAL_AFF, BGS, OVS, FOCALS, SHAPES3, MATS3, ENVS3, FILLS, DIST, STYLE, LOOK_AFF, ADJ … (+16) | selId, rndLast, rndFbT |
 | `recipes.ts` | 33 | RECIPES (built-in recipe groups) + makeRecipe | PLA, RECIPES, makeRecipe |  |
 | `referenceAssets.ts` | 309 | Embedded reference assets: the production HTML must remain self-contained. | WIND_NOISE_ID, GLASS_PHOTO_ID, WIND_NOISE, GLASS_PHOTO |  |
-| `render.ts` | 23 | renderScene/renderList/drawFx/present, camera, layer transforms, light uniforms, outSize | bindTex, setXform, CAMP, CAMK, mkCam, normCam, camXf, camApply, dofCache, dofLayer, openCam, easeSpringJ, easeBounceJ, EASE_FNS … (+27) | CAMON, PPROG, main |
+| `render.ts` | 24 | renderScene/renderList/drawFx/present, camera, layer transforms, light uniforms, outSize | bindTex, setXform, CAMP, CAMK, mkCam, normCam, camXf, camApply, dofCache, dofLayer, openCam, easeSpringJ, easeBounceJ, EASE_FNS … (+29) | CAMON, PPROG, main |
 | `retime.ts` | 9 | M5 · Mozgásblokk és könnyű retime + kézi Jelzések. A layer's motion block = everything timed on it: entry (tm.in*, type "start"), middle events (bento morph), exit … | timeFields, keyRefs, Block, blockOf, cueAt, addCue, removeCue, shiftBlock, stretchBlock, tempoPivot, tempoItem |  |
 | `rndq.ts` | 11 | Q1: Random quality filter. Renders a generated scene small, measures "ugliness" symptoms (dark, muddy, flat, noisy, cluttered, no focus, garish, hard cut, pixelated) … | measureImg, SYMPTOMS, qThreshold, scoreSym, judgeStats, QW, capture, judgeScene, SUSPECTS, fixCulprit | qCtx, qOut |
 | `runtime.ts` | 0 | R: shared mutable runtime state and cross-module hooks | R |  |
@@ -93,7 +93,7 @@
 | `sim.ts` | 4 | Shared scene clock for stateful layers (feedback / "Visszhang", blob tracking). Contract (Vel "egy közös idő"): - Stateless layers are a pure function of scene time … | frameAt, SIM_HZ, STEP, WARM, tickOf, sceneHasState, resetSim, renderAt |  |
 | `spinegrips.ts` | 11 | M6 · Gerincfelület on-canvas editing: one grip per spine point (projected through the layer's own 3D camera), a thin polyline between them, and the "Gerinc" inspector … | isSurf, spineOf, projectPt, rayAt, camBasis, dragSpinePt, updSpineGrips, hitSurface, glintDrag, panStart, panDrag, wheelDist, spineSection | spSel, glint |
 | `stage.ts` | 9 | canvas interaction: drag/scale/rotate gizmo, tools, wheel, fit | wrap, fitCanvas, setTool, toggleFS, toAsp, endDrag, m3x, m3y, PD, sdfAngles, sdfProj, primDrag, gizmoRadius, updGizmo | tool, gizmoOn, drag, CAMON, wheelT |
-| `state.ts` | 7 | st (project), makeLayer/makeGroup/normalize, walk/findItem/sel, looks, light | uid, mkN, makeLayer, makeGroup, normalize, SIZES, LOOKP, LOOKS, mkLook, normLook, LIGHTP, normLight, st, assets … (+6) | uidN, selId |
+| `state.ts` | 8 | st (project), makeLayer/makeGroup/normalize, walk/findItem/sel, looks, light | uid, mkN, makeLayer, makeGroup, normalize, SIZES, LOOKP, LOOKS, mkLook, normLook, LIGHTP, XLIGHT_K, makeXLight, normLight … (+8) | uidN, selId |
 | `tap.ts` | 12 | Időzítés gyorsan · Koppintós időzítés kosárral. T arms „Koppintás”: clicks on layers (canvas or layer list) collect them into a basket in click order (numbered … | entranceStart, basketToggle, basketMove, basketTakeSel, setTapArm, tapNow, tapEsc, renderStrip | tapArm, tapBasket, tapIdx, tapS0, tapDone, tapPulse, tapSetArm, tapNow … |
 | `taste.ts` | 3 | Q1: the user's Random taste. "Ronda" / "Tetszik" votes per scene ingredient (e.g. 'dist:kaleido', 'foc:planet'), turned into pickW weight multipliers. Kept in … | Taste, TASTE, saveTaste, tasteMul, tasteVote, tasteCount, tasteClear, tasteExport, tasteMerge |  |
 | `terrain3d.ts` | 18 | T1 · 3D Terep: seeded procedural heightfield as real geometry (own orbit camera, scene light, cast shadow, water, sky). Height = pure function of (x, z, params): seek … | HALF, QN, gridOf, seedOff, gridN, drawTerrain | terrErr, terrTris |

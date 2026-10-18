@@ -148,6 +148,12 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
 
+## FÉNY2 fények és tükrözés (2026-10-18)
+- `state.ts`: `LIGHTP` + `shape` (SEL), `XLIGHT_K`, `makeXLight`, `normLight` → `more[]` (max 3). `render.ts`: `xLights`, `lightRGB`; `lightU` tölti a `uLShape`, `uLN`, `uXD/uXC/uXS[3]` uniformokat (Felhő/Terep nem deklarálja, ott hatástalan).
+- obj3d-lib (a sdfscene is megkapja): `lShape` (fényforma a tükröződésben), `camRay` (Tükör padlónál emelt kamera), `tr2` (másodlagos sugár: szín + találat), `refrTrace` (belépés–kilépés, teljes belső visszaverődésnél egyenesen tovább). `shadePBR` a `gPrim/gP/gAlb/gRough` globálisokból tudja, hogy elsődleges találat-e.
+- Fordítási idő: a `fx()` AA-ciklusa egyetlen `render()` hívási hely; nehéz függvényt (tr2) ne hívj több helyről, mert minden hívás beinline-olódik.
+- `lightui.ts`: `R.lightSel`, `activeLight`, `addLight`, `removeLight`; `glint3` az aktív fényt írja.
+
 ## MAT1 3D anyag-interfész (2026-10-18)
 - `effects/mat3d.ts` `MAT_GLSL`: uniformok `uMt` (0/1 toll/2 holo), `uMs` erősség, `uMsc` host-lépték (SDF 1, háló 0.12), `uMa/uMb` paramétercsomag, `uMc1/2` színek; `matHit` (találat), `matMiss` (SDF: sziluettkontúr, satírozott talajárnyék, papír), `matWarp` (holo glitch a sugáron), `MX()` keverés.
 - SDF-hostok (obj3d, sdfscene): a találatnál semleges szürke `shadePBR` fényessége a tónus; `uMs≈1` esetén korai visszatérés (nincs plusz költség), különben minden `return` `MX()`-en át. A sdfscene a `head` szeletelés miatt automatikusan megkapja.

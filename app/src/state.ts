@@ -1,5 +1,5 @@
 import { R } from './runtime';
-import { BASE, DEFAULT_CODE, DEF_PRIMS, EFFECTS, S, paramsOf } from './effects/index';
+import { BASE, DEFAULT_CODE, DEF_PRIMS, EFFECTS, S, SEL, paramsOf } from './effects/index';
 
 R.uidN=1;export const uid=()=>'L'+Date.now().toString(36)+(R.uidN++).toString(36);
 export const mkN=(v:any):NParam=>{if(!(v&&typeof v==='object'))return {v,a:0,f:.2,w:0,s:'',sa:.5};const o:NParam={v:v.v,a:v.a||0,f:v.f??.2,w:v.w||0,s:v.s||'',sa:v.sa??.5};if(v.k&&v.k.length)o.k=v.k.map(k=>({...k,bz:k.bz?[...k.bz]:undefined}));return o;};
@@ -46,8 +46,13 @@ export function normLook(o){if(!o||!o.p)return mkLook('Filmes');const b=mkLook(L
 import type { Project, Layer, NParam } from './types';
 /** Global scene light (C / M6): drives the key light, its shadow and the studio glint of obj3d / sdfscene layers.
  * Defaults reproduce the old fixed light (dir normalize(-0.5,0.8,0.6), shadow k 10, colour (1,.97,.92)). */
-export const LIGHTP=[S('az','Irány (körbe, °)',-180,180,-39.81),S('el','Magasság (°)',-10,90,45.58),S('soft','Lágyabb árnyék',0,1,.5),S('size','Nagyobb csillanás',0,1,0),S('warm','Melegebb ↔ hidegebb',-1,1,0),S('pow','Erősség',0,3,1)];
-export function normLight(o){const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}return b;}
+export const LIGHTP=[S('az','Irány (körbe, °)',-180,180,-39.81),S('el','Magasság (°)',-10,90,45.58),S('soft','Lágyabb árnyék',0,1,.5),S('size','Nagyobb csillanás',0,1,0),S('warm','Melegebb ↔ hidegebb',-1,1,0),S('pow','Erősség',0,3,1),SEL('shape','Forma (a tükörképben)',['Kör','Csík','Négyzet','Gyűrű'],0)];
+/** FÉNY2: further lights (st.light.more, max 3): no shadow of their own; same keys as the main light minus 'soft'. */
+export const XLIGHT_K=['az','el','pow','warm','size','shape'],XLIGHT_MAX=3;
+const normX=(o:any)=>{const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP)if(XLIGHT_K.includes(d.k)){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}return b;};
+export const makeXLight=(o:any={})=>normX({p:Object.fromEntries(Object.entries(o).map(([k,v])=>[k,{v}]))});
+export function normLight(o){const b:any={on:!(o&&o.on===false),p:{}};for(const d of LIGHTP){const v=o&&o.p&&o.p[d.k];b.p[d.k]=v&&isFinite(v.v)?mkN(v):mkN(d.def);}
+  b.more=(o&&Array.isArray(o.more)?o.more:[]).slice(0,XLIGHT_MAX).map(normX);return b;}
 export const st:Project={layers:[],bg:'#050409',size:'1920x1080',q:.5,qMode:'auto',look:mkLook('Filmes'),light:normLight(null),dur:10,loop:true,bpm:120,bpmOff:0,bases:{},links:[],cues:[],scenes:[]};
 R.selId=null;export const assets={};export const vectorAssets:Record<string,string>={};export const imgTex=new Map();
 

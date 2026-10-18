@@ -68,17 +68,19 @@ vec2 map(vec3 p){vec3 q=gM*p; float d=1e9; float cc=0.0;
 vec3 calcN(vec3 p){vec2 e=vec2(0.0015,-0.0015);return normalize(e.xyy*map(p+e.xyy).x+e.yyx*map(p+e.yyx).x+e.yxy*map(p+e.yxy).x+e.xxx*map(p+e.xxx).x);}
 `;
 export const SDF_RENDER=`vec4 render(vec2 p){
-  vec3 ro=vec3(0.0,0.0,3.5); vec3 rd=normalize(vec3(p,-1.8));
+  vec3 ro,rd; camRay(p,ro,rd);
   float tt=0.0; float md=1e9; float hit=-1.0;
   for(int i=0;i<128;i++){vec3 pos=ro+rd*tt; float d=map(pos).x; md=min(md,d); if(d<0.0007*(1.0+tt)){hit=tt;break;} tt+=d*0.8; if(tt>10.0) break;}
   vec3 L=uLDir;
   if(hit<0.0){vec4 res=vec4(0.0); float fsh=0.0; vec2 fq=vec2(0.0);
     if(p_floor>0.001&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; float sh=softShadow(fp+vec3(0.0,0.002,0.0),L); float ao=clamp(map(fp).x*1.2,0.0,1.0);
       res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0); fsh=res.a; fq=fp.xz;}
+    if(p_floorM>0.5&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; vec4 m=tr2(fp+vec3(0.0,0.002,0.0),reflect(rd,vec3(0.0,1.0,0.0)));   // FÉNY2 floor mirror
+      float k=clamp(p_mirror*m.a*(0.35+0.65*pow(1.0-abs(rd.y),3.0))*exp(-length(fp.xz)*0.3),0.0,1.0); res.rgb=res.rgb*(1.0-k)+m.rgb*k; res.a=max(res.a,k);}
     float halo=exp(-max(md,0.0)*14.0)*p_glow*0.4; res.rgb+=pal(0.6)*halo; res.a=max(res.a,clamp(halo,0.0,1.0));
     if(uMt>0.5) res=mix(res,matMiss(md,fsh,fq,3.5/(uRes.y*uScale*1.8)),uMs); return res;}
   vec3 pos=ro+rd*hit; vec3 n=calcN(pos); vec3 v=-rd; float ct=map(pos).y-2.0;
-  if(uMt>0.5){float ao0=calcAO(pos,n),sh0=softShadow(pos+n*0.003,L); vec3 g0=shadePBR(n,rd,vec3(0.7),0.55,0.0,ao0,sh0);   // MAT1: host appearance (material3d)
+  if(uMt>0.5){float ao0=calcAO(pos,n),sh0=softShadow(pos+n*0.003,L); vec3 g0=vec3(0.7)*(envMap(n,1.0)*0.9+0.03)*mix(0.35,1.0,ao0)*mix(0.55,1.0,sh0)+0.42*max((dot(n,L)+uLWrap)/(1.0+uLWrap),0.0)*mix(sh0,1.0,uLWrap*0.6)*uLCol*1.6;   // MAT1: host appearance (material3d)
     gMat=matHit(dot(g0,vec3(0.2126,0.7152,0.0722)),max(dot(n,v),0.0),(gM*pos),gM*n,hit/(uRes.y*uScale*1.8),pal(0.3+(gM*pos).y*0.25)*g0*1.3,pos.y);
     if(uMs>0.999) return gMat;}
   float fres=pow(1.0-max(dot(n,v),0.0),3.0); float rough=clamp(p_rough,0.02,1.0); float metal=p_metal; vec3 alb;
@@ -89,11 +91,12 @@ export const SDF_RENDER=`vec4 render(vec2 p){
   else if(mt==3){alb=pal(fres*0.9+n.y*0.3+ct); metal=max(metal,0.75); rough=rough*0.6;}
   else return MX(vec4(n*0.5+0.5,1.0));
   float ao=calcAO(pos,n); float sh=softShadow(pos+n*0.003,L);
+  gP=pos; gPrim=1.0; gAlb=alb; gRough=rough;
   return MX(vec4(shadePBR(n,rd,alb,rough,metal,ao,sh)+pal(0.6)*fres*p_glow*0.25,1.0));}
 vec4 fx(){vec2 p=matWarp(P()); gM=rX(p_rx*PI/180.0)*rY(p_ry*PI/180.0+uTime*p_spin);
-  if(p_aa<0.5) return render(p);
-  vec2 px=vec2(1.0/(uRes.y*uScale));
-  return (render(p+px*vec2(-0.25,-0.25))+render(p+px*vec2(0.25,-0.25))+render(p+px*vec2(-0.25,0.25))+render(p+px*vec2(0.25,0.25)))*0.25;}`;
+  vec2 px=vec2(1.0/(uRes.y*uScale)); int ns=p_aa<0.5?1:4; vec4 acc=vec4(0.0);   // one call site: the raymarcher is inlined once (shader compile time)
+  for(int i=0;i<4;i++){if(i>=ns) break; vec2 o=ns==1?vec2(0.0):px*vec2(i==0||i==2?-0.25:0.25,i<2?-0.25:0.25); acc+=render(p+o);}
+  return ns==1?acc:acc*0.25;}`;
 (()=>{const o3=EFFECTS.obj3d.code;const head=o3.slice(0,o3.indexOf('float body(vec3 q){'));const lib=o3.slice(o3.indexOf('float h1(float n)'),o3.indexOf('vec4 render(vec2 p)'));
   EFFECTS.sdfscene.code=head+SDF_MAP+lib+SDF_RENDER;})();
 export const DEF_PRIMS=[{t:0,op:0,x:0,y:.12,z:0,sx:.55,sy:.55,sz:.55,rx:0,ry:0,k:.25,c:.1},{t:2,op:0,x:0,y:-.38,z:0,sx:.62,sy:.42,sz:.62,rx:0,ry:0,k:.22,c:.55},{t:0,op:1,x:.28,y:.28,z:.38,sx:.26,sy:.26,sz:.26,rx:0,ry:0,k:.12,c:.3}];

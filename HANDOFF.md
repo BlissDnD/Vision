@@ -3,6 +3,8 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**FÉNY2 (0.38.0-feny2, 2026-10-18, 3D lane):** több fény (Fő + 3) aktív-fény csipekkel, fényformák a tükröződésben, valódi tükrözés/törés és padlótükör az obj3d/3D jeleneten. Headless teszttel demonstrálva (`tests/feny2_lights.js`), felhasználói próba hátra. **Következő a 3D lane-ben: 35. sor Skybox/Környezet — újratervezendő** az addon-csomag (`docs/claude-handoff/`, #16 environment-map, #42 Poly Haven HDR, BASE-01 asset-tulajdon) fényében; jóváhagyás kell.
+
 **MAT1 3D anyagok (0.37.0-mat1, 2026-10-18, 3D lane, ág `claude/happy-thompson-41c815`):** közös anyag-interfész a 3D úton (obj3d, sdfscene, Gerincfelület) és két ráhúzható Megjelenés: **Rajzolt toll** (satírozott tollrajz) és **Hologram**. Headless teszttel demonstrálva (`tests/mat1_materials.js`), felhasználói próba hátra (`PROGRESS.md` legfelül). **Következő a 3D lane-ben:** 4. sor (több fény, fényformák, tükrözés/törés, padlótükör), majd 35. sor (Skybox / Környezet); mindkettő előtt javaslat.
 
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).

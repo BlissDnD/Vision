@@ -2,6 +2,17 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — FÉNY2 több fény, fényformák, valódi tükrözés, padlótükör (0.38.0-feny2)
+
+- **Fénycsipek** a Jelenetfény szekcióban: Fő + legfeljebb 3 további fény (+ Fény: ellenfény → hideg kitöltő → meleg felső). Az aktív csip kiemelt (színpötty = fényszín); a csúszkák és a csillanás-húzás az aktív fényt mozgatják. További fény: be/ki, törlés, árnyék nélkül.
+- **Fényformák** (Kör, Csík, Négyzet, Gyűrű): a fényes felületen tükörképként és csillanásként látszanak; a fő fénynél is választható (Kör = régi kép).
+- **obj3d / 3D jelenet:** Tükröződés: Valódi (jelenet) = második sugár, a tárgy önmagát tükrözi; Üveg + Valódi = belépő–kilépő törés. Padló: Tükör = tükörkép a padlón (erő, távolodva halványul), ekkor a kamera kissé felülről néz. A Vel többi rétege nem látszik a tükörben.
+- Shader-fordítás: az élsimítás egy hívási helyre került (headless első kép 135 → 9 mp), a kép pixelre azonos.
+- Új kész testek: Tükrös tóruszcsomó, Üvegkristály tükörpadlón. Mentés: `st.light.more`, `st.light.p.shape`, `reflM/floorM/mirror` alapértékkel, régi projekt változatlan.
+- Célzott teszt: `tests/feny2_lights.js` zöld, `tests/mat1_materials.js` zöld; typecheck 0; teljes kör 42/42 zöld. Javaslat: `docs/javaslatok/FENY2-FENYEK-TUKROZES-JAVASLAT.md` (önjóváhagyva).
+- Próba: 1) Krómkocka, + Fény, a 2. fény formája Csík; 2) csipet váltva húzd a csillanást; 3) Tükrös tóruszcsomó; 4) mentés → újranyitás.
+- Korlát: a tükörkép nem homályosodik érdesség szerint; az üveg sötét környezetben (Stúdió) sötét marad; a Gerincfelület/Felhő/Terep csak a fő fényt látja; fényjelölő a vásznon nincs; M1 Max frame-idő nincs mérve.
+
 ## Állapot: 2026-10-18 — MAT1 3D anyagok: Rajzolt toll + Hologram (0.37.0-mat1)
 
 - **Anyag-interfész a 3D úton:** közös GLSL-blokk (`effects/mat3d.ts`) és uniform-beállító (`material3d.ts`) a 3D objektumhoz, 3D jelenethez és Gerincfelülethez; a host-Megjelenés felülírja a tárgy Anyagát, az Erősség fokozatosan keveri.

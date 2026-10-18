@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.37.0-mat1.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.38.0-feny2.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.
@@ -126,7 +126,7 @@ bento [shape] Bento-rács: layout=0:2 × 2|1:Hős + 2|2:Hős + 3|3:3 oszlop|4:Ol
 projector [fx] Vetítő: dust=0..1(0.5); leak=0..1(0.35); flicker=0..1(0.3); weave=0..1(0.3); shake=0..1(0.25); tone=0:Eredeti|1:Szépia|2:Fekete-fehér|3:Fakó szín; chroma=0..1(0.25); grain=0..1(0.35); vig=0..1(0.45); fps=4..30(12)
 pdisp [fx] Részecskékre bontás: trig=0:Kézi (csúszka)|1:Jelzésekre|2:Ismétlődve; spread=0..3(1.2); out=0.05..3(0.5); hold=0..5(0.3); back=0.1..4(1.1); every=0.3..10(3); amount=0..2(0); turb=0..2(0.5); density=0:65 ezer|1:147 ezer|2:262 ezer; size=0.5..8(1.6); depth=0..1.5(0.1); swirl=0..2(0); wave=0..2(0); jitter=0..1(0); speed=0..3(1); color=0:Eredeti|1:Paletta; bright=0..3(1); pblend=0:Fény (összeadó)|1:Normál
 particles [gen] Részecskék: source=0:Alatta lévő kép|1:Saját kép; density=0:65 ezer|1:147 ezer|2:262 ezer; size=0.5..8(2); thresh=0..1(0.06); depth=0..1.5(0.35); explode=0..2(0); swirl=0..2(0.25); wave=0..2(0); jitter=0..1(0); tilt=-90..90(0); turn=-180..180(0); spin=-1..1(0); speed=0..3(1); color=0:Eredeti|1:Paletta; bright=0..3(1); hidesrc=0:Nem|1:Igen; pblend=0:Fény (összeadó)|1:Normál
-sdfscene [3d] 3D jelenet: material=0:Paletta|1:Agyag|2:Króm|3:Irizáló|4:Normál-színek; env=0:Stúdió|1:Naplemente|2:Kozmikus|3:Neon; rough=0..1(0.5); metal=0..1(0); floor=0..1(0.6); glow=0..3(0.4); aa=0:Gyors|1:4× (lassabb); spin=-2..2(0.15); rx=-180..180(15); ry=-180..180(0); sceneL=0:Nem|1:Igen
+sdfscene [3d] 3D jelenet: material=0:Paletta|1:Agyag|2:Króm|3:Irizáló|4:Normál-színek; env=0:Stúdió|1:Naplemente|2:Kozmikus|3:Neon; rough=0..1(0.5); metal=0..1(0); floor=0..1(0.6); reflM=0:Környezet|1:Valódi (jelenet); floorM=0:Árnyék|1:Tükör; mirror=0..1(0.6); glow=0..3(0.4); aa=0:Gyors|1:4× (lassabb); spin=-2..2(0.15); rx=-180..180(15); ry=-180..180(0); sceneL=0:Nem|1:Igen
 cloud3d [3d] Felhő: shape=0:Gomoly|1:Lapos|2:Tornyos; dens=0.2..3(1.6); soft=0.02..0.4(0.08); detail=0..1(0.6); billow=0:Ki (álló)|1:Be; bspeed=0..2(0.35); wind=-1..1(0); seed=0..20(3); color=#hex; shade=#hex; glow=0..2(0.8); rx=-180..180(0); ry=-180..180(0); sceneL=0:Nem|1:Igen
 balloon [fx] Lufi: infl=0..1(0.85); color=#hex; gloss=0..1(0.75); shine=0..3(1.2)
 liquidglass [fx] Liquid Glass: size=0.4..2(1); blur=0..1(1); quality=0:Gyors|1:Eredeti
