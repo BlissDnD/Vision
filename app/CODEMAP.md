@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (104 fájl)
+## Modulok (105 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -27,6 +27,7 @@
 | `boot.ts` | 2 | startup: autosave restore, first render, shelf build (imported last) |  | selId, last |
 | `camdir.ts` | 4 | K3 · Kamera-rendezés: where the 2.5D camera looks, from scene time only (seek = export = live). st.cam.mode 0 = Kézi (keys), 1 = Célpontok (st.cam.shots [{t,id}]: … | shotAt, camDir | CAMON, camDir |
 | `camui.ts` | 3 | K3 · Kamera ablak bővítése: Mód (Kézi / Célpontok / Útvonalon), célpontlista („Kijelölt réteg mostantól”, időpont, törlés), útvonalválasztó + ismétlés, „Élesség a … |  | camExtra |
+| `catalog.ts` | 6 |  | fold, ROLES, roleOf, catId, catalogIndex, resetCatalog, catSearch, catRoleCounts |  |
 | `choreo.ts` | 16 | KO1 Koreográfia (row 27, first slice): one scene-motion block st.ko = {prof, at, amt (Mérték), sp (Ritmus = spacing), acc (Hangsúly), ids (participants in play … | ROLES, PROFILES, suggestRoles, newKo, koParts, koEnd, koOpen, koClose, koAccept, koDetach | normKo, koMos, koPv, time, koOpen, koSection, koRows, koTlOpen … |
 | `cloud.ts` | 4 | M7b · Felhő + Lufi: blob layout of the shared shape (deterministic from Alak + Változat), the uniforms of the cloud shader (scene light + the Lufi appearance found in … | cloudBlobs, balloonOf, balloonVals |  |
 | `controls.ts` | 16 | inspector widgets: ctlSlider/Select/Color/Switch, section, fxListUI (effect icon row), palette picker | fmt, SECOPEN, section, setFill, ctlSlider, syncTwins, paintBadge, liveKinds, ctlSelect, ctlColor, ctlSwitch, ctlParam, scrubField, palettePicker … (+2) | liveCtl, liveFields, liveSel, fxSel, fxBody |
@@ -99,7 +100,7 @@
 | `rndq.ts` | 11 | Q1: Random quality filter. Renders a generated scene small, measures "ugliness" symptoms (dark, muddy, flat, noisy, cluttered, no focus, garish, hard cut, pixelated) … | measureImg, SYMPTOMS, qThreshold, scoreSym, judgeStats, QW, capture, judgeScene, SUSPECTS, fixCulprit | qCtx, qOut |
 | `runtime.ts` | 0 | R: shared mutable runtime state and cross-module hooks | R |  |
 | `scenes.ts` | 16 | S1 · Jelenetek és átmenetek (leltár 19.) A scene is a saved copy of the composition (layers keep their ids). The Jelenetek strip lists them in order; the workbench … | Scene, scenes, saveScene, loadScene, overwriteScene, removeScene, moveScene, seqTotal, matchLayers, seqFrame, sceneStart, setSeqPlay, closeScnCard, renderStrip … (+1) | selId, seqLen, seqFrame, seqPlay, seqDurSave, time, seqExit, renderStrip … |
-| `shelf.ts` | 8 | library shelf UI: categories, cards, search, thumbnails, audition | libSearch, ikey, dropTag, buildCats, buildShelf, audCache, setAudition | cat, thumbJob, libQ, audition, moAud |
+| `shelf.ts` | 9 | library shelf UI: categories, cards, search, thumbnails, audition | libSearch, ikey, dropTag, buildCats, buildShelf, audCache, setAudition | cat, thumbJob, libQ, libRole, audition, moAud |
 | `signals.ts` | 10 | audio / beat signals | AUD, TAPS, SIG_BASE, SIG_BEAT, sigList, sigLabel, arrAt, sigVal, bandEnv, pct, smoothEnv, pulseEnv, estimateBpm, ensureAC … (+6) | time, audioExport, audioApply, audioReady, audioTok |
 | `sim.ts` | 4 | Shared scene clock for stateful layers (feedback / "Visszhang", blob tracking). Contract (Vel "egy közös idő"): - Stateless layers are a pure function of scene time … | frameAt, SIM_HZ, STEP, WARM, tickOf, sceneHasState, resetSim, renderAt |  |
 | `spinegrips.ts` | 11 | M6 · Gerincfelület on-canvas editing: one grip per spine point (projected through the layer's own 3D camera), a thin polyline between them, and the "Gerinc" inspector … | isSurf, spineOf, projectPt, rayAt, camBasis, dragSpinePt, updSpineGrips, hitSurface, glintDrag, panStart, panDrag, wheelDist, spineSection | spSel, glint |

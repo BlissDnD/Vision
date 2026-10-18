@@ -4,6 +4,8 @@
 
 | Hullám | Nagy task | Gazda | Függő segítő feladat | Státusz | Következő lépés |
 |---|---|---|---|---|---|
+| 2a | STAB-01 mini | Claude | – | **demonstrálva (0.44.0-stab1)** | felhasználói próba |
+| 1 | CAT-01 első szelet | Claude | – | **demonstrálva (0.45.0-cat1)** | felhasználói próba; 2. szelet: témák |
 | 0 | TRIAGE-01 | Claude | – | **kész (2026-10-18)** | Eredmény: `TRIAGE-01-EREDMENY-2026-10-18.md`; következő: STAB-01 mini, majd U5 vagy M6b (felhasználói döntés) |
 
 ## Foglalások

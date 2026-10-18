@@ -245,3 +245,8 @@ Későbbi termékirányok: intuitív 3D scene/tájtervező és filmes AI-vázlat
 - `history.ts` `usedAssets` bejárja a jeleneteket és Közös alapokat; `state.ts` `sameAsset(data)` azonos képet újrahasznál.
 - Hang: `signals.ts` `R.audioExport`/`R.audioApply` (hookok, mert a history nem importálhatja a signals-t); az eredeti fájl data URL-ként egyszer készül importkor; `R.audioReady` promise a háttérdekódoláshoz.
 - `modals.ts` `closeModal` futtatja az egyszeri `R.onModalClose` hookot (export-megszakítás); `variants.ts` `gcLinks` a `commit()`-ban és betöltéskor.
+
+### CAT-01 (0.45.0-cat1)
+- `catalog.ts`: `catalogIndex()` lustán épül LIB-ből (keresés nélkül `resetCatalog`), `catSearch(q, role)`, `catRoleCounts`, `catId`, `roleOf`. A típus az elem nevéből (EFFECTS) és a `make` forrás string-literáljaiból jön.
+- Pontozás: névprefix 100, egyéb saját szó 40, szinonima a névben 60, szinonima a leírásban 15; a szinonima nem illeszt a polc nevére.
+- `shelf.ts` `libSearch` → `catSearch`; `buildCats` keresés közben `.rolechip` gombokat rajzol (`R.libRole`).

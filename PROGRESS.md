@@ -2,6 +2,13 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — CAT-01 első szelet: mindent gyorsan megtalálsz (0.45.0-cat1)
+
+- Új `src/catalog.ts`: stabil elem-azonosító (`polc:név`, saját elemnél `own:`), négy szerep (Források · Formák · Megjelenések · Mozgás), ékezet- és szinonimatűrő kereső a név, leírás és effektkulcs alapján (22 szinonimacsoport).
+- Keresés közben a polcsor szerep-chipekké vált (Mind + szerepek találatszámmal); a keresés törlésekor visszaáll. Régi húzás/thumbnail kulcsok (`ikey`) változatlanok.
+- Teszt: `tests/cat1_search.js` — 20/20 keresési eset (pl. „fust”, „csillogó fém”, „szöveg gömbön”), 298/298 elem indexelve, egyedi id.
+- Próba: írd be „fust”, „króm”, „szöveg gömbön” → a várt elem az első háromban; „lebeg” → Mozgás chip → csak a Lebegés; töröld a keresést → a polcok visszajönnek.
+
 ## Állapot: 2026-10-18 — STAB-01 mini: semmi nem vész el (0.44.0-stab1)
 
 - Mentés: a csak mentett Jelenetben használt kép is a projektfájlba kerül (`usedAssets` jelenetek + Közös alapok); azonos kép egyszer tárolódik (`sameAsset`, kép- és Poly Haven-import).

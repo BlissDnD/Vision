@@ -5,6 +5,8 @@ Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl c
 **Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 28 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
 
 ## Állapot egy mondatban
+**CAT-01 első szelet (0.45.0-cat1, 2026-10-18):** szinonimatűrő kereső, szerep-chipek keresés közben, stabil elem-id (`src/catalog.ts`); `tests/cat1_search.js` 20/20, felhasználói próba hátra. **Következő (javaslat kell):** 2b U5 szín/UI a színaddonokkal, vagy CAT-01 2. szelet (témagyűjtemények). Ütemterv: `docs/claude-handoff/TRIAGE-01-EREDMENY-2026-10-18.md` 6. pont.
+
 **STAB-01 mini (0.44.0-stab1, 2026-10-18):** jelenet-képek és hang a projektfájlban, azonos kép egyszer, export-bezárás = megszakítás, árva Kapcsolat takarítás; `tests/stab1_persist.js` zöld, felhasználói próba hátra (`PROGRESS.md`). Következő: CAT-01 (jóváhagyva).
 
 **TRIAGE-01 kész (2026-10-18):** csomagkártyák vs. valós kód és a kimaradt M6–M10 (C–G) befejezési terve a mai újításokkal: `docs/claude-handoff/TRIAGE-01-EREDMENY-2026-10-18.md`. Javasolt következő: STAB-01 mini (3 adatvesztési hiba), majd U5 vagy M6b „1. kép összeáll”; jóváhagyásra vár.
