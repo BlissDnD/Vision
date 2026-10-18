@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — Q1 Random minőségszűrő
+
+- **Ronda dobások kiszűrése:** minden Random dobást kicsiben (≤640 px, két időpontban) lerenderel és lemér; 10 tünet: túl sötét, beégett, sáros, lapos, zajos (elszigetelt pöttyök, RGB-pöttyök is), zsúfolt, nincs fókusz, túl tarka, kemény egyenes vágás, pixeles (tört periódusú blokkhatárok is). Pontszám 0–100, küszöb a Szigorúság csúszkán (alap 60). A gyengét újradobja (max. 6 próba / ~0,7 mp, a legjobb nyer); a felirat írja, mit dobott el és miért.
+- **Hibás effekt keresése:** zaj / pixelesség / vágás esetén a gyanús effekteket (film, textúra, glitch, chroma, ASCII, raszter, pixel art, feedback, tükör, kaleidoszkóp, CRT, Kinézet-szemcse) egyenként kihagyva újramér; csak a bűnöst gyengíti (átlátszóság) vagy veszi ki (a torzítókat mindig kiveszi).
+- **Receptszabályok:** erős fókusz mellé legfeljebb 1 torzítás; kaleidoszkóphoz nincs színcsúszás/sugár, izzó fókuszhoz nincs külön glow; legfeljebb 3 ráadás-effekt.
+- **Ronda / Tetszik** sáv minden dobás után (Ronda = ritkábban + új dobás); az ízlés a böngészőben és a projektfájlban (`taste`) is megmarad, megnyitáskor összefésül (kétszer megnyitva sem dupláz). Panel: Random → Minőségszűrő (kapcsoló, Szigorúság, Ízlés törlése).
+- Teszt: `tests/rnd_quality.js` zöld; teljes kör: 37/37 zöld. Mérés: headless (CPU) egy dobás szűréssel ~3 s, valódi GPU-n nincs mérve. Verzió: nem emeltem (a párhuzamos T1 a `package.json`-t épp szerkeszti).
+- Próba: 1) 20× R a kedvenc hangulatokkal: hány ronda? 2) Random → Minőségszűrő → Szigorúság max; 3) 3× Ronda kaleidoszkópos jelenetre: ritkábban jön? 4) mentés → újranyitás másik böngészőben/fájlból: megvan az ízlés (Ízlés: N jelzés).
+
 ## Állapot: 2026-10-18 — T1 3D Terep: 0.33.0-terep1
 
 - **Források → 3D Terep** (és Világok → 3D Terep: hegyvidék, dűnék, sziget, kanyon, fennsík, kráteres): valódi magasságmező-háló saját kamerával, jelenetfénnyel, vetett árnyékkal, vízzel, égbolttal és távoli párával.

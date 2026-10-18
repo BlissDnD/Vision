@@ -11,6 +11,8 @@ import { commit, renderAll } from './history';
 import { resetFeedback } from './transport';
 import { openPop, updLookLbl } from './popovers';
 import { toast } from './modals';
+import { fixCulprit, judgeScene, qThreshold } from './rndq';
+import { tasteClear, tasteCount, tasteMul, tasteVote } from './taste';
 
 export const AXES=[['energy','Energia','nyugodt','intenzív'],['complex','Összetettség','minimál','sűrű'],['light','Fény','sötét','ragyogó'],['warm','Hőmérséklet','hideg','meleg'],['organic','Forma','geometrikus','organikus'],
  ['cosmic','Kozmikusság','földi','kozmikus'],['spirit','Szakralitás','profán','szakrális'],['tech','Technológia','analóg','digitális'],['chaos','Rend','rend','káosz'],['dream','Álomszerűség','éles','álomszerű']];
@@ -48,12 +50,15 @@ export const NOUNS=['kapu','ima','látomás','ébredés','visszhang','mag','örv
 export const PCAT={speed:new Set(['speed','spin','rate','shimmer','wander']),intens:new Set(['glow','bright','amount','intensity','core','stars','sun']),complex:new Set(['zoom','density','count','iter','segments','rings','branches','freq','bands','sides','repeat','cycles']),chaos:new Set(['warp','twist','displace','turb','wobble','drift','morph','curve','ripple','jitter'])};
 export function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 export function moodAxes(moods){const a:any={};for(const [k] of AXES)a[k]=.5;for(const m of moods){const d=MOODS[m];if(d)for(const k in d)a[k]+=d[k];}for(const k in a)a[k]=Math.min(1,Math.max(0,a[k]));return a;}
-export const RND:any=(()=>{const def:any={moods:['Kozmikus','Misztikus'],seed:1,variant:0,allow:{d3:true,shapes:true,track:false,style:true,feedback:true},mode:'replace'};
-  try{const o=JSON.parse(localStorage.getItem('latomas2.rnd')||'null');if(o){Object.assign(def,o);def.allow=Object.assign({d3:true,shapes:true,track:false,style:true,feedback:true},o.allow||{});}}catch(_){}
+export const RND:any=(()=>{const def:any={moods:['Kozmikus','Misztikus'],seed:1,variant:0,allow:{d3:true,shapes:true,track:false,style:true,feedback:true},mode:'replace',q:{on:true,strict:.5}};
+  try{const o=JSON.parse(localStorage.getItem('latomas2.rnd')||'null');if(o){Object.assign(def,o);def.allow=Object.assign({d3:true,shapes:true,track:false,style:true,feedback:true},o.allow||{});def.q=Object.assign({on:true,strict:.5},o.q||{});}}catch(_){}
   if(!def.axes)def.axes=moodAxes(def.moods);return def;})();
 export function saveRnd(){try{localStorage.setItem('latomas2.rnd',JSON.stringify(RND));}catch(_){}}
 export function scoreA(aff,ax){let s=0;for(const k in aff)s+=aff[k]*((ax[k]??.5)-.5)*2;return Math.exp(1.7*s);}
-export function pickW(rng,list,ax){const w=list.map(x=>scoreA(x.a||{},ax)*(x.w??1));const tot=w.reduce((a,b)=>a+b,0);let r=rng()*tot;for(let i=0;i<list.length;i++){r-=w[i];if(r<=0)return list[i];}return list[list.length-1];}
+/** Weighted pick by mood affinity; with `cat` the user's taste multiplier (Q1) also applies and the pick is recorded in `keys`. */
+export const ingKey=x=>String(x.t??x.v??x.n??x.i);
+export function pickW(rng,list,ax,cat?,keys?){const w=list.map(x=>scoreA(x.a||{},ax)*(x.w??1)*(cat?tasteMul(cat+':'+ingKey(x)):1));const r0=pickW0(rng,list,w);if(cat&&keys)keys.push(cat+':'+ingKey(r0));return r0;}
+function pickW0(rng,list,w){const tot=w.reduce((a,b)=>a+b,0);let r=rng()*tot;for(let i=0;i<list.length;i++){r-=w[i];if(r<=0)return list[i];}return list[list.length-1];}
 export const toHex=c=>'#'+c.map(x=>Math.round(Math.min(1,Math.max(0,x))*255).toString(16).padStart(2,'0')).join('');
 export function randParams(L,rng,ax){const d=EFFECTS[L.type];const tg={speed:[],intens:[],chaos:[]};
   for(const pd of d.params){if(pd.type)continue;let cat=null;for(const c in PCAT)if(PCAT[c].has(pd.k))cat=c;if(!cat)continue;if(L.type==='blob'&&cat!=='speed')continue;
@@ -63,19 +68,19 @@ export function randParams(L,rng,ax){const d=EFFECTS[L.type];const tg={speed:[],
   return tg;}
 export function generateScene(){
   const ax=RND.axes,A=RND.allow,rs=mulberry32((RND.seed>>>0)||1),rp=mulberry32(((RND.seed*7919)^(RND.variant*104729+1))>>>0);
-  const palList=PALS.map((p,i)=>({i,a:PAL_AFF[i]||{}}));const main=pickW(rs,palList,ax).i;const acc=pickW(rs,palList.filter(x=>x.i!==main),ax).i;
+  const palList=PALS.map((p,i)=>({i,a:PAL_AFF[i]||{}}));const K:string[]=[];const main=pickW(rs,palList,ax,'pal',K).i;const acc=pickW(rs,palList.filter(x=>x.i!==main),ax).i;
   const base=[],focal=[],after=[],tgs=[],sizeT=[];const take=(L)=>{tgs.push([L,randParams(L,rp,ax)]);if(L.p&&L.p.seed)L.p.seed.v=Math.floor(rp()*1000);return L;};
-  const bgT=pickW(rs,BGS.filter(b=>A.d3||b.t!=='gyroid'),ax).t;base.push(take(makeLayer(bgT,{pal:main})));
-  if(rs()<.2+.6*ax.complex){const o=pickW(rs,OVS.filter(x=>x.t!==bgT),ax).t;const L=take(makeLayer(o,{pal:rs()<.6?main:acc,blend:o==='flare'?'add':rs()<.5?'screen':'add',opacity:.3+.45*rs(),key:o==='flare'?0:.5+.4*rs()}));
+  const bgT=pickW(rs,BGS.filter(b=>A.d3||b.t!=='gyroid'),ax,'bg',K).t;base.push(take(makeLayer(bgT,{pal:main})));
+  if(rs()<.2+.6*ax.complex){const o=pickW(rs,OVS.filter(x=>x.t!==bgT),ax,'ov',K).t;const L=take(makeLayer(o,{pal:rs()<.6?main:acc,blend:o==='flare'?'add':rs()<.5?'screen':'add',opacity:.3+.45*rs(),key:o==='flare'?0:.5+.4*rs()}));
     if(o==='flare'){L.n.x.v=(rs()-.5)*1.2;L.n.y.v=(rs()-.3)*.6;}base.push(L);}
-  const foc=pickW(rs,FOCALS.filter(f=>(f.t!=='3d'||A.d3)&&(!f.shape||A.shapes)),ax).t;
-  if(foc==='3d'){const mat=pickW(rs,MATS3,ax).v,s0=.55+.35*rs();
+  const foc=pickW(rs,FOCALS.filter(f=>(f.t!=='3d'||A.d3)&&(!f.shape||A.shapes)),ax,'foc',K).t;
+  if(foc==='3d'){const mat=pickW(rs,MATS3,ax,'mat',K).v,s0=.55+.35*rs();
     const L=makeLayer('obj3d',{name:'Test',pal:acc,s:s0,p:{shape:pickW(rs,SHAPES3,ax).v,material:mat,env:pickW(rs,ENVS3,ax).v,rough:.1+.6*rs(),metal:mat===4?1:rs()<.3?.8:0,detail:.05+.45*rs()*ax.organic,
       floor:rs()<.35?.5:0,ring:mat===2&&rs()<.6?.7:0,rx:(rs()-.5)*60,spin:.08+.6*ax.energy*rs(),displace:rs()*.4*ax.chaos,speed:.2+ax.energy,glow:.3+ax.light*.8}});
     focal.push(L);sizeT.push([L.id,'n.s',s0*.4,s0*1.6]);}
   else if(foc==='portal'){const K:any=[[0,{}],[3,{sides:6}],[6,{inner:.5}],[4,{sides:6,inner:.6}],[8,{sides:8,inner:.4}],[1,{thick:.08}]][Math.floor(rs()*6)];const size=.22+.14*rs();
     const mk=makeLayer('shape',{name:'Maszk',maskOnly:true,p:{kind:K[0],size,soft:.03+.1*rs(),...K[1]}});
-    const fill=take(makeLayer(pickW(rs,FILLS,ax).t,{name:'Kitöltés',clip:true,pal:acc}));
+    const fill=take(makeLayer(pickW(rs,FILLS,ax,'fill',K).t,{name:'Kitöltés',clip:true,pal:acc}));
     const rim=makeLayer('shape',{name:'Perem',blend:'screen',pal:main,p:{kind:K[0],size,outline:.004+.006*rs(),soft:.05,fill:1,...K[1]},fx:[['glow',{p:{amount:1+rs(),radius:2,thresh:0}}]]});
     focal.push(mk,fill,rim);sizeT.push([mk.id,'p.size',size*.4,size*1.6],[rim.id,'p.size',size*.4,size*1.6]);}
   else if(foc==='orb'){const sz=.14+.12*rs();const core=makeLayer('shape',{name:'Mag',maskOnly:true,p:{kind:0,size:sz,soft:.5+.3*rs()}});
@@ -89,24 +94,27 @@ export function generateScene(){
   else if(foc==='symbol'){const kk=[5,6,10,12,8,4,7][Math.floor(rs()*7)];const sz=.2+.12*rs();
     const L=makeLayer('shape',{name:'Szimbólum',blend:'screen',pal:acc,p:{kind:kk,size:sz,outline:.004+.005*rs(),thick:.012,fill:rs()<.5?1:2,inner:.3+.4*rs(),sides:5+Math.floor(rs()*4)},fx:[['glow',{p:{amount:1.2,radius:2,thresh:0}}]]});
     focal.push(L);sizeT.push([L.id,'p.size',sz*.4,sz*1.6]);}
-  const nd=Math.min(2,Math.floor(rs()*.8+ax.complex*1.4+ax.chaos*.6));let pool=DIST.filter(d=>A.feedback||d.t!=='feedback');const before=[];
-  for(let i=0;i<nd&&pool.length;i++){const dd=pickW(rs,pool,ax);pool=pool.filter(x=>x!==dd);const L=take(makeLayer(dd.t));
+  const strongF=['3d','planet','portal','symbol','sacred'].includes(foc);const nd=Math.min(strongF?1:2,Math.floor(rs()*.8+ax.complex*1.4+ax.chaos*.6));let pool=DIST.filter(d=>A.feedback||d.t!=='feedback');const before=[];
+  for(let i=0;i<nd&&pool.length;i++){const dd=pickW(rs,pool,ax,'dist',K);pool=pool.filter(x=>x!==dd);const L=take(makeLayer(dd.t));
     if(dd.t==='mirror')L.p.mode.v=Math.floor(rs()*4);if(dd.t==='polar'||dd.t==='ripple')L.p.mode.v=rs()<.5?0:1;
     if(dd.t==='feedback'){L.p.decay.v=.85+.1*rs();L.p.zoom.v=(rs()-.4)*3;L.p.rot.v=(rs()-.5)*2;L.p.mode.v=rs()<.7?0:1;}
     if(dd.t==='lens'){L.p.mass.v=.4+.8*rs();L.p.hole.v=rs()<.5?0:.8;}if(dd.t==='kaleido')L.p.segments.v=Math.round(3+rs()*(5+ax.complex*10));
     (rs()<.55?before:after).push(L);}
   const sp=STYLE.filter(x=>(x.k!=='style'||A.style)&&(x.k!=='track'||A.track));
-  if(sp.length&&rs()<.12+.45*Math.max(ax.tech,ax.chaos)-.25*ax.dream){const st0=pickW(rs,sp,ax).t;const L=take(makeLayer(st0,{pal:acc}));
+  if(sp.length&&rs()<.12+.45*Math.max(ax.tech,ax.chaos)-.25*ax.dream){const st0=pickW(rs,sp,ax,'sty',K).t;const L=take(makeLayer(st0,{pal:acc}));
     if(st0==='ascii'){L.p.mode.v=Math.floor(rs()*4);L.p.size.v=7+rs()*10;}if(st0==='halftone'){L.p.mode.v=Math.floor(rs()*3);L.p.size.v=6+rs()*14;}
     if(st0==='pixelart'){L.p.size.v=Math.round(3+rs()*8);L.p.levels.v=Math.round(3+rs()*6);}
     if(st0==='blob'){const p=L.p;p.style.v=Math.floor(rs()*6);p.link.v=Math.floor(rs()*5);p.label.v=[1,2,7,5,0][Math.floor(rs()*5)];p.detect.v=rs()<.6?1:0;p.count.v=Math.round(6+rs()*20);
       p.color.v=toHex(palJS(acc,.7));p.colormode.v=rs()<.4?1:0;p.inside.v=rs()<.3?1+Math.floor(rs()*7):0;p.dash.v=rs()<.3?1:0;p.guides.v=rs()<.25?1:0;}
     after.push(L);}
-  if(rs()<.25+.55*ax.light){const L=makeLayer('glow');L.p.amount.v=.4+ax.light*.9;L.p.thresh.v=.25+.3*rs();L.p.radius.v=1+rs()*2;after.push(L);tgs.push([L,{speed:[],intens:['amount'],chaos:[]}]);}
-  if(rs()<.1+.6*ax.cosmic*ax.light)after.push(makeLayer('radial',{p:{amount:.5+rs()*.6,length:.8+rs()}}));
-  if(rs()<.12+.45*ax.organic)after.push(makeLayer('texture',{p:{mode:ax.tech>.6?4:[0,1,3][Math.floor(rs()*3)],amount:.12+.25*rs()}}));
-  if(rs()<.3)after.push(makeLayer('grade',{p:{sat:.8+.6*ax.energy,contrast:1+.2*rs()}}));
-  if(rs()<.1+.5*ax.chaos*ax.energy)after.push(makeLayer('chroma',{p:{amount:.4+rs()}}));
+  // Q1 recipe rules: at most 3 finishing extras; a kaleidoscope gets no colour split / rays, a glowing focal no extra glow
+  const kal=[...before,...after].some(l=>l.type==='kaleido'),glowF=['symbol','portal','sacred'].includes(foc);let nx=0;
+  const X=(k,p,ok=true)=>{if(!ok||nx>=3)return false;const y=rs()<p*tasteMul('x:'+k);if(y){nx++;K.push('x:'+k);}return y;};
+  if(X('glow',.25+.55*ax.light,!(kal&&glowF))){const L=makeLayer('glow');L.p.amount.v=.4+ax.light*.9;L.p.thresh.v=.25+.3*rs();L.p.radius.v=1+rs()*2;after.push(L);tgs.push([L,{speed:[],intens:['amount'],chaos:[]}]);}
+  if(X('radial',.1+.6*ax.cosmic*ax.light,!kal))after.push(makeLayer('radial',{p:{amount:.5+rs()*.6,length:.8+rs()}}));
+  if(X('texture',.12+.45*ax.organic))after.push(makeLayer('texture',{p:{mode:ax.tech>.6?4:[0,1,3][Math.floor(rs()*3)],amount:.12+.25*rs()}}));
+  if(X('grade',.3))after.push(makeLayer('grade',{p:{sat:.8+.6*ax.energy,contrast:1+.2*rs()}}));
+  if(X('chroma',.1+.5*ax.chaos*ax.energy,!kal))after.push(makeLayer('chroma',{p:{amount:.4+rs()}}));
   const life=[...base,...focal.filter(l=>!l.maskOnly)];
   if(life.length&&rs()<.3+.6*ax.energy){const L=life[Math.floor(rs()*life.length)];if(rs()<.5)L.n.hue={v:L.n.hue.v,a:.1+.2*rs(),f:.02+.08*rs(),w:0};else L.n.opacity={v:L.n.opacity.v,a:.15+.2*rs(),f:.05+.2*rs(),w:0};}
   let layers=[...base,...before,...focal,...after];
@@ -119,15 +127,46 @@ export function generateScene(){
   const mkM=(l,cat)=>{const t=[];for(const [L,tg] of tgs){if(!layers.includes(L))continue;for(const k of tg[cat]){const pd=EFFECTS[L.type].params.find(p=>p.k===k);const cur=L.p[k].v;t.push([L.id,'p.'+k,0,Math.abs(cur)<.01?pd.max*.5:cur*2]);}}return t.length?{l,t:t.slice(0,12),v:.5}:null;};
   g.macros=[mkM('Tempó','speed'),mkM('Fény','intens'),mkM('Káosz','chaos'),sizeT.length?{l:'Méret',t:sizeT,v:.5}:null].filter(Boolean);
   for(const m of g.macros)m.v=macroRead(g,m);
-  const look=mkLook(pickW(rs,LOOK_AFF,ax).n);const lp:any=look.p;
+  const look=mkLook(pickW(rs,LOOK_AFF,ax,'look',K).n);const lp:any=look.p;
   lp.temp.v=Math.max(-1,Math.min(1,lp.temp.v+(ax.warm-.5)*.6));lp.sat.v=Math.max(0,Math.min(1.8,lp.sat.v*(.85+.35*ax.energy)));lp.bloom.v=Math.min(2,lp.bloom.v*(.6+ax.light*.9));lp.exposure.v+=(ax.light-.5)*.5;look.preset='Generált';
-  return {group:g,look,bg:toHex(palJS(main,.02).map(x=>x*.1)),title};}
-export function runRandom(fresh){
+  return {group:g,look,bg:toHex(palJS(main,.02).map(x=>x*.1)),title,keys:K};}
+/** Q1: generate and, with the quality filter on, judge the scene on a small render; a failing scene first gets its single
+ * culprit effect weakened/removed, otherwise it is re-rolled (new seed, or new variant for "Variáció"; a typed seed is kept).
+ * Up to 6 tries within ~700 ms; the best one wins. Returns the result with `q` (score, symptoms) and `why` (Hungarian notes). */
+export function pickScene(reroll:'seed'|'variant'|null){
+  const t0=performance.now(),Q=RND.q||{on:true,strict:.5},rej:string[]=[],notes:string[]=[];let best:any=null;
+  for(let i=0;i<6;i++){
+    if(i>0){if(reroll==='seed'){RND.seed=(Math.random()*1e9)>>>0;RND.variant=0;}else if(reroll==='variant')RND.variant++;else break;}
+    const r:any=generateScene();r.seed=RND.seed;r.variant=RND.variant;if(!Q.on)return r;
+    const look=RND.mode==='replace'?r.look:st.look,bg=RND.mode==='replace'?r.bg:st.bg;
+    try{r.q=judgeScene([r.group],look,bg,Q.strict);
+      if(!r.q.pass){const f=fixCulprit(r.group,look,bg,r.q,Q.strict);if(f){r.q=f.q;r.fix=f.msgs;}}}
+    catch(e){console.warn('Random quality check failed',e);return r;}
+    if(!best||r.q.score>best.q.score)best=r;
+    if(r.q.pass)break;
+    rej.push(r.q.sym.slice(0,2).map(x=>x.name).join(', ')||'gyenge');
+    if(performance.now()-t0>700)break;}
+  RND.seed=best.seed;RND.variant=best.variant;
+  if(best.fix)notes.push(...best.fix);
+  const tried=rej.length-(best.q.pass?0:1);if(tried>0)notes.unshift(`${tried} dobást elvetettem (${[...new Set(rej.slice(0,tried).join(', ').split(', '))].slice(0,3).join(', ')})`);
+  if(!best.q.pass)notes.push(`a legjobb is gyenge: ${best.q.sym.slice(0,2).map(x=>x.name).join(', ')}`);
+  best.why=notes;best.ms=Math.round(performance.now()-t0);return best;}
+export function runRandom(fresh,reroll?:'seed'|'variant'|null){
   if(fresh){RND.seed=(Math.random()*1e9)>>>0;RND.variant=0;}
-  const r=generateScene();
+  const r=pickScene(reroll!==undefined?reroll:fresh?'seed':null);
   if(RND.mode==='replace'){st.layers=[r.group];st.look=r.look;st.bg=r.bg;}else insertItem(r.group,null);
-  R.selId=r.group.id;resetFeedback();commit();renderAll();updLookLbl();saveRnd();toast(`${r.title} · #${RND.seed}${RND.variant?'.'+RND.variant:''}`);
+  R.selId=r.group.id;R.rndLast=r;resetFeedback();commit();renderAll();updLookLbl();saveRnd();
+  const msg=`${r.title} · #${RND.seed}${RND.variant?'.'+RND.variant:''}${r.why&&r.why.length?' · '+r.why.join(' · '):''}`;toast(msg);showRndFb(msg);
   const sf=document.getElementById('seedIn');if(sf)(sf as HTMLInputElement).value=RND.seed;}
+/** "Ronda" (dislike: its ingredients get rarer, then a new roll) / "Tetszik" (like: more often) on the last Random scene. */
+export function rndVote(v:1|-1){const r=R.rndLast;if(!r||r.voted)return false;r.voted=true;tasteVote(r.keys||[],v,{score:r.q?.score,sym:r.q?r.q.sym.map(x=>x.k):[]});
+  if(v<0)runRandom(true);else{hideRndFb();toast('Megjegyeztem: ilyesmit gyakrabban dobok.');}return true;}
+R.rndFbT=undefined;
+function hideRndFb(){const el=document.getElementById('rndFb');if(el)el.hidden=true;}
+function showRndFb(msg){let el=document.getElementById('rndFb');
+  if(!el){el=h('div',{class:'rndfb',id:'rndFb',role:'group','aria-label':'Random visszajelzés'});document.body.appendChild(el);}
+  el.replaceChildren(h('span',{class:'rndfb-t'},msg),h('button',{class:'btn',title:'Az összetevőit ritkábban választom, és dobok újat',onclick:()=>rndVote(-1)},'Ronda'),h('button',{class:'btn',title:'Az összetevőit gyakrabban választom',onclick:()=>rndVote(1)},'Tetszik'));
+  el.hidden=false;$('#toast').hidden=true;clearTimeout(R.rndFbT);R.rndFbT=setTimeout(hideRndFb,9000);}
 export function openRandom(anchor){
   const chips=h('div',{class:'chips',role:'group','aria-label':'Hangulatok'},...Object.keys(MOODS).map(m=>h('button',{class:'chip','aria-pressed':String(RND.moods.includes(m)),onclick:()=>{
     RND.moods=RND.moods.includes(m)?RND.moods.filter(x=>x!==m):[...RND.moods,m];RND.axes=moodAxes(RND.moods);saveRnd();openRandom(anchor);}},m)));
@@ -135,6 +174,7 @@ export function openRandom(anchor){
   const sw=(lab,key)=>ctlSwitch(lab,RND.allow[key],v=>{RND.allow[key]=v;saveRnd();});
   const seedIn=h('input',{class:'txt',id:'seedIn',value:RND.seed,inputmode:'numeric','aria-label':'Mag (seed)',style:'max-width:140px'});
   seedIn.onchange=()=>{const v=parseInt(seedIn.value,10);if(isFinite(v)){RND.seed=v>>>0;RND.variant=0;runRandom(false);}};
+  const qObj={v:RND.q.strict,a:0};
   const modeObj={get v(){return RND.mode==='add'?1:0;},set v(x){RND.mode=x?'add':'replace';saveRnd();}};
   const det=(t,open,...k)=>{const d=h('details',{class:'sec',style:'padding:0;border-top:1px solid var(--sep)'},h('summary',null,t),h('div',{class:'content'},...k));d.open=open;return d;};
   openPop(anchor,'wide',h('div',{class:'pl'},'Véletlen látomás'),h('div',{class:'pc'},
@@ -142,7 +182,11 @@ export function openRandom(anchor){
     chips,
     det('Finomhangolás',false,...axCtl,h('button',{class:'btn',onclick:()=>{RND.axes=moodAxes(RND.moods);saveRnd();openRandom(anchor);}},'Vissza a hangulatokhoz')),
     det('Mi kerülhet bele',false,sw('3D testek','d3'),sw('Formák és maszkok','shapes'),sw('Visszhang (feedback)','feedback'),sw('Stilizálás (ASCII, pixel, raszter, glitch)','style'),sw('Blob-követés','track')),
+    det('Minőségszűrő',false,ctlSwitch('Ronda dobások kiszűrése',RND.q.on,v=>{RND.q.on=v;saveRnd();}),
+      ctlSlider(qObj,{k:'strict',l:'Szigorúság',min:0,max:1},{noAnim:true,onInput:()=>{RND.q.strict=qObj.v;saveRnd();}}),h('div',{class:'axhint'},h('span',null,'laza'),h('span',null,'szigorú')),
+      h('p',{class:'small'},`Minden dobást kicsiben lemérek (sötét, sáros, lapos, zajos, zsúfolt, fókusz nélküli, tarka, kemény vágás, pixeles), és a gyengét újradobom. Küszöb: ${Math.round(qThreshold(RND.q.strict))}/100. Ízlés: ${tasteCount()} jelzés (a projektfájl is viszi).`),
+      h('button',{class:'btn',onclick:()=>{if(confirm('Törlöd a Ronda/Tetszik jelzéseidet?')){tasteClear();openRandom(anchor);}}},'Ízlés törlése')),
     ctlSelect(modeObj,SEL('mode','Eredmény',['Új jelenet','Hozzáadás rétegként'],0)),
     h('div',{class:'row2'},h('span',null,'Mag'),seedIn),
-    h('div',{class:'btnrow',style:'justify-content:flex-end'},h('button',{class:'btn',title:'Ugyanaz a felépítés, más paraméterekkel',onclick:()=>{RND.variant++;runRandom(false);}},'Variáció'),h('button',{class:'btn accent',onclick:()=>runRandom(true)},'Generálás  (R)'))));}
+    h('div',{class:'btnrow',style:'justify-content:flex-end'},h('button',{class:'btn',title:'Ugyanaz a felépítés, más paraméterekkel',onclick:()=>{RND.variant++;runRandom(false,'variant');}},'Variáció'),h('button',{class:'btn accent',onclick:()=>runRandom(true)},'Generálás  (R)'))));}
 $('#rndBtn').onclick=e=>openRandom(e.currentTarget);

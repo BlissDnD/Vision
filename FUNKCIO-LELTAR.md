@@ -54,6 +54,7 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 | 40 | **3D anyagok: Rajzolt toll (R3F Sketch Material, MIT) + Hologram** (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`) | **T** | Van 3D renderút (`mesh3d.ts`, `objects3d.ts`), anyagcsatlakozó nincs. | Előbb anyag-interfész a 3D úton, utána a két anyag a Megjelenések polcról. |
 | 41 | **Kép újravilágítása** (codrops relighting, MIT, WebGPU → saját WebGL2-passz) (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`) | **T** | Nincs mélységtérkép. | Mélységtérkép import/generálás + javító UI, fényfogantyú, Jelenetfény-Kapcsolat. |
 | 42 | **Beszélő karakter** (TalkingHead + HeadAudio, MIT) (`docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`) | **T** | Prototípus: `docs/spec/vel-beszed-ido-prototipus.mjs`; GLB-rig/morph nincs. | GLB + morph import, előre időzített viseme-görbék, determinisztikus export; élő TTS/mikrofon később. |
+| 43 | **Random minőségszűrő + ízlés** (Q1, 2026-10-18) | **D (Q1)** | 10 tünetes mérés kis renderen, újradobás, hibás effekt gyengítése/kivétele, receptszabályok, Ronda/Tetszik ízlés (böngésző + projektfájl); headless tesztelve (`tests/rnd_quality.js`). | Felhasználói próba; küszöbök tanulása a jelzésekből; „Hatos rács” (6 előnézet, kattintásra választ); a 2026-10-18-i sötét-sáv hiba (`BUGS.md`) előidézése. |
 
 ## Ami az A–B szakaszból tényleg működik (D, nem K)
 - Egy jelenetóra, Loop nélküli továbbfutás, determinisztikus ugrás/export, régi projektek megnyitása, export-beállítás a projektben (M1).

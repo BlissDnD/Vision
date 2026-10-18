@@ -133,6 +133,11 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - Kamera: `mesh3d.ts` `camOf` és MSAA-cél (`targets`, most exportálva). `gridN`: 160/384/640 csúcs, ≥1800 px magas kimeneten ×2 és +1 oktáv (4K export).
 - Licenc: a zajmag (hash12, vnoise, fbm, ridged, terrace, crater2, dune2, vnoised2) a ZyFou/ProceduralTerrains-ből származik (MIT, © 2026 ZyFou); a szöveg a fájl fejlécében van.
 
+## Q1 Random minőségszűrő (2026-10-18)
+- `rndq.ts`: `measureImg` (nyers statisztika RGBA-ból), `SYMPTOMS` (bővíthető tünetlista: `{k,name,w,p(stats)}`), `judgeStats`/`scoreSym` (0–100, `qThreshold(strict)`), `capture`/`judgeScene` (saját `R.qCtx`, ≤640 px, `st.look` ideiglenesen cserélve), `fixCulprit` (gyanús effekt kihagyása → gyengítés/kivétel).
+- `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
+- `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
+
 ## Időzítés gyorsan (2026-10-18)
 - `tap.ts`: nem mentett állapot `R.tapArm/tapBasket/tapIdx/tapS0`; `tapNow(t)` az első koppintáskor `snapshot()`-ot tesz el, `shiftBlock(L, t−entranceStart, false)` vagy `makeMo('spring',{at:t})`, `addCue`; commit csak a menet végén (egy undo), `tapEsc` = `restore(tapS0)`. Vászonkattintás `document` capture-ben (a `pick`/`stage` elé), listakattintás `R.tapToggle`, jelvény `R.tapBadge`, vászonszámok `R.updTap` (loop.ts).
 - `retime.ts` `tempoItem(it,f)`: t → a+(t−a)/f a blokk elejéhez (`tempoPivot`, csoportnál közös), hosszak /f, period/ry.cyc /f, speed/rate/hullám-f ×f; `it.tpo` a chip-állapot (opcionális mező, hiánya = 1×).
