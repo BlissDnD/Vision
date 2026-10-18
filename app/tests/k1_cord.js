@@ -59,7 +59,7 @@
  const hC=P(sky2,'sunh');sun2.n.y.v=-.35;const hD=P(sky2,'sunh');info.reload=[st.links.map(l=>l.kind||'param').join(),+hC.toFixed(3),+hD.toFixed(3)];
  if(st.links.length!==2||!(hD<hC-.3))bad.push('újranyitás után: '+info.reload);
  R.selId=sky2.id;renderInsp();setITab('motion');const lst=[...document.querySelectorAll('#insp .linkrow')].map(r=>r.textContent);info.insp=lst;
- if(!lst.some(t=>/fénye/.test(t)))bad.push('Kapcsolatok lista: '+lst);
+ if(!lst.some(t=>/light →/.test(t)))bad.push('Kapcsolatok lista: '+lst);
  // old parameter links still listed and working
  addLink({id:sun2.id,g:'p',k:'bright'},{id:sky2.id,g:'p',k:'glow'},'add',1);commit();renderInsp();if(document.querySelectorAll('#insp .linkrow').length!==2)bad.push('régi paraméter-kapcsolat nincs a listában');
  st.layers=[];st.links=[];commit();

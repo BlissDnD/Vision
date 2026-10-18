@@ -58,7 +58,7 @@
  else{const s=kb.querySelector('select');if(s.value!=='sub')bad.push('Mozgás fül szerepe: '+s.value);s.value='deco';s.onchange();if(st.ko.roles[S1.id]!=='deco')bad.push('szerepváltás a rétegen');
   const c=document.querySelector('#insp .kobox input[type=checkbox]');c.checked=false;c.onchange();if(st.ko.ids.includes(S1.id))bad.push('részvétel kikapcsolása');}
  R.selId=T.id;renderInsp();const tb=[.2,.5,.9,2].map(t=>B(T,t));
- [...document.querySelectorAll('#insp .kobox button')].find(b=>b.textContent==='Önálló mozgássá').click();
+ [...document.querySelectorAll('#insp .kobox button')].find(b=>b.textContent==='Make independent motion').click();
  const ta=[.2,.5,.9,2].map(t=>B(T,t));if(!(L(T.id).mo||[]).some(m=>m.t==='spring')||st.ko.ids.includes(T.id))bad.push('Önálló mozgássá: '+JSON.stringify(L(T.id).mo));
  if(tb.some((b,i)=>!near(b.dy,ta[i].dy)||!near(b.sc,ta[i].sc)||!near(b.op,ta[i].op)))bad.push('önálló mozgás más: '+JSON.stringify([tb[1],ta[1]]));
  // 9) Esc closes a new preview without change; save → open keeps the block; undo works
