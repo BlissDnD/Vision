@@ -2,6 +2,13 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — PH1 Poly Haven képek (0.35.0-ph1)
+
+- **Szöveg és média → Poly Haven textúrák:** 12 elemes, kereshető CC0-válogatás; a kártyára kattintva csak a választott hivatalos 2K JPG töltődik le, saját képréteg lesz belőle.
+- A kép és az eredet (Poly Haven assetazonosító, forráslink, CC0) a projektben marad; az import egy lépésben visszavonható. A katalóguslista helyi, a letöltéshez internet kell.
+- Célzott teszt: `tests/polyhaven_import.js` (polc, keresés, réteg, forrás, offline projekt, undo/redo, hibás válasz) zöld. A teljes kör első futásán 37/39 zöld; a másik két próba tesztfeltételét javítottam (aszinchron Lottie fájlejtés, új nem projekt JSON-minták), majd külön mindkettő zöld. Typecheck és production build zöld. A valódi hálózatos betöltést a felhasználó próbálja ki; WebGL-kép és 4K minőség próba hátra.
+- Próba: 1) Szöveg és média → Poly Haven textúrák; 2) keress „márvány”-ra és kattints; 3) mentsd a projektet, nyisd újra internet nélkül. 2D képet kapsz; PBR-anyag, 3D célra húzás és teljes online katalógus még nincs.
+
 ## Állapot: 2026-10-18 — L1 Lottie vektoranimáció (0.34.0-l1)
 
 - **Források → Vektoranimáció (Lottie)** vagy Projekt → Vektoranimáció importálása: helyi, tisztán vektoros `.json` előnézete és hozzáadása; a fájl ablakra ejtése is ide jut, a Vel-projekt/preset továbbra is saját importútján marad. Az importablak a LottieFiles gyűjteményét külön lapon nyitja meg; onnan a JSON-fájlt le kell tölteni, beépített online kereső nincs.

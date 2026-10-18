@@ -43,6 +43,7 @@ import './linkcord';
 import './scenes';
 import './presets';
 import './lottieImport';
+import './polyhaven';
 import './textbar';
 import './moui';
 import './tap';

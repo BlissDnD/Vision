@@ -44,7 +44,8 @@
   const missing=migrateProject({...o,vectorAssets:{}});if(!missing.missingMedia.includes(L.name))bad.push('missing vector asset was not reported');
   const count=st.layers.length;try{parseVectorLottie(JSON.stringify({...root,assets:[{id:'x',p:'remote.png'}]}));bad.push('external image accepted');}catch(_){}
   if(st.layers.length!==count)bad.push('invalid input changed project');
-  const dt=new DataTransfer();dt.items.add(file);window.dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:dt}));await new Promise(r=>setTimeout(r,80));
+  const dt=new DataTransfer();dt.items.add(file);window.dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:dt}));
+  for(let attempt=0;attempt<12&&!document.querySelector('#dlg')?.textContent.includes('Vektoranimáció importálása');attempt++)await new Promise(r=>setTimeout(r,25));
   if(!document.querySelector('#dlg')?.textContent.includes('Vektoranimáció importálása'))bad.push('JSON drop opened preset instead of Lottie');closeModal();
   info.glError=gl.getError();if(info.glError)bad.push('GL error '+info.glError);
  }catch(e){bad.push('ERR '+e.message+' '+(e.stack||'').slice(0,350));}

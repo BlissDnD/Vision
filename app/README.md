@@ -139,6 +139,10 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `L.media` = `{start,speed,loop}`; ez külön van a kulcsanimáció `kloop`-jától. `timeline.ts` kompakt média-blokkot mutat; `history.ts` csak a használt `vectorAssets` rekordokat menti. `autosave.ts` a teljes projektet IndexedDB-ben tárolja, teljes localStorage-tartalékkal és hibajelzéssel.
 - Integrációs próba: `tests/lottie_import.js`; kézi mintafájl: `tests/fixtures/vel-lottie-circle.json`. A képes/szöveges/fontos/expression Lottie ebben a szeletben tiltott. Függőség: `lottie-web` MIT, licence a buildelt HTML-be is beágyazva.
 
+## PH1 Poly Haven textúraképek (2026-10-18)
+- `polyhaven.ts`: 12 kurált Poly Haven CC0 textúra (hivatalos 2K diffuse JPG és bélyegkép); helyi keresés, kiválasztott kép CORS-letöltése, méret/MIME-ellenőrzés, képréteg és beágyazott asset.
+- A `Layer.source` forrásadat a projekt-JSON-nal megmarad. Az API-t az app futás közben nem hívja (az előírt egyedi User-Agent böngészőből nem állítható); ez 2D képimport, nem PBR-adapter. Próba: `tests/polyhaven_import.js`.
+
 ## Q1 Random minőségszűrő (2026-10-18)
 - `rndq.ts`: `measureImg` (nyers statisztika RGBA-ból), `SYMPTOMS` (bővíthető tünetlista: `{k,name,w,p(stats)}`), `judgeStats`/`scoreSym` (0–100, `qThreshold(strict)`), `capture`/`judgeScene` (saját `R.qCtx`, ≤640 px, `st.look` ideiglenesen cserélve), `fixCulprit` (gyanús effekt kihagyása → gyengítés/kivétel).
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.

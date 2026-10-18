@@ -1,7 +1,7 @@
 // M1 · régi projektek megnyitása: v8 / v12 fájlok, ismeretlen elem jelentése, mentés→újranyitás.
 (()=>{const bad=[],info={};const FX=/*FIXTURES*/;
  const count=ls=>ls.reduce((n,l)=>n+1+(l.children?count(l.children):0)+(l.fx?l.fx.length:0),0);
- for(const name in FX){const o=FX[name];let m;
+ for(const name in FX){const o=FX[name];if(!o?.state?.layers)continue;let m;
    try{m=loadProject(JSON.parse(JSON.stringify(o)));}catch(e){bad.push(name+': '+e.message);continue;}
    const want=count(o.state.layers),got=count(st.layers);
    const out=renderScene(st.layers,R.main,1.5,st.bg);present(R.main,out.t,null,cv.width,cv.height,1.5);const err=gl.getError();
