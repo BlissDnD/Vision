@@ -1,0 +1,8 @@
+/** Isolated usage example for 22-ik-chain; host contract: ../shared/gallery-host.mjs. */
+import * as m from "../modules/22-ik-chain.mjs";
+export async function run(host) {
+  const value = await m.create();
+  return value?.isObject3D
+    ? { object: value, seek: value.userData.seek }
+    : { data: value };
+}
