@@ -1,0 +1,11 @@
+{
+  "planningOnly": true,
+  "formSourceCodeAvailable": false,
+  "appRuntimeOrVisualVerified": false,
+  "workPackages": 8,
+  "featureItems": 89,
+  "observedVelVersion": "0.43.0-merge",
+  "checks": 178,
+  "localLinks": 32,
+  "errors": []
+}

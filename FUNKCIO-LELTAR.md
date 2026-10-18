@@ -71,3 +71,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 **Többagentes Claude-előkészítés (2026-10-18):** `docs/claude-handoff/00-START-HERE.md`. Mind a44 jelenlegi követelménysor (a két külön28-as megőrzésével),63 addon+2layout és96 új ötlet munkacsomaghoz rendelve. Kategória/UX/adapter/mentés/idő/render feladatok együtt tervezve. Előkészítés, a fenti T/R/D/K termékállapotokat nem emeli.
 
 **Két új későbbi irány (T, 2026-10-18):** SCENE-01 – pár kattintásos artisztikus 3D tájépítés, assetelhelyezés és auto lighting; AI-PREVIZ-01 – AI-kép-/videógenerátorhoz filmes vázlat-/storyboard-/animatikmód. Részletek: `docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`. Közös scene/kamera/asset, a meglévő réteges 3D nem teljesíti automatikusan. Nincs implementálva vagy elindítva.
+
+**FORM → ShapeGen [T,2026-10-18]:** `docs/claude-handoff/shapegen/00-START-HERE.md`. Új belső fül négy generátorral és megőrzött rajz/geometry/asset funkciókkal; Add from Gen/Library, Solo/Scene/Split, visszavonható célapply, paraméteres Library és újraszerkesztés.89 tételes mátrix,8 munkacsomag. Terv, nincs implementálva; a csatolt forrásátadó nem tartalmazza a FORM-kódot.

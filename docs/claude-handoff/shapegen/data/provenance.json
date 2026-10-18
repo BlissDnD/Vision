@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "planningOnly": true,
+  "observedVelVersion": "0.43.0-merge",
+  "velCommitAtPlanning": "b18ca0879209604b0e3e58fc6b898386fe263aa7",
+  "attachment": {
+    "originalPath": "/Users/miksa/Downloads/FORM_AGENT_HANDOFF.md",
+    "snapshotPath": "references/FORM_AGENT_HANDOFF-v8.md",
+    "sha256": "ab1db6c9afdb48707625a31c04dd08b688ce177fe5f3d13b220d8cebd5c9322a",
+    "authority": "Reference content only; current user request and8-point supplement are instructions."
+  },
+  "form": {
+    "sourceCodeAvailable": false,
+    "sourceVersionClaim": "v8",
+    "claimedPublishedCommit": "48788948352327a58691f6f29222884cfb54343b",
+    "claimedSourcePath": "/workspace/sites/shape-generator",
+    "runtimeOrVisualVerifiedHere": false
+  },
+  "velSources": [
+    {
+      "path": "app/package.json",
+      "sha256": "def3b557ecfcb3107c4e8076d2729e477d3e1e9e5f86ceccdbe5b4554e0ae879"
+    },
+    {
+      "path": "app/CODEMAP.md",
+      "sha256": "7dc66cb6d77d5ede9abd025fe7523686246c0e21817431daadd25111dbc3f356"
+    },
+    {
+      "path": "app/src/paths.ts",
+      "sha256": "fd1c0d8792c4f75bf0f8695d130c3f1ac221fe2a73704346a87934cb75191fdb"
+    },
+    {
+      "path": "app/src/pathdraw.ts",
+      "sha256": "c52f7a288ece9323704b3626ee850dbc582f033a13f7151254556e7099e4d682"
+    },
+    {
+      "path": "app/src/pathedit.ts",
+      "sha256": "498620291fdbd0072c3315dbc915701254e3de4a495f97624b0c4b4d0399f7e4"
+    },
+    {
+      "path": "app/src/userlib.ts",
+      "sha256": "c4c3ab4c946d9ff942a795937b7699fa53b326300bdfcf522c1e7fadf2cfd1b0"
+    },
+    {
+      "path": "app/src/presets.ts",
+      "sha256": "ec34bff1f652c884acab1000003167c513ac4704c4fde004365a10b627c36482"
+    },
+    {
+      "path": "app/src/lottieCore.ts",
+      "sha256": "d02c6d732b4c7539f3d81798d076be60e77fdc83ca7df9b360b7ccc733477e97"
+    },
+    {
+      "path": "app/src/lottie.ts",
+      "sha256": "63733132a55f8e7e1fc444d81867a391af7a3e48fdf93b2a63a45e40ae5bb930"
+    },
+    {
+      "path": "app/src/history.ts",
+      "sha256": "488505c93cb9467af1ee2b11a3890740947beba576b7f565f5d020578610b0ef"
+    },
+    {
+      "path": "app/src/render.ts",
+      "sha256": "bf91b5cb20ccc0626a32644726ef82d43a5ee6f742537b9d296eca3f06547799"
+    },
+    {
+      "path": "app/src/workspace.ts",
+      "sha256": "300a56d8149770f64165c7a7a0efdf19943c02273c736cc169b3e1b57c328a19"
+    },
+    {
+      "path": "app/src/scenes.ts",
+      "sha256": "2bd50b47799729a92f5cb96610af5c0221044df6f5f5ad5b353bd6d6ca660996"
+    },
+    {
+      "path": "app/src/output.ts",
+      "sha256": "5f12a867471b074790189a74547e15da78f5efa0ec73275af89c705d52fd5be0"
+    },
+    {
+      "path": "app/src/effects/index.ts",
+      "sha256": "87c9201d18eaff397143b969c1b0b48ef18d3dc3350866bb9fa9c80b6a610f7c"
+    },
+    {
+      "path": "app/src/effects/text3d.ts",
+      "sha256": "49b4bb643d5c93ea827088c4cd01e5aad7f6487442b3ec7ecc8794e6e9c61214"
+    }
+  ],
+  "notes": [
+    "Current Vel source takes precedence over old0.36 handoff snapshot.",
+    "Existing dirty docs/claude-handoff/00-START-HERE.md is outside this change and preserved.",
+    "No FORM app instructions, test commands, publishing or access modifications executed."
+  ]
+}

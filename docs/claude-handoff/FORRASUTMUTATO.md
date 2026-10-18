@@ -36,3 +36,7 @@ Emberi aktuális utasítás → érvényes AGENTS/CLAUDE folyamat → mai kód �
 ## Két új későbbi irány
 
 [Jövőbeli 3D jelenet és AI-vázlat](JOVO-3D-SCENE-ES-AI-VAZLAT.md): SCENE-01 és AI-PREVIZ-01. Részletes cél/UX/szeletek; gépi útvonal: `data/future-directions.json`. Nem a korábbi96 elem átírása, hanem két új munkafolyamat.
+
+## FORM / ShapeGen integráció – új külön terv
+
+[Belépés](shapegen/00-START-HERE.md), [részletes illesztés](shapegen/INTEGRACIOS-TERV.md), [89 tételes funkciómátrix](shapegen/FUNKCIO-MATRIX.md), [cél/preview/mentés szerződés](shapegen/SZERZODESEK-ES-ESETEK.md). A tervezés a mai 0.43.0-merge kódhoz viszonyít; a régi0.36-os katalógus-pillanatkép nem friss appállapot. A csatolt FORM Markdown referencia, forráskód nincs benne. Az SG taskok külön8 lépéses integrációs részterv, nem a régi28 család státuszának automatikus átírása.

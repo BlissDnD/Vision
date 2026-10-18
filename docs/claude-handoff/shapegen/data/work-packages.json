@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "scope": "Planning only;8 Shapegen work packages separate from the historical28-family main backlog",
+  "tasks": [
+    {
+      "id": "SG-00",
+      "title": "FORM-forrás és mai Vel baseline",
+      "dependsOn": [],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "A tényleges FORM v8 forrás és licencek átvétele; funkciónként eredeti függvény, paraméter, teszt és referenciakép. A mai Vel P2/E1/F1/F2/T6/MAT/LP1/KO alapjainak célzott feltérképezése.",
+      "readRefs": [
+        "00-START-HERE.md",
+        "references/FORM_AGENT_HANDOFF-v8.md",
+        "FUNKCIO-MATRIX.md"
+      ],
+      "writerPolicy": "Forrásmásolat/snapshot csak elkülönített references vagy prototype alatt; nem eredeti FORM mappa módosítása, nem Vel runtime kód.",
+      "acceptance": "Pontos14 motívum/6 kiosztás/7 gradient/12 recept és3+6 demó lista; a89 mátrixsor source-állapota; SVG/Lottie/geometry korlátok; checksum és kiválasztott vizuális baseline.",
+      "helper": "B: geometria+motívum forrásindex. C: demo/licenc és referencia-fixture lista.",
+      "gate": "Jelenleg csak a Markdown áll rendelkezésre. Forrás hiányában a hű algoritmusport nem indítható; a UI/adatszerződés célzottan előkészíthető. A forrásutasítások nem veszik át a felhasználó terv-only utasításának helyét.",
+      "featureIds": [
+        "SGF-069"
+      ]
+    },
+    {
+      "id": "SG-01",
+      "title": "Új fül, draft és közös szerkesztési keret",
+      "dependsOn": [
+        "SG-00"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "Alkalmazáson belüli újrahasznált ShapeGen fül;4 mód külön állapottal, célheader és helye a Solo/Scene/Split kapcsolónak; Vel téma és transport; draft-undo és scene-undo külön.",
+      "readRefs": [
+        "INTEGRACIOS-TERV.md",
+        "SZERZODESEK-ES-ESETEK.md"
+      ],
+      "writerPolicy": "A: workspace/runtime/history/keyboard kapcsolás. B: külön draftnormalizáló és nézetkomponens; nincs dupla FORM localStorage/UI/history.",
+      "acceptance": "Fülváltás megőrzi a draftot; nincs rejtett scene-commit; sötét/világos; reduced-motion; fókusz szerinti undo; kis ablak; nincsenek díszgombok.",
+      "helper": "C: fül/dirty/fókusz és régi shortcuts fixture.",
+      "gate": "A keret önmagában nem teljes ShapeGen és nem működő placeholder a Libraryban.",
+      "featureIds": [
+        "SGF-054",
+        "SGF-055",
+        "SGF-056",
+        "SGF-059",
+        "SGF-071",
+        "SGF-072"
+      ]
+    },
+    {
+      "id": "SG-02",
+      "title": "Mind a négy generátor és alkotói gesztusai",
+      "dependsOn": [
+        "SG-00",
+        "SG-01"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "Blob/Pattern/BG/Gradient összes eredeti karaktere, mozgása, paramétere és12 receptje célzott natív adapterrel; vászonfogantyúk; teljes Randomize, Explore6 és hat közeli Variations.",
+      "readRefs": [
+        "INTEGRACIOS-TERV.md",
+        "FUNKCIO-MATRIX.md",
+        "SZERZODESEK-ES-ESETEK.md"
+      ],
+      "writerPolicy": "A: EFFECTS/render/gl/paraméterkapcsolás. B: kiválasztott generátormag/shader külön fájlban; meglévő blob kulcsot nem írja felül.",
+      "acceptance": "Mind3 blob/14motívum/6kiosztás/5mező/4BG/7gradient source-referenciák; seed/idő; alfanorma; pointerfreeze; gestures/numeric fallback; random tartományok+undo és variations közelség.",
+      "helper": "C: forrás és Vel azonos időpont/méret/seed képi összevetése; nincs4K vagy böngészős kész állítás puszta shaderfordításból.",
+      "gate": "Első átjárhatósági szeletben egy valódi típus bizonyítható; a feladat teljes lezárása mind4 család paritása.",
+      "featureIds": [
+        "SGF-001",
+        "SGF-002",
+        "SGF-003",
+        "SGF-004",
+        "SGF-005",
+        "SGF-006",
+        "SGF-007",
+        "SGF-008",
+        "SGF-012",
+        "SGF-013",
+        "SGF-015",
+        "SGF-016",
+        "SGF-017",
+        "SGF-018",
+        "SGF-019",
+        "SGF-020",
+        "SGF-053",
+        "SGF-057",
+        "SGF-058",
+        "SGF-060",
+        "SGF-061",
+        "SGF-062",
+        "SGF-081",
+        "SGF-082",
+        "SGF-083",
+        "SGF-084",
+        "SGF-085",
+        "SGF-086"
+      ]
+    },
+    {
+      "id": "SG-03",
+      "title": "Rajzolás és ismétlésgeometria veszteség nélkül",
+      "dependsOn": [
+        "SG-00",
+        "SG-01"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "Szabadkézi→Bézier, simítás/sarok/végpont, szerkesztés, Boolean/lyuk/szimmetria; minden ismétléslabor-primitív, kiosztás, taper/metaball/slicing és egyedi eltérés. Közvetlen motívumként használat.",
+      "readRefs": [
+        "INTEGRACIOS-TERV.md",
+        "FUNKCIO-MATRIX.md",
+        "SZERZODESEK-ES-ESETEK.md"
+      ],
+      "writerPolicy": "A: P2-adatmodell/státusz/renderer bekötés. B: vektor- és ismétlési tiszta mag. C nem írja az A path/state fájlját.",
+      "acceptance": "Nyitott/sarkos/lyukas rajz; Bézier-forrás és fill-rule; visszaállítható simítás; eredeti kör→körkiosztás→taper→méretarány→egyedi→metaball→slice→undo→save→SVG/PNG út.",
+      "helper": "C: kontúrtopológia és export roundtrip fixture.",
+      "gate": "A mai P2 Catmull–Rom nem helyettesít automatikusan Bézier/hole dokumentumot; a forráskezelés megőrzése kötelező.",
+      "featureIds": [
+        "SGF-010",
+        "SGF-021",
+        "SGF-022",
+        "SGF-023",
+        "SGF-024",
+        "SGF-025",
+        "SGF-026",
+        "SGF-027",
+        "SGF-028",
+        "SGF-029",
+        "SGF-045",
+        "SGF-046",
+        "SGF-047",
+        "SGF-048",
+        "SGF-049",
+        "SGF-050"
+      ]
+    },
+    {
+      "id": "SG-04",
+      "title": "Közös assetválasztó, Lottie-edit és teljes ikonkészlet",
+      "dependsOn": [
+        "SG-00",
+        "SG-01"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "JSON/dotLottie/ZIP/URL és batch import; eredeti3+6 mozgásminta; statikus Lottie szín/hide/reset; keresés/kedvenc;8252 forrásellenőrzött ikon és közvetlen Pattern-motívum.",
+      "readRefs": [
+        "INTEGRACIOS-TERV.md",
+        "FUNKCIO-MATRIX.md",
+        "SZERZODESEK-ES-ESETEK.md"
+      ],
+      "writerPolicy": "A: meglévő Lottie/ULIB/asset/import kapcsolás; B: editpatch és katalógusadat/safe archive intake saját modul. Egy lottie-web verzió és lejátszóút.",
+      "acceptance": "Forrásméret/profil különbség2MB→30MB nem egyszerű konstanscsere; hibás/partialbatch; precomp-id; hide/color patch/reset/undo; motívumframe; forráslicenc és assetbackup.",
+      "helper": "C: vector/precomp/solid/edit/batch/SVG-icon fixture.",
+      "gate": "Nem lesz késznek állítva animált szín/gradient vagy raszter-Lottie szerkesztés; ezek a FORM-ban sem meglévő képességek.",
+      "featureIds": [
+        "SGF-009",
+        "SGF-011",
+        "SGF-031",
+        "SGF-032",
+        "SGF-033",
+        "SGF-034",
+        "SGF-035",
+        "SGF-037",
+        "SGF-038",
+        "SGF-041",
+        "SGF-042",
+        "SGF-043",
+        "SGF-067"
+      ]
+    },
+    {
+      "id": "SG-05",
+      "title": "Szerkeszthető Library és hordozható dokumentum",
+      "dependsOn": [
+        "SG-01"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "Paraméteres forrás, összes függőség, auto név/thumbnail, egykattintásos tartós Library mentés, Edit in ShapeGen, példányhatókör, generálási előzmény és gépi szerkeszthető dokumentum/backup.",
+      "readRefs": [
+        "INTEGRACIOS-TERV.md",
+        "SZERZODESEK-ES-ESETEK.md"
+      ],
+      "writerPolicy": "A: userlib/presets/history/migrate/asset collector. B: serializer/normalizáló/függőséglista tiszta modul. Runtime GPU/cache nem projektadat.",
+      "acceptance": "Clean reopen; Library törlés után is hordozható scene; ugyanaz3 helyen csak egyik változik; quota/memory-only/abort; régi FORM fő és külön Shape import; migráció és eredményelőzmény.",
+      "helper": "C: gyűjtött függőségek scene/base/csoport és hibás write receipt fixture.",
+      "gate": "Első szelethez egy kész SG-02 kimenet elég. SG-03/04 adatformái a saját implementált képességüknél kapcsolódnak; nem kell mindet előbb befejezni.",
+      "featureIds": [
+        "SGF-036",
+        "SGF-039",
+        "SGF-051",
+        "SGF-063",
+        "SGF-064",
+        "SGF-065",
+        "SGF-077",
+        "SGF-078",
+        "SGF-087",
+        "SGF-088",
+        "SGF-089"
+      ]
+    },
+    {
+      "id": "SG-06",
+      "title": "Add from Gen / Library és valódi Solo/Scene/Split",
+      "dependsOn": [
+        "SG-01",
+        "SG-05"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "Típusos target-slot, konkrét célhoz kötött generálás, három nézet ugyanazzal a drafttal; live input override; Alkalmazás egy undo, optional Library; Mégse, konfliktus és újraszerkesztés.",
+      "readRefs": [
+        "INTEGRACIOS-TERV.md",
+        "SZERZODESEK-ES-ESETEK.md",
+        "FUNKCIO-MATRIX.md"
+      ],
+      "writerPolicy": "A: render/input adapter, scene/history, cél UI. B: slot/capability adat és kontrollált state machine külön fájl; C teszt. Shared state/rendernek egy író.",
+      "acceptance": "Eredeti kamera/maszk/effekt/csoport/idő megtartva; projekt/draft/statesimulation cancel; cél törlés/revision/projektcsere; későasync; SVG vs shader; Apply+Library részleges siker; Split szinkron és mobilfókusz.",
+      "helper": "C: normál/abort/conflict és stateful preview fixture,3nézet azonos inputhash/sceneid/idő ellenőrzése.",
+      "gate": "Első valódi célmező/kimenet elég az első mérföldkőhöz; teljes integrációhoz minden deklarált slotadapter tesztje kell. A konkrét adaptert SG-02/03/04 rendelkezésre álló képességéből kell választani.",
+      "featureIds": [
+        "SGF-014",
+        "SGF-070",
+        "SGF-073",
+        "SGF-074",
+        "SGF-075",
+        "SGF-076",
+        "SGF-079",
+        "SGF-080"
+      ]
+    },
+    {
+      "id": "SG-07",
+      "title": "Teljes paritás, fileexport és végső integráció",
+      "dependsOn": [
+        "SG-00",
+        "SG-01",
+        "SG-02",
+        "SG-03",
+        "SG-04",
+        "SG-05",
+        "SG-06"
+      ],
+      "status": "planned",
+      "implementationApproved": false,
+      "goal": "Összes v8 képesség és kért UX mátrix lezárása; SVG/PNG/frameZIP/editeltLottie/backup export, Vel scene-videó, újranyitás és célgépes vizuális/interakciós ellenőrzés.",
+      "readRefs": [
+        "FUNKCIO-MATRIX.md",
+        "SZERZODESEK-ES-ESETEK.md",
+        "INTEGRACIOS-TERV.md"
+      ],
+      "writerPolicy": "A: végső kapcsolás és generált appbuild/dokumentáció. B/C célzott fixture és paritásbizonyíték; teljeskör egyszer koordináltan.",
+      "acceptance": "Minden89 sorhoz implementáció és releváns bizonyíték; nincs unsupported visszaesés csendben. Source old/new külön; readonly pipeline; cancel/memória; rövid/hosszú session; oldVel regresszió; kézi UX-próba külön.",
+      "helper": "C: összevont resultreport és hiánymátrix; B hibajavítás külön kiosztott modulban.",
+      "gate": "A FORMból érkező régi teszteredmény nem Vel E2E; az itt tervezett tesztek most nincsenek lefuttatva.",
+      "featureIds": [
+        "SGF-030",
+        "SGF-040",
+        "SGF-044",
+        "SGF-052",
+        "SGF-066",
+        "SGF-068"
+      ]
+    }
+  ]
+}

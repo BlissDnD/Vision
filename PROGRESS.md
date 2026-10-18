@@ -262,3 +262,11 @@ Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
 - Külön brief/taskkártyák, feltételes függőségek;28 backlogcsalád, az új kettő deferred.
 - A 2D/2,5D referencia-PNG korábban is készülhet; közös 3D/depth/mask capability nem feltételezett.
 - Csak terv/átadó/ZIP frissül, appkód és build változatlan.
+
+### 2026-10-18 – FORM → ShapeGen integrációs terv (Codex)
+- `docs/claude-handoff/shapegen/00-START-HERE.md`: csak terv, mai 0.43-as Velhez.
+- Négy generátor és az összes átadóban leírt segédeszköz: 89 funkció/UX tétel, 8 task.
+- Két belépés, Solo/Scene/Split, típusos célmező, ideiglenes preview és egy apply/undo.
+- Szerkeszthető Library + Edit, gyors mentés, gépi hordozhatóság, példányhatókör, Random/Variations.
+- A csatolt átadó másolata/provenance megőrizve; FORM-forrás és futási/vizuális paritás nem ellenőrzött.
+- Appkód/build változatlan; külön terv-ZIP, nem a régi snapshot csendes átírása.

@@ -240,3 +240,7 @@ A `../docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` for
 Belépés: `../docs/claude-handoff/00-START-HERE.md`. Rövid taskkártyák, UX- és adapterhatárok, forrásútvonalak, külön keresőmodell és csomagellenőrzők; nem új app-runtime vagy beépített addonrendszer.
 
 Későbbi termékirányok: intuitív 3D scene/tájtervező és filmes AI-vázlatmód, közös adat-/kamerarendszerrel. Csak specifikáció: `../docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`; nincs új futásidejű modul.
+
+### ShapeGen tervezési átadó
+
+A `../docs/claude-handoff/shapegen/00-START-HERE.md` a FORM v8 generátorainak és eszközeinek integrációs terve, a Vel 0.43 közös rendszereivel és célhoz kötött valódi jelenetpreview-val. Csak dokumentáció; nincs új runtime vagy build.

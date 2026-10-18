@@ -67,3 +67,7 @@ A jóváhagyott szelet rutindöntéseit az agent önállóan hozza; ne kérjen v
 A [külön terv](JOVO-3D-SCENE-ES-AI-VAZLAT.md) rögzíti Miksa új fő célját: pár kattintással szép, artisztikus táj, néhány behúzott assettel és automatikus, kézzel finomítható világítással. SCENE-01 egy közös 3D tér/camera/fény első használható szeletére épül. AI-PREVIZ-01 ugyanebből a jelenetből filmes felvételkártyát, kompozíciós referenciát és később animatikot exportál.
 
 Mindkettő későbbi nagy fejlesztés. A 2D/2,5D shot-PNG első szelet nem vár a teljes 3D rendszerre; valódi 3D blockout, depth/normal/object mask csak bizonyított renderadat után. A mai CAT/UX/média/útvonal fejlesztést a későbbi újrahasználat figyelembevételével tervezzük, de ne építsünk mindent előre át. A backlog így28 család, ebből az új kettő `deferred`.
+
+## FORM → ShapeGen: új integrációs munkafolyamat
+
+A [külön terv](shapegen/00-START-HERE.md) kiegészíti az aktuális CAT-01/STAB-01 javaslatot. Első a meglévő Library/asset/idő/undo/render/panel felmérése, aztán egy működő Add from Gen → Solo/Scene/Split → Alkalmazás → Edit in ShapeGen kör. A teljes funkcióparitás külön zárás, minden dokumentált FORM-móddal/eszközzel. A meglévő0.43-as P2/T6/E1/F1/F2/LP1/KO1 stb. újrahasználandó, nem újraépítendő. A FORM-forrás átvétele SG-00 kapu; a mostani kérés csak tervezésre szól. A nyolc SG-kártya az integráció részterve, nem most elindított fejlesztési hullám.

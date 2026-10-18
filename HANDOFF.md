@@ -117,3 +117,7 @@ Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18
 ## Későbbi fő irányok (2026-10-18)
 
 `docs/claude-handoff/JOVO-3D-SCENE-ES-AI-VAZLAT.md`: SCENE-01 – intuitív, pár kattintásos artisztikus 3D tájépítés, assetbehúzás/elhelyezés, auto lighting; AI-PREVIZ-01 – filmes kompozíciós vázlat, felvételkártya, storyboard/kezdő-zárókép/animatik AI-generátorok számára. Közös scene/asset/kamera alap, cluttermentes közvetlen interakció; mindkettő későbbi terv, nem megkezdett implementáció.
+
+## FORM / ShapeGen beépítés – terv (2026-10-18)
+
+`docs/claude-handoff/shapegen/00-START-HERE.md`: új alkalmazáson belüli ShapeGen fül, Blob/Pattern/BG/Gradient + rajz/geometry/Lottie/ikon eszközök megtartása. Önálló/célhoz kötött Add from Gen/Library; Solo/Scene/Split valódi Vel-preview; Alkalmazás egy undo + opcionális Library-mentés; szerkeszthető forrás és Edit in ShapeGen; teljes random és hat közeli Variations, példányhatókör. 89 funkciótétel, 8 SG task, a mai 0.43.0-merge alapokra illesztve. A FORM v8 Markdown forráskódot nem tartalmaz; source gate a kódoló agentnél. Csak terv, nincs appimplementáció; a korábbi önálló FORM-fejlesztési utasításokat nem hajtjuk végre.
