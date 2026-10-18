@@ -2,6 +2,14 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — LP1 Körbeér (0.37.0-lp1)
+
+- **Körbeér** kapcsoló az LFO-panelen (∿) és az öt folyamatos mozgás kártyáján. Bekapcsolt Loopnál az új hullámokon és mozgásokon alapból be van kapcsolva. A tempó egész számú körre igazodik a projekt (Jelenetsorban a jelenet) hosszában, a felirat mutatja („4 kör / 10 mp”). A tárolt Ütem nem íródik át.
+- A Forgás egész fordulatra áll, a Remegés zaja periodikus. Loop nélkül nincs igazítás; Ritmus-tempónál és vágott mozgásnál csak közelítő (a felirat jelzi).
+- Célzott teszt: `tests/lp_loop.js` zöld (t=0 és t=dur egyezik minden hullámformára és mozgásra, mentés, régi projekt). Teljes kör **41/41 zöld**, typecheck 0 hiba.
+- Próba: 1) 10 mp, Loop be, egy csúszkán ∿, Ütem 0,37: a felirat „4 kör / 10 mp”, a 10→0 váltásnál nincs ugrás; 2) projekthossz 7 mp: a körszám magától változik; 3) Lebegés, Ütem 3 mp: „3 kör / 10 mp”; 4) mentés → újranyitás.
+- A javaslatot a felhasználó kérésére Claude hagyta jóvá: `docs/javaslatok/MOZGAS-SAV-JAVASLATOK.md`.
+
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 
 - **Rugalmas beúszás nyila:** vég húzása = irány + távolság; ⌘ + fel/le = tempó (fel = rövidebb), ⌘ + oldalra = karakter (Lágy/Ütés/Rugó); ⌥ vagy a nyíl közepe = ív (a réteg valóban az íven érkezik, `bend` paraméter); ⇧ = 15°-os szögek.

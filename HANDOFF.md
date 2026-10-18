@@ -3,6 +3,8 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**LP1 Körbeér (0.37.0-lp1, 2026-10-18, mozgás-sáv, `claude/happy-feynman-192ba3` ág):** Körbeér kapcsoló az LFO-n és a folyamatos mozgásokon: egész számú kör a loopban, varratmentes loop-export. Headless teszttel demonstrálva (`tests/lp_loop.js`), teljes kör 41/41; felhasználói próba hátra (`PROGRESS.md`). Következő ebben a sávban: XF1 Mozgás átadása + Sorrend festése, majd KO1 Koreográfia gomb (javaslatok: `docs/javaslatok/MOZGAS-SAV-JAVASLATOK.md`, a felhasználó kérésére önjóváhagyással).
+
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).
 
 **PH1 Poly Haven képek (0.35.0-ph1, 2026-10-18):** Szöveg és média → Poly Haven textúrák: 12 elemes, kereshető, kurált CC0-katalógus; kiválasztáskor hivatalos 2K JPG-ből beágyazott képréteg és forrásmetaadat. Célzott teszt zöld (`tests/polyhaven_import.js`); teljes kör első futás 37/39, a két tesztfeltétel javítása után mindkettő külön zöld (`PROGRESS.md`). A valódi hálózatos felhasználói próba hátra. Ez 2D képimport, nem 3D PBR-anyag vagy teljes online katalógus. Következőhöz külön javaslat kell: PBR-anyagcsatlakozó vagy új médiakatalógus.

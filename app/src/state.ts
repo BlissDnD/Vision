@@ -2,7 +2,7 @@ import { R } from './runtime';
 import { BASE, DEFAULT_CODE, DEF_PRIMS, EFFECTS, S, paramsOf } from './effects/index';
 
 R.uidN=1;export const uid=()=>'L'+Date.now().toString(36)+(R.uidN++).toString(36);
-export const mkN=(v:any):NParam=>{if(!(v&&typeof v==='object'))return {v,a:0,f:.2,w:0,s:'',sa:.5};const o:NParam={v:v.v,a:v.a||0,f:v.f??.2,w:v.w||0,s:v.s||'',sa:v.sa??.5};if(v.k&&v.k.length)o.k=v.k.map(k=>({...k,bz:k.bz?[...k.bz]:undefined}));return o;};
+export const mkN=(v:any):NParam=>{if(!(v&&typeof v==='object'))return {v,a:0,f:.2,w:0,s:'',sa:.5};const o:NParam={v:v.v,a:v.a||0,f:v.f??.2,w:v.w||0,s:v.s||'',sa:v.sa??.5};if(v.lp)o.lp=1;if(v.k&&v.k.length)o.k=v.k.map(k=>({...k,bz:k.bz?[...k.bz]:undefined}));return o;};
 export function makeLayer(type:string,o:any={}):Layer{
   const d=EFFECTS[type];
   const L:Layer={id:uid(),type,name:o.name||d.name,vis:true,blend:o.blend||'normal',pal:o.pal??(d.kind==='fx'?0:12),clip:!!o.clip,maskOnly:!!o.maskOnly,n:{},p:{},fx:(o.fx||[]).map(([t,oo])=>makeLayer(t,oo))};

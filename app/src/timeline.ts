@@ -1,4 +1,5 @@
 import { R } from './runtime';
+import { cyclesIn, loopLen } from './time';
 import { $, h } from './dom';
 import { BASEK, BENTO, EFFECTS, pdefOf } from './effects/index';
 import { findItem, sel, st } from './state';
@@ -129,7 +130,7 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
     body.appendChild(h('div',{class:'tlx-row'+(isSel?' sel':'')+(L.vis?'':' off')},name,lane));
     // a param row (keys, wave / signal / link marks); dep = indent level
     const prow=(q,dep)=>{const pl=h('div',{class:'tlx-lane','data-id':L.id,'data-p':q.path});
-      if(q.kinds&&q.kinds.includes('w'))pl.appendChild(h('i',{class:'tlx-wave',title:`Hullám (LFO): ${(q.o.f||0).toFixed(2)} Hz · mélység ${Math.round((q.o.a||0)*100)}%`}));
+      if(q.kinds&&q.kinds.includes('w'))pl.appendChild(h('i',{class:'tlx-wave',title:`Hullám (LFO): ${(q.o.f||0).toFixed(2)} Hz · mélység ${Math.round((q.o.a||0)*100)}%${q.o.lp&&loopLen()>0?` · Körbeér: ${cyclesIn(q.o.f||0,loopLen())} kör / ${+loopLen().toFixed(2)} mp`:''}`}));
       if(q.kinds&&q.kinds.includes('s'))pl.appendChild(h('i',{class:'tlx-sig',title:'Hang / jel vezérli'}));
       if(q.kinds&&q.kinds.includes('l'))pl.appendChild(h('i',{class:'tlx-link',title:'Kapcsolat: egy másik elem értéke hajtja'}));
       if(hasK(q.o))for(const k of q.o.k){if(!inV(k.t))continue;const kt=Math.round(k.t*1000)/1000;

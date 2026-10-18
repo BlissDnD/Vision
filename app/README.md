@@ -148,6 +148,10 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
 
+## Körbeér (LP1, 2026-10-18)
+- `time.ts`: `loopLen()` (Loop be: `st.dur`; Jelenetsorban `R.seqLen`, a `seqFrame` írja; különben 0), `cyclesIn`, `snapRate`. A jelző `lp` (NParam: `mkN` őrzi; mozgás: `normMo` őrzi). Kiértékeléskor kerekít (`ev`, `moEval`), a tárolt `f`/`period` nem változik.
+- `motion.ts`: `snapP`, `spinSnap` (egész fordulat a `speed·amt`-ra), periodikus `smoothNoise(x,seed,per)`. `moLoopInfo` = felirat. Az alapértelmezett `lp=1` csak felhasználói létrehozáskor kerül be (∿ megnyitása új hullámmal, `attachMo`), Loop be állapotban.
+
 ## Gesztus-mozgás (2026-10-18)
 - `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).
 - Módváltáskor (⌘/⌥/semmi) újrahorgonyoz (`snap`), így minden mód a saját kezdőpontjához képest relatív; ⌘ tempó = `v·2^(dy/90)`, karakter 45 px-enként. Egy húzás = egy `commit()` elengedéskor.

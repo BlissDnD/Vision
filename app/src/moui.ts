@@ -4,7 +4,7 @@
 import { R } from './runtime';
 import { $, h } from './dom';
 import { LIB } from './library';
-import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, ryVal, ryValU, setRy } from './motion';
+import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, moLoopInfo, ryVal, ryValU, setRy } from './motion';
 import { findItem, sel, st } from './state';
 import { S, SEL } from './effects/index';
 import { ctlSelect, ctlSlider, ctlSwitch, section } from './controls';
@@ -20,6 +20,7 @@ import { paramList, renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { toast } from './modals';
 import { setPlay } from './transport';
+import { loopOn } from './time';
 
 R.moSel = {};
 const ring = (el: any, v: number) => el.style.setProperty('--s', String(Math.max(0, Math.min(1, v))));
@@ -31,7 +32,8 @@ export function attachMo(i: number, refId?: string | null) {
   const li: any = (LIB.motion as any[])[i]; const r = refId ? findItem(refId) : (R.selId ? findItem(R.selId) : null);
   if (!li || !li.mo) return null;
   if (!r) { toast(`${li.name}: jelölj ki egy réteget, vagy húzd rá egy rétegre (vásznon vagy a rétegsorban).`); return null; }
-  const L = r.it; const m = makeMo(li.mo, li.mo === 'spring' ? { at: Math.round(Math.max(0, R.time) * 100) / 100 } : {});
+  const L = r.it; const m: any = makeMo(li.mo, li.mo === 'spring' ? { at: Math.round(Math.max(0, R.time) * 100) / 100 } : {});
+  if (MO[li.mo] && MO[li.mo].cont && loopOn()) m.lp = 1;  // Körbeér on by default when the project loops
   (L.mo = L.mo || []).push(m); R.moSel[L.id] = m.id; R.selId = L.id; R.moAud = null; R.itab = 'motion';
   try { localStorage.setItem('vel.itab', 'motion'); } catch (_) { /* ignore */ }
   commit(); renderAll(); markDirty(); const wasPlaying = !!R.playing; if (!wasPlaying && !R.noAutoPlay) setPlay(true);
@@ -96,6 +98,13 @@ R.updMoRy = (t: number) => { const s: any = document.querySelector('#insp .rystr
   dot.style.left = u * 100 + '%'; dot.style.top = (1 - v / RY_MAX) * 100 + '%'; };
 
 /** The Mozgások section (replaces the old Időzítés section). */
+/* Körbeér (row 22): whole cycles per loop, so the loop export joins exactly; the stored Ütem is not rewritten */
+const loopTip = (m: any) => { const el = document.getElementById('moLoopInfo'); if (el) el.textContent = m.lp ? moLoopInfo(m) || '' : ''; };
+function loopRow(m: any) {
+  const sw = ctlSwitch('Körbeér (egész kör a loopban)', !!m.lp, v => { if (v) m.lp = 1; else delete m.lp; commit(); renderInsp(); markDirty(); });
+  sw.title = 'A tempó a legközelebbi olyan értékre igazodik, amelynél egész számú kör fér a projekt (jelenet) hosszába: a loop vége pontosan az elejébe ér.';
+  return h('div', { class: 'moloop' }, sw, h('p', { class: 'small', id: 'moLoopInfo' }, m.lp ? moLoopInfo(m) || '' : ''));
+}
 export function motionsUI(L: any) {
   const mos = L.mo || [], leg = legacy(L); let cur = R.moSel[L.id];
   const all = [...leg.map(x => x.id), ...mos.map((m: any) => m.id)]; if (!all.includes(cur)) cur = all[0] || null;
@@ -118,7 +127,7 @@ export function motionsUI(L: any) {
     const del = h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás' }, '×'); del.onclick = () => { mos.splice(i, 1); commit(); renderInsp(); markDirty(); };
     const ic = row.children[leg.length + i];
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, d.name), eye, del),
-      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q)), ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
+      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q, d.cont ? () => loopTip(m) : undefined)), d.cont ? loopRow(m) : null, ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
         m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a nyíl végét húzva állítod, honnan érkezik; ⌘ + fel/le a tempó, ⌘ + oldalra a karakter, ⌥ vagy a nyíl közepe: ív, ⇧: 15°-os szögek.') : null,
         h('button', { class: 'btn mobake', type: 'button', title: 'A mozgást valódi X / Y / Méret / Szög / Átlátszóság kulcsokká alakítja (a mozgás eltűnik; ⌘Z visszavonja)', onclick: () => {
           const n = bakeMo(L, m); delete R.moSel[L.id]; commit(); renderAll(); markDirty(); toast(`${d.name} → ${n} kulcskocka a réteg saját értékein · ⌘Z visszavonja`); } }, 'Kulcsokká alakítás')))); }

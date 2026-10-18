@@ -7,6 +7,7 @@ import { S, SEL } from './effects/helpers';
 import { mkN, st, uid } from './state';
 import { ev, keyVal, setKey } from './evaluation';
 import { R } from './runtime';
+import { cyclesIn, loopLen, snapRate } from './time';
 
 const TAU = Math.PI * 2;
 export interface MoDef { name: string; icon: string; cont: boolean; params: any[]; main: string[]; desc: string }
@@ -51,7 +52,13 @@ export function charEase(ch: number, dur: number) {
   return (EASE[key] = (x: number) => x <= 0 ? 0 : x >= 1 ? 1 : f(x));
 }
 const h1 = (n: number) => { const s = Math.sin(n * 127.1) * 43758.5453; return s - Math.floor(s); };
-const smoothNoise = (x: number, seed: number) => { const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f); return (h1(i + seed * 17.3) * (1 - u) + h1(i + 1 + seed * 17.3) * u) * 2 - 1; };
+// per = lattice period (Körbeér): the noise repeats every `per` units of x, so a snapped Remegés joins at the loop
+const smoothNoise = (x: number, seed: number, per = 0) => { const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f), w = (j: number) => per > 0 ? ((j % per) + per) % per : j; return (h1(w(i) + seed * 17.3) * (1 - u) + h1(w(i + 1) + seed * 17.3) * u) * 2 - 1; };
+/** Körbeér (row 22): m.lp snaps a continuous motion so a whole number of cycles fits the loop (loopLen); 0 = off. */
+export const moLoopLen = (m: any) => m && m.lp && MO[m.t] && MO[m.t].cont ? loopLen() : 0;
+const snapP = (P: number, Ln: number) => Ln > 0 ? Ln / cyclesIn(1 / P, Ln) : P;
+/** Effective spin speed (°/s): whole turns per loop when snapped. */
+export const spinSnap = (sp: number, Ln: number) => Ln > 0 && sp ? Math.sign(sp) * 360 * Math.max(1, Math.round(Math.abs(sp) * Ln / 360)) / Ln : sp;
 
 /* ---------- v1.1 Ritmus: a periodic speed (Tempó) or strength (Erő) curve per continuous motion ----------
  *  m.ry = {k: preset (0 Folyamatos … 4 Véletlen, 5 Egyéni), cyc: cycle s, pts: RY_N values 0..2 (1 = normal), tgt: 0 Tempó / 1 Erő,
@@ -103,6 +110,18 @@ export function moTime(m: any, t: number) {
   return { tau, amp };
 }
 
+/** Körbeér label of a continuous motion: how many cycles fit the loop (null for timed motions). */
+export function moLoopInfo(m: any): string | null {
+  const d = MO[m.t]; if (!d || !d.cont) return null; const Ln = loopLen();
+  if (!Ln) return 'Loop nélkül nincs mihez igazodni (kapcsold be a Loopot)';
+  const v = (k: string) => m.p[k] ? m.p[k].v : moParam(m, k).def, sec = +Ln.toFixed(2);
+  const n = m.t === 'spin' ? Math.max(1, Math.round(Math.abs(v('speed') * v('amt')) * Ln / 360)) : m.t === 'shake' ? cyclesIn(v('rate'), Ln) : cyclesIn(1 / Math.max(.05, v('period')), Ln);
+  let s = `${n} ${m.t === 'spin' ? 'fordulat' : 'kör'} / ${sec} mp`;
+  if (m.ry && m.ry.k && (m.ry.tgt !== 1 || m.t === 'spin')) s += ' · Ritmussal csak közelítőleg';
+  if ((m.a || 0) > 0 || m.b != null) s += ' · vágott mozgásnál csak közelítőleg';
+  return s;
+}
+
 /** Combined motion of a layer at time t: {op, dx, dy, sc, rot (deg)}; null when it has none. aud = a motion previewed on hover. */
 export function moEval(L: any, t0: number, aud?: any): any {
   const list = aud ? [...(L.mo || []), aud.mo] : L.mo; if (!list || !list.length) return null;
@@ -111,13 +130,13 @@ export function moEval(L: any, t0: number, aud?: any): any {
     if (!m || m.on === false || !MO[m.t]) continue; any = true;
     // a shelf motion previewed on hover runs on its own clock (the timed one repeats), so it is visible even when paused
     let t = t0; if (aud && m === aud.mo) { const ta = (performance.now() - aud.t0) / 1000; t = m.t === 'spring' ? ta % (m.p.dur.v + .9) : ta; }
-    const W = m.t === 'spring' ? null : moTime(m, t), T = W ? W.tau : t, a = V(m, 'amt', t) * (W && m.t !== 'spin' ? W.amp : 1);
+    const W = m.t === 'spring' ? null : moTime(m, t), T = W ? W.tau : t, a = V(m, 'amt', t) * (W && m.t !== 'spin' ? W.amp : 1), Ln = aud && m === aud.mo ? 0 : moLoopLen(m);
     switch (m.t) {
-      case 'float': { const w = Math.sin(TAU * (T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t))) * V(m, 'amp', t) * a, g = V(m, 'ang', t) * Math.PI / 180; r.dx += Math.cos(g) * w; r.dy += Math.sin(g) * w; break; }
-      case 'spin': r.rot += V(m, 'speed', t) * T * a; break;
-      case 'pulse': r.sc *= Math.max(.01, 1 + Math.sin(TAU * (T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t))) * V(m, 'amp', t) * a); break;
-      case 'orbit': { const ph = TAU * (T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t)) * (Math.round(V(m, 'dir', t)) === 0 ? -1 : 1), R0 = V(m, 'radius', t) * a; r.dx += Math.cos(ph) * R0; r.dy += Math.sin(ph) * R0; break; }
-      case 'shake': { const x = T * V(m, 'rate', t), sd = V(m, 'seed', t), A = V(m, 'amp', t) * a; r.dx += smoothNoise(x, sd) * A; r.dy += smoothNoise(x + 31.7, sd + 3) * A; r.rot += smoothNoise(x + 77.1, sd + 5) * V(m, 'rot', t) * a; break; }
+      case 'float': { const w = Math.sin(TAU * (T / snapP(Math.max(.05, V(m, 'period', t)), Ln) + V(m, 'phase', t))) * V(m, 'amp', t) * a, g = V(m, 'ang', t) * Math.PI / 180; r.dx += Math.cos(g) * w; r.dy += Math.sin(g) * w; break; }
+      case 'spin': r.rot += spinSnap(V(m, 'speed', t) * a, Ln) * T; break;
+      case 'pulse': r.sc *= Math.max(.01, 1 + Math.sin(TAU * (T / snapP(Math.max(.05, V(m, 'period', t)), Ln) + V(m, 'phase', t))) * V(m, 'amp', t) * a); break;
+      case 'orbit': { const ph = TAU * (T / snapP(Math.max(.05, V(m, 'period', t)), Ln) + V(m, 'phase', t)) * (Math.round(V(m, 'dir', t)) === 0 ? -1 : 1), R0 = V(m, 'radius', t) * a; r.dx += Math.cos(ph) * R0; r.dy += Math.sin(ph) * R0; break; }
+      case 'shake': { const rt = V(m, 'rate', t), N = Ln > 0 ? cyclesIn(rt, Ln) : 0, x = T * snapRate(rt, Ln), sd = V(m, 'seed', t), A = V(m, 'amp', t) * a; r.dx += smoothNoise(x, sd, N) * A; r.dy += smoothNoise(x + 31.7, sd + 3, N) * A; r.rot += smoothNoise(x + 77.1, sd + 5, N) * V(m, 'rot', t) * a; break; }
       case 'spring': {
         const at = V(m, 'at', t), dur = Math.max(.05, V(m, 'dur', t)), x = (t - at) / dur; if (x >= 1) break;
         const e = charEase(Math.round(V(m, 'char', t)), dur)(Math.max(0, x)), u = 1 - e, g = V(m, 'ang', t) * Math.PI / 180, D = V(m, 'dist', t) * a;
@@ -173,7 +192,7 @@ export function syncKLoop(L: any) {
 R.normMo = (L: any) => { if (!Array.isArray(L.mo)) { if (L.mo != null) delete L.mo; return; }
   L.mo = L.mo.filter((m: any) => m && MO[m.t]).map((m: any) => { const b: any = makeMo(m.t); b.id = m.id || b.id; b.on = m.on !== false; for (const k in b.p) if (m.p && m.p[k] && isFinite(m.p[k].v)) b.p[k] = mkN(m.p[k]);
     // v1.1 fields only when present (no silent defaults written into the project)
-    if (isFinite(m.a) && m.a > 0) b.a = +m.a; if (m.b != null && isFinite(m.b)) b.b = +m.b;
+    if (isFinite(m.a) && m.a > 0) b.a = +m.a; if (m.lp) b.lp = 1; if (m.b != null && isFinite(m.b)) b.b = +m.b;
     const y = m.ry; if (y && y.k > 0 && Array.isArray(y.pts) && y.pts.length === RY_N && y.pts.every((v: any) => isFinite(v)))
       b.ry = { k: Math.min(5, Math.round(y.k)), cyc: Math.max(.2, Math.min(60, +y.cyc || 5)), tgt: y.tgt === 1 ? 1 : 0, rnd: y.rnd ? 1 : 0, seed: +y.seed || 1, pts: y.pts.map((v: number) => Math.max(0, Math.min(2, +v))) };
     return b; }); };

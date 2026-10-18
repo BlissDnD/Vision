@@ -9,6 +9,7 @@ export interface NParam {
   a?: number;      // LFO depth
   f?: number;      // LFO rate
   w?: number;      // LFO wave index
+  lp?: number;     // Körbeér: LFO rate snaps to whole cycles per loop
   s?: string;      // signal key (audio / beat)
   sa?: number;     // signal amount
   k?: Key[];       // keyframes

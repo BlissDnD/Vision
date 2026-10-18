@@ -1,4 +1,5 @@
 import { R } from './runtime';
+import { loopLen, snapRate } from './time';
 import { TAU, h } from './dom';
 import { EASE_NAMES } from './palettes';
 import { S } from './effects/index';
@@ -16,7 +17,7 @@ export function wave(w,ph){const fr=((ph%1)+1)%1;if(w===1)return 1-4*Math.abs(((
  *  animation glides back to its first value in `ret` seconds and repeats, independent of the project Loop. */
 export function klVal(K,t,kl){const span=kl.b-kl.a+kl.ret;if(t<=kl.b||span<=1e-6)return keyVal(K,t);const tt=kl.a+((t-kl.a)%span);if(tt<=kl.b)return keyVal(K,tt);
   const u=Math.min(1,(tt-kl.b)/Math.max(1e-6,kl.ret)),e=u*u*(3-2*u);return keyVal(K,kl.b)*(1-e)+keyVal(K,kl.a)*e;}
-export function ev(n,def,t){let v=n._pv!=null?n._pv:n.k&&n.k.length?(n._kl?klVal(n.k,t,n._kl):keyVal(n.k,t)):n.v;if(n.a)v+=wave(n.w,t*n.f)*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
+export function ev(n,def,t){let v=n._pv!=null?n._pv:n.k&&n.k.length?(n._kl?klVal(n.k,t,n._kl):keyVal(n.k,t)):n.v;if(n.a)v+=wave(n.w,t*(n.lp?snapRate(n.f,loopLen()):n.f))*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
 
 /* ----- keyframes: n.k=[{t,v,e,z?,w?,bz?}] on any slider param; e = curve of the segment that starts at this key ----- */
 export const KEY_EASES=[...EASE_NAMES,'Egyedi rugó','Egyedi görbe (Bézier)','Sima (átmenő)'];
