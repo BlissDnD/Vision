@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (117 fájl)
+## Modulok (118 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `abar.ts` | 6 |  | abarItems, libById, addToBar, renderBar, layoutMenu | cat |
@@ -90,6 +90,7 @@
 | `migrate.ts` | 4 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | onModalClose, toastT |
 | `motion.ts` | 25 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, moLoopLen, spinSnap, RY_N, RY_PRE, setRy, ryValU … (+15) | normMo |
+| `motioncopy.ts` | 3 | English motion copy keyed by persisted motion type and parameter key. Definitions remain serialization-safe. | MOTION_EN, motionName, motionDescription, motionParam |  |
 | `moui.ts` | 18 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, onModalClose, rec |
 | `palettes.ts` | 2 | PALS colour palettes, hexRGB, ease names | PALS, PAL_ORDER, ff, v3, palJS, palCSS, EASE_NAMES, hexRGB |  |

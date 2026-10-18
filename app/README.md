@@ -274,4 +274,6 @@ Help-alap implementáció előkészítve: `help.ts` és tiszta `helpdata.ts`, a 
 
 ### English UI messages and effect metadata
 
+`src/motioncopy.ts` similarly provides English display copy keyed by the eight stored motion types and their parameter keys. The Motion Inspector and timeline read it without changing `MO` definitions or saved motion values. `tests/motion_english.js` checks copy coverage and read-only Inspector rendering.
+
 `src/locale.ts` provides stable UI message keys for shortcuts and dialogs. `src/effectcopy.ts` keys translated names/descriptions by persisted effect `type`, parameter labels by `type` + `k`, and select options by stable index. `ctlParam` clones the display definition, leaving `EFFECTS` and project data intact. The Inspector and effect chain use these adapters. `tests/effect_english.js` checks complete effect-copy coverage and read-only rendering.

@@ -1,3 +1,5 @@
+import { motionName, motionParam as displayMotionParam } from './motioncopy';
+import { effectName, effectParam } from './effectcopy';
 import { R } from './runtime';
 import { cyclesIn, loopLen } from './time';
 import { $, h } from './dom';
@@ -40,8 +42,8 @@ export function paramList(L){const out=[];if(!L)return out;
   const add=(g,obj,defs,pre,lblPre)=>{for(const k in obj||{}){const o=obj[k];if(!o||typeof o!=='object'||typeof o.v!=='number')continue;const d=defs(k);out.push({path:pre+g+'.'+k,o,label:lblPre+(d?d.l:k),d});}};
   const pd=X=>k=>pdefOf(X,k);
   add('n',L.n,k=>L===st.cam?null:BASEK[k],'','');if(L.p)add('p',L.p,L===st.cam?(()=>null):pd(L),'','');
-  (L.fx||[]).forEach((F,i)=>{const nm=(EFFECTS[F.type]||{name:F.type}).name+' · ';add('p',F.p,pd(F),'f'+i+'.',nm);add('n',F.n,k=>k==='opacity'?{...BASEK.opacity,l:'Erősség'}:BASEK[k],'f'+i+'.',nm);});
-  for(const m of L.mo||[])if(MO[m.t])add('p',m.p,k=>moParam(m,k),'mo:'+m.id+'.',MO[m.t].name+' · ');
+  (L.fx||[]).forEach((F,i)=>{const nm=effectName(F.type)+' · ';add('p',F.p,k=>{const d=pd(F)(k);return d?effectParam(F.type,d):d},'f'+i+'.',nm);add('n',F.n,k=>k==='opacity'?{...BASEK.opacity,l:'Strength'}:BASEK[k],'f'+i+'.',nm);});
+  for(const m of L.mo||[])if(MO[m.t])add('p',m.p,k=>{const d=moParam(m,k);return d?displayMotionParam(m.t,d):d},'mo:'+m.id+'.',motionName(m.t)+' · ');
   return out;}
 export function objAt(L,path){const a=path.split('.');let o=L;if(a[0].startsWith('mo:')){o=(L.mo||[]).find(m=>'mo:'+m.id===a[0]);a.shift();}else if(a[0][0]==='f'&&a.length===3){o=(L.fx||[])[+a[0].slice(1)];a.shift();}return o&&o[a[0]]?o[a[0]][a[1]]:null;}
 export function layerKeyTimes(L,path?){const m=new Map();for(const q of paramList(L)){if(path&&q.path!==path)continue;const o=q.o;if(hasK(o))o.k.forEach(x=>{const t=Math.round(x.t*1000)/1000;m.set(t,(m.get(t)||0)+1);});}return m;}
@@ -148,14 +150,14 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
         const C:any={...C0,a:C0.a+dl,b:C0.b==null?null:C0.b+dl};const b=C.b??Math.max(st.dur,vb);
         if(!(b<va||C.a>vb)){const l=Math.max(0,X(C.a)),r=Math.min(100,X(b));const rp=C.r/(b-C.a||1)*100;
           const XS=lk?xfSrc(m):null;const clip=h('i',{class:'tlx-clip'+(m.on===false||!E?' off':'')+(C.b==null?' open':'')+(lk?' xf':''),style:`left:${l}%;width:${Math.max(.6,r-l)}%;--ri:${C.a>0?rp:0}%;--ro:${C.b!=null?rp:0}%`,
-            title:lk?`${MO[m.t].name} · ${XS?`${XF_GETS[XS.xf?XS.xf.md|0:0]} ettől: ${XS.L.name}`:'a forrás megszűnt'} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)} · a forrásnál szerkeszthető`:`${MO[m.t].name} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég (jelenet vége után is fut)':fmtT(C.b)} · húzás: eltolás · szélek: kezdés / vége${C.timed?'':' (a végét a jelenet végéig húzva nyitott lesz)'}`});
-          const ea=h('b',{class:'tlx-ce a',title:'Kezdés'}),eb=h('b',{class:'tlx-ce b',title:C.timed?'Időtartam':'Vége (a jelenet végéig húzva: nyitott vég)'});clip.append(ea,h('span',null,MO[m.t].name),eb);
+            title:lk?`${motionName(m.t)} · ${XS?`${XF_GETS[XS.xf?XS.xf.md|0:0]} ettől: ${XS.L.name}`:'a forrás megszűnt'} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)} · a forrásnál szerkeszthető`:`${motionName(m.t)} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég (jelenet vége után is fut)':fmtT(C.b)} · húzás: eltolás · szélek: kezdés / vége${C.timed?'':' (a végét a jelenet végéig húzva nyitott lesz)'}`});
+          const ea=h('b',{class:'tlx-ce a',title:'Kezdés'}),eb=h('b',{class:'tlx-ce b',title:C.timed?'Időtartam':'Vége (a jelenet végéig húzva: nyitott vég)'});clip.append(ea,h('span',null,motionName(m.t)),eb);
           clip.onpointerdown=ev=>{if(lk){ev.stopPropagation();R.selId=L.id;R.moSel[L.id]=m.id;R.itab='motion';renderAll();return;}clipDrag(ev,L,m,cl,ev.target===ea?'a':ev.target===eb?'b':'move');};cl.appendChild(clip);}
         const qs=paramList({mo:[m]}).map(q=>({...q,kinds:animKinds(q.o),short:q.d?q.d.l:q.label}));
-        const ch=h('button',{class:'tlx-chev'+(mopen?' open':''),type:'button','aria-expanded':String(mopen),'aria-label':(mopen?'Elrejtés: ':'Paraméterek: ')+MO[m.t].name,title:'A mozgás paraméterei (kulcsok)'},'›');
+        const ch=h('button',{class:'tlx-chev'+(mopen?' open':''),type:'button','aria-expanded':String(mopen),'aria-label':(mopen?'Elrejtés: ':'Paraméterek: ')+motionName(m.t),title:'A mozgás paraméterei (kulcsok)'},'›');
         ch.onclick=ev=>{ev.stopPropagation();mopen?R.tlxOpenIds.delete(key):R.tlxOpenIds.add(key);renderTracks();};
         const nk=qs.reduce((s,q)=>s+(hasK(q.o)?q.o.k.length:0),0);
-        const nm=h('div',{class:'tlx-name tlx-moname',style:`padding-left:${14+d*14}px`,title:MO[m.t].name},ch,h('span',null,MO[m.t].name),nk?h('span',{class:'tlx-sym',title:nk+' kulcs'},'◆'):null);
+        const nm=h('div',{class:'tlx-name tlx-moname',style:`padding-left:${14+d*14}px`,title:motionName(m.t)},ch,h('span',null,motionName(m.t)),nk?h('span',{class:'tlx-sym',title:nk+' kulcs'},'◆'):null);
         nm.onclick=()=>{R.selId=L.id;R.moSel[L.id]=m.id;R.itab='motion';renderAll();};
         body.appendChild(h('div',{class:'tlx-row tlx-morow'+(L.vis?'':' off')},nm,cl));
         if(m.xf&&m.xf.ids.length)body.appendChild(spreadRow(L,m,C,d,va,vb,X));
@@ -253,7 +255,7 @@ export function clipDrag(ev,L,m,lane,mode){ev.stopPropagation();ev.preventDefaul
     else{const b=Math.max(a0+.1,R3(ref+dt));if(sp)m.p.dur.v=R3(b-a0);else if(b>=D-1e-3)delete m.b;else m.b=b;}
     markDirty();const C0=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m),dl=+m.dl||0,C={a:C0.a+dl,b:C0.b==null?null:C0.b+dl};const bb=C.b??Math.max(D,vb);tgt.style.left=Math.max(0,(C.a-va)/(vb-va)*100)+'%';tgt.style.width=Math.max(.6,(Math.min(vb,bb)-Math.max(va,C.a))/(vb-va)*100)+'%';tgt.classList.toggle('open',C.b==null);};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(!moved){seekTo(a0);renderTracks();return;}commit();renderInsp();renderTimeline();
-    const C=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m);toast(`${MO[m.t].name}: ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)}`);};}
+    const C=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m);toast(`${motionName(m.t)}: ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)}`);};}
 R.blockSel=new Set();
 /** Drag a motion block: move / stretch the middle / slow the close. Shift+click adds blocks; the op hits every selected block. */
 export function blockDrag(ev,L,lane,mode){ev.stopPropagation();ev.preventDefault();

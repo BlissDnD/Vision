@@ -1,3 +1,8 @@
+## 2026-10-18 — English motion metadata and timeline labels
+- Eight persisted motion types and 42 parameters now have display-only English names, descriptions, and select options keyed by motion type and parameter key.
+- The Motion Inspector and timeline use those labels without rewriting saved motion data; targeted browser check passes.
+- Source audit still finds Hungarian built-in copy across multiple workflows. Whole-app English default remains incomplete; document language is unchanged.
+
 ## 2026-10-18 — English chrome and effects
 - English static chrome, shortcut guide and project/help dialogs; stable `locale.ts` message keys.
 - Display-only `effectcopy.ts`: 82 effect descriptions, 700 parameter instances, 415 option instances; Inspector and Appearance controls use it.
