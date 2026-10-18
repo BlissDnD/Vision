@@ -24,7 +24,8 @@ precision highp float; in vec4 vD; out vec4 o;
 uniform float uLook; uniform float uFill; uniform vec3 uC1; uniform vec3 uC2; uniform vec3 uFillC; uniform float uCol; uniform float uLen; uniform float uTime; uniform float uPx;
 uniform float uTS; uniform float uTE; uniform float uTO; uniform float uDash; uniform float uDashL; uniform float uTwist; uniform float uGloss; uniform float uGlow; uniform float uClosed;
 uniform vec3 uPA; uniform vec3 uPB; uniform vec3 uPC; uniform vec3 uPD; uniform float uHue;
-vec3 pal(float t){return clamp(uPA+uPB*cos(6.28318530718*(uPC*t+uPD+uHue)),0.0,1.0);}
+uniform vec3 uG[16]; uniform float uGOn;
+vec3 pal(float t){if(uGOn>0.5){float x=1.0-abs(fract((t+uHue)*0.5)*2.0-1.0);float f=x*15.0;int i=int(min(floor(f),14.0));return mix(uG[i],uG[i+1],f-float(i));}return clamp(uPA+uPB*cos(6.28318530718*(uPC*t+uPD+uHue)),0.0,1.0);}
 void main(){
   if(uFill>0.5){o=vec4(uFillC,1.0);return;}
   float s=vD.y,k=max(vD.z,1e-3),x=vD.x/k,aa=uPx/max(vD.w,1e-6);
@@ -84,7 +85,7 @@ export function drawPathShape(L: any, target: any, ctx: any, t: number) {
   const c3 = (k: string) => hexRGB(V(L, k, t)); { const a = c3('c1'), b = c3('c2'), f = c3('fillc'); gl.uniform3f(U(p, 'uC1'), a[0], a[1], a[2]); gl.uniform3f(U(p, 'uC2'), b[0], b[1], b[2]); gl.uniform3f(U(p, 'uFillC'), f[0], f[1], f[2]); }
   const set = (u: string, k: string) => gl.uniform1f(U(p, u), V(L, k, t));
   set('uLook', 'look'); set('uCol', 'color'); set('uTS', 'trimS'); set('uTE', 'trimE'); set('uTO', 'trimO'); set('uDash', 'dash'); set('uDashL', 'dashL'); set('uTwist', 'twist'); set('uGloss', 'gloss'); set('uGlow', 'glow');
-  gl.uniform1f(U(p, 'uClosed'), G.closed ? 1 : 0); setPal(p, L.pal || 0); gl.uniform1f(U(p, 'uHue'), ev(L.n.hue, BASEK.hue, t));
+  gl.uniform1f(U(p, 'uClosed'), G.closed ? 1 : 0); setPal(p, L.pal || 0, L); gl.uniform1f(U(p, 'uHue'), ev(L.n.hue, BASEK.hue, t));
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   if (G.closed && V(L, 'fill', t) === 1) {
     const ring = G.poly.slice(0, n - 1), tri = earClip(ring), F = new Float32Array(tri.length * 6);

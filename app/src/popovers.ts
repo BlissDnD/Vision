@@ -10,6 +10,7 @@ import { FPS_OPTS, fpsObj } from './inspector';
 import { commit, renderAll, scheduleSave } from './history';
 import { audioRestart } from './signals';
 import { markDirty } from './loop';
+import { colorWell } from './colorpick';
 import { renderVideo, snapPNG, startRec } from './output';
 import { projModal, toast } from './modals';
 
@@ -24,7 +25,7 @@ $('#canvasBtn').onclick=e=>{
   const qs=h('select',{'aria-label':'Előnézeti minőség'},...[['auto','Automatikus (a géphez igazodik)'],['0.5','50% (gyors)'],['0.75','75%'],['1','100%'],['2','200% (retina)']].map(x=>{const op=h('option',{value:x[0]},x[1]);if(x[0]===String(st.qMode==='auto'?'auto':st.q))op.selected=true;return op;}));
   sz.onchange=()=>{st.size=sz.value;if(st.qMode!=='auto'&&+st.size.split('x')[0]<1000&&st.q<1){st.q=2;qs.value='2';}R.aqF=1;resizeMain();commit();};
   qs.onchange=()=>{if(qs.value==='auto'){st.qMode='auto';R.aqF=1;}else{st.qMode='fixed';st.q=+qs.value;}resizeMain();markDirty();};
-  const bg=h('input',{type:'color',class:'cwell',value:st.bg,'aria-label':'Háttérszín'});bg.oninput=()=>{st.bg=bg.value;};bg.onchange=commit;
+  const bg=colorWell(()=>st.bg,v=>{st.bg=v.slice(0,7);markDirty();},ch=>{if(ch)commit();},'Háttérszín');
   const sp=h('select',{'aria-label':'Lejátszási tempó'},...['0.25','0.5','1','1.5','2','3'].map(x=>{const op=h('option',{value:x},x+'×');if(+x===R.speed)op.selected=true;return op;}));sp.onchange=()=>{R.speed=+sp.value;audioRestart();};
   openPop(e.currentTarget,h('div',{class:'pl'},'Vászon'),h('div',{class:'pc'},h('div',{class:'row2'},h('span',null,'Formátum'),h('div',{class:'pop'},sz)),h('div',{class:'row2'},h('span',null,'Előnézet'),h('div',{class:'pop'},qs)),
     h('div',{class:'row2'},h('span',null,'Háttér'),bg),h('div',{class:'row2'},h('span',null,'Tempó'),h('div',{class:'pop'},sp)),

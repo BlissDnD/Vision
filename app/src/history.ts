@@ -60,3 +60,4 @@ export function setScenes(o){const src=o&&Array.isArray(o.scenes)?o.scenes:[];
     trans:{dur:s.trans&&s.trans.dur>=0?+s.trans.dur:1,ease:s.trans&&isFinite(s.trans.ease)?+s.trans.ease:3,pairs:(s.trans&&s.trans.pairs&&typeof s.trans.pairs==='object')?s.trans.pairs:{}}}));
   if(R.renderStrip)R.renderStrip();}
 export function setTL(o){o=o||{};st.dur=o.dur>0?o.dur:10;st.loop=o.loop!==false;st.bpm=o.bpm>0?o.bpm:120;st.bpmOff=o.bpmOff||0;}
+R.renderAll=renderAll;

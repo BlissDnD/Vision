@@ -1,4 +1,5 @@
 import { R } from './runtime';
+import { colorSummary } from './colorsum';
 import { $, h } from './dom';
 import { SVG_X, BASEK, EFFECTS, KIND_LABEL, PRIM_DEF, PRIM_OP, PRIM_T, S, SEL, iconKind, kindOf, paramsOf, animKeysOf, mainDupOf, pdefOf } from './effects/index';
 import { getProg, progError } from './gl';
@@ -32,6 +33,7 @@ export function renderInsp(){
   const nm=h('input',{class:'nm',value:L.name,'aria-label':'Réteg neve'});nm.onchange=()=>{L.name=nm.value||L.name;commit();renderLayers();};
   P.appendChild(h('div',{class:'ihead'},h('span',{class:'lic',html:iconKind(k)}),h('div',{class:'tt'},nm,h('small',null,isG?(L.macros.length?'Recept · csoport':'Csoport'):(KIND_LABEL[k]+(d.name!==L.name?' · '+d.name:'')))),
     h('button',{class:'btn',title:'Mentés presetként a saját könyvtárba (polcválasztással)','aria-label':'Mentés presetként',onclick:()=>R.savePreset&&R.savePreset(L)},'☆')));
+  {const cs=colorSummary(L);if(cs)P.appendChild(cs);}  // U5: Színek sor
   if(isG){
     const Rc=RECIPES.find(r=>r.n===L.recipe);if(Rc)T('content',h('p',{class:'desc'},Rc.desc));
     if(L.macros.length)T('content',section('Vezérlők','macro',true,...L.macros.map(m=>{const o={v:m.v,a:0};return ctlSlider(o,{k:'m',l:m.l,min:0,max:1},{big:true,noAnim:true,onInput:()=>macroApply(L,m,o.v)});})));
@@ -199,3 +201,5 @@ export function motionSummary(L){
   if(moved)rows.push(tempoRow(L));
   return section('Animáció','anim',true,h('div',{class:'btnrow'},am,pf),
     rows.length?h('div',{class:'alist'},...rows):h('p',{class:'small'},'Ezen a rétegen még nincs animáció. Kapcsold be az Animálást (A), és húzd a réteget vagy állíts egy csúszkát: kulcskocka lesz. Jelek: ◆ kulcs · ∿ hullám · ♪ hang/jel · ⇢ Kapcsolat · ▭ mozgásblokk.'));}
+
+R.renderInsp=renderInsp;R.setITab=setITab;

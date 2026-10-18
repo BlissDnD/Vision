@@ -595,3 +595,30 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .korow .kon{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tlx-clip.tlx-ko{background:color-mix(in srgb,#b48cff 26%,transparent);border-color:#b48cff}
 .tlx-clip.tlx-korole{background:color-mix(in srgb,#b48cff 16%,transparent);border-color:color-mix(in srgb,#b48cff 70%,transparent);cursor:pointer}
+/* U5 colour picker, swatches, gradient bar, colour summary, action bar */
+.cwb{display:inline-block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 0 0 1px var(--sep)}
+.cwb.drop,.cswatch.drop{outline:2px solid var(--accent);outline-offset:1px}
+.cpick{position:fixed;z-index:60;width:224px;padding:10px;border-radius:12px;background:var(--side);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+.cpick[hidden]{display:none}
+.cp-svw{position:relative;width:200px;height:140px;align-self:center}
+.cp-sv{width:200px;height:140px;border-radius:8px;cursor:crosshair;display:block}
+.cp-knob{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.5);cursor:grab}
+.cp-hue,.cp-alpha{width:200px;height:12px;border-radius:6px;cursor:ew-resize;align-self:center}
+.cp-alpha[hidden]{display:none}
+.cp-row{display:flex;gap:6px;align-items:center}.cp-hex{flex:1;font-family:var(--fm)}.cp-eye{width:30px;padding:0}
+.cp-lbl{font-size:11px;color:var(--fg3)}
+.cp-swr,.csum-sw{display:flex;flex-wrap:wrap;gap:4px}
+.cswatch{width:18px;height:18px;border-radius:5px;border:0;padding:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.gbar{position:relative;height:22px;border-radius:7px;margin:6px 0 14px;cursor:copy;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.gstop{position:absolute;top:100%;width:12px;height:12px;margin:2px 0 0 -6px;border-radius:3px;border:2px solid var(--fg);cursor:grab;padding:0}
+.gstop.on{border-color:var(--accent)}
+.csum{display:flex;flex-direction:column;gap:4px;padding:6px 10px 8px;border-bottom:1px solid var(--sep)}
+.csum-row{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--fg2)}
+.csum-row .cwb{width:20px;height:20px;flex:none}
+.csum-row.off{opacity:.45;text-decoration:line-through}
+.csum-warn{font-size:11.5px;color:#ffcc66;display:flex;gap:6px;align-items:center}
+.abar{display:flex;gap:4px;align-items:center;min-height:30px;padding:3px 6px;border-radius:10px;background:var(--chrome);border:1px dashed transparent}
+.abar.drop{border-color:var(--accent)}
+.abar:empty::before{content:'Húzz ide eszközt, Megjelenést vagy Mozgást';font-size:11px;color:var(--fg3);padding:0 6px}
+.abtn{height:26px;min-width:26px;padding:0 7px;border-radius:7px;border:0;background:var(--fill2);color:var(--fg);font-size:11.5px;cursor:pointer;white-space:nowrap}
+.abtn:hover{background:var(--fill)}

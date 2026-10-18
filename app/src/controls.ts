@@ -1,9 +1,13 @@
 import { R } from './runtime';
 import { h } from './dom';
-import { PALS, PAL_ORDER, palCSS } from './palettes';
+import { PALS, PAL_ORDER, palCSS, palJS } from './palettes';
+import { colorWell } from './colorpick';
+import { gradEditor, gradSwatches } from './gradui';
+import { rgbToHex } from './colorutil';
+import { markDirty } from './loop';
 import { fxFits, fxHostNote, BASEK, BLENDS, EFFECTS, SVG_CHEV, SVG_EYE, SVG_EYEOFF, SVG_WAVE, SVG_X, WAVES } from './effects/index';
 import { LIB } from './library';
-import { st } from './state';
+import { sel, st } from './state';
 import { ANIM_SYM, ANIM_TIP, SVG_CURVE, animKinds, curV, hasK, keyButton, keyEditor, setVal } from './evaluation';
 import { renderLayers } from './layers';
 import { renderInsp } from './inspector';
@@ -68,7 +72,8 @@ export function ctlSelect(obj,d){
     R.liveSel.push(me);return h('div',{class:'row2'},h('span',null,d.l),seg);}
   const s=h('select',{'aria-label':d.l},...d.opts.map((o,i)=>{const op=h('option',{value:i},o);if(Math.round(obj.v)===i)op.selected=true;return op;}));me.set=i=>{s.value=String(i);};s.onchange=()=>{obj.v=+s.value;twins();commit();};
   R.liveSel.push(me);return h('div',{class:'row2'},h('span',null,d.l),h('div',{class:'pop'},s));}
-export function ctlColor(obj,d){const c=h('input',{type:'color',class:'cwell',value:obj.v,'aria-label':d.l});c.oninput=()=>{obj.v=c.value;};c.onchange=commit;return h('div',{class:'row2'},h('span',null,d.l),c);}
+/** U5: the shared picker (project + palette swatches, drop a dragged colour on it); one undo step per edit. */
+export function ctlColor(obj,d){const L=sel();const c=colorWell(()=>obj.v,v=>{obj.v=v;markDirty();},ch=>{if(ch)commit();},d.l,{alpha:!!d.alpha,extra:()=>L?[0,.25,.5,.75,1].map(t=>rgbToHex(palJS(L.pal||0,t) as any)):[]});return h('div',{class:'row2'},h('span',null,d.l),c);}
 export function ctlSwitch(label,checked,on){const s=h('input',{type:'checkbox',class:'sw','aria-label':label});s.checked=!!checked;s.onchange=()=>on(s.checked);return h('label',{class:'row2'},h('span',null,label),s);}
 export function ctlParam(L,d,big?){const o=L.p[d.k];if(d.type==='sel')return ctlSelect(o,d);if(d.type==='color')return ctlColor(o,d);return ctlSlider(o,d,{big,dice:d.k==='seed'});}
 export function scrubField(lbl,obj,d,scale,keyed?){
@@ -79,8 +84,11 @@ export function scrubField(lbl,obj,d,scale,keyed?){
   box.onpointerup=()=>{if(sx!=null){sx=null;commit();if(hasK(obj))renderTimeline();keyed&&keyed();}};
   inp.onchange=()=>{const v=parseFloat(String(inp.value).replace(',','.'));if(isFinite(v)){put(v);commit();keyed&&keyed();}inp.value=fmt(curV(obj),d);};inp.onkeydown=e=>{if(e.key==='Enter')inp.blur();};
   R.liveFields.push({obj,d,inp,kbtn,ab});return box;}
-export function palettePicker(L){const box=h('div',{class:'swatches',role:'group','aria-label':'Paletta'});PAL_ORDER.forEach(i=>{const p=PALS[i];const b=h('button',{class:'swatch',title:p.n,'aria-label':'Paletta: '+p.n,'aria-pressed':String(L.pal===i),style:`background:${palCSS(i)}`});
-  b.onclick=()=>{L.pal=i;[...box.children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));commit();};box.appendChild(b);});return box;}
+export function palettePicker(L){const wrap=h('div',{class:'palpick'});const build=()=>{wrap.innerHTML='';
+  const box=h('div',{class:'swatches',role:'group','aria-label':'Paletta'});PAL_ORDER.forEach(i=>{const p=PALS[i];const b=h('button',{class:'swatch',title:p.n,'aria-label':'Paletta: '+p.n,'aria-pressed':String(!L.grad&&L.pal===i),style:`background:${palCSS(i)}`});
+  b.onclick=()=>{L.pal=i;delete L.grad;commit();build();};box.appendChild(b);});
+  // U5: own gradient (✎) and saved own palettes; the editor opens under the swatches when the layer uses its own gradient
+  box.append(...gradSwatches(L,build));wrap.appendChild(box);if(L.grad)wrap.appendChild(gradEditor(L,build));};build();return wrap;}
 export function blendRow(L){const s=h('select',{'aria-label':'Keverési mód'},...BLENDS.map(b=>{const o=h('option',{value:b[0]},b[1]);if(b[0]===L.blend)o.selected=true;return o;}));
   s.onchange=()=>{L.blend=s.value;commit();renderLayers();};return h('div',{class:'row2'},h('span',null,'Keverés'),h('div',{class:'pop'},s));}
 /** U4: the layer's appearance chain as an icon row (order = chain order, drag to reorder; dimmed = off). The chosen icon

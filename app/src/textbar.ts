@@ -7,6 +7,7 @@ import { sel } from './state';
 import { BASEK, EFFECTS } from './effects/index';
 import { curV, setVal } from './evaluation';
 import { scrubField } from './controls';
+import { colorWell } from './colorpick';
 import { commit } from './history';
 import { renderInsp, setITab } from './inspector';
 import { markDirty } from './loop';
@@ -39,8 +40,7 @@ export function updTextbar() {
   const kids: any[] = [h('div', { class: 'pop' }, font), bold];
   // colour: Animált szöveg = Szín 1 (switches the fill to one colour); Szöveg = its palette on the colour tab
   if (L.type === 'mtext' && L.p.color1) {
-    const c = h('input', { type: 'color', class: 'cwell', value: L.p.color1.v, title: 'Szín', 'aria-label': 'Szöveg színe' });
-    c.oninput = () => { L.p.color1.v = c.value; if (Math.round(L.p.fill.v) !== 0) L.p.fill.v = 0; markDirty(); }; c.onchange = done; kids.push(c);
+    const c = colorWell(() => L.p.color1.v, v => { L.p.color1.v = v; if (Math.round(L.p.fill.v) !== 0) L.p.fill.v = 0; markDirty(); }, ch => { if (ch) done(); }, 'Szöveg színe'); kids.push(c);
   } else kids.push(h('button', { class: 'tbb', type: 'button', title: 'Szín: paletta és színezés', 'aria-label': 'Szín', onclick: () => setITab('look'), html: svg('<path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 0 1-12 0c0-3.1 2.5-6.3 6-10.5z"/>') }));
   kids.push(h('span', { class: 'sepv' }));
   const al = T.align || 'center';

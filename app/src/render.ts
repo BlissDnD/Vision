@@ -2,6 +2,7 @@ import type { Camera } from './types';
 import { R } from './runtime';
 import { $, h } from './dom';
 import { EASE_NAMES, PALS, hexRGB, v3 } from './palettes';
+import { gradSamples } from './colorutil';
 import { BASEK, BENTO, BLEND_IDX, EFFECTS, S, kindOf, paramsOf } from './effects/index';
 import { BLANK, COMP, COPY, MIX, DOWN, NULLP, PLACEHOLDER, POST, U, UPS, XFORM, clearTarget, compile, cv, errCache, freeCtx, freeTarget, getProg, gl, mkCtx, mkSet, mkTarget } from './gl';
 import { LIGHTP, imgTex, makeLayer, mkN, st } from './state';
@@ -135,11 +136,16 @@ EFFECTS.sdfscene.setU=(p,L,t)=>{lightU(p,L,t);matU(p,L,t,U);const P=(L.prims||[]
 R.PPROG=null;
 export function link2(vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p)||'link error');p.u={};return p;}
 /** Palette as 4 uniforms (IQ cosine palette) instead of a per-pixel branch over every palette. */
-export function setPal(p,i){const P=PALS[i]||PALS[0];gl.uniform3fv(U(p,'uPA'),P.a);gl.uniform3fv(U(p,'uPB'),P.b);gl.uniform3fv(U(p,'uPC'),P.c);gl.uniform3fv(U(p,'uPD'),P.d);}
+/** U5: a layer with its own gradient (L.grad = {s:[[pos,'#hex'],…], m:0 OKLCH|1 RGB}) replaces the cosine palette everywhere pal() is used. */
+export function gradOf(L){const g=L&&L.grad;if(!g||!Array.isArray(g.s)||g.s.length<2)return null;const key=JSON.stringify(g);
+  if(!L._gs||L._gs.k!==key)Object.defineProperty(L,'_gs',{value:{k:key,a:gradSamples(g.s,g.m|0)},enumerable:false,configurable:true,writable:true});return L._gs.a;}
+export function setPal(p,i,L?){const P=PALS[i]||PALS[0];gl.uniform3fv(U(p,'uPA'),P.a);gl.uniform3fv(U(p,'uPB'),P.b);gl.uniform3fv(U(p,'uPC'),P.c);gl.uniform3fv(U(p,'uPD'),P.d);
+  const G=gradOf(L);gl.uniform1f(U(p,'uGOn'),G?1:0);if(G)gl.uniform3fv(U(p,'uG'),G);}
 export function particleProg(){
   if(R.PPROG)return R.PPROG==='err'?null:R.PPROG;
   const PALFN=`uniform vec3 uPA; uniform vec3 uPB; uniform vec3 uPC; uniform vec3 uPD;
-vec3 pal(float t){return clamp(uPA+uPB*cos(6.28318530718*(uPC*t+uPD+uHue)),0.0,1.0);}`;
+uniform vec3 uG[16]; uniform float uGOn;
+vec3 pal(float t){if(uGOn>0.5){float x=1.0-abs(fract((t+uHue)*0.5)*2.0-1.0);float f=x*15.0;int i=int(min(floor(f),14.0));return mix(uG[i],uG[i+1],f-float(i));}return clamp(uPA+uPB*cos(6.28318530718*(uPC*t+uPD+uHue)),0.0,1.0);}`;
   const VSP=`#version 300 es
 precision highp float;
 uniform sampler2D uSrc; uniform vec2 uGrid; uniform vec2 uRes; uniform float uTime; uniform vec2 uOff; uniform float uScale; uniform float uRot; uniform float uPal; uniform float uHue; uniform float uAspI;
@@ -180,7 +186,7 @@ export function drawPoints(L,target,ctx,t,inTex){
   let tex,asp;if(!PV&&Math.round(L.p.source.v)===1){const m=(L.asset&&imgTex.get(L.asset))||PLACEHOLDER;tex=m.tex;asp=m.w/m.h;}else{tex=inTex;asp=ctx.w/ctx.h;}
   const N=[256,384,512][Math.round(PV?PV.density:L.p.density.v)]||256;const gx=Math.max(8,Math.round(N*Math.sqrt(asp))),gy=Math.max(8,Math.round(N/Math.sqrt(asp)));
   gl.uniform2f(U(p,'uGrid'),gx,gy);gl.uniform2f(U(p,'uRes'),ctx.w,ctx.h);gl.uniform1f(U(p,'uTime'),t);gl.uniform1f(U(p,'uAspI'),asp);if(PV){gl.uniform2f(U(p,'uOff'),0,0);gl.uniform1f(U(p,'uScale'),1);gl.uniform1f(U(p,'uRot'),0);}else setXform(p,L,t);
-  setPal(p,L.pal||0);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
+  setPal(p,L.pal||0,L);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
   if(PV)for(const k in PV)gl.uniform1f(U(p,'p_'+k),PV[k]);else for(const d of def.params){const v=L.p[d.k];gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
   bindTex(0,tex);gl.uniform1i(U(p,'uSrc'),0);
   gl.enable(gl.BLEND);if(Math.round(PV?PV.pblend:L.p.pblend.v)===0)gl.blendFunc(gl.ONE,gl.ONE);else gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
@@ -189,7 +195,7 @@ export function drawFx(L,target,ctx,t,inTex,prevTex,pass){
   const def=EFFECTS[L.type];const p=getProg(L)||NULLP;
   gl.bindFramebuffer(gl.FRAMEBUFFER,target.f);gl.viewport(0,0,ctx.w,ctx.h);gl.useProgram(p);
   gl.uniform2f(U(p,'uRes'),ctx.w,ctx.h);gl.uniform1f(U(p,'uTime'),t);gl.uniform1f(U(p,'uPass'),pass||0);setXform(p,L,t);
-  setPal(p,L.pal||0);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
+  setPal(p,L.pal||0,L);gl.uniform1f(U(p,'uHue'),ev(L.n.hue,BASEK.hue,t));
   for(const d of paramsOf(L)){const v=L.p[d.k];if(d.type==='color'){const c=hexRGB(v?v.v:d.def);gl.uniform3f(U(p,'p_'+d.k),c[0],c[1],c[2]);}
     else gl.uniform1f(U(p,'p_'+d.k),v?(d.type==='sel'?v.v:ev(v,d,t)):d.def);}
   const m=mediaFor(L,t,ctx);bindTex(0,inTex);bindTex(1,prevTex);bindTex(2,m&&m.tex);

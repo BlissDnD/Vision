@@ -26,4 +26,4 @@ export const v3=a=>`vec3(${a.map(ff).join(',')})`;
 export function palJS(i,t){const p=PALS[i]||PALS[0];return [0,1,2].map(k=>Math.min(1,Math.max(0,p.a[k]+p.b[k]*Math.cos(TAU*(p.c[k]*t+p.d[k])))));}
 export function palCSS(i){const st=[];for(let k=0;k<=8;k++){const c=palJS(i,k/8).map(x=>Math.round(x*255));st.push(`rgb(${c})`);}return `conic-gradient(${st.join(',')})`;}
 export const EASE_NAMES=['Lágy','Erős','Rugós (régi)','Ki-be','Lineáris','Rugó – finom','Rugó – pattanós','Visszalendülés','Gumi (elastic)','Pattogás','Expo ki-be','Lépcsős'];
-export function hexRGB(hx){const n=parseInt(String(hx).slice(1),16)||0;return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255];}
+export function hexRGB(hx){const n=parseInt(String(hx).slice(1,7),16)||0;return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255];}
