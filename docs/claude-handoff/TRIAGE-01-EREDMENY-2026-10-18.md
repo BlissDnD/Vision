@@ -54,3 +54,24 @@ Eltérés a csomag-pillanatképtől: a csomag (5a884ea) írásakor a MAT/FLUID/P
 ## 5. Szabály: átfedő addonok (a felhasználó döntése, 2026-10-18)
 
 Ha egy extension-lab addon egy már natívan elkészült funkcióval fedésben van, **nem hagyjuk ki**: a forrását átnézve a natív változatot feljavítjuk vele, ahol segít (minőség, funkció, robusztusság). Párok: `fluid-field`↔F1, `rigid-bodies`/`rapier-physics`↔F2, `path-tube`/`tapered-line`/`vector-paths`↔P2, `curved-text`/`extrude`↔T6, `camera-framing`↔K3, `planar-reflection`/`glass-material`/`custom-material`↔FÉNY2/MAT1, `gpu-particle-state`/`quarks-emitter`↔E1, `polyhaven-intake`↔PH1. Minden érintett szeletjavaslat sorolja fel, mit javít az addon.
+
+## 6. Fő ütemterv: a csomag hullámai a mai állapotra igazítva (a felhasználó döntése: a csomag a fő irány + M10)
+
+A csomag hullámai (`FEJLESZTESI-TERV.md`) maradnak a gerinc; az M6–M10 bennük van (C→MAT/WORLD/PATH, D→PART/WORLD, E→PHYS/LINK, F→FLUID, **G=M10→RECIPE/LAYOUT/CAT**). Minden szelethez jóváhagyott javaslat kell; az addonok a szeletbe épülnek (5. pont szabálya szerint).
+
+| Hullám | Nagy feladat (A) | Beépülő addonok | Régi M | Megjegyzés a mai állapothoz |
+|---|---|---|---|---|
+| 0 | TRIAGE-01 | – | – | **kész** |
+| 1 | CAT-01: stabil ID, metaadat, keresés, 4 szerep | – | B | a mai sok új elem (E1, F1, F2, T6, MAT1…) miatt most sürgősebb |
+| 2a | STAB-01 mini + BASE-01 (asset-gyűjtő, hang a projektben) | `streaming-export` | A | 3 adatvesztési hiba + export-megszakítás; minden későbbi addon tartós médiájának alapja |
+| 2b | COLOR-01 / UI-01 = **U5** | `color-picker`, `color-wheel`, `perceptual-gradient`, `palette-scales`, `sortable-toolbar` | B | |
+| 3 | **M6b** MAT-01 + „1. kép összeáll” | `contact-shading`, `environment-map`, `lut-import`; javítás: `glass-material`, `planar-reflection` | M6 / C | FÉNY2+MAT1+P2 már megvan |
+| 3' | **M10 első szelet** LAYOUT-01 + RECIPE-01 | Unwoven, WIDE-tanulmány; `dom-transform` (csak szerkesztősegéd) | M10 / G | layoutrecept saját képpel/szöveggel, 1:1·4:5·9:16 próba, KO1 érkezés, Q1 szűrő; animált Random |
+| 4 | PHYS-01 / PART-01: **M8 Mező** + „Érintés jelez” | javítás: `rapier-physics`, `rigid-bodies`, `quarks-emitter`, `gpu-particle-state`; `procedural-noise`, `surface-scatter` | M8 / E | F2 + E1 megvan; LINK-01 (K1 hiba) ide kapcsolódik |
+| 4' | M7 maradék: Füst, Virág, Bolygó (WORLD-01 T2) | `smoke-assets`, `foliage-assets`, `particle-atlas` | M7 / D | |
+| 5 | FLUID-01: **M9** határ/üreg, testreakció, jég–króm–láva | javítás: `fluid-field`; `water-surface` csak a Three-híd döntés után | M9 / F | |
+| 6 | **M10 teljes** RECIPE-01 család + animált Random | – | M10 / G | a 3–5. hullám elemeiből; csak valóban elérhető elemekből |
+| közben | PATH-01 (boole: `polygon-boolean`, `svg-import`, `font-outlines`, `voronoi`), MOT-01 (`bezier-easing`, `fit-motion-path`), TEXT-01, jelzések (`audio-features`, `waveform`, `metronome`) | | B | független kis ágak, ha nem ütközik a write-set |
+| később | SCENE-01 + Three-híd döntés (`gltf-import`, `model-animation`, `ik-chain`, `decal`), VIDEO-01, CHARACTER-01, RELIGHT-01, AI-PREVIZ-01 | | – | külön javaslat; nagy 3D fájl: beágyazás vs. hivatkozás döntés |
+
+Az M10 két helyen van: a 3'. hullámban egy korai, kipróbálható layoutrecept (hogy a minőséget valós munkán mérjük), a 6.-ban a teljes receptcsalád.
