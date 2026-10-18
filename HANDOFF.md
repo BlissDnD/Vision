@@ -3,7 +3,7 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
-Verzió **0.28.0-u4**, a teljes tesztkör (30 teszt) zöld, minden commitolva. Kész és headless tesztekkel demonstrálva: **P1** (presetek ChatGPT-vel, saját könyvtár, saját shader csúszkákkal) és **U4** (tömörebb jobb panel, felső szövegsáv, effekt-ikonsor; `docs/spec/vel-ui-visszajelzes-2026-10-18.md` első fele). **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
+Verzió **0.28.0-u4**, a teljes tesztkör (31 teszt) zöld, minden commitolva. Kész és headless tesztekkel demonstrálva: **P1** (presetek ChatGPT-vel, saját könyvtár, saját shader csúszkákkal) és **U4** (tömörebb jobb panel, felső szövegsáv, effekt-ikonsor; `docs/spec/vel-ui-visszajelzes-2026-10-18.md` első fele). **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
 
 **CodePen-könyvtári integráció (2026-10-18):** a Liquid Glass a Megjelenések között ráhúzható effekt; a Szélben lobogó láng a Források között van. Két új szerkeszthető recept is készült. A shaderfordítás, könyvtári beillesztés, rétegre húzás és mentés–újranyitás célzott böngészős tesztje zöld; a felhasználói látványpróba még hátra van. Az eredeti portfájlok megmaradtak. A láng műterméke és a licenc kérdése nyitott.
 
