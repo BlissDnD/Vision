@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@awesome.me/webawesome": "^3.14.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "animejs": "^4.5.0",
     "lottie-web": "^5.13.0"
   }

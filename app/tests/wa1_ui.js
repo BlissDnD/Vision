@@ -13,6 +13,19 @@
    waSurface:theme.getPropertyValue('--wa-color-surface-default').trim()};
  if(info.tokens.panel!=='#1c1c21')bad.push('the Vel theme tokens are missing: '+JSON.stringify(info.tokens));
  if(!info.tokens.waSurface)bad.push('the Web Awesome surface is not mapped to the Vel theme');
+ // the legacy style.css variables take the design-system values, so the existing panels change theme too
+ info.legacy={side:theme.getPropertyValue('--side').trim(),accent:theme.getPropertyValue('--accent').trim()};
+ if(info.legacy.side!=='#1c1c21'||info.legacy.accent!=='#6e6cf5')bad.push('the legacy theme variables were not taken over: '+JSON.stringify(info.legacy));
+ // bundled Font Awesome: an icon resolves to a data URI, nothing is fetched
+ info.icon=iconSvg('keyframe').slice(0,14);
+ if(!/^<svg viewBox=/.test(info.icon))bad.push('the bundled icon set is missing');
+ if(!iconUri('link').startsWith('data:image/svg+xml,'))bad.push('the Web Awesome icon resolver is not a data URI');
+ // icon-first toolbar: the name stays for screen readers, the visible part is the icon
+ const pb=document.querySelector('#projBtn');
+ info.toolbar={cat:pb.dataset.cat,aria:pb.getAttribute('aria-label'),lbl:Math.round(pb.querySelector('.lbl').getBoundingClientRect().width)};
+ if(info.toolbar.lbl>2)bad.push('the toolbar pill is not icon-only: '+info.toolbar.lbl);
+ if(info.toolbar.aria!=='Project')bad.push('the toolbar pill lost its accessible name');
+ if(!pb.dataset.cat)bad.push('the toolbar pill has no category tint');
 
  // 2) library shelf row: an icon and a tooltip per category, tinted with the category colour
  buildCats();buildShelf();
@@ -70,6 +83,10 @@
  info.ry=ryb.length;
  if(ryb.length!==RY_PRE.length)bad.push('the rhythm presets are not an icon group: '+ryb.length);
  if(ryb.some(b=>!b.querySelector('svg')))bad.push('a rhythm preset has no icon');
+ // the rhythm icon is drawn from the preset's own curve, so two presets never look the same
+ const paths=[...new Set(ryb.map(b=>b.querySelector('path').getAttribute('d')))];
+ info.ryShapes=paths.length;
+ if(paths.length!==ryb.length)bad.push('the rhythm icons are not drawn from their own curves: '+paths.length+'/'+ryb.length);
  ryb[1].click();
  if(!M||!M.ry||M.ry.k!==1)bad.push('the rhythm preset click did not apply: '+JSON.stringify(M.ry&&M.ry.k));
  renderInsp();

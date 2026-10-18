@@ -38,7 +38,6 @@
   --vel-dur: 150ms;
 
   /* Web Awesome overrides (dark surface, Vel brand) */
-  color-scheme: dark;
   --wa-color-surface-default: var(--vel-panel);
   --wa-color-surface-raised: var(--vel-raised);
   --wa-color-surface-lowered: var(--vel-bg);
@@ -60,6 +59,33 @@
 @media (prefers-reduced-motion: reduce) {
   :root { --vel-dur: 0ms; --wa-transition-normal: 0ms; }
 }
+
+/* The dark surface of the whole app: the legacy style.css variables take the design-system values, so every existing
+ * panel picks up the new theme without being rewritten. `:not([data-theme="light"])` beats style.css's plain `:root`
+ * whatever the import order, and leaves the existing Light mode alone (its own slice is WA4). */
+:root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --bg: var(--vel-bg);
+  --stage: #0d0d10;
+  --chrome: rgba(28, 28, 33, .82);
+  --side: var(--vel-panel);
+  --card: var(--vel-raised);
+  --sep: var(--vel-line);
+  --hover: rgba(255, 255, 255, .05);
+  --fill: rgba(120, 120, 128, .22);
+  --fill2: rgba(120, 120, 128, .13);
+  --seg-on: #4a4a55;
+  --fg: var(--vel-text);
+  --fg2: var(--vel-text-quiet);
+  --fg3: var(--vel-text-off);
+  --accent: var(--vel-accent);
+  --accent-soft: rgba(110, 108, 245, .22);
+  --danger: var(--vel-err);
+  --ok: var(--vel-ok);
+  --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+}
+:focus-visible { outline-color: var(--vel-focus); }
+.val, .time { font-variant-numeric: tabular-nums; }
 
 /* Shared controls (src/ui/) ------------------------------------------------ */
 .vel-ib {
@@ -95,3 +121,25 @@
 
 wa-tooltip::part(body) { font-size: 11px; }
 wa-switch { --wa-color-brand-fill-loud: var(--vel-accent); }
+
+/* Icon-first toolbar: the pill keeps its name for screen readers and Help, the visible part is the icon + tooltip,
+ * tinted by category (colour is always paired with an icon). */
+.bar .pill[data-cat] { min-width: 32px; justify-content: center; gap: 0; padding-inline: 8px; }
+.bar .pill[data-cat] > .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.bar .pill[data-cat] svg { color: var(--vel-cc, currentColor); }
+[data-cat="effect"] { --vel-cc: var(--vel-cat-fx); }
+[data-cat="shader"] { --vel-cc: var(--vel-cat-shader); }
+[data-cat="shape"] { --vel-cc: var(--vel-cat-shape); }
+[data-cat="text"] { --vel-cc: var(--vel-cat-media); }
+[data-cat="motion"] { --vel-cc: var(--vel-cat-motion); }
+[data-cat="light"] { --vel-cc: var(--vel-cat-light); }
+[data-cat="color"] { --vel-cc: var(--vel-cat-color); }
+[data-cat="mask"] { --vel-cc: var(--vel-cat-mask); }
+[data-cat="particles"] { --vel-cc: var(--vel-cat-particles); }
+[data-cat="library"] { --vel-cc: var(--vel-cat-library); }
+[data-cat="random"] { --vel-cc: var(--vel-cat-color); }
+
+/* Rhythm presets: the icon is the curve itself */
+.vel-seg .vel-ib svg[viewBox="0 0 28 14"] { width: 26px; height: 13px; }
+wa-dropdown.vel-animmenu { display: contents; }
+wa-dropdown-item .vel-mi svg { width: 14px; height: 14px; }

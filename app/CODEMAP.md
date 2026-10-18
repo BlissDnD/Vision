@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (121 fájl)
+## Modulok (122 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `abar.ts` | 6 |  | abarItems, libById, addToBar, renderBar, layoutMenu | cat |
@@ -133,11 +133,12 @@
 | `transport.ts` | 1 | play/pause/seek, syncCtl | setPlay, resetFeedback, fmtT, syncCtl | playing, time, speed, last, fpsAcc, fpsN, fpsT, refine |
 | `types.ts` | 4 | Shared data model of Látomás Stúdió. Everything is plain JSON so projects, undo history and recipes serialize as-is. | Key, NParam, ParamDef, EffectKind, EffectDef, Timing, LineSpec, TextSpec, Prim, Macro, Layer, Look, Camera, Project … (+1) |  |
 | `ui/common.ts` | 5 | WA1: the shared controls every panel uses — icon button with a Web Awesome tooltip, segmented icon group, switch row and the ◇ animate menu. Display text comes from … | iconBtn, btnOf, segIcons, switchRow, AnimMenuItem, animMenu, animItems |  |
-| `ui/icons.ts` | 3 | WA1: inline SVG icons for the shared controls (library categories, waveforms, rhythm, animate menu). Inline on purpose: Vel is one HTML file that must open from … | CAT_ICON, CAT_COLOR, WAVE_ICON, RY_ICON, ICON_DIAMOND, ICON_LOOP, ICON_KEYS, ICON_LINK, ICON_SPEED, ICON_STRENGTH |  |
+| `ui/fa.ts` | 2 | WA1: the Font Awesome Free icons Vel uses, imported by name so only these end up in the bundle, and registered as Web Awesome's default icon library from data URIs — … | ICONS, iconSvg, iconUri |  |
+| `ui/icons.ts` | 2 | WA1: icons for the shared controls. The category and action icons come from the bundled Font Awesome Free set (src/ui/fa.ts, no network), while waveforms and rhythm … | CAT_ICON, CAT_COLOR, WAVE_ICON, ICON_DIAMOND, ICON_LOOP, ICON_KEYS, ICON_LINK, ICON_SPEED, ICON_STRENGTH, curveSvg |  |
 | `userlib.ts` | 5 | P1: the user's own, durable library (presets, shaders, later anything else). One generic item shape: {id, kind, cat, name, created, data, thumb}. Kept in memory … | UItem, ULIB_VER, ULIB, ulibId, ulibValid, ulibGet, ulibBy, ulibLoad, ulibPut, ulibDel, ulibRename, ulibMerge, ulibExport, ulibImport … (+1) | ulibOk |
 | `variants.ts` | 15 | Közös alap (shared base) / Változat (variant) / Kapcsolat (link). Három külön fogalom, semmi rejtett frissülés (terv 0.4): - Csoport: plain `type:'group'` layer, as … | Base, DiffEntry, LocalDiff, Link, flatten, isVariant, variantsOf, localDiff, diffCount, rematerialize, makeBase, newVariant, transfer, detach … (+11) |  |
 | `variantsui.ts` | 8 | Inspector sections for Közös alap / Variant and Kapcsolat. Every action is one commit (undoable) and says what it did. | variantSection, childVariantSection, linkSection, variantBadge | selId |
 | `version.ts` | 1 | Version + build stamp next to the brand (top left), so the running build is always identifiable. Values come from the build (package.json version, build time); the … | VERSION, BUILT, buildLabel |  |
-| `wa.ts` | 1 | WA1: Web Awesome, imported component by component (no kit, no network at runtime — Vel must open from file://). Icons stay inline SVG (src/fxicons.ts, … | WA_TAGS, waReady, waDefined |  |
+| `wa.ts` | 1 | WA1: Web Awesome, imported component by component, plus the bundled Font Awesome icon library. Nothing is fetched at runtime (no kit, no sprite, icons come from data … | WA_TAGS, waReady, waDefined |  |
 | `workspace.ts` | 6 | U3 workspace chrome: library/layers splitter, one tooltip style for every titled control, toggleable shortcut panel. Pure UI: never touches the project (no commit). … | SHORTCUTS, setShelfFrac, shelfFrac, tipNodes, adoptTitle, setKeyHelp, keyHelpOn |  |
 | `xfer.ts` | 10 | XF1 Mozgás átadása + Sorrend festése (row 26): from a motion card, paint across other layers on the canvas; the touch order becomes the stagger order (numbered … | xfStart, xfClose, xfAccept, xfSection | xfPv, xfStart, updXf, selId, xfSection |

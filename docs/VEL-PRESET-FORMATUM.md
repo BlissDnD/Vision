@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.48.0-m10a.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.49.0-wa1.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.

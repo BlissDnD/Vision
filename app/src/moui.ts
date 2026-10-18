@@ -9,7 +9,7 @@ import { findItem, sel, st } from './state';
 import { S, SEL } from './effects/index';
 import { ctlSelect, ctlSlider, ctlSwitch, section } from './controls';
 import { segIcons, switchRow } from './ui/common';
-import { ICON_SPEED, ICON_STRENGTH, RY_ICON } from './ui/icons';
+import { ICON_SPEED, ICON_STRENGTH, curveSvg } from './ui/icons';
 import { commit, renderAll } from './history';
 import { FPS_OPTS, fpsObj, renderInsp, setITab } from './inspector';
 import { EASES, MOVES, outSize } from './render';
@@ -69,7 +69,7 @@ function rhythmUI(L: any, m: any) {
   const k = m.ry ? m.ry.k : 0, pts = m.ry ? m.ry.pts : Array(RY_N).fill(1);
   // WA1: the rhythm presets are an icon group (the icon draws the rhythm); the name lives in the tooltip, so nothing truncates
   const chips = h('div', { class: 'rychipw' },
-    segIcons('Rhythm', RY_PRE.map((P, i) => ({ icon: RY_ICON[i] || RY_ICON[0], tip: `${P.name} — ${P.tip}`, name: P.name })), k, i => { setRy(m, i); commit(); renderInsp(); markDirty(); }),
+    segIcons('Rhythm', RY_PRE.map(P => ({ icon: curveSvg(P.ry ? P.ry.pts : undefined), tip: `${P.name} — ${P.tip}`, name: P.name })), k, i => { setRy(m, i); commit(); renderInsp(); markDirty(); }),
     k === 5 ? h('span', { class: 'rychip on', title: "Custom curve (drag on the strip)" }, "Custom") : null);
   const strip = h('div', { class: 'rystrip', 'data-mo': m.id, title: "One cycle: drag a point down to slow or pause, up to speed up. Drag the right edge to change cycle length." });
   strip.innerHTML = `<svg viewBox="0 0 200 48" preserveAspectRatio="none"><line x1="0" x2="200" y1="24" y2="24" class="rymid"/><path class="rycv" d="${ryPath(pts)}"/></svg>`;
