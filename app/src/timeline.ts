@@ -203,11 +203,11 @@ export function paintSel(){for(const e of $('#tlxBody').querySelectorAll('.tlx-k
 /** Animated params of an item, for the expandable rows. */
 export function animParams(L){return paramList(L).map(q=>({...q,kinds:animKinds(q.o)})).filter(q=>q.kinds);}
 R.tlxOpenIds=new Set();
-export const QUICK_EASES:[string,number][]=[["Linear",4],["Smooth (through)",14],["Soft",0],['Ki-be',3],["Strong",1],["Spring",5],["Bounce",9],["Overshoot",7],['Gumi',8],["Stepped",11]];
+export const QUICK_EASES:[string,number][]=[["Linear",4],["Smooth (through)",14],["Soft",0],["In-out",3],["Strong",1],["Spring",5],["Bounce",9],["Overshoot",7],["Rubber (elastic)",8],["Stepped",11]];
 /** Right click on a key: curve quick menu for the selection (the clicked key joins / becomes the selection). */
 export function keyMenu(ev,L,t,p?){ev.preventDefault();ev.stopPropagation();if(!isSelK(L.id,t,p))R.tlxSels=[p?{id:L.id,t,p}:{id:L.id,t}];paintSel();
   closeKeyMenu();const refs=selKeyRefs();const cur=refs.length?refs[0].key.e??5:-1;
-  const m=h('div',{class:'kmenu',role:'menu'},h('div',{class:'kmenu-h'},`Curve · ${refs.length} kulcs`),
+  const m=h('div',{class:'kmenu',role:'menu'},h('div',{class:'kmenu-h'},`Curve · ${refs.length} keys`),
     ...QUICK_EASES.map(([l,e])=>{const b=h('button',{type:'button',role:'menuitem',class:cur===e?'on':''},l);b.onclick=()=>{const n=easeSel(e);commit();closeKeyMenu();renderTracks();renderInsp();toast(`Curve: ${l} · ${n} keys (segments until the next key)`);};return b;}),
     h('hr'),(()=>{const b=h('button',{type:'button',role:'menuitem'},"Delete");b.onclick=()=>{const n=deleteSelKeys();commit();closeKeyMenu();renderInsp();toast(`${n} keyframes deleted`);};return b;})());
   document.body.appendChild(m);const r=m.getBoundingClientRect();m.style.left=Math.min(ev.clientX,innerWidth-r.width-8)+'px';m.style.top=Math.max(8,Math.min(ev.clientY,innerHeight-r.height-8))+'px';R.keyMenuEl=m;

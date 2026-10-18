@@ -29,8 +29,8 @@
   const T=makeLayer('mtext',{name:'Cím'});T.p.color1.v='#111111';if(T.p.fill)T.p.fill.v=0;st.bg='#000000';
   st.layers=[T];R.selId=T.id;T.fx=[makeLayer('grade')];commit();renderInsp();
   const sum=document.querySelector('#insp .csum');info.sum=sum?[...sum.querySelectorAll('.csum-row')].map(r=>r.textContent.trim()):null;
-  if(!sum)bad.push('no Színek summary');else if(!info.sum.some(t=>/Megjelenés/.test(t)))bad.push('colour Megjelenés not listed');
-  const fixBtn=sum&&[...sum.querySelectorAll('button')].find(b=>b.textContent==='Olvashatóvá');if(!fixBtn)bad.push('no contrast warning');else{fixBtn.click();info.fixed=T.p.color1.v;if(contrast(hexToRgb(T.p.color1.v),[0,0,0])<4.4)bad.push('Olvashatóvá did not fix');}
+  if(!sum)bad.push('no Színek summary');else if(!info.sum.some(t=>/Appearance/.test(t)))bad.push('colour Megjelenés not listed');
+  const fixBtn=sum&&[...sum.querySelectorAll('button')].find(b=>b.textContent==='Make readable');if(!fixBtn)bad.push('no contrast warning');else{fixBtn.click();info.fixed=T.p.color1.v;if(contrast(hexToRgb(T.p.color1.v),[0,0,0])<4.4)bad.push('Make readable did not fix');}
   // colour drop on a layer
   const S=makeLayer('shape');st.layers=[S];commit();applyColorTo(S,'#ff8800');const ck2=paramsOf(S).find(d=>d.type==='color');
   if(ck2?S.p[ck2.k].v!=='#ff8800':!S.grad)bad.push('applyColorTo did nothing');

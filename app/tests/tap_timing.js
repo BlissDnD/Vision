@@ -35,7 +35,7 @@
  info.cues=st.cues.map(q=>[q.t,q.label]);if(st.cues.length!==3||st.cues.map(q=>q.t).join()!=='2,5,6.5')bad.push('jelzések: '+JSON.stringify(info.cues));
  if(R.hi!==h0+1)bad.push('nem egy undo-lépés: '+(R.hi-h0));
  if(R.tapArm)bad.push('mind a helyén, mégis élesítve');
- if(!/Kész/.test(document.querySelector('.tapstrip').textContent))bad.push('nincs „Kész” üzenet');
+ if(!/Done/.test(document.querySelector('.tapstrip').textContent))bad.push('nincs „Kész” üzenet');
  undo();{const a2=L(A.id),c2=L(C.id);if(Math.abs(a2.tm.inAt-1)>1e-6||(c2.mo&&c2.mo.length)||(st.cues||[]).length)bad.push('undo nem állította vissza');}
  // 3) Esc cancels a running take (stays armed), second Esc disarms
  setTapArm(true);if(R.tapBasket.length!==3)bad.push('a kosár megmaradt? '+R.tapBasket.length);
@@ -65,7 +65,7 @@
  const g1=mk('g1'),g2=mk('g2');g1.tm={in:1,inAt:1,inDur:1,out:0,outAt:9,outDur:1,ease:0};g2.tm={in:1,inAt:3,inDur:1,out:0,outAt:9,outDur:1,ease:0};
  const G=makeGroup('G',[g1,g2]);st.layers=[G];commit();tempoItem(G,2);if(g2.tm.inAt!==2||g1.tm.inAt!==1||G.tpo!==2)bad.push('csoport-tempó: '+[g1.tm.inAt,g2.tm.inAt,G.tpo]);
  // 5) Sima (átmenő) curve: passes through keys, no corner, does not stop at keys, no overshoot
- if(KEY_EASES[SMOOTH_E]!=='Sima (átmenő)')bad.push('görbenév: '+KEY_EASES[SMOOTH_E]);
+ if(KEY_EASES[SMOOTH_E]!=='Smooth (pass-through)')bad.push('görbenév: '+KEY_EASES[SMOOTH_E]);
  const K=[{t:0,v:0},{t:1,v:.5},{t:1.6,v:.8},{t:3,v:.2},{t:4,v:.4}].map(k=>({...k,e:SMOOTH_E}));
  for(const k of K)if(Math.abs(keyVal(K,k.t)-k.v)>1e-9)bad.push('nem megy át a kulcson @'+k.t);
  const d=t=>(keyVal(K,t+1e-4)-keyVal(K,t-1e-4))/2e-4,dl=t=>(keyVal(K,t)-keyVal(K,t-1e-4))/1e-4,dr=t=>(keyVal(K,t+1e-4)-keyVal(K,t))/1e-4;
