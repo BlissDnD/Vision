@@ -179,6 +179,19 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `placeAt(L,t)` = a `setXform` számítása (behav + kamera); 32 minta az utolsó Élettartamra (`uTr`), a Mennyiség is (`uTrR`, a kapacitás 1,25-ös lépcsőkre kerekítve, így az animált mennyiség nem keveri át a rekeszeket).
 - Mozgás zárt képlettel: közegellenállás `fk/gk`, gravitáció és szél állandó erő, széllökés = közös 1D zaj különbsége (integrál), örvény = 3D zaj eltolás; padló legfeljebb 5 pattanás ballisztikusan. Alak 5: elutasító mintavétel az alatta lévő képből (alfa + háttérszíntől eltérés).
 - Kinézetek a fragment shaderben (`vSh` = szög, flip/csíkhossz, méretarány). Teszt: `tests/e1_emitter.js`.
+## Koreográfia (KO1, 2026-10-18)
+- `choreo.ts`: `st.ko={prof,at,amt,sp,acc,ids,roles,w,d}` (mentés: `history.snapshot`, betöltés: `setShared` → `R.normKo`). `suggestRoles` (típus/méret/sorrend), `ordered` (szerep, majd olvasási sorrend).
+- `koParts(K,id)` = a szerep mozgásai sima értékekként (`BT`: kezdés + lépcső szerepenként, `sp`-vel szorozva; az időtartam nem nyúlik). `R.koMos(L)` → `moEval` extra lista (cache: `WeakMap` a K-n, JSON-aláírással); Jelenetsorban nincs.
+- Kártya (`koOpen`, `R.koPv` előnézet, `koAccept` egy commit), `R.koSection` a Mozgás fül tetején, `R.koRows` a Sávok Jelzések sora alatt, `koDetach` = Önálló mozgássá (`toMo` → `L.mo`).
+
+## Mozgás átadása (XF1, 2026-10-18)
+- Adat: forrásmozgás `m.xf={md,gap,ids}`, célmozgás `m.src={l,m}`, bármely mozgás `m.dl` (időeltolás, a `moEval` `t-dl`-lel számol). `effMo(m,L)` kiértékeléskor rakja össze a célt (`xfTakes`: Ritmus = idő/karakter mezők + ry/a/b/lp, Út = térmezők `n.s`-arányosan, Teljes = minden); `null` = nincs a sorban.
+- `xfer.ts`: kártya + festés (capture-fázisú pointer a `#wrap`-on, geometriai találat `gizmoRadius`-szal), `R.xfPv` előnézet (`xfVirtual` virtuális célmozgás, a projekt nem változik), `xfAccept` egy `commit`, `R.updXf` sorszámjelvények, `xfSection` a Mozgás fülre (`moui` hívja `R.xfSection`-ön át).
+- `timeline.ts` `spreadRow`: Terjedés blokk (jobb szél = `gap`), a célsor az effektív helyén, csíkozva, nem húzható. `gesture.ts` a célmozgásra nem ad fogantyút.
+
+## Körbeér (LP1, 2026-10-18)
+- `time.ts`: `loopLen()` (Loop be: `st.dur`; Jelenetsorban `R.seqLen`, a `seqFrame` írja; különben 0), `cyclesIn`, `snapRate`. A jelző `lp` (NParam: `mkN` őrzi; mozgás: `normMo` őrzi). Kiértékeléskor kerekít (`ev`, `moEval`), a tárolt `f`/`period` nem változik.
+- `motion.ts`: `snapP`, `spinSnap` (egész fordulat a `speed·amt`-ra), periodikus `smoothNoise(x,seed,per)`. `moLoopInfo` = felirat. Az alapértelmezett `lp=1` csak felhasználói létrehozáskor kerül be (∿ megnyitása új hullámmal, `attachMo`), Loop be állapotban.
 
 ## Gesztus-mozgás (2026-10-18)
 - `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).

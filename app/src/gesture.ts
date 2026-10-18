@@ -41,7 +41,7 @@ function cur(): any {
   const T = L.tm || {}, ids = [...(T.in ? ['tm:in'] : []), ...(T.out ? ['tm:out'] : []), ...(L.mo || []).map((m: any) => m.id)];
   let id = R.moSel[L.id]; if (!ids.includes(id)) id = ids[0]; if (!id) return null;
   if (id === 'tm:in' || id === 'tm:out') return { L, kind: id.slice(3), T };
-  const m = L.mo.find((x: any) => x.id === id); return m ? { L, kind: m.t, m } : null;
+  const m = L.mo.find((x: any) => x.id === id); return m && !m.src && !R.xfPv ? { L, kind: m.t, m } : null;  // linked (XF1) motions are edited at their source
 }
 const base = (L: any, t: number) => [ev(L.n.x, BASEK.x, t), ev(L.n.y, BASEK.y, t)];
 /** Start offset of a legacy entry/exit move (aspect units); null for moves without a direction. */

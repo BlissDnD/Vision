@@ -54,6 +54,8 @@ import './moui';
 import './gesture';
 import './pathedit';
 import './camui';
+import './xfer';
+import './choreo';
 import './tap';
 import './version';
 import './boot';

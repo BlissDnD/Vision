@@ -241,6 +241,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 .ctl.big input[type=range]::-webkit-slider-thumb{width:22px;height:22px;margin-top:-8px}
 .rngw{position:relative}
 .rngw .mod{position:absolute;top:1px;width:5px;height:5px;border-radius:50%;background:var(--accent);transform:translateX(-2.5px);pointer-events:none;box-shadow:0 0 0 2px var(--side)}
+.lprow{display:flex;align-items:center;gap:8px}.lprow .lpinfo{color:var(--fg3,var(--fg2))}
+.moloop .small{margin:2px 0 6px}
 .lfo{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;padding:8px 10px;border-radius:9px;background:var(--fill2);font-size:11.5px;color:var(--fg2);margin-top:4px}
 .row2{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--fg2)}
 .row2>span:first-child{min-width:0}
@@ -570,3 +572,26 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .rndfb{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:var(--chrome);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--sep);padding:6px 8px 6px 14px;border-radius:12px;z-index:61;font-size:12.5px;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
 .rndfb[hidden]{display:none}
 .rndfb-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+/* XF1 Mozgás átadása + Sorrend festése */
+.xfnums{position:absolute;inset:0;pointer-events:none;z-index:5}
+.xfnums i{position:absolute;transform:translate(-50%,-50%);min-width:18px;height:18px;border-radius:9px;background:#ffb340;color:#1b1b1b;font:600 11px/18px var(--font,system-ui);text-align:center;font-style:normal;opacity:.55;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.xfnums.live i{opacity:1}
+.xfcard{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:6;width:min(340px,calc(100% - 32px));display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid #ffb340;box-shadow:0 6px 24px rgba(0,0,0,.35);font-size:12px}
+.xfcard p{margin:0}.xfhd b{font-weight:600}
+.xfbtns{display:flex;gap:6px;justify-content:flex-end}
+.xfbox{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;padding:8px;border-radius:9px;background:var(--fill2)}
+.xfbox p{margin:0}.xfgets{font-size:12px}
+.xflist{margin:0;padding-left:20px;font-size:12px}.xflist li{display:flex;align-items:center;justify-content:space-between}.xflist li.miss{color:#ff6b6b}
+.small.warn{color:#ff9b5a}
+.tlx-clip.xf{cursor:pointer;background:repeating-linear-gradient(135deg,color-mix(in srgb,#ffb340 22%,transparent) 0 4px,transparent 4px 8px);border-style:dashed}
+.tlx-clip.tlx-spread{cursor:pointer;background:color-mix(in srgb,#ffb340 14%,transparent);border-color:color-mix(in srgb,#ffb340 70%,transparent)}
+.tlx-spread u{position:absolute;top:0;transform:translateX(-50%);text-decoration:none;font-size:9px;color:#ffb340}
+.tlx-xfname{opacity:.8;font-size:11px}
+/* KO1 Koreográfia */
+.kobtn{margin-left:auto;width:24px;height:22px;font-size:13px;color:#ffb340}
+.kocard{max-height:calc(100% - 20px);overflow:auto}
+.kodet summary{cursor:pointer;font-size:12px;color:var(--fg2);padding:2px 0}
+.korow{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;font-size:12px;padding:2px 0}
+.korow .kon{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tlx-clip.tlx-ko{background:color-mix(in srgb,#b48cff 26%,transparent);border-color:#b48cff}
+.tlx-clip.tlx-korole{background:color-mix(in srgb,#b48cff 16%,transparent);border-color:color-mix(in srgb,#b48cff 70%,transparent);cursor:pointer}

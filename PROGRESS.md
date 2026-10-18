@@ -54,6 +54,34 @@ Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; a
 - Célzott teszt: `tests/f1_fluid.js` zöld (idővel változik, seek = azonos kép, Örvénylés hat, 3 minőség, torzítás csak a saját rétegen, Feltárás maszkol, bélyegkép, mentés–újranyitás). Teljes kör 40/41, a bukó `polyhaven_import` az ismert ingadozó teszt (`BUGS.md`). Typecheck 0 hiba.
 - Próba: 1) Áramló tinta behúzása, Lejátszás, Örvénylés fel; 2) lejátszás közben húzd a réteget; 3) Szövegre húzd a Folyadékos torzítást, Mód = Feltárás; 4) tekerj vissza ugyanarra az időre → ugyanaz a kép.
 - Korlát: megállított ugrás után az első képkocka egy lépés, a pontos kép ~0,2 s múlva finomodik (mint a Visszhangnál); a vászon-kattintás csak a források közelében választja ki a réteget; akadály, közös mező több réteg közt, részecske-kapcsolat még nincs; a húzásból fújás csak kulcsozva kerül exportba.
+## Állapot: 2026-10-18 — KO1 Koreográfia (0.39.0-ko1)
+
+- **✦ Koreográfia** gomb a Rétegek fejlécében: a Vel szerepet javasol minden látható rétegnek (Háttér, Főcím, Kísérő szöveg, Fő forma, Díszítő forma, Kép/Videó, Részecske; típus, méret, sorrend alapján), és egy **Editorial érkezés** jelenetmozgást mutat előnézetben a 0. mp-től. A projekt az Elfogadásig nem változik.
+- A szerepek eltérően mozognak: a háttér nagyításból puhán ül be, majd lebeg; a főcím alulról becsapódik nagyobb méretből; a kísérő szöveg kicsit és később emelkedik; a fő forma rugózva nő; a díszítők különböző irányokból ívesen érkeznek.
+- A kártyán **Mérték / Ritmus (térköz; a belépések sebessége marad) / Hangsúly** állítható, a lenyitható Szerepekben szerepváltás és részvétel, valamint szerepenként súly és késés. Az Elfogadás egy undo-lépés.
+- A Sávokon egyetlen **Jelenetmozgás** blokk jelenik meg: húzva eltolja az egészet, a jobb széle a ritmust nyújtja, a › gombbal szerepsorok nyílnak, dupla kattintásra megnyílnak a beállítások.
+- A réteg Mozgás fülén: „Szerep ebben a jelenetben”, „Részt vesz”, **Önálló mozgássá** (ugyanaz a mozgás valódi Rugalmas beúszás / Lebegés lesz, és kilép a blokkból).
+- Célzott teszt: `tests/ko_choreo.js` zöld (9:16 jelenet: háttér, cím, két szöveg, két forma); teljes kör **43/43 zöld**, typecheck 0 hiba.
+- Próba: 1) 9:16, Színátmenet + nagy cím + két kisebb szöveg + két alakzat; 2) ✦ → nézd az előnézetet, húzd a Mértéket és a Hangsúlyt, Elfogadás; 3) a Sávokon told és nyújtsd a blokkot, egy formánál kapcsold ki a Részt vesz kapcsolót; 4) mentés → újranyitás, ⌘Z.
+- Korlát: egy profil; nincs Kamera/Fény szerep és belső Kapcsolat (cím → háttér ragyogás); nincs szó-/betűszintű bontás; Jelenetsor-lejátszásban a blokk nem fut; a gomb rámutatásra nem ad előnézetet (a kártya ad).
+
+## Állapot: 2026-10-18 — XF1 Mozgás átadása + Sorrend festése (0.38.0-xf1)
+
+- Mozgáskártya → **⇢ Átadás / Sorrend festése**: végighúzol (vagy rákattintasz) a vásznon a többi elemen. Az érintés sorrendje lesz a lépcső sorrendje, a számjelvények (1, 2, 3) ezt mutatják. A kártyán **Ritmus** (alap: a forrás időzítése és karaktere, saját irány és távolság) / **Út** (a forrás iránya, távolsága és íve, méretarányosan) / **Teljes** választható, plusz **Késés** (mp / cél).
+- Elfogadásig csak előnézet (a projekt nem változik), az Elfogadás egy undo-lépés. Esc vagy Mégse esetén nem marad nyom.
+- A cél Mozgás fülén ez áll: „Ritmust kap ettől: Címszó”. Csak a saját mezői szerkeszthetők, a forrás javítását követi; a **Leválasztás** önálló mozgássá alakítja ugyanazzal a mozgással (`m.dl` késéssel).
+- A Sávokon a forrás alatt egy **Terjedés · N cél** blokk jelenik meg (sorszámjelekkel). A jobb széle nyújtja a késést, kattintásra a sorrend újrafesthető. A célsorok csíkozva látszanak. A forráslistából a × egy célt kivesz; a hiányzó (törölt) célt a blokk jelzi, nem törli.
+- Célzott teszt: `tests/xf_transfer.js` zöld; teljes kör **42/42 zöld**, typecheck 0 hiba.
+- Próba: 1) három-négy szövegréteg, az elsőn Rugalmas beúszás; 2) Mozgás fül → Átadás, fesd végig a többit, Elfogadás: mind a saját helyére érkezik lépcsőzve; 3) a Sávokon húzd a Terjedés blokk jobb szélét; az első mozgás Időtartamát átírva a többi követi; 4) mentés → újranyitás, ⌘Z.
+- Korlát: csak ráhúzott Mozgások adhatók át (kulcsanimáció és Megjelenés-reakció nem); a célok rétegek (egy szövegrétegen belüli szavak nem); a célok a felső szintű rétegek; Jelenetsorban a forrás a szerkesztett jelenetből jön.
+
+## Állapot: 2026-10-18 — LP1 Körbeér (0.37.0-lp1)
+
+- **Körbeér** kapcsoló az LFO-panelen (∿) és az öt folyamatos mozgás kártyáján. Bekapcsolt Loopnál az új hullámokon és mozgásokon alapból be van kapcsolva. A tempó egész számú körre igazodik a projekt (Jelenetsorban a jelenet) hosszában, a felirat mutatja („4 kör / 10 mp”). A tárolt Ütem nem íródik át.
+- A Forgás egész fordulatra áll, a Remegés zaja periodikus. Loop nélkül nincs igazítás; Ritmus-tempónál és vágott mozgásnál csak közelítő (a felirat jelzi).
+- Célzott teszt: `tests/lp_loop.js` zöld (t=0 és t=dur egyezik minden hullámformára és mozgásra, mentés, régi projekt). Teljes kör **41/41 zöld**, typecheck 0 hiba.
+- Próba: 1) 10 mp, Loop be, egy csúszkán ∿, Ütem 0,37: a felirat „4 kör / 10 mp”, a 10→0 váltásnál nincs ugrás; 2) projekthossz 7 mp: a körszám magától változik; 3) Lebegés, Ütem 3 mp: „3 kör / 10 mp”; 4) mentés → újranyitás.
+- A javaslatot a felhasználó kérésére Claude hagyta jóvá: `docs/javaslatok/MOZGAS-SAV-JAVASLATOK.md`.
 
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 

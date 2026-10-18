@@ -9,6 +9,7 @@ export interface NParam {
   a?: number;      // LFO depth
   f?: number;      // LFO rate
   w?: number;      // LFO wave index
+  lp?: number;     // Körbeér: LFO rate snaps to whole cycles per loop
   s?: string;      // signal key (audio / beat)
   sa?: number;     // signal amount
   k?: Key[];       // keyframes
@@ -98,6 +99,7 @@ export interface Project {
   links?: any[];
   /** Jelzések: manual cue taps {id, t, label}. */
   cues?: { id: string; t: number; label: string }[];
+  ko?: any;        // KO1 scene-motion block (choreo.ts)
 }
 
 /** A recipe: layer list + macro sliders (+ optional camera / duration). */

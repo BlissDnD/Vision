@@ -4,7 +4,7 @@
 import { R } from './runtime';
 import { $, h } from './dom';
 import { LIB } from './library';
-import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, ryVal, ryValU, setRy } from './motion';
+import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, moLoopInfo, ryVal, ryValU, setRy, xfSrc, xfTakes } from './motion';
 import { findItem, sel, st } from './state';
 import { S, SEL } from './effects/index';
 import { ctlSelect, ctlSlider, ctlSwitch, section } from './controls';
@@ -21,6 +21,7 @@ import { markDirty } from './loop';
 import { toast } from './modals';
 import { setPlay } from './transport';
 import { physOut } from './physics';
+import { loopOn } from './time';
 
 R.moSel = {};
 const ring = (el: any, v: number) => el.style.setProperty('--s', String(Math.max(0, Math.min(1, v))));
@@ -32,7 +33,8 @@ export function attachMo(i: number, refId?: string | null) {
   const li: any = (LIB.motion as any[])[i]; const r = refId ? findItem(refId) : (R.selId ? findItem(R.selId) : null);
   if (!li || !li.mo) return null;
   if (!r) { toast(`${li.name}: jelölj ki egy réteget, vagy húzd rá egy rétegre (vásznon vagy a rétegsorban).`); return null; }
-  const L = r.it; const m = makeMo(li.mo, li.mo === 'spring' ? { at: Math.round(Math.max(0, R.time) * 100) / 100 } : {});
+  const L = r.it; const m: any = makeMo(li.mo, li.mo === 'spring' ? { at: Math.round(Math.max(0, R.time) * 100) / 100 } : {});
+  if (MO[li.mo] && MO[li.mo].cont && loopOn()) m.lp = 1;  // Körbeér on by default when the project loops
   if (li.mo === 'path' && R.pathFirst) { const id = R.pathFirst(L.id); if (id) (m as any).path = id; else toast('Útvonalon: előbb rajzolj egy Útvonalat (2D Formák → Útvonal), és válaszd ki a Mozgás fülön.'); }
   (L.mo = L.mo || []).push(m); R.moSel[L.id] = m.id; R.selId = L.id; R.moAud = null; R.itab = 'motion';
   try { localStorage.setItem('vel.itab', 'motion'); } catch (_) { /* ignore */ }
@@ -98,6 +100,13 @@ R.updMoRy = (t: number) => { const s: any = document.querySelector('#insp .rystr
   dot.style.left = u * 100 + '%'; dot.style.top = (1 - v / RY_MAX) * 100 + '%'; };
 
 /** The Mozgások section (replaces the old Időzítés section). */
+/* Körbeér (row 22): whole cycles per loop, so the loop export joins exactly; the stored Ütem is not rewritten */
+const loopTip = (m: any) => { const el = document.getElementById('moLoopInfo'); if (el) el.textContent = m.lp ? moLoopInfo(m) || '' : ''; };
+function loopRow(m: any) {
+  const sw = ctlSwitch('Körbeér (egész kör a loopban)', !!m.lp, v => { if (v) m.lp = 1; else delete m.lp; commit(); renderInsp(); markDirty(); });
+  sw.title = 'A tempó a legközelebbi olyan értékre igazodik, amelynél egész számú kör fér a projekt (jelenet) hosszába: a loop vége pontosan az elejébe ér.';
+  return h('div', { class: 'moloop' }, sw, h('p', { class: 'small', id: 'moLoopInfo' }, m.lp ? moLoopInfo(m) || '' : ''));
+}
 export function motionsUI(L: any) {
   const mos = L.mo || [], leg = legacy(L); let cur = R.moSel[L.id];
   const all = [...leg.map(x => x.id), ...mos.map((m: any) => m.id)]; if (!all.includes(cur)) cur = all[0] || null;
@@ -111,7 +120,7 @@ export function motionsUI(L: any) {
     ...(['in', 'out'] as const).filter(w => !(L.tm && L.tm[w])).map(w => h('button', { class: 'fxg', type: 'button', role: 'menuitem', title: w === 'in' ? 'Egyszerű belépés (átúszás, emelkedés, oldalról …)' : 'Egyszerű kilépés', onclick: () => {
       L.tm = L.tm || { in: 0, inAt: 0, inDur: .8, out: 0, outAt: Math.max(0, (st.dur || 10) - 1), outDur: .8, ease: 0 }; L.tm[w] = 1; R.moSel[L.id] = 'tm:' + w; commit(); renderInsp(); } }, h('span', { class: 'gi', html: svg(TMI[w]) }), h('span', null, w === 'in' ? 'Beúszás' : 'Kiúszás'))));
   add.onclick = () => { grid.hidden = !grid.hidden; add.setAttribute('aria-expanded', String(!grid.hidden)); };
-  const kids: any[] = [row, grid];
+  const kids: any[] = [R.koSection ? R.koSection(L) : null, row, grid];
   if (cur && cur.startsWith('tm:')) { const w = cur.slice(3) as 'in' | 'out';
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, w === 'in' ? 'Beúszás' : 'Kiúszás'), h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás', onclick: () => { L.tm[w] = 0; commit(); renderInsp(); } }, '×')),
       h('div', { class: 'fxb' }, ...tmBody(L, w)))); }
@@ -119,8 +128,11 @@ export function motionsUI(L: any) {
     const eye = h('button', { class: 'eye', 'aria-label': 'Be/ki', title: m.on === false ? 'Bekapcsolás' : 'Kikapcsolás' }, m.on === false ? '○' : '●'); eye.onclick = () => { m.on = m.on === false; commit(); renderInsp(); markDirty(); };
     const del = h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás' }, '×'); del.onclick = () => { mos.splice(i, 1); commit(); renderInsp(); markDirty(); };
     const ic = row.children[leg.length + i];
+    // XF1: a linked motion shows only its own fields (the rest comes from the source); own(0) = rhythm/loop/clip are its own
+    const XS = m.src ? xfSrc(m) : null, xmd = XS && XS.xf ? XS.xf.md | 0 : -1;
+    const own = (w: number, k?: string) => xmd < 0 ? true : w === 0 ? xmd === 1 : k === 'amt' ? xmd !== 2 : !xfTakes(xmd, k!);
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, d.name), eye, del),
-      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), m.t === 'path' && R.pathPick ? R.pathPick(m, 'path', L.id) : null, d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q)), ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
+      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), m.t === 'path' && R.pathPick ? R.pathPick(m, 'path', L.id) : null, R.xfSection ? R.xfSection(L, m) : null, d.cont && !own(0) ? null : d.cont ? rhythmUI(L, m) : null, ...d.params.filter((q: any) => own(1, q.k)).map((q: any) => moCtl(m, q, d.cont ? () => loopTip(m) : undefined)), d.cont && own(0) ? loopRow(m) : null, own(1, 'amt') ? ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }) : null,
         m.t === 'phys' ? physRow(L, m) : null,
         m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a nyíl végét húzva állítod, honnan érkezik; ⌘ + fel/le a tempó, ⌘ + oldalra a karakter, ⌥ vagy a nyíl közepe: ív, ⇧: 15°-os szögek.') : null,
         h('button', { class: 'btn mobake', type: 'button', title: 'A mozgást valódi X / Y / Méret / Szög / Átlátszóság kulcsokká alakítja (a mozgás eltűnik; ⌘Z visszavonja)', onclick: () => {

@@ -12,6 +12,7 @@ import { AUD, sigLabel, sigList } from './signals';
 import { queueTL, renderTimeline } from './timeline';
 import { toast } from './modals';
 import { fxIcon } from './fxicons';
+import { cyclesIn, loopLen, loopOn } from './time';
 
 R.liveCtl=[];R.liveFields=[];
 export function fmt(v,d){if(d.type==='sel')return d.opts[Math.round(v)]||'';const r=d.max-d.min;const dg=d.step>=1||r>=50?0:2;return (+v).toFixed(dg);}
@@ -41,12 +42,16 @@ export function ctlSlider(obj,d,{big,onInput,noAnim,dice}:any={}){
   if(anb){let pane=null;anb.onclick=()=>{if(pane){pane.remove();pane=null;return;}
     const a=h('input',{type:'range',min:0,max:1,step:.005,value:obj.a,'aria-label':'Mélység'}),f=h('input',{type:'range',min:.01,max:3,step:.01,value:obj.f,'aria-label':'Ütem'});
     const w=h('select',{'aria-label':'Hullámforma'},...WAVES.map((x,i)=>{const o=h('option',{value:i},x);if(obj.w===i)o.selected=true;return o;}));
-    a.oninput=()=>{obj.a=+a.value;setFill(a);box.classList.toggle('anim',obj.a>0);};a.onchange=commit;f.oninput=()=>{obj.f=+f.value;setFill(f);};f.onchange=commit;w.onchange=()=>{obj.w=+w.value;commit();};
+    // Körbeér (row 22): whole cycles per loop; the stored Ütem stays, the snap happens in ev()
+    const lpI=h('span',{class:'small lpinfo'}),lpInfo=()=>{const L=loopLen();lpI.textContent=!obj.lp?'':L>0?`${cyclesIn(obj.f,L)} kör / ${+L.toFixed(2)} mp`:'Loop nélkül nem igazít';};
+    const lp=h('input',{type:'checkbox',class:'sw','aria-label':'Körbeér',title:'A hullám egész számú kört tesz meg a projekt (jelenet) hosszában, így a loop vége pontosan az elejébe ér.'});lp.checked=!!obj.lp;
+    lp.onchange=()=>{if(lp.checked)obj.lp=1;else delete obj.lp;lpInfo();commit();};
+    a.oninput=()=>{obj.a=+a.value;setFill(a);box.classList.toggle('anim',obj.a>0);};a.onchange=commit;f.oninput=()=>{obj.f=+f.value;setFill(f);lpInfo();};f.onchange=commit;w.onchange=()=>{obj.w=+w.value;commit();};
     const sg=h('select',{'aria-label':'Jel'},h('option',{value:''},'— nincs —'),...sigList().map(([k,l])=>{const o=h('option',{value:k},l);if(obj.s===k)o.selected=true;return o;}));
     const sa=h('input',{type:'range',min:-1,max:1,step:.01,value:obj.sa??.5,'aria-label':'Jel erőssége'});
     sg.onchange=()=>{obj.s=sg.value;if(obj.sa==null)obj.sa=.5;box.classList.toggle('anim',!!(obj.a||obj.s));commit();};sa.oninput=()=>{obj.sa=+sa.value;setFill(sa);};sa.onchange=commit;
-    pane=h('div',{class:'lfo'},h('span',null,'Hullám'),h('div',{class:'pop'},w),h('span',null,'Mélység'),a,h('span',null,'Ütem'),f,h('span',null,'Jel'),h('div',{class:'pop'},sg),h('span',null,'Jel erőssége'),sa);box.appendChild(pane);
-    if(!obj.a&&!obj.s&&!AUD.buf&&!AUD.stems.length){obj.a=.25;a.value=.25;box.classList.add('anim');commit();}setFill(a);setFill(f);setFill(sa);};}
+    pane=h('div',{class:'lfo'},h('span',null,'Hullám'),h('div',{class:'pop'},w),h('span',null,'Mélység'),a,h('span',null,'Ütem'),f,h('span',null,'Körbeér'),h('div',{class:'lprow'},lp,lpI),h('span',null,'Jel'),h('div',{class:'pop'},sg),h('span',null,'Jel erőssége'),sa);box.appendChild(pane);
+    if(!obj.a&&!obj.s&&!AUD.buf&&!AUD.stems.length){obj.a=.25;a.value=.25;if(loopOn()){obj.lp=1;lp.checked=true;}box.classList.add('anim');commit();}lpInfo();setFill(a);setFill(f);setFill(sa);};}
   if(!noAnim){box.ondragover=e=>{if([...e.dataTransfer.types].includes('text/x-latomas-sig')){e.preventDefault();box.classList.add('sigdrop');}};
     box.ondragleave=()=>box.classList.remove('sigdrop');
     box.ondrop=e=>{const k=e.dataTransfer.getData('text/x-latomas-sig');box.classList.remove('sigdrop');if(!k)return;e.preventDefault();obj.s=k;if(obj.sa==null)obj.sa=.5;box.classList.add('anim');commit();toast(`${sigLabel(k)} → ${d.l}`);};}

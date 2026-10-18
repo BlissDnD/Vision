@@ -100,7 +100,7 @@ export function seqFrame(T: number) {
   for (let i = 0; i < S.length; i++) {
     const s = S[i], last = i === S.length - 1;
     if (T < start + s.dur || last) {
-      const u = Math.max(0, T - start), td = s.trans.dur;
+      const u = Math.max(0, T - start), td = s.trans.dur; R.seqLen = s.dur;
       if (i > 0 && td > 0 && u < td) {
         const P = S[i - 1], e = EASES[s.trans.ease] ? EASES[s.trans.ease][1](u / td) : u / td;
         // the previous scene keeps running past its end: its layers are evaluated at P.dur + u

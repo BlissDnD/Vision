@@ -18,6 +18,7 @@
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
 ## Modulok (100 fájl)
+## Modulok (91 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -27,8 +28,9 @@
 | `boot.ts` | 2 | startup: autosave restore, first render, shelf build (imported last) |  | selId, last |
 | `camdir.ts` | 4 | K3 · Kamera-rendezés: where the 2.5D camera looks, from scene time only (seek = export = live). st.cam.mode 0 = Kézi (keys), 1 = Célpontok (st.cam.shots [{t,id}]: … | shotAt, camDir | CAMON, camDir |
 | `camui.ts` | 3 | K3 · Kamera ablak bővítése: Mód (Kézi / Célpontok / Útvonalon), célpontlista („Kijelölt réteg mostantól”, időpont, törlés), útvonalválasztó + ismétlés, „Élesség a … |  | camExtra |
+| `choreo.ts` | 16 | KO1 Koreográfia (row 27, first slice): one scene-motion block st.ko = {prof, at, amt (Mérték), sp (Ritmus = spacing), acc (Hangsúly), ids (participants in play … | ROLES, PROFILES, suggestRoles, newKo, koParts, koEnd, koOpen, koClose, koAccept, koDetach | normKo, koMos, koPv, time, koOpen, koSection, koRows, koTlOpen … |
 | `cloud.ts` | 4 | M7b · Felhő + Lufi: blob layout of the shared shape (deterministic from Alak + Változat), the uniforms of the cloud shader (scene light + the Lufi appearance found in … | cloudBlobs, balloonOf, balloonVals |  |
-| `controls.ts` | 15 | inspector widgets: ctlSlider/Select/Color/Switch, section, fxListUI (effect icon row), palette picker | fmt, SECOPEN, section, setFill, ctlSlider, syncTwins, paintBadge, liveKinds, ctlSelect, ctlColor, ctlSwitch, ctlParam, scrubField, palettePicker … (+2) | liveCtl, liveFields, liveSel, fxSel, fxBody |
+| `controls.ts` | 16 | inspector widgets: ctlSlider/Select/Color/Switch, section, fxListUI (effect icon row), palette picker | fmt, SECOPEN, section, setFill, ctlSlider, syncTwins, paintBadge, liveKinds, ctlSelect, ctlColor, ctlSwitch, ctlParam, scrubField, palettePicker … (+2) | liveCtl, liveFields, liveSel, fxSel, fxBody |
 | `cost.ts` | 2 | COST table, itemCost/sceneLoad, compile-error flag | COST, itemError, itemCost, sceneLoad, loadLabel |  |
 | `describe.ts` | 9 | Claude description → scene (descPrompt) and buildFromSpec (spec → items, dropped list, macros, custom) | DESC_SKIP, descCatalog, descPrompt, clampP, specVal, buildFromSpec, descModal | SAMPLE, selId, time |
 | `dom.ts` | 1 | $ and h() DOM helpers | TAU, h |  |
@@ -75,6 +77,8 @@
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | toastT |
 | `motion.ts` | 19 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
 | `moui.ts` | 16 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
+| `motion.ts` | 22 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, moLoopLen, spinSnap, RY_N, RY_PRE, setRy, ryValU … (+15) | normMo |
+| `moui.ts` | 17 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, rec |
 | `palettes.ts` | 2 | PALS colour palettes, hexRGB, ease names | PALS, PAL_ORDER, ff, v3, palJS, palCSS, EASE_NAMES, hexRGB |  |
 | `partfx.ts` | 3 | M7 · Részecske Megjelenés ("pdisp"): a layer effect that turns its input (text, shape, image) into points, scatters them on an event and reassembles. Events: manual … | pdEvents, pdEnv, pdUniforms, altText, pdMix |  |
@@ -95,7 +99,7 @@
 | `retime.ts` | 9 | M5 · Mozgásblokk és könnyű retime + kézi Jelzések. A layer's motion block = everything timed on it: entry (tm.in*, type "start"), middle events (bento morph), exit … | timeFields, keyRefs, Block, blockOf, cueAt, addCue, removeCue, shiftBlock, stretchBlock, tempoPivot, tempoItem |  |
 | `rndq.ts` | 11 | Q1: Random quality filter. Renders a generated scene small, measures "ugliness" symptoms (dark, muddy, flat, noisy, cluttered, no focus, garish, hard cut, pixelated) … | measureImg, SYMPTOMS, qThreshold, scoreSym, judgeStats, QW, capture, judgeScene, SUSPECTS, fixCulprit | qCtx, qOut |
 | `runtime.ts` | 0 | R: shared mutable runtime state and cross-module hooks | R |  |
-| `scenes.ts` | 16 | S1 · Jelenetek és átmenetek (leltár 19.) A scene is a saved copy of the composition (layers keep their ids). The Jelenetek strip lists them in order; the workbench … | Scene, scenes, saveScene, loadScene, overwriteScene, removeScene, moveScene, seqTotal, matchLayers, seqFrame, sceneStart, setSeqPlay, closeScnCard, renderStrip … (+1) | selId, seqFrame, seqPlay, seqDurSave, time, seqExit, renderStrip, updScenes |
+| `scenes.ts` | 16 | S1 · Jelenetek és átmenetek (leltár 19.) A scene is a saved copy of the composition (layers keep their ids). The Jelenetek strip lists them in order; the workbench … | Scene, scenes, saveScene, loadScene, overwriteScene, removeScene, moveScene, seqTotal, matchLayers, seqFrame, sceneStart, setSeqPlay, closeScnCard, renderStrip … (+1) | selId, seqLen, seqFrame, seqPlay, seqDurSave, time, seqExit, renderStrip … |
 | `shelf.ts` | 8 | library shelf UI: categories, cards, search, thumbnails, audition | libSearch, ikey, dropTag, buildCats, buildShelf, audCache, setAudition | cat, thumbJob, libQ, audition, moAud |
 | `signals.ts` | 9 | audio / beat signals | AUD, TAPS, SIG_BASE, SIG_BEAT, sigList, sigLabel, arrAt, sigVal, bandEnv, pct, smoothEnv, pulseEnv, estimateBpm, ensureAC … (+5) | time |
 | `sim.ts` | 4 | Shared scene clock for stateful layers (feedback / "Visszhang", blob tracking). Contract (Vel "egy közös idő"): - Stateless layers are a pure function of scene time … | frameAt, SIM_HZ, STEP, WARM, tickOf, sceneHasState, resetSim, renderAt |  |
@@ -111,8 +115,8 @@
 | `textpath.ts` | 6 | T6 · Szöveg útvonalon: the layer's live text as one quad per glyph, placed by arc length along a P2 path (L.path; none chosen = a built-in arc), rotated to the … | ARC, atlasOf, glyphsAt, drawTextPath |  |
 | `thumbs.ts` | 2 | thumbnail rendering (renderThumb, thumbOf) | TW, thumbCache, renderThumb, thumbOf | thumbCtx, thumbOut |
 | `thumbstore.ts` | 2 | Persistent shelf-thumbnail cache (IndexedDB). Keyed by build id + shelf + item name, so a new build re-renders once and later loads draw instantly. Every failure … | thumbGet, thumbPut, thumbPrune |  |
-| `time.ts` | 1 | Scene time rules (pure; shared by playback, seek, export and audio). - The project range is [0, st.dur]. Loop on: the range repeats. Loop off: the clock runs on past … | loopOn, sceneT, overrun, audioIndex |  |
-| `timeline.ts` | 33 | timeline + Sávok tracks, paramList, key moves | tlHeadEl, layerSegs, paramList, objAt, layerKeyTimes, keysAt, moveKeys, selKeyRefs, retimeSel, easeSel, queueTL, renderTimeline, itemById, isSelK … (+24) | tlxSels, tlQ, keyClip, tlxView, tlxOpen, selId, itab, tlxOpenIds … |
+| `time.ts` | 2 | Scene time rules (pure; shared by playback, seek, export and audio). - The project range is [0, st.dur]. Loop on: the range repeats. Loop off: the clock runs on past … | loopOn, sceneT, overrun, audioIndex, loopLen, cyclesIn, snapRate |  |
+| `timeline.ts` | 36 | timeline + Sávok tracks, paramList, key moves | tlHeadEl, layerSegs, paramList, objAt, layerKeyTimes, keysAt, moveKeys, selKeyRefs, retimeSel, easeSel, queueTL, renderTimeline, itemById, isSelK … (+24) | tlxSels, tlQ, keyClip, tlxView, tlxOpen, selId, itab, tlxOpenIds … |
 | `transport.ts` | 1 | play/pause/seek, syncCtl | setPlay, resetFeedback, fmtT, syncCtl | playing, time, speed, last, fpsAcc, fpsN, fpsT, refine |
 | `types.ts` | 4 | Shared data model of Látomás Stúdió. Everything is plain JSON so projects, undo history and recipes serialize as-is. | Key, NParam, ParamDef, EffectKind, EffectDef, Timing, LineSpec, TextSpec, Prim, Macro, Layer, Look, Camera, Project … (+1) |  |
 | `userlib.ts` | 5 | P1: the user's own, durable library (presets, shaders, later anything else). One generic item shape: {id, kind, cat, name, created, data, thumb}. Kept in memory … | UItem, ULIB_VER, ULIB, ulibId, ulibValid, ulibGet, ulibBy, ulibLoad, ulibPut, ulibDel, ulibRename, ulibMerge, ulibExport, ulibImport … (+1) | ulibOk |
@@ -120,3 +124,4 @@
 | `variantsui.ts` | 8 | Inspector sections for Közös alap / Változat and Kapcsolat. Every action is one commit (undoable) and says what it did. | variantSection, childVariantSection, linkSection, variantBadge | selId |
 | `version.ts` | 1 | Version + build stamp next to the brand (top left), so the running build is always identifiable. Values come from the build (package.json version, build time); the … | VERSION, BUILT, buildLabel |  |
 | `workspace.ts` | 6 | U3 workspace chrome: library/layers splitter, one tooltip style for every titled control, toggleable shortcut panel. Pure UI: never touches the project (no commit). … | SHORTCUTS, setShelfFrac, shelfFrac, tipNodes, adoptTitle, setKeyHelp, keyHelpOn |  |
+| `xfer.ts` | 10 | XF1 Mozgás átadása + Sorrend festése (row 26): from a motion card, paint across other layers on the canvas; the touch order becomes the stagger order (numbered … | xfStart, xfClose, xfAccept, xfSection | xfPv, xfStart, updXf, selId, xfSection |
