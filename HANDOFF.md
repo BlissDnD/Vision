@@ -4,6 +4,8 @@ Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl c
 
 **Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 28 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
 
+**Közös addon/preset checklist:** [CSOMAG-CHECKLIST.md](docs/claude-handoff/CSOMAG-CHECKLIST.md). 65 addon/layout + 96 ötlet mind tervbe véve; csak a checklistben jelölt szeletek demonstráltak. Minden érintett agent frissítse.
+
 ## Állapot egy mondatban
 **1. nagy menet (0.48.0-m10a, 2026-10-18):** U5 Szín+UI (picker, saját átmenet, Színek sor, action bar), CAT-01 témák, M10 korai (Magazinrács, Szövött galéria); célzott tesztek zöldek, felhasználói próba hátra (`PROGRESS.md`). M6b szalag-recept a felhasználó kérésére kimaradt. **Következő (javaslat kell, egy nagy menetben):** M8 Mező + Érintés jelez, M7 maradék (Füst, Virág, Bolygó), M9 folyadékhatár, M10 teljes.
 

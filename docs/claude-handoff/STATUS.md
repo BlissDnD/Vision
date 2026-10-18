@@ -1,6 +1,6 @@
 # Rövid élő csapatállapot
 
-**2026-10-18:** a Claude-átadócsomag és a külön keresőmodell előkészítve. Termékfejlesztési hullám nincs elindítva. Nincs aktív Claude-worker vagy automatikusan indított külső chat.
+**2026-10-18:** a termékfejlesztés elindult; CAT-01, STAB-01 mini, U5 és M10 korai szeletek demonstrálva (0.48.0-m10a). A teljes csomag nincs kész. Élő lefedettség: [CSOMAG-CHECKLIST.md](CSOMAG-CHECKLIST.md); a régi előkészítési snapshotok nem implementációs státuszok.
 
 | Hullám | Nagy task | Gazda | Függő segítő feladat | Státusz | Következő lépés |
 |---|---|---|---|---|---|

@@ -2,6 +2,12 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## 2026-10-18 — közös addon/preset checklist (Codex)
+
+- Új `docs/claude-handoff/CSOMAG-CHECKLIST.md`: 65 addon/layout + 96 ötlet teljes tervbeli lefedettsége, demonstrált szeletek, natív átfedések és hátralévők külön.
+- Bekötve a CLAUDE/HANDOFF/START-HERE belépőkbe; STATUS elavult „nem indult” állítása javítva.
+- Csak dokumentáció; alkalmazás és teszteredmény nem változott. A részletes listák továbbra is teljes terjedelmükben irányadók.
+
 ## Állapot: 2026-10-18 — 1. nagy menet: U5 Szín+UI, CAT-01 témák, M10 korai layoutok (0.48.0-m10a)
 
 A felhasználó kérésére a szalagos stúdió-recept (M6b) kimaradt.

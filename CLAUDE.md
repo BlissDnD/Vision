@@ -13,6 +13,8 @@
 4. Jelzett hibát mindig a `BUGS.md`-be írj. Ha a javítás kérdéses vagy drága, és nem akadályozza a folytatást, ne javítsd azonnal, csak jegyezd fel.
 5. Mérföldkő végén: rövid átadó (mi próbálható, 2–4 lépés, hány teszt ment át, korlát, build útvonala `app/dist/index.html`), majd `PROGRESS.md`, `FUNKCIO-LELTAR.md`, `HANDOFF.md` frissítése és commit.
 
+**Addon/preset állapotkapu:** [CSOMAG-CHECKLIST.md](docs/claude-handoff/CSOMAG-CHECKLIST.md) — induláskor és minden kapcsolódó szelet végén kötelező; teljes terv és kész funkció nem keverhető.
+
 ## Olvasási sorrend
 1. `HANDOFF.md`: **hol tartunk, mi a következő lépés**, mire vár jóváhagyás.
 2. `app/CODEMAP.md`: **generált kódtérkép** (modulonként cél, exportok, R-hookok + „feladat → hol”). Ebből válaszd ki az érintett fájlokat.

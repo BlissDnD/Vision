@@ -4,6 +4,8 @@
 
 **Ez előkészítő csomag.** Nem állítja, hogy a benne tervezett képességek már működnek. Nem önálló Vel-forráscsomag: a repository gyökeréből használd. A hordozható ZIP mellékelt kontextusmásolatokat is tartalmazhat, de implementációhoz az aktuális repo szükséges.
 
+**Először az élő [CSOMAG-CHECKLIST](CSOMAG-CHECKLIST.md):** mi van a teljes tervben, mi működik és mi hátravan. Kapcsolódó szelet végén kötelező frissíteni.
+
 ## Első 5 perc
 
 1. Először a közös `../../../../AGENTS.md`, utána a projekt `../../CLAUDE.md` és `../../HANDOFF.md`. A projekt saját szabályai irányadók.
