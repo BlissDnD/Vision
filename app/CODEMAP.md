@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (97 fájl)
+## Modulok (100 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -34,6 +34,7 @@
 | `dom.ts` | 1 | $ and h() DOM helpers | TAU, h |  |
 | `effects/codepen.ts` | 4 | effect defs: liquidglass, windflame | codepenEffects |  |
 | `effects/filters.ts` | 19 | effect defs: blur, glow, lens, kaleido, feedback, swirl, warp, ripple, radial, edge, mirror, polar, chroma, psycolor, grade, glitch, film, crt, castlight, texture, … | filters |  |
+| `effects/fluid.ts` | 2 | effect defs: fluid, fluidfx | fluidEffects |  |
 | `effects/generators.ts` | 16 | effect defs: plasma, fire, aurora, nebula, liquid, tunnel, sacred, kali, julia, moire, hyper, grid, blackhole, gradient, galaxy, waves, lava, cells, flare | generators |  |
 | `effects/helpers.ts` | 3 | S/SEL/COL param constructors, shared GLSL libs | S, SEL, COL, SKYLIB, CLOUDLIB, BENTO, BENTO_NAMES, BENTO_ANIMS |  |
 | `effects/index.ts` | 12 | EFFECTS registry, BASE params, paramsOf/pdefOf (per-layer params), animKeysOf/mainDupOf, icons, DEFAULT_CODE | EFFECTS, fxFits, fxHostNote, BLOB_PD, DEFAULT_CODE, CP_MAX, CP_KEY, cpDefs, paramsOf, pdefOf, SDF_MAP, SDF_RENDER, DEF_PRIMS, PRIM_T … (+18) |  |
@@ -49,6 +50,7 @@
 | `effects/worlds.ts` | 13 | effect defs: planet, sky, space, bokeh | worlds |  |
 | `emitter.ts` | 12 | E1 · Részecske Forrás ("emitter"): own emitter (point / line / ring / disc / rect / alpha of the image below), drawn as GL points. Stateless: every particle slot's … | emP, emLayout, emCues, drawEmitter | emErr, emN |
 | `evaluation.ts` | 12 | value evaluation: ev() (keys, LFO, signals, links), keyframes, setVal (Animálás mode), key editor | wave, klVal, ev, KEY_EASES, SMOOTH_E, KEY_EPS, hasK, keyIdx, bezierY, keyEase, keyVal, curV, DEF_EASE, setKey … (+13) | animMode, keyShift, keyEdit, time, liveKed |
+| `fluid.ts` | 11 | F1 · Folyadékmező: GPU Stable Fluids per layer (Áramló tinta source, Folyadékos torzítás appearance), on the shared sim clock. Grid size depends only on aspect + … | resetFluid, fluidMark, fluidSweep, Emitter, emitters, fluidPrep |  |
 | `fxicons.ts` | 4 | U4: one small, consistent icon per appearance (Megjelenés) type, for the layer's effect row and the add grid. 24×24 stroke glyphs; unknown types get a two-letter … | fxIcon |  |
 | `gesture.ts` | 16 | Gesztus-mozgás: motion set by showing it on the canvas. The arrow of Rugalmas beúszás / Beúszás / Kiúszás (tail = direction + distance, ⌘ ↕ tempo · ↔ character, ⌥ or … |  | updMoArrow, moScrub |
 | `gl.ts` | 12 | WebGL2 context, compile/link, getProg/progKey (per-layer program cache), fixed programs, targets/textures | cv, gl, HALF, IFMT, compile, VSO, link, U, fragFor, progCache, codeOf, cpSig, progKey, getProg … (+23) |  |
@@ -59,7 +61,7 @@
 | `itemops.ts` | 4 | insert/remove/duplicate/group items, addFromLib/attachFx | insertItem, addFromLib, attachFx, removeItem, delSel, dupSel, moveSel, groupSel, ungroup, moveItemTo | selId |
 | `keyboard.ts` | 4 | keyboard shortcuts |  | tlxSels, time |
 | `layers.ts` | 5 | layer tree (left column): rows, badges, drag/drop | layerBadges, renderLayers | selId |
-| `library.ts` | 19 | built-in shelves: LIB[cat] entries {name, make}, CATS, CAT_HINT | L3, LS, LG, LIB, CATS, CAT_HINT |  |
+| `library.ts` | 20 | built-in shelves: LIB[cat] entries {name, make}, CATS, CAT_HINT | L3, LS, LG, LIB, CATS, CAT_HINT |  |
 | `lightui.ts` | 3 | M6 · Jelenetfény: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first ("lágyabb", "nagyobb csillanás", "melegebb"), global and … | usesLight, lightFromGlint, glint3, lightSection | glint |
 | `linkcord.ts` | 17 | K1 · Kapcsolat-zsinór (spec: vel-intuitiv-mozgas-es-kapcsolatok.md 2–3., 9.) The selected element shows a small ⇢ point next to its gizmo. Dragging it draws a thin … | placeable, anchorOf, driverOf, Opt, linkOptions, paramChoices, applyOpt, startCord, closeCard, openChoice, openLinkCard, updCords | kdrag, selId, openLinkCard, updCords |
 | `loop.ts` | 5 | frame loop (rAF): render, gizmo, live control sync, markDirty | markDirty, frame | snapping, dirty, refine, editT, last, time, fpsAcc, fpsN … |
@@ -71,7 +73,7 @@
 | `mesh3d.ts` | 24 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, targets, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
 | `migrate.ts` | 4 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | toastT |
-| `motion.ts` | 18 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
+| `motion.ts` | 19 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
 | `moui.ts` | 16 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, rec |
 | `palettes.ts` | 2 | PALS colour palettes, hexRGB, ease names | PALS, PAL_ORDER, ff, v3, palJS, palCSS, EASE_NAMES, hexRGB |  |
@@ -80,6 +82,7 @@
 | `pathedit.ts` | 9 | P2 · Útvonal szerkesztése a vásznon: a grip per control point of the selected Útvonal layer, the control polygon as a hit line (double-click = insert a point there), … | toScreen, fromClient, updPathGrips, armPathDraw, disarm, pathPick | pathSel, pathDraw, armPathDraw, updPathGrips, pathFirst, pathPick, pathSection |
 | `paths.ts` | 7 | P2 · Közös útvonal: one editable curve model for every use (Útvonal layer, Mozgás „Útvonalon”, emitter shape, later camera / text). Points live on the pathshape layer … | Pt, DEF_PATH, ptsOf, isPath, placeAt, toWorld, toLocal, curve, arc, sampleArc, resample, simplify, closedOf, smoothOf … (+5) | pathAt |
 | `perform.ts` | 8 | M5 + U1 · Eljátszás simítással. Armed (E): playback stops. The first value change of any animatable parameter during a pointer gesture (canvas drag of position / size … | Sample, MSample, smoothTakeN, smoothTake, applyTakeN, applyTake, setPerform, perfState | perform, perfSmooth, lastTake, perfHook |
+| `physics.ts` | 13 | F2 · Fizikai test: 2D impulse rigid bodies on the top-level layers carrying the 'phys' motion (motion.ts adds the result). World state at t = fixed 60 Hz steps from t … | PHYS_HZ, physAt, physOut, physReset |  |
 | `pick.ts` | 6 | Rétegválasztás a vásznon: mi van a kattintási pont alatt? Pixel-exact and type-agnostic: every candidate (top-level item; children of an open group) is rendered alone … | units, hitsAt, closePick | selId |
 | `polyhaven.ts` | 6 | Small, offline-searchable Poly Haven CC0 texture shelf. Only the chosen 2K image is downloaded. | POLY_HAVEN_TEXTURES, polyHavenImageURL, addPolyHavenTexture, openPolyHaven | openPolyHaven |
 | `popovers.ts` | 9 | Look / camera / export popovers | closePop, openPop, mi, EXP_DEF, EXP, applyExp, renderMB, dimsFor, updLookLbl, openLook, setTheme | popEl, popOff, aqF, speed, selId |

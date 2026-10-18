@@ -11,12 +11,13 @@ import { text3d } from './text3d';
 import { particles } from './particles';
 import { soft3d } from './soft3d';
 import { codepenEffects } from './codepen';
+import { fluidEffects } from './fluid';
 import { S, COL } from './helpers';
 export * from './helpers';
 
 /** All layer types. Key = layer.type. Each: kind, name, desc, params, main, code (GLSL `vec4 fx()`), optional lib/passes/feedback/points/setU. */
 import type { EffectDef } from '../types';
-export const EFFECTS:Record<string,EffectDef>={...objects3d,...shapes,...generators,...media,...filters,...worlds,...worldBlocks,...motionText,...motionDesign,...particles,...soft3d,...codepenEffects,...text3d};
+export const EFFECTS:Record<string,EffectDef>={...objects3d,...shapes,...generators,...media,...filters,...worlds,...worldBlocks,...motionText,...motionDesign,...particles,...soft3d,...codepenEffects,...text3d,...fluidEffects};
 /** Can appearance `fxType` act on layer L? Ordinary appearances: always. Host appearances: only on their listed types. */
 export const fxFits = (fxType:string, L:any) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return !h || (!!L && h.includes(L.type)); };
 export const fxHostNote = (fxType:string) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return h ? 'csak ' + h.map((t:string) => EFFECTS[t].name).join(', ') + ' rétegen hat' : ''; };

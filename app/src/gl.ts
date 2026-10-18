@@ -118,7 +118,7 @@ export function clearTarget(x,c=[0,0,0,0]){gl.bindFramebuffer(gl.FRAMEBUFFER,x.f
 export function mkSet(w,h,depth){return {w,h,depth,A:mkTarget(w,h),B:mkTarget(w,h),base:mkTarget(w,h),W:[mkTarget(w,h),mkTarget(w,h),mkTarget(w,h)]};}
 export function freeSet(s){if(!s)return;freeTarget(s.A);freeTarget(s.B);freeTarget(s.base);s.W.forEach(freeTarget);}
 export function mkCtx(w,h){const mips=[];let mw=w>>1,mh=h>>1;while(mips.length<6&&mw>=4&&mh>=4){mips.push(mkTarget(mw,mh));mw>>=1;mh>>=1;}return {w,h,sets:[mkSet(w,h,0),null],hist:new Map(),mips};}
-export function freeCtx(c){if(!c)return;if(c.mb)freeTarget(c.mb);c.sets.forEach(freeSet);(c.mips||[]).forEach(freeTarget);for(const x of c.hist.values()){freeTarget(x.cur);freeTarget(x.next);}}
+export function freeCtx(c){if(!c)return;if(c.mb)freeTarget(c.mb);c.sets.forEach(freeSet);(c.mips||[]).forEach(freeTarget);for(const x of c.hist.values()){freeTarget(x.cur);freeTarget(x.next);}if(c.fluid)for(const F of c.fluid.values())F.free();}
 export function texFromCanvas(c,old?){const t=old||gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);

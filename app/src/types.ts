@@ -32,6 +32,7 @@ export interface EffectDef {
   feedback?: boolean;
   points?: boolean;
   blob?: boolean;
+  fluid?: boolean;
   usesPal?: boolean;
   noPal?: boolean;
   groups?: { t: string; keys: string[]; open?: boolean; text?: boolean }[];

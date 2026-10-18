@@ -13,6 +13,7 @@ import { EFFECTS } from './effects/index';
 import { clearTarget } from './gl';
 import { renderScene } from './render';
 import { resetBlobs } from './blob';
+import { resetFluid } from './fluid';
 import { R } from './runtime';
 import { st } from './state';
 
@@ -26,8 +27,8 @@ const PREVIEW_CAP = 2;
 const EPS = 1e-7;
 export const tickOf = (t: number) => Math.floor(t * SIM_HZ + 1e-6);
 
-/** feedback ("Visszhang") and blob tracking keep history between frames */
-const stateful = (type: string) => !!(EFFECTS[type] && (EFFECTS[type].feedback || EFFECTS[type].blob));
+/** feedback ("Visszhang"), blob tracking and fluid (F1) keep history between frames */
+const stateful = (type: string) => !!(EFFECTS[type] && (EFFECTS[type].feedback || EFFECTS[type].blob || EFFECTS[type].fluid));
 
 function hasState(items: any[]): boolean {
   for (const L of items) {
@@ -45,6 +46,7 @@ export function resetSim(ctx: any) {
   if (!ctx) return;
   for (const x of ctx.hist.values()) { clearTarget(x.cur); clearTarget(x.next); x.stepped = false; }
   resetBlobs(ctx);
+  resetFluid(ctx);
   ctx.simT = null;
 }
 

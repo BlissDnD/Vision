@@ -8,6 +8,7 @@ import { mkN, st, uid } from './state';
 import { ev, keyVal, setKey } from './evaluation';
 import { R } from './runtime';
 import { BASEK } from './effects/index';
+import { physAt } from './physics';
 
 const TAU = Math.PI * 2;
 export interface MoDef { name: string; icon: string; cont: boolean; params: any[]; main: string[]; desc: string }
@@ -33,8 +34,14 @@ export const MO: Record<string, MoDef> = {
   path: { name: 'Útvonalon', cont: true, main: ['period', 'orient'], desc: 'Végigmegy egy Útvonal rétegen (2D Formák → Útvonal): a réteg a vonalra kerül, és körbe, oda-vissza vagy egyszer bejárja. Ha átrajzolod az útvonalat, követi.',
     icon: '<path d="M4 18c3-9 7 3 10-6s4-5 6-6"/><circle cx="4" cy="18" r="1.6" fill="currentColor"/>',
     params: [S('period', 'Bejárás ideje (mp)', .3, 30, 4), SEL('loop', 'Ismétlés', ['Körbe', 'Oda-vissza', 'Egyszer'], 0), SEL('orient', 'Irányba fordul', ['Nem', 'Igen'], 0), S('phase', 'Kezdőpont', 0, 1, 0)] },
+  phys: { name: 'Fizikai test', cont: false, main: ['grav', 'bounce', 'push'], desc: 'Merev testté teszi a réteget: a vászon széle fal, a testek egymásról lepattannak, gurulnak. A Gravitáció alapból kikapcsolt. Ugrás és export ugyanazt adja (t = 0-tól számolva).',
+    icon: '<circle cx="9" cy="7" r="3.5"/><rect x="11" y="13" width="8" height="7" rx="1"/><path d="M3 21h18"/><path d="M9 12v3M7.5 13.5L9 15l1.5-1.5"/>',
+    params: [SEL('shape', 'Alak', ['Automatikus', 'Kör', 'Doboz'], 0), S('grav', 'Gravitáció', 0, 3, 0), S('gang', 'Gravitáció iránya °', -180, 180, -90), S('mass', 'Tömeg', .1, 10, 1),
+      S('bounce', 'Pattanás', 0, 1, .5), S('fric', 'Súrlódás', 0, 1, .4), S('push', 'Kezdő lökés', 0, 3, 0), S('pang', 'Lökés iránya °', -180, 180, 30), S('spinv', 'Pörgetés °/mp', -720, 720, 0),
+      SEL('coll', 'Ütközés', ['Mindennel', 'Csak a csoportjával', 'Semmivel'], 0), S('group', 'Csoport', 1, 4, 1, 1), SEL('fixed', 'Test', ['Szabad', 'Rögzített'], 0),
+      SEL('walls', 'Vászon széle', ['Fal', 'Átengedi'], 0), S('at', 'Kezdés (mp)', 0, 60, 0)] },
 };
-export const MO_ORDER = ['float', 'spin', 'pulse', 'orbit', 'shake', 'spring', 'path'];
+export const MO_ORDER = ['float', 'spin', 'pulse', 'orbit', 'shake', 'spring', 'path', 'phys'];
 export const moIcon = (t: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${(MO[t] || MO.float).icon}</svg>`;
 export const AMT = S('amt', 'Erősség', 0, 1, 1);
 /** A new motion item (all params as animatable values, so later slices can key them). */
@@ -115,7 +122,7 @@ export function moEval(L: any, t0: number, aud?: any): any {
     if (!m || m.on === false || !MO[m.t]) continue; any = true;
     // a shelf motion previewed on hover runs on its own clock (the timed one repeats), so it is visible even when paused
     let t = t0; if (aud && m === aud.mo) { const ta = (performance.now() - aud.t0) / 1000; t = m.t === 'spring' ? ta % (m.p.dur.v + .9) : ta; }
-    const W = m.t === 'spring' ? null : moTime(m, t), T = W ? W.tau : t, a = V(m, 'amt', t) * (W && m.t !== 'spin' ? W.amp : 1);
+    const W = m.t === 'spring' || m.t === 'phys' ? null : moTime(m, t), T = W ? W.tau : t, a = V(m, 'amt', t) * (W && m.t !== 'spin' ? W.amp : 1);
     switch (m.t) {
       case 'float': { const w = Math.sin(TAU * (T / Math.max(.05, V(m, 'period', t)) + V(m, 'phase', t))) * V(m, 'amp', t) * a, g = V(m, 'ang', t) * Math.PI / 180; r.dx += Math.cos(g) * w; r.dy += Math.sin(g) * w; break; }
       case 'spin': r.rot += V(m, 'speed', t) * T * a; break;
@@ -129,6 +136,7 @@ export function moEval(L: any, t0: number, aud?: any): any {
         if (q) { r.dx += (q.x - ev(L.n.x, BASEK.x, t)) * a; r.dy += (q.y - ev(L.n.y, BASEK.y, t)) * a; if (Math.round(V(m, 'orient', t)) === 1) r.rot -= q.ang * 180 / Math.PI * a; }
         break;
       }
+      case 'phys': { if (aud && m === aud.mo) break; const P = physAt(L, t); if (P) { r.dx += P.dx * a; r.dy += P.dy * a; r.rot += P.rot * a; } break; }
       case 'spring': {
         const at = V(m, 'at', t), dur = Math.max(.05, V(m, 'dur', t)), x = (t - at) / dur; if (x >= 1) break;
         const e = charEase(Math.round(V(m, 'char', t)), dur)(Math.max(0, x)), u = 1 - e, g = V(m, 'ang', t) * Math.PI / 180, D = V(m, 'dist', t) * a;
@@ -150,7 +158,7 @@ export function bakeMo(L: any, m: any) {
   const i = (L.mo || []).indexOf(m); if (i < 0) return 0;
   const C = m.t === 'spring' ? [Math.max(0, m.p.at.v), m.p.at.v + m.p.dur.v] : (() => { const c = moClip(m); return [c.a, c.b ?? Math.max(c.a + .1, st.dur)]; })();
   const n = Math.max(2, Math.min(3000, Math.ceil((C[1] - C[0]) * 30))), ts = Array.from({ length: n + 1 }, (_, j) => Math.round((C[0] + (C[1] - C[0]) * j / n) * 1000) / 1000);
-  const one = { mo: [{ ...m, on: true }] }, S0 = ts.map(t => moEval(one, t));
+  const one = { id: L.id, n: L.n, mo: [{ ...m, on: true }] }, S0 = ts.map(t => moEval(one, t));
   const base = (o: any, t: number) => o.k && o.k.length ? keyVal(o.k, t) : o.v;
   const CH: [string, (b: number, r: any) => number, number][] = [['x', (b, r) => b + r.dx, .0015], ['y', (b, r) => b + r.dy, .0015], ['s', (b, r) => b * r.sc, .002], ['r', (b, r) => b + r.rot, .15], ['opacity', (b, r) => Math.max(0, Math.min(1, b * r.op)), .004]];
   let cnt = 0;

@@ -19,6 +19,11 @@ Pipáld ki, ami jó (`[x]`). Ami rossz vagy furcsa, írd mellé egy szóval, vag
 - [ ] Rugalmas beúszás → **Kulcsokká alakítás**.
 - [ ] Animálás módban (A) két kulcs egy formára → **⟲ ismétlés**; A nélkül húzd arrébb: az egész pálya vele megy, új kulcs nem lesz.
 
+## 2b. Gesztus-mozgás (G1) – 3 perc
+- [ ] Rugalmas beúszás nyila: **⌘ + fel/le** tempó, **⌘ + oldalra** karakter, **⌥** a nyíl közepén = ív (íven érkezik), **⇧** = 15°-os irány. Húzás közben halvány szellemképek, módosítóval kis címke.
+- [ ] Lebegés / Keringés / Forgás / Lüktetés / Remegés chipjét kijelölve a vásznon saját fogantyú: húzd, és ⌘-del a tempót.
+- [ ] A fogantyút a pálya mentén húzva a mozgás „tekerhető” (előnézet).
+
 ## 3. Időzítés gyorsan – 3 perc
 - [ ] 3 réteg, **T**, kattints rájuk sorban (számozott jelvények), húzással cserélj sorrendet.
 - [ ] Szóköz, majd **J-J-J** ütemre: sorban beérkeznek. ⌘Z / Esc.
@@ -42,3 +47,15 @@ Pipáld ki, ami jó (`[x]`). Ami rossz vagy furcsa, írd mellé egy szóval, vag
 - [ ] Világok → Égszín + Nap; a Nap ⇢ pontját húzd az Égszín címkére → „Napfény hat” → a Napot lefelé: alkonyodik.
 - [ ] Jelenetek → „+ Jelenetként mentés” kétszer, közte változtass; Jelenetsor ▶: átmenet; exportálás Jelenetsor módban.
 - [ ] Mentés → újranyitás egy projekttel, amelyben a fentiekből több is van; 4K PNG export.
+
+## F1 Folyadékmező (0.37.0-f1) – 3 perc
+- [ ] Források → **Áramló tinta** behúzása, Lejátszás → kavargó tinta; Örvénylés fel → több örvény; próbáld a füstcsík/örvények/tintacsepp változatot is.
+- [ ] Lejátszás közben **húzd a réteget** a vásznon → a tinta a húzás irányába csóvázik.
+- [ ] Szövegre húzd a **Folyadékos torzítás**t → csak a szöveg hullámzik; Mód = Feltárás (vagy a polcról a *Folyadékos feltárás*) → a szöveg a tintából bukkan elő.
+- [ ] Tekerj előre-hátra ugyanarra az időre → ugyanaz a kép; exportálj 2 s-ot. Mérd a frame-időt (cél: Normál minőségen sima 60 fps).
+
+## F2 Fizikai test (0.38.0-f2) – 3 perc
+- [ ] 3 alakzat (kör, téglalap), mindegyikre a Mozgás polcról **Fizikai test**, Gravitáció 1 → leesnek, pattannak, egymásra borulnak.
+- [ ] Az egyiknél Test = Rögzített, és kulcsokkal mozgasd oldalra → meglöki a többit.
+- [ ] Egy testnél Vászon széle = Átengedi + Kezdő lökés → kiesik; a Mozgás fülön **Visszahozás** → újra bent.
+- [ ] Tekerj előre-hátra → ugyanaz a helyzet; Kulcsokká alakítás → a pálya kulcsokként marad.

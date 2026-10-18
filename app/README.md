@@ -133,6 +133,17 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - Kamera: `mesh3d.ts` `camOf` és MSAA-cél (`targets`, most exportálva). `gridN`: 160/384/640 csúcs, ≥1800 px magas kimeneten ×2 és +1 oktáv (4K export).
 - Licenc: a zajmag (hash12, vnoise, fbm, ridged, terrace, crater2, dune2, vnoised2) a ZyFou/ProceduralTerrains-ből származik (MIT, © 2026 ZyFou); a szöveg a fájl fejlécében van.
 
+## F2 Fizikai test (2026-10-18)
+- `src/physics.ts`: 2D impulzusos merevtest-megoldó (kör–kör, kör–doboz, doboz–doboz SAT, Coulomb-súrlódás, pattanás, vászonfalak, 8 iteráció, 60 Hz). A világ = a felső szintű, látható rétegek bekapcsolt `phys` mozgással; állapot t-ben = lépések 0-tól, 1 s-os ellenőrzőpontokkal, a fizikára ható adatok kulcsa (`keyOf`) érvényteleníti.
+- `motion.ts`: új `phys` mozgás (Mozgás polc), `moEval` a `physAt(L,t)` eltolását adja hozzá; a Kulcsokká alakítás a fizikai pályát is kulcsokká süti. Rögzített test / Kezdés előtt: kinematikus, a saját animációját követi és tolja a többit.
+- `moui.ts` `physRow`: ha a test a jelenet végéig kiesik (Vászon széle = Átengedi), felirat + Visszahozás. Teszt: `tests/f2_physics.js`.
+
+## F1 Folyadékmező (2026-10-18)
+- `src/fluid.ts`: Stable Fluids GPU-n, rétegenként saját FBO-párokkal a `ctx.fluid` térképben (sebesség, nyomás, festék RGBA16F; curl → örvényerősítés → divergencia → 20 Jacobi → gradiens → advekció). A rács csak a képaránytól és a Minőségtől függ (96/144/220 sor), nem a kimeneti mérettől.
+- `effects/fluid.ts`: `fluid` (Forrás, Áramló tinta) és `fluidfx` (Megjelenés, Torzítás/Feltárás); a kijelző shader `uDye`/`uVel` textúrát kap (`setU` = `bindField`). Források: seedből számolt Lissajous-pályák a réteg x/y-ja körül (`emitters`, tiszta függvény); a réteg két lépés közti elmozdulása lökés (vásznon húzás).
+- Közös óra: `sim.ts` állapotosnak veszi (`fluid:true`), `resetSim` → `resetFluid`; a `render.ts` csak `ctx.advance` mellett léptet (`fluidPrep`), a nem használt mezőket `fluidSweep` szabadítja fel. A modul a `gl.ts`-sel körkörös importban van, ezért a programok első használatkor linkelődnek.
+- Teszt: `tests/f1_fluid.js`.
+
 ## L1 Lottie vektoranimáció (2026-10-18)
 - `lottieCore.ts` ellenőrzi a helyi, csak vektoros JSON-t (méret/mélység/rétegtípus/expression) és a Vel jelenetidejéből számolja a képkockát; `lottie.ts` a MIT-licencű `lottie-web` light Canvas renderelőjét használja, méret- és képkockaérzékeny WebGL-textúra-gyorsítótárral.
 - `lottieImport.ts` adja az előnézetet és a fájlválasztást, valamint külső hivatkozást a LottieFiles gyűjteményére; nincs online katalógus-integráció. A `presets.ts` globális JSON-ejtése Lottie esetén ide irányít. A `lottie` réteg ugyanazt a képútvonalat és Megjelenés-láncot használja, mint az `image`.

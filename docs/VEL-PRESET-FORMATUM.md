@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.40.0-t6.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.41.0-merge.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.
@@ -134,4 +134,6 @@ windflame [gen] Szélben lobogó láng: speed=0..3(1); width=0.2..2(1); glow=0..
 textwrap [text] Szöveg testen: shape=0:Gömb|1:Henger|2:Szalaggyűrű; rep=1..8(2); size=0.2..3(1); spin=-180..180(30); tilt=-60..60(12); c1=#hex; body=0:Átlátszó (csak betűk)|1:Tömör; bodyc=#hex; radius=0.05..0.6(0.3); height=0.05..1.2(0.5); vpos=-1..1(0); back=0..1(0.35); gloss=0..1(0.5); ry=-180..180(0); persp=0..1(0.5)
 textextrude [text] Kihúzott 3D szöveg: depth=0..0.6(0.12); ry=-80..80(-25); rx=-60..60(12); spin=0..40(0); c1=#hex; c2=#hex; light=-180..180(-40); gloss=0..1(0.4); persp=0..1(0.5); size=0.1..1.5(0.5)
 textpath [text] Szöveg útvonalon: size=0.02..0.4(0.09); offset=-1..1(0); speed=-1..1(0); spacing=0.5..2.5(1); c1=#hex; loop=0:Elfogy|1:Körbe ér; upright=0:Az úttal fordul|1:Egyenesen áll; lift=-0.2..0.2(0)
+fluid [gen] Áramló tinta: count=1..6(3); spread=0..1(0.45); force=0..3(1); size=0.2..3(1); curl=0..3(1); fade=0..1(0.3); tempo=0..3(1); wind=0..2(0.2); dir=-180..180(0); pulse=0..1(0); seed=0..99(7); qual=0:Gyors|1:Normál|2:Finom; bright=0..3(1)
+fluidfx [fx] Folyadékos torzítás: amount=0..3(1); mode=0:Torzítás|1:Feltárás; edge=0..2(0); count=1..6(3); spread=0..1(0.45); force=0..3(1); size=0.2..3(1); curl=0..3(1); fade=0..1(0.3); tempo=0..3(1); wind=0..2(0.2); dir=-180..180(0); pulse=0..1(0); seed=0..99(7); qual=0:Gyors|1:Normál|2:Finom
 ````
