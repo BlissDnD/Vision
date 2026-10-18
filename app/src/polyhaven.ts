@@ -1,7 +1,7 @@
 /** Small, offline-searchable Poly Haven CC0 texture shelf. Only the chosen 2K image is downloaded. */
 import { R } from './runtime';
 import { h } from './dom';
-import { assets, imgTex, makeLayer } from './state';
+import { assets, imgTex, makeLayer, sameAsset } from './state';
 import { texFromCanvas } from './gl';
 import { insertItem } from './itemops';
 import { commit, renderAll } from './history';
@@ -54,12 +54,11 @@ export async function addPolyHavenTexture(id: string) {
     canvas.width = Math.max(1, Math.round(bitmap.width * scale));
     canvas.height = Math.max(1, Math.round(bitmap.height * scale));
     canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const assetId = 'PH' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-    const encoded = canvas.toDataURL('image/jpeg', .9);
+    const encoded = canvas.toDataURL('image/jpeg', .9), same = sameAsset(encoded);
+    const assetId = same || 'PH' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     const layer = makeLayer('image', { name: entry[1], asset: assetId });
     layer.source = { provider: 'Poly Haven', id, url: sourceURL(id), license: 'CC0' };
-    assets[assetId] = encoded;
-    imgTex.set(assetId, { tex: texFromCanvas(canvas), w: canvas.width, h: canvas.height });
+    if (!same) { assets[assetId] = encoded; imgTex.set(assetId, { tex: texFromCanvas(canvas), w: canvas.width, h: canvas.height }); }
     insertItem(layer, null); commit(); renderAll(); closeModal();
     toast(`${entry[1]} hozzáadva · Poly Haven CC0`);
     return layer;

@@ -38,7 +38,7 @@ export async function renderVideo(mode,fps,dur){
   const d=dimsFor(mode);let cancel=false;const useTl=dur==='tl';const D=useTl?st.dur:+dur;
   const bar=h('i');const stat=h('p',null,'Előkészítés…');
   openModal(h('h2',null,'Videó renderelése'),h('p',null,`${d.w} × ${d.h} · ${fps} fps · ${D} mp${(AUD.buf||AUD.stems.length)?' · hanggal':''}${EXP.mb?` · mozgási elmosás ${EXP.mb}×, ${EXP.sh}°`:''}. Minden képkocka külön renderelődik, ezért lassabb gépen is hibátlan lesz.`),h('div',{class:'prog'},bar),stat,
-    h('div',{class:'bar2'},h('button',{class:'btn',onclick:()=>{cancel=true;}},'Megszakítás')));$('#dlg').dataset.busy='1';
+    h('div',{class:'bar2'},h('button',{class:'btn',onclick:()=>{cancel=true;}},'Megszakítás')));$('#dlg').dataset.busy='1';R.onModalClose=()=>{cancel=true;delete $('#dlg').dataset.busy;};
   await withScale(d.q,async()=>{
     const w=cv.width,hh=cv.height;const br=Math.round(Math.min(80e6,Math.max(8e6,w*hh*fps*0.1)));
     let cfg=null;for(const codec of ['avc1.640033','avc1.640034','avc1.4d0033','avc1.42e033']){const c={codec,width:w,height:hh,bitrate:br,framerate:fps};try{const r=await VideoEncoder.isConfigSupported(c);if(r&&r.supported){cfg=c;break;}}catch(_){}}
@@ -58,19 +58,20 @@ export async function renderVideo(mode,fps,dur){
       const fr=new VideoFrame(cv,{timestamp:Math.round(i*1e6/fps),duration:Math.round(1e6/fps)});enc.encode(fr,{keyFrame:i%(fps*2)===0});fr.close();
       while(enc.encodeQueueSize>3)await new Promise(r=>setTimeout(r,4));
       if(i%2===0||i===N-1){bar.style.width=((i+1)/N*100).toFixed(1)+'%';stat.textContent=`${i+1} / ${N} képkocka`;await new Promise(r=>setTimeout(r,0));}}
-    if(cancel){try{enc.close();}catch(_){}delete $('#dlg').dataset.busy;closeModal();toast('Videórenderelés megszakítva.');return;}
+    if(cancel){try{enc.close();}catch(_){}const open=!!$('#dlg').dataset.busy;delete $('#dlg').dataset.busy;if(open)closeModal();toast('Videórenderelés megszakítva.');return;}
     stat.textContent='Kódolás befejezése…';await enc.flush();enc.close();if(encErr)throw encErr;
     if(acfg&&abuf&&!cancel){stat.textContent='Hang kódolása…';const aenc=new AudioEncoder({output:(c,m)=>muxer.addAudioChunk(c,m),error:e=>{encErr=e;}});aenc.configure({codec:acfg.codec,sampleRate:acfg.sampleRate,numberOfChannels:acfg.numberOfChannels,bitrate:acfg.bitrate});
       const sr=abuf.sampleRate,ch=acfg.numberOfChannels,len=abuf.length,chs=[...Array(ch)].map((_,j)=>abuf.getChannelData(Math.min(j,abuf.numberOfChannels-1)));
       const total=Math.round(D*sr),CH=4096;
       for(let pos=0;pos<total;pos+=CH){const n=Math.min(CH,total-pos),data=new Float32Array(n*ch);
         for(let j=0;j<ch;j++){const src=chs[j];for(let k=0;k<n;k++){const idx=audioIndex(sceneT(t0+(pos+k)/sr),sr,len);data[j*n+k]=idx>=0?src[idx]:0;}}
-        const ad=new AudioData({format:'f32-planar',sampleRate:sr,numberOfFrames:n,numberOfChannels:ch,timestamp:Math.round(pos/sr*1e6),data});aenc.encode(ad);ad.close();
+        const ad=new AudioData({format:'f32-planar',sampleRate:sr,numberOfFrames:n,numberOfChannels:ch,timestamp:Math.round(pos/sr*1e6),data});aenc.encode(ad);ad.close();if(cancel)break;
         if(aenc.encodeQueueSize>8)await new Promise(r=>setTimeout(r,2));}
       await aenc.flush();aenc.close();if(encErr)throw encErr;}
+    if(cancel){const open=!!$('#dlg').dataset.busy;delete $('#dlg').dataset.busy;if(open)closeModal();toast('Videórenderelés megszakítva.');return;}R.onModalClose=null;
     muxer.finalize();const blob=new Blob([muxer.target.buffer],{type:'video/mp4'});delete $('#dlg').dataset.busy;
     openMedia('video',URL.createObjectURL(blob),`latomas-${w}x${hh}-${fps}fps.mp4`,`${w} × ${hh} · ${fps} fps · MP4`,blob);});
-  delete $('#dlg').dataset.busy;}
+  R.onModalClose=null;delete $('#dlg').dataset.busy;}
 R.rec=null;
 export function startRec(dur){
   if(R.rec){R.rec.stop();return;}

@@ -8,11 +8,12 @@ import { thumbGet, thumbPut } from './thumbstore';
 import { EFFECTS } from './effects/index';
 import { makeMo, moIcon } from './motion';
 import { findItem } from './state';
+import { ROLES, catRoleCounts, catSearch, resetCatalog } from './catalog';
 
 R.cat='recipes';R.thumbJob=0;R.libQ='';
-const fold=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 /** Search across every shelf by name (accent-insensitive): [cat, index] pairs. */
-export function libSearch(q){const f=fold(q.trim());if(!f)return [];const r=[];for(const [c] of CATS)LIB[c].forEach((it,i)=>{if(!it.head&&fold(it.name).includes(f))r.push([c,i]);});return r;}
+/** CAT-01: synonym-aware search over every shelf, optionally narrowed to one role (R.libRole). */
+export function libSearch(q){return catSearch(q,R.libRole||null);}
 $('#libSearch').oninput=e=>{R.libQ=e.target.value;buildCats();buildShelf();};
 const tagCache={};
 /** Cache key of a card: own (user library) items by id, so deleting one never shifts another's thumbnail. */
@@ -23,7 +24,11 @@ export function dropTag(cat,i){if(LIB[cat][i]&&LIB[cat][i].mo)return {only:false
     if(d&&d.host)t={only:true,s:'csak '+d.host.map(x=>EFFECTS[x].name).join(', '),tip:`Csak ${d.host.map(x=>EFFECTS[x].name).join(', ')} rétegre húzható`};
     else if(d&&(cat==='fx'||d.kind==='fx'))t={only:false,s:'rétegre is',tip:'Rétegre húzva csak arra hat; kattintva önálló szűrőréteg'};}catch(_){}tagCache[key]=t;}
   return tagCache[key];}
-export function buildCats(){const s=$('#cats');s.innerHTML='';for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';$('#libSearch').value='';buildCats();buildShelf();}},l));}
+export function buildCats(){const s=$('#cats');s.innerHTML='';
+  // CAT-01: while searching, the shelf row turns into role chips (Mind + the four roles with hit counts)
+  if(R.libQ&&R.libQ.trim()){const n=catRoleCounts(R.libQ);const chip=(k,l)=>h('button',{class:'rolechip','aria-pressed':String((R.libRole||null)===k),onclick:()=>{R.libRole=k;buildCats();buildShelf();}},l);
+    s.appendChild(chip(null,'Mind'));for(const [k,l] of ROLES)if(n[k]||R.libRole===k)s.appendChild(chip(k,`${l} ${n[k]}`));return;}
+  R.libRole=null;resetCatalog();for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';$('#libSearch').value='';buildCats();buildShelf();}},l));}
 export function buildShelf(){
   const box=$('#items');box.innerHTML='';const found=R.libQ?libSearch(R.libQ):null;
   $('#shelfHint').textContent=found?(found.length?`${found.length} találat minden polcról`:'Nincs találat. Próbálj rövidebb szót.'):CAT_HINT[R.cat]||'';

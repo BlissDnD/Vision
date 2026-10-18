@@ -2,6 +2,22 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — CAT-01 első szelet: mindent gyorsan megtalálsz (0.45.0-cat1)
+
+- Új `src/catalog.ts`: stabil elem-azonosító (`polc:név`, saját elemnél `own:`), négy szerep (Források · Formák · Megjelenések · Mozgás), ékezet- és szinonimatűrő kereső a név, leírás és effektkulcs alapján (22 szinonimacsoport).
+- Keresés közben a polcsor szerep-chipekké vált (Mind + szerepek találatszámmal); a keresés törlésekor visszaáll. Régi húzás/thumbnail kulcsok (`ikey`) változatlanok.
+- Teszt: `tests/cat1_search.js` — 20/20 keresési eset (pl. „fust”, „csillogó fém”, „szöveg gömbön”), 298/298 elem indexelve, egyedi id.
+- Próba: írd be „fust”, „króm”, „szöveg gömbön” → a várt elem az első háromban; „lebeg” → Mozgás chip → csak a Lebegés; töröld a keresést → a polcok visszajönnek.
+
+## Állapot: 2026-10-18 — STAB-01 mini: semmi nem vész el (0.44.0-stab1)
+
+- Mentés: a csak mentett Jelenetben használt kép is a projektfájlba kerül (`usedAssets` jelenetek + Közös alapok); azonos kép egyszer tárolódik (`sameAsset`, kép- és Poly Haven-import).
+- Hang: az eredeti hangfájl és a stemek beágyazva (`audio`), újranyitáskor háttérben dekódolva és újraelemezve; projektcserénél a régi hang törlődik.
+- Videóexport: az ablak bármilyen bezárása (Escape, háttér, gomb) megszakítja (`R.onModalClose`), a hangkódolás közben is.
+- Árva Kapcsolat (mindkét vége sehol) betöltéskor és minden módosításkor törlődik (`gcLinks`).
+- Teszt: `tests/stab1_persist.js` zöld. Próba: Jelenet A-ba kép → Jelenet B → mentés fájlba → új projekt → megnyitás: kép megvan; hang + 2 Jelzés → mentés → másik projekt → vissza: hang megvan; export közben Escape: leáll.
+- Mellékjavítás: a véletlenül commitolt `app/.venv` symlink kikerült a repóból; a fő mappa tesztkörnyezete újraépítve.
+
 ## Állapot: 2026-10-18 — Összefésülés: F1 Folyadék + F2 Fizika ide (0.41.0-merge)
 
 - A `claude/vel-fluid-797dca` ág (F1 Folyadékmező, F2 Fizikai test) összefésülve az E1/P2/K3/T6 ággal. Ütközések: `cost.ts`, `effects/index.ts`, `render.ts` (rajzolóhook + folyadék-előkészítés), `motion.ts`/`moui.ts` (Útvonalon + Fizikai test együtt: a Mozgás polcon 8 mozgás), verzió, doksik.
