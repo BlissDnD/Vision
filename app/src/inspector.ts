@@ -12,8 +12,9 @@ import { renderLayers } from './layers';
 import { blendRow, ctlParam, ctlSelect, ctlSlider, ctlSwitch, fxListUI, palettePicker, scrubField, section } from './controls';
 import { commit, scheduleSave } from './history';
 import { paramList, renderTimeline } from './timeline';
+import { tempoItem } from './retime';
 import { markDirty } from './loop';
-import { showCode } from './modals';
+import { showCode, toast } from './modals';
 import { childVariantSection, linkSection, variantSection } from './variantsui';
 import { linesSection } from './textlines';
 import { spineSection } from './spinegrips';
@@ -160,6 +161,14 @@ function tabbed(P,L,TB,_noTiming?){
   bar.addEventListener('click',()=>{const t=P.querySelector('.itab-title');if(t)t.textContent=(ITABS.find(x=>x[0]===R.itab)||ITABS[0])[1];});}
 export function layerAnimated(L){return paramList(L).some(q=>animKinds(q.o))||!!(L.tm&&(L.tm.in||L.tm.out))||!!(L.mo&&L.mo.length);}
 /** Mozgás tab head: Animálás mode, Eljátszás, and every animated parameter of the layer with what drives it. */
+/** Időzítés gyorsan · Tempó-chip: ½× · 1× · 2× + fine slider. A real retime of the item's data (retime.tempoItem), one undo step. */
+export function tempoRow(L){const cur=L.tpo||1,fmt=v=>(v<1&&Math.abs(v-.5)<1e-3?'½':(Math.round(v*100)/100).toString().replace('.',','))+'×';
+  const set=v=>{v=Math.min(4,Math.max(.25,v));if(Math.abs(v-cur)<1e-3)return;const n=tempoItem(L,v/cur);commit();renderTimeline();renderInsp();markDirty();toast(`Tempó ${fmt(v)} · ${L.type==='group'?'a csoport minden mozgása':'a réteg minden mozgása'} átidőzítve (${n} kulcs) · ⌘Z visszavonja`);};
+  const chips=[.5,1,2].map(v=>h('button',{class:'chip'+(Math.abs(cur-v)<1e-3?' on':''),type:'button','aria-pressed':String(Math.abs(cur-v)<1e-3),title:v===1?'Eredeti tempó':v<1?'Fele olyan gyors (minden mozgás kétszer olyan hosszú)':'Kétszer olyan gyors',onclick:()=>set(v)},fmt(v)));
+  const lab=h('span',{class:'small tpov'},fmt(cur));
+  const rg=h('input',{type:'range',min:'-2',max:'2',step:'0.05',value:String(Math.log2(cur)),'aria-label':'Tempó finoman',title:'Tempó finoman (¼× … 4×), elengedéskor átidőzít'});
+  rg.oninput=()=>{lab.textContent=fmt(Math.pow(2,+rg.value));};rg.onchange=()=>set(Math.round(Math.pow(2,+rg.value)*100)/100);
+  return h('div',{class:'arow tporow',title:'Az elem minden mozgása (kulcsok, beúszás/kiúszás, mozgások üteme) a mozgásblokk elejéhez képest gyorsul vagy lassul'},h('span',{class:'asym'},'⏱'),h('span',{class:'aname'},'Tempó'),...chips,rg,lab);}
 export function motionSummary(L){
   const prs=paramList(L).map(q=>({...q,kinds:animKinds(q.o)})).filter(q=>q.kinds);const blk=!!(L.tm&&(L.tm.in||L.tm.out));
   const am=h('button',{class:'btn'+(R.animMode?' rec':''),type:'button','aria-pressed':String(!!R.animMode),title:'A'},R.animMode?'● Animálás be (A)':'Animálás (A)');
@@ -173,5 +182,7 @@ export function motionSummary(L){
     rm.onclick=()=>{if(hasK(o)){o.v=keyVal(o.k,R.time);delete o.k;}o.a=0;o.s='';commit();renderInsp();};if(q.kinds!=='l')kids.push(rm);
     return h('div',{class:'arow'},...kids);});
   if(blk)rows.unshift(h('div',{class:'arow'},h('span',{class:'asym'},ANIM_SYM.b),h('span',{class:'aname'},'Belépés / kilépés'),h('span',{class:'small'},'Időzítés lent')));
+  const moved=rows.length||blk||(L.mo&&L.mo.length)||(L.type==='group'&&(L.children||[]).some(c=>(c.mo&&c.mo.length)||(c.tm&&(c.tm.in||c.tm.out))||paramList(c).some(q=>animKinds(q.o))));
+  if(moved)rows.push(tempoRow(L));
   return section('Animáció','anim',true,h('div',{class:'btnrow'},am,pf),
     rows.length?h('div',{class:'alist'},...rows):h('p',{class:'small'},'Ezen a rétegen még nincs animáció. Kapcsold be az Animálást (A), és húzd a réteget vagy állíts egy csúszkát: kulcskocka lesz. Jelek: ◆ kulcs · ∿ hullám · ♪ hang/jel · ⇢ Kapcsolat · ▭ mozgásblokk.'));}

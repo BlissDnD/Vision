@@ -72,3 +72,40 @@ export function stretchBlock(L: any, newB: number, mode: 'hold' | 'close' = 'hol
     return hold > 1e-3 ? B.inEnd + (t - B.inEnd) * k : t + dt;                     // middle: elastic
   }, anchors);
 }
+
+/* ----- Időzítés gyorsan · Tempó: a real retime of an item's data (keys, motion blocks, motions' rates/periods) ----- */
+/** Every keyed value on a layer, including its effects and motions. */
+function allKeyed(L: any) { const r: any[] = []; const add = (g: any) => { for (const k in g || {}) { const o = g[k]; if (o && typeof o === 'object' && 'v' in o) r.push(o); } };
+  add(L.n); add(L.p); for (const F of L.fx || []) { add(F.n); add(F.p); } for (const m of L.mo || []) add(m.p); return r; }
+const itemsOf = (it: any) => it.type === 'group' ? [it, ...(it.children || [])] : [it];
+/** Pivot of a tempo change: the earliest block start of the item (a group: of itself and its children). */
+export function tempoPivot(it: any) { let a = Infinity; for (const L of itemsOf(it)) { const B = blockOf(L); if (B) a = Math.min(a, B.a); } return isFinite(a) ? a : 0; }
+/** Scale the item's whole motion by tempo factor f (2 = twice as fast) around its block start: times t → a + (t − a)/f,
+ *  durations /f, periods /f, speeds and rates ×f. Keeps L.tpo (the item's tempo relative to how it was made) for the chips.
+ *  The caller commits (one undo step). */
+export function tempoItem(it: any, f: number) {
+  if (!(f > 0) || Math.abs(f - 1) < 1e-6) return 0; const a = tempoPivot(it), T = (t: number) => r3(a + (t - a) / f), D = (d: number) => Math.max(.01, Math.round(d / f * 1000) / 1000);
+  let n = 0;
+  for (const L of itemsOf(it)) {
+    const fs = timeFields(L); const vals = fs.map(x => x.get());          // read all before writing (fields can share data)
+    const P = (k: string) => L.p && L.p[k], dur = (o: any) => { if (o && isFinite(o.v)) o.v = D(o.v); };
+    if (L.tm) { if (isFinite(L.tm.inDur)) L.tm.inDur = D(L.tm.inDur); if (isFinite(L.tm.outDur)) L.tm.outDur = D(L.tm.outDur); }
+    if (L.type === 'mtext') { dur(P('dur')); if (P('stagger')) P('stagger').v = Math.round(P('stagger').v / f * 10000) / 10000; }
+    if (L.type === 'bento') { dur(P('dur')); dur(P('morphDur')); }
+    if (L.type === 'reveal') dur(P('dur'));
+    fs.forEach((x, i) => x.set(T(vals[i])));
+    for (const m of L.mo || []) { const p = m.p;
+      if (m.t === 'spring') dur(p.dur);
+      if (p.period) p.period.v = Math.max(.05, Math.round(p.period.v / f * 1000) / 1000);
+      if (p.speed) p.speed.v = Math.round(p.speed.v * f * 100) / 100;
+      if (p.rate) p.rate.v = Math.round(p.rate.v * f * 100) / 100;
+      if (m.ry && isFinite(m.ry.cyc)) m.ry.cyc = Math.max(.05, Math.round(m.ry.cyc / f * 1000) / 1000);
+      if (isFinite(m.a) && m.a > 0) m.a = T(m.a); if (m.b != null && isFinite(m.b)) m.b = T(m.b); }
+    for (const o of allKeyed(L)) {
+      if (o.a && isFinite(o.f)) o.f = Math.round(o.f * f * 10000) / 10000;  // waves (LFO) keep their character: faster too
+      if (hasK(o)) { for (const x of o.k) x.t = T(x.t); n += o.k.length;
+        for (let i = o.k.length - 1; i > 0; i--) if (Math.abs(o.k[i].t - o.k[i - 1].t) < KEY_EPS) o.k.splice(i, 1); } }
+  }
+  it.tpo = Math.round((it.tpo || 1) * f * 1000) / 1000; if (Math.abs(it.tpo - 1) < 1e-3) delete it.tpo;
+  return n;
+}

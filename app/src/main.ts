@@ -44,5 +44,6 @@ import './scenes';
 import './presets';
 import './textbar';
 import './moui';
+import './tap';
 import './version';
 import './boot';

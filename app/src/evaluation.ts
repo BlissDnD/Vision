@@ -19,15 +19,24 @@ export function klVal(K,t,kl){const span=kl.b-kl.a+kl.ret;if(t<=kl.b||span<=1e-6
 export function ev(n,def,t){let v=n._pv!=null?n._pv:n.k&&n.k.length?(n._kl?klVal(n.k,t,n._kl):keyVal(n.k,t)):n.v;if(n.a)v+=wave(n.w,t*n.f)*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
 
 /* ----- keyframes: n.k=[{t,v,e,z?,w?,bz?}] on any slider param; e = curve of the segment that starts at this key ----- */
-export const KEY_EASES=[...EASE_NAMES,'Egyedi rugó','Egyedi görbe (Bézier)'];
+export const KEY_EASES=[...EASE_NAMES,'Egyedi rugó','Egyedi görbe (Bézier)','Sima (átmenő)'];
+/** 'Sima (átmenő)': a monotone cubic Hermite segment through the neighbouring keys (no corner, no stop at keys, no overshoot). */
+export const SMOOTH_E=14;
 export const KEY_EPS=1/60;
 export const hasK=n=>!!(n&&n.k&&n.k.length);
 export function keyIdx(n,t){if(!hasK(n))return -1;return n.k.findIndex(k=>Math.abs(k.t-t)<KEY_EPS);}
 export function bezierY(x,b){const [x1,y1,x2,y2]=b;let u=x;for(let i=0;i<10;i++){const cx=3*x1*u*(1-u)*(1-u)+3*x2*u*u*(1-u)+u*u*u-x;const dx=3*x1*(1-u)*(1-u)+6*(x2-x1)*u*(1-u)+3*(1-x2)*u*u;if(Math.abs(cx)<1e-5||Math.abs(dx)<1e-6)break;u=Math.min(1,Math.max(0,u-cx/dx));}
   return 3*y1*u*(1-u)*(1-u)+3*y2*u*u*(1-u)+u*u*u;}
-export function keyEase(k,x){x=Math.min(1,Math.max(0,x));const e=k.e??5;if(e===12)return easeSpringJ(x,Math.min(.98,Math.max(.05,k.z??.5)),Math.max(1,k.w??12));if(e===13)return bezierY(x,k.bz||[.25,.1,.25,1]);return easeJ(e,x);}
+export function keyEase(k,x){x=Math.min(1,Math.max(0,x));const e=k.e??5;if(e===12)return easeSpringJ(x,Math.min(.98,Math.max(.05,k.z??.5)),Math.max(1,k.w??12));if(e===13)return bezierY(x,k.bz||[.25,.1,.25,1]);if(e===SMOOTH_E)return x*x*(3-2*x);return easeJ(e,x);}
+/** Tangent at key i for the smooth curve: Fritsch–Butland mean of the two secants when both neighbouring segments are smooth,
+ *  0 at a local extremum or where the curve meets a non-smooth segment / the end (eased neighbours also start/stop at 0, so it stays C1). */
+function smTan(K,i){if(i<=0||i>=K.length-1||(K[i-1].e??5)!==SMOOTH_E||(K[i].e??5)!==SMOOTH_E)return 0;
+  const h0=K[i].t-K[i-1].t,h1=K[i+1].t-K[i].t;if(h0<1e-9||h1<1e-9)return 0;const d0=(K[i].v-K[i-1].v)/h0,d1=(K[i+1].v-K[i].v)/h1;
+  if(d0*d1<=0)return 0;return 3*(h0+h1)/((2*h1+h0)/d0+(h1+2*h0)/d1);}
 export function keyVal(K,t){const n=K.length;if(t<=K[0].t)return K[0].v;if(t>=K[n-1].t)return K[n-1].v;
-  for(let i=0;i<n-1;i++){const a=K[i],b=K[i+1];if(t<=b.t){const x=(t-a.t)/Math.max(1e-6,b.t-a.t);return a.v+(b.v-a.v)*keyEase(a,x);}}return K[n-1].v;}
+  for(let i=0;i<n-1;i++){const a=K[i],b=K[i+1];if(t<=b.t){const h=Math.max(1e-6,b.t-a.t),x=(t-a.t)/h;
+    if((a.e??5)===SMOOTH_E){const x2=x*x,x3=x2*x;return (2*x3-3*x2+1)*a.v+(x3-2*x2+x)*h*smTan(K,i)+(-2*x3+3*x2)*b.v+(x3-x2)*h*smTan(K,i+1);}
+    return a.v+(b.v-a.v)*keyEase(a,x);}}return K[n-1].v;}
 export const curV=n=>hasK(n)?keyVal(n.k,R.time):n.v;
 /** New keys start with 'Lágy' (0); a key inserted after another inherits that one's curve. Old keys without `e` keep the legacy default (5). */
 export const DEF_EASE=0;

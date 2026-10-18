@@ -3,6 +3,8 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**Időzítés gyorsan (0.32.0-t1, 2026-10-18):** Koppintás kosárral (T, J), Tempó-chip (½×/1×/2× + csúszka), Sima (átmenő) kulcsgörbe az Eljátszásnak; headless teszttel demonstrálva (`tests/tap_timing.js`), felhasználói próba hátra (`PROGRESS.md` legfelül). Következő a sorban: Gesztus-szelet (jóváhagyva).
+
 **R1 (0.31.0-r1, 2026-10-18):** két új Megjelenés, a CRT-képernyő és a Színes vetett fény, headless teszttel demonstrálva (`tests/r1_crt_light.js`). Az új referenciák ütemterve a `FUNKCIO-LELTAR.md` 37–42. sorában van (forrás: `docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`). Következő ebből: R1b (fényfogantyú, spektrum, CRT+Jelhiba recept), majd R2 (WIDE + Unwoven). Mindkettő előtt javaslat kell. Az eredeti forráskódok nincsenek letöltve.
 
 Verzió **0.30.0-mo11** (bal felül a név mellett látszik a verzió és a build ideje). **Mozgás v1.1** kész és headless teszttel demonstrálva (`tests/mo_rhythm.js`): Ritmus a folytonos mozgásokon (chipek, ritmus-szalag, Tempó/Erő), mozgássávok a Sávokon (réteg ▸ mozgás ▸ paraméter ▸ kulcs), Kulcsokká alakítás; felhasználói próba hátra (`PROGRESS.md` legfelül). Korábban kész és headless tesztekkel demonstrálva: **P1** (presetek ChatGPT-vel, saját könyvtár, saját shader csúszkákkal) **Mozgás v1** (ráhúzható mozgások, rétegenkénti kulcs-Loop, kulcs csak Animálás módban, Rugalmas beúszás) és **U4** (tömörebb jobb panel, felső szövegsáv, effekt-ikonsor; `docs/spec/vel-ui-visszajelzes-2026-10-18.md` első fele). **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
@@ -34,6 +36,7 @@ Verzió **0.30.0-mo11** (bal felül a név mellett látszik a verzió és a buil
 - **Szabály- és eseményvezérelt viselkedés** (`FUNKCIO-LELTAR.md` 23. sor): „kövesse ezt”, „lebegjen e körül”, „reagáljon a szélre”, „erősödjön a Glow érintkezéskor”. Nincs előre beírt kulcssoruk, szabály vagy esemény vezérli őket, és a Loop kikapcsolása után is élnek. Mielőtt bármi épül, külön végig kell gondolni a felhasználóval (kulcsokkal való viszony, jelölés, export, kapcsolat a Kapcsolatokkal és az E szakasszal).
 
 ## Mi történt legutóbb
+- Időzítés gyorsan: `tap.ts` (kosár, `tapNow`, `tapEsc`, sáv, jelvények; `R.tap*`), `retime.ts` `tempoItem`/`tempoPivot`, `inspector.ts` `tempoRow`, `evaluation.ts` `SMOOTH_E` (14, `smTan`), `perform.ts` (sima kulcsok). Jegyzet: `app/README.md` „Időzítés gyorsan”.
 - Mozgás v1.1: `motion.ts` (`m.ry`, `ryTau`, `moTime`, `moClip`, `bakeMo`), `timeline.ts` (mozgássorok, `clipDrag`, `paramList` `mo:` utak), `moui.ts` (`rhythmUI`), `version.ts`. Jegyzet: `app/README.md` „Mozgás v1.1”.
 - Mozgás v1: `motion.ts` (L.mo, moEval, Anime.js-adapter, syncKLoop), `moui.ts` (Mozgások szekció, ráhúzás, nyíl), `evaluation.ts` (klVal, setVal eltolás). Technikai jegyzet: `app/README.md` „Mozgás v1”.
 - U4: egysoros csúszkák, Részletek a Fő beállítások alatt, mozgásparaméterek a Mozgás fülön (szinkron fő vezérlőkkel), effekt-ikonsor + ikonrács (`fxicons.ts`), felső szövegsáv (`textbar.ts`). Technikai jegyzet: `app/README.md` „U4”.

@@ -10,7 +10,7 @@ import { R } from './runtime';
 import { $ } from './dom';
 import { BASEK } from './effects/index';
 import { sel } from './state';
-import { delKey, hasK, keyVal, seekTo, setKey } from './evaluation';
+import { SMOOTH_E, delKey, hasK, keyVal, seekTo, setKey } from './evaluation';
 import { setPlay } from './transport';
 import { commit } from './history';
 import { renderInsp } from './inspector';
@@ -49,14 +49,13 @@ export function smoothTakeN(S: MSample[], smooth: number, sc: number[]) { return
 export function smoothTake(S: Sample[], smooth: number) {
   return smoothTakeN(S.map(s => ({ t: s.t, v: [s.x, s.y] })), smooth, [1, 1]).map(s => ({ t: s.t, x: s.v[0], y: s.v[1] }));
 }
-const LIN = 4; // performed keys are dense: linear segments follow the gesture; an eased curve would stop at every key
 /** Write a take into its params, replacing only keys inside [t0, t1]. Returns the number of keys per param. */
 export function applyTakeN(objs: any[], S: MSample[], smooth: number, sc: number[]) {
   if (S.length < 2) return 0;
   const t0 = S[0].t, t1 = S[S.length - 1].t, pts = smoothTakeN(S, smooth, sc);
   for (const n of objs) if (hasK(n)) for (let i = n.k.length - 1; i >= 0; i--) if (n.k[i].t >= t0 - 1e-6 && n.k[i].t <= t1 + 1e-6) delKey(n, i);
   for (const p of pts) objs.forEach((n, c) => setKey(n, p.t, p.v[c]));
-  for (const n of objs) for (const q of n.k) if (q.t >= t0 - 1e-6 && q.t <= t1 + 1e-6) q.e = LIN;
+  for (const n of objs) for (const q of n.k) if (q.t >= t0 - 1e-6 && q.t <= t1 + 1e-6) q.e = SMOOTH_E; // pass-through curve: follows the gesture without corners or a stop at every key
   return pts.length;
 }
 /** Position take of layer L (M5 API). */

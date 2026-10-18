@@ -3,7 +3,7 @@
 import { $, h } from './dom';
 
 export const SHORTCUTS: [string, [string, string][]][] = [
-  ['Idő', [['Szóköz', 'Lejátszás / szünet'], ['Home', 'Vissza az elejére'], [', .', 'Előző / következő kulcskocka'], ['J', 'Jelzés az aktuális időre']]],
+  ['Idő', [['Szóköz', 'Lejátszás / szünet'], ['Home', 'Vissza az elejére'], [', .', 'Előző / következő kulcskocka'], ['J', 'Jelzés az aktuális időre'], ['T', 'Koppintás: kosár élesítése'], ['J (élesítve)', 'Koppintás: a következő elem belép']]],
   ['Eszközök', [['V', 'Mozgatás és méretezés'], ['O', '3D forgatás'], ['A', 'Animálás mód'], ['E', 'Eljátszás'], ['K', 'Elhelyezés-kulcskocka'], ['G', 'Fogantyúk'], ['F', 'Teljes képernyő'], ['R', 'Véletlen látomás'], ['Görgő', 'Méretezés a vásznon']]],
   ['Rétegek', [['⌘D', 'Duplikálás'], ['⌘G', 'Csoportba foglalás'], ['Del', 'Törlés'], ['[ ]', 'Réteg le / fel'], ['H', 'Elrejtés'], ['⌘Z / ⇧⌘Z', 'Visszavonás / újra'], ['⌘C / ⌘V', 'Kulcskockák másolása / beillesztése'], ['Esc', 'Kijelölés és menük bezárása'], ['?', 'Ez a panel']]],
 ];

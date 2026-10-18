@@ -19,6 +19,7 @@ import { keyHelpOn, setKeyHelp } from './workspace';
 
 document.addEventListener('keydown',e=>{
   if(!$('#modal').hidden){if(e.key==='Escape')closeModal();return;}
+  if(e.key==='Escape'&&R.tapArm&&R.tapEsc){R.tapEsc();return;}
   if(e.key==='Escape'){closePop();closeKeyMenu();if(R.tlxSels.length){R.tlxSels=[];renderTracks();}return;}
   const tg=(e.target as HTMLElement).tagName;if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT')return;
   const mod=e.ctrlKey||e.metaKey;const k=e.key.toLowerCase();
@@ -36,6 +37,8 @@ document.addEventListener('keydown',e=>{
   else if(k==='g')$('#gizmoBtn').click();else if(k==='f')toggleFS();
   else if(k==='e'){import('./perform').then(m=>m.setPerform(!R.perform));}
   else if(k==='a'){import('./animate').then(m=>m.setAnimMode(!R.animMode));}
+  else if(k==='t'){if(R.tapSetArm)R.tapSetArm(!R.tapArm);}
+  else if(k==='j'&&R.tapArm&&R.tapNow){R.tapNow();}
   else if(k==='j'){const c=addCue(R.time);if(c){commit();renderTracks();toast(`Jelzés @ ${fmtT(R.time)} · a kulcskockák ide tapadnak`);}}
   else if(k==='h'){const L=sel();if(L){L.vis=!L.vis;commit();renderLayers();}}
   else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();if(R.tlxSels.length){const n=deleteSelKeys();commit();renderInsp();toast(`${n} kulcskocka törölve`);}else delSel();}

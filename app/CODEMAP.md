@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (79 fájl)
+## Modulok (80 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -30,7 +30,7 @@
 | `describe.ts` | 9 | Claude description → scene (descPrompt) and buildFromSpec (spec → items, dropped list, macros, custom) | DESC_SKIP, descCatalog, descPrompt, clampP, specVal, buildFromSpec, descModal | SAMPLE, selId, time |
 | `dom.ts` | 1 | $ and h() DOM helpers | TAU, h |  |
 | `effects/codepen.ts` | 4 | effect defs: liquidglass, windflame | codepenEffects |  |
-| `effects/filters.ts` | 16 | effect defs: blur, glow, lens, kaleido, feedback, swirl, warp, ripple, radial, edge, mirror, polar, chroma, psycolor, grade, glitch, film, texture, blob, ascii, … | filters |  |
+| `effects/filters.ts` | 19 | effect defs: blur, glow, lens, kaleido, feedback, swirl, warp, ripple, radial, edge, mirror, polar, chroma, psycolor, grade, glitch, film, crt, castlight, texture, … | filters |  |
 | `effects/generators.ts` | 16 | effect defs: plasma, fire, aurora, nebula, liquid, tunnel, sacred, kali, julia, moire, hyper, grid, blackhole, gradient, galaxy, waves, lava, cells, flare | generators |  |
 | `effects/helpers.ts` | 3 | S/SEL/COL param constructors, shared GLSL libs | S, SEL, COL, SKYLIB, CLOUDLIB, BENTO, BENTO_NAMES, BENTO_ANIMS |  |
 | `effects/index.ts` | 12 | EFFECTS registry, BASE params, paramsOf/pdefOf (per-layer params), animKeysOf/mainDupOf, icons, DEFAULT_CODE | EFFECTS, fxFits, fxHostNote, BLOB_PD, DEFAULT_CODE, CP_MAX, CP_KEY, cpDefs, paramsOf, pdefOf, SDF_MAP, SDF_RENDER, DEF_PRIMS, PRIM_T … (+18) |  |
@@ -43,13 +43,13 @@
 | `effects/soft3d.ts` | 7 | effect defs: cloud3d, balloon | soft3d |  |
 | `effects/worldBlocks.ts` | 7 | effect defs: skygrad, sun, clouds, terrain, haze | worldBlocks |  |
 | `effects/worlds.ts` | 13 | effect defs: planet, sky, space, bokeh | worlds |  |
-| `evaluation.ts` | 11 | value evaluation: ev() (keys, LFO, signals, links), keyframes, setVal (Animálás mode), key editor | wave, klVal, ev, KEY_EASES, KEY_EPS, hasK, keyIdx, bezierY, keyEase, keyVal, curV, DEF_EASE, setKey, delKey … (+12) | animMode, keyShift, keyEdit, time, liveKed |
+| `evaluation.ts` | 12 | value evaluation: ev() (keys, LFO, signals, links), keyframes, setVal (Animálás mode), key editor | wave, klVal, ev, KEY_EASES, SMOOTH_E, KEY_EPS, hasK, keyIdx, bezierY, keyEase, keyVal, curV, DEF_EASE, setKey … (+13) | animMode, keyShift, keyEdit, time, liveKed |
 | `fxicons.ts` | 4 | U4: one small, consistent icon per appearance (Megjelenés) type, for the layer's effect row and the add grid. 24×24 stroke glyphs; unknown types get a two-letter … | fxIcon |  |
 | `gl.ts` | 12 | WebGL2 context, compile/link, getProg/progKey (per-layer program cache), fixed programs, targets/textures | cv, gl, HALF, IFMT, compile, VSO, link, U, fragFor, progCache, codeOf, cpSig, progKey, getProg … (+23) |  |
 | `globals.d.ts` | 0 |  |  |  |
 | `glsl.ts` | 3 | shared GLSL header (HEAD: uniforms + helpers P(), pal(), noise…) and vertex shader | VS, HEAD, HEAD_LINES |  |
 | `history.ts` | 5 | snapshot/commit/undo/redo, autosave, projectJSON/applyProject/loadProject | snapshot, commit, restore, undo, redo, updUndo, usedAssets, stateJSON, projectJSON, scheduleSave, applyProject, loadProject, loadMsg, renderAll … (+3) | hist, hi, selId, saveT, time, lastLoad |
-| `inspector.ts` | 21 | right panel: renderInsp (tabs Tartalom/Szín/Mozgás/Effektek/Elhelyezés), timing, sdf objects | renderInsp, timingSection, FPS_OPTS, fpsObj, sdfObjectsSection, placement, ITABS, setITab, layerAnimated, motionSummary | liveCtl, liveFields, liveKed, liveSel, itab |
+| `inspector.ts` | 23 | right panel: renderInsp (tabs Tartalom/Szín/Mozgás/Effektek/Elhelyezés), timing, sdf objects | renderInsp, timingSection, FPS_OPTS, fpsObj, sdfObjectsSection, placement, ITABS, setITab, layerAnimated, tempoRow, motionSummary | liveCtl, liveFields, liveKed, liveSel, itab |
 | `itemops.ts` | 3 | insert/remove/duplicate/group items, addFromLib/attachFx | insertItem, addFromLib, attachFx, removeItem, delSel, dupSel, moveSel, groupSel, ungroup, moveItemTo | selId |
 | `keyboard.ts` | 4 | keyboard shortcuts |  | tlxSels, time |
 | `layers.ts` | 5 | layer tree (left column): rows, badges, drag/drop | layerBadges, renderLayers | selId |
@@ -76,7 +76,7 @@
 | `recipes.ts` | 33 | RECIPES (built-in recipe groups) + makeRecipe | PLA, RECIPES, makeRecipe |  |
 | `referenceAssets.ts` | 309 | Embedded reference assets: the production HTML must remain self-contained. | WIND_NOISE_ID, GLASS_PHOTO_ID, WIND_NOISE, GLASS_PHOTO |  |
 | `render.ts` | 23 | renderScene/renderList/drawFx/present, camera, layer transforms, light uniforms, outSize | bindTex, setXform, CAMP, CAMK, mkCam, normCam, camXf, camApply, dofCache, dofLayer, openCam, easeSpringJ, easeBounceJ, EASE_FNS … (+27) | CAMON, PPROG, main |
-| `retime.ts` | 6 | M5 · Mozgásblokk és könnyű retime + kézi Jelzések. A layer's motion block = everything timed on it: entry (tm.in*, type "start"), middle events (bento morph), exit … | timeFields, keyRefs, Block, blockOf, cueAt, addCue, removeCue, shiftBlock, stretchBlock |  |
+| `retime.ts` | 9 | M5 · Mozgásblokk és könnyű retime + kézi Jelzések. A layer's motion block = everything timed on it: entry (tm.in*, type "start"), middle events (bento morph), exit … | timeFields, keyRefs, Block, blockOf, cueAt, addCue, removeCue, shiftBlock, stretchBlock, tempoPivot, tempoItem |  |
 | `runtime.ts` | 0 | R: shared mutable runtime state and cross-module hooks | R |  |
 | `scenes.ts` | 16 | S1 · Jelenetek és átmenetek (leltár 19.) A scene is a saved copy of the composition (layers keep their ids). The Jelenetek strip lists them in order; the workbench … | Scene, scenes, saveScene, loadScene, overwriteScene, removeScene, moveScene, seqTotal, matchLayers, seqFrame, sceneStart, setSeqPlay, closeScnCard, renderStrip … (+1) | selId, seqFrame, seqPlay, seqDurSave, time, seqExit, renderStrip, updScenes |
 | `shelf.ts` | 7 | library shelf UI: categories, cards, search, thumbnails, audition | libSearch, ikey, dropTag, buildCats, buildShelf, audCache, setAudition | cat, thumbJob, libQ, audition, moAud |
@@ -85,6 +85,7 @@
 | `spinegrips.ts` | 11 | M6 · Gerincfelület on-canvas editing: one grip per spine point (projected through the layer's own 3D camera), a thin polyline between them, and the "Gerinc" inspector … | isSurf, spineOf, projectPt, rayAt, camBasis, dragSpinePt, updSpineGrips, hitSurface, glintDrag, panStart, panDrag, wheelDist, spineSection | spSel, glint |
 | `stage.ts` | 9 | canvas interaction: drag/scale/rotate gizmo, tools, wheel, fit | wrap, fitCanvas, setTool, toggleFS, toAsp, endDrag, m3x, m3y, PD, sdfAngles, sdfProj, primDrag, gizmoRadius, updGizmo | tool, gizmoOn, drag, CAMON, wheelT |
 | `state.ts` | 7 | st (project), makeLayer/makeGroup/normalize, walk/findItem/sel, looks, light | uid, mkN, makeLayer, makeGroup, normalize, SIZES, LOOKP, LOOKS, mkLook, normLook, LIGHTP, normLight, st, assets … (+5) | uidN, selId |
+| `tap.ts` | 12 | Időzítés gyorsan · Koppintós időzítés kosárral. T arms „Koppintás”: clicks on layers (canvas or layer list) collect them into a basket in click order (numbered … | entranceStart, basketToggle, basketMove, basketTakeSel, setTapArm, tapNow, tapEsc, renderStrip | tapArm, tapBasket, tapIdx, tapS0, tapDone, tapPulse, tapSetArm, tapNow … |
 | `text.ts` | 6 | text rasterising (textCache), image assets (loadAsset) | textCache, textLines, lineSpec, textTex, auxTex, mediaFor, loadAsset |  |
 | `textbar.ts` | 8 | U4: text toolbar above the canvas, shown while a text layer (Szöveg / Animált szöveg) is selected — like a rich-text editor: font, bold, colour, alignment, size, line … | TB_FONTS, updTextbar, editTextInPlace, closeTextEdit | updTextbar, selId |
 | `textlines.ts` | 6 | M4 · soronkénti tipográfia: vászonfogantyú minden sor elején + „Sorok” szekció az inspectorban. Grip drag: horizontal = indent (dx), vertical = space before the line … | lineObj, tidyLines, updLineHandles, linesSection |  |

@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.30.0-mo11.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.32.0-t1.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.
@@ -103,6 +103,8 @@ psycolor [fx] Pszichedelikus színezés: amount=0..1(0.8); cycles=0.2..6(2); spe
 grade [fx] Színkorrekció: sat=0..3(1.2); contrast=0..3(1.1); bright=0..3(1); hshift=-0.5..0.5(0); invert=0..1(0)
 glitch [fx] Glitch: amount=0..3(0.6); rate=0..4(1); pixel=0..64(0); blocks=0.2..4(1)
 film [fx] Film és szemcse: grain=0..2(0.5); vig=0..2(0.8); scan=0..1(0.3)
+crt [fx] CRT-képernyő: curve=0..1(0.35); scan=0..1(0.45); rgb=0..8(1.5); lines=120..720(300); mask=0..1(0.25); grain=0..0.5(0.08); vig=0..1(0.4); corner=0..0.3(0.08); flick=0..1(0.15)
+castlight [fx] Színes vetett fény: angle=0..360(315); len=0..0.6(0.18); amount=0..2(1); fade=0..1(0.5); c1=#hex; c2=#hex
 texture [fx] Textúra: mode=0:Papír|1:Vászon|2:Por és karcok|3:Kőzet|4:Finom zaj; amount=0..1(0.35); scale=0.3..4(1); anim=0..1(0)
 halftone [fx] Féltónus: size=3..40(9); mode=0:Színes pöttyök|1:RGB-raszter|2:Újságpapír; angle=-3.14..3.14(0.4); scale=0.5..2(1)
 pixelart [fx] Pixel art: size=1..32(6); levels=2..16(5); dither=0..1(0.6); mode=0:Eredeti|1:Paletta

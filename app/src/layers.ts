@@ -30,12 +30,13 @@ export function renderLayers(){
     li.appendChild(h('span',{class:'lic',html:iconKind(k)}));
     const sub=it.maskOnly?'maszk':'';
     li.appendChild(h('span',{class:'ln'},it.name,sub?h('span',{class:'lk'},'  '+sub):null));
+    if(R.tapBadge){const tb=R.tapBadge(it.id);if(tb)li.appendChild(tb);}
     const bd=layerBadges(it);if(bd.length)li.appendChild(h('span',{class:'bdgs'},...bd.map(b=>{const e=h('span',{class:'bdg '+b.c,title:b.tip},b.s);
       if(b.c==='lnk'){e.setAttribute('role','button');e.onclick=ev=>{ev.stopPropagation();const r=e.getBoundingClientRect();if(R.openLinkCard)R.openLinkCard(it.id,r.left,r.bottom);};}return e;})));
     if(itemError(it))li.appendChild(h('span',{class:'errdot',title:'Ez a réteg nem tudott lefordulni ezen a gépen, ezért üres. Kattints rá a részletekért.'},'!'));
     const cst=itemCost(it);if(cst>=3){const lv=cst>=8?3:cst>=5?2:1;li.appendChild(h('span',{class:'cost',title:'Gépigény: '+['','közepes','nagy','nagyon nagy'][lv]},...[4,7,10].map((hh,i)=>h('i',{style:`height:${hh}px;opacity:${i<lv?1:.25}`}))));}
     const eye=h('button',{class:'eye','aria-label':'Láthatóság',html:it.vis?SVG_EYE:SVG_EYEOFF});eye.onclick=e=>{e.stopPropagation();it.vis=!it.vis;commit();renderLayers();};li.appendChild(eye);
-    li.onclick=()=>{R.selId=it.id;renderLayers();renderInsp();};
+    li.onclick=()=>{if(R.tapArm&&R.tapToggle){R.tapToggle(it.id);return;}R.selId=it.id;renderLayers();renderInsp();};
     li.ondblclick=()=>{const inp=$('#insp input.nm');if(inp){inp.focus();inp.select();}};
     li.ondragstart=e=>{e.dataTransfer.setData('text/x-latomas-layer',it.id);e.dataTransfer.effectAllowed='move';};
     li.ondragover=e=>{e.preventDefault();const lib=[...e.dataTransfer.types].includes('text/x-latomas-lib');li.classList.add(lib||(isG&&it.open)?'drop-in':'drop-above');};

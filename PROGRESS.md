@@ -2,6 +2,13 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — Időzítés gyorsan: 0.32.0-t1
+
+- **Koppintás kosárral** (T vagy a ✋ gomb az idővonal sávján): rétegekre kattintva (vásznon/listában) kosárba, számozott jelvény a soron és a vásznon, újrakattintás kivesz, jelvény/chip húzással átrendez; élesítéskor a kijelölt csoport gyerekei vagy a kijelölt kulcsok rétegei bekerülnek. Szóköz + **J** minden ütemre: a következő réteg belépése oda tolódik (nincs belépés → Rugalmas beúszás), a koppintás J-jelzés is. Egy undo; Esc visszavonja a menetet, újabb Esc kilép.
+- **Tempó-chip** (½× · 1× · 2× + finom csúszka ¼–4×) a Mozgás fül Animáció összesítőjében, rétegen és csoporton: valódi átidőzítés (kulcsok, beúszás/kiúszás, mozgások üteme/sebessége, ritmusciklus, hullám), egy undo.
+- **Sima (átmenő) kulcsgörbe** (monoton Hermite): az Eljátszás kulcsai ezt kapják → nincs csúcsos pálya, nem áll meg kulcsoknál; a görbemenüben is. BUGS: javítva.
+- Teszt: `tests/tap_timing.js` zöld. Próba: 1) 3 réteg, T, kattints rájuk sorban; 2) Szóköz, J-J-J ütemre; 3) ⌘Z / Esc; 4) Tempó ½× egy mozgó rétegen; 5) Eljátszás egy körrel → sima-e.
+
 ## Állapot: 2026-10-18 — R1 CRT-képernyő + Színes vetett fény: 0.31.0-r1
 
 - **Megjelenések → CRT-képernyő** (`crt`): domborúság, lekerekített sarok (kívül átlátszó), RGB-elcsúszás, képsorok (szám a vászonhoz kötve, 1080p és 4K azonos), RGB-maszk, zaj/villódzás a jelenetidőhöz kötve, vignetta. A meglévő Glitch/Kromatikus aberráció/Film mellé, nem helyettük.

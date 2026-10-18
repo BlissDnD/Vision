@@ -127,6 +127,11 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
 - `textbar.ts` `editTextInPlace(L)` / `closeTextEdit(keep)`: `.tedit` textarea a réteg vászonbeli helyén (kamera nélkül számolva); `#wrap` dblclick → `hitsAt` első szövegtalálata (vagy a kijelölt szöveg). Erősség-gyűrű: `.fxic` `--s` + `::after` conic-gradient maszk.
 
+## Időzítés gyorsan (2026-10-18)
+- `tap.ts`: nem mentett állapot `R.tapArm/tapBasket/tapIdx/tapS0`; `tapNow(t)` az első koppintáskor `snapshot()`-ot tesz el, `shiftBlock(L, t−entranceStart, false)` vagy `makeMo('spring',{at:t})`, `addCue`; commit csak a menet végén (egy undo), `tapEsc` = `restore(tapS0)`. Vászonkattintás `document` capture-ben (a `pick`/`stage` elé), listakattintás `R.tapToggle`, jelvény `R.tapBadge`, vászonszámok `R.updTap` (loop.ts).
+- `retime.ts` `tempoItem(it,f)`: t → a+(t−a)/f a blokk elejéhez (`tempoPivot`, csoportnál közös), hosszak /f, period/ry.cyc /f, speed/rate/hullám-f ×f; `it.tpo` a chip-állapot (opcionális mező, hiánya = 1×).
+- `evaluation.ts` `SMOOTH_E=14` „Sima (átmenő)”: Hermite a `keyVal`-ban, érintő Fritsch–Butland (`smTan`), 0 szélsőértéknél / nem sima szomszédnál / a végeken (C1 marad az eased szomszédokkal és a kulcs-Loop smoothstep-visszatérésével).
+
 ## R1 (2026-10-18): CRT-képernyő, Színes vetett fény
 - `effects/filters.ts` `crt`: hordótorzítás `uv=0.5+0.5q(1+c·r²/4)/(1+c/4)` (élközép a helyén, sarok kívül), lekerekített-doboz SDF-perem; RGB-eltolás és sor-/maszkszám a vászonhoz relatív (felbontásfüggetlen); alfa = a három minta maximuma (mint `chroma`).
 - `castlight` (`passes:2`): az 1. lépés 16 mintát vesz 1/256 lépésközzel (r = legjobb találat távolsága ×16, a = legjobb alfa), a 2. lépés 16-os lépésekkel 16-ot a köztes képen. A max·exp(-λk) szorzatos lecsengés miatt ez pontosan 256 minta maximuma. Az eredeti kép az `uPrev`-ből jön (a `runChain` a 2. lépésnek adja), a teljesen fedett képpont korán kilép.

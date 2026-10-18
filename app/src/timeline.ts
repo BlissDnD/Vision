@@ -189,7 +189,7 @@ export function paintSel(){for(const e of $('#tlxBody').querySelectorAll('.tlx-k
 /** Animated params of an item, for the expandable rows. */
 export function animParams(L){return paramList(L).map(q=>({...q,kinds:animKinds(q.o)})).filter(q=>q.kinds);}
 R.tlxOpenIds=new Set();
-export const QUICK_EASES:[string,number][]=[['Lineáris',4],['Lágy',0],['Ki-be',3],['Erős',1],['Rugós',5],['Pattanó',9],['Visszalendülés',7],['Gumi',8],['Lépcsős',11]];
+export const QUICK_EASES:[string,number][]=[['Lineáris',4],['Sima (átmenő)',14],['Lágy',0],['Ki-be',3],['Erős',1],['Rugós',5],['Pattanó',9],['Visszalendülés',7],['Gumi',8],['Lépcsős',11]];
 /** Right click on a key: curve quick menu for the selection (the clicked key joins / becomes the selection). */
 export function keyMenu(ev,L,t,p?){ev.preventDefault();ev.stopPropagation();if(!isSelK(L.id,t,p))R.tlxSels=[p?{id:L.id,t,p}:{id:L.id,t}];paintSel();
   closeKeyMenu();const refs=selKeyRefs();const cur=refs.length?refs[0].key.e??5:-1;

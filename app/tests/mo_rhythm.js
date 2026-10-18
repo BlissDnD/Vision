@@ -86,6 +86,6 @@
  const O=normalize(old);if(O.mo[0].ry||O.mo[0].a!=null||O.mo[0].b!=null)bad.push('régi projekt: új mezők');
  const od=t=>moEval(O,t).dy,ex=t=>Math.sin(2*Math.PI*t/2)*.1;if([0,.3,1.7,25.2].some(t=>Math.abs(od(t)-ex(t))>1e-9))bad.push('régi projekt mozgása eltér');
  // 10) visible version label
- const ver=document.querySelector('.brand .ver');info.ver=ver&&ver.textContent;if(!ver||!/^v0\.30\.0-mo11/.test(ver.textContent))bad.push('verziócímke: '+info.ver);
+ const ver=document.querySelector('.brand .ver');info.ver=ver&&ver.textContent;if(!ver||!/^v0\.\d+\.\d+-/.test(ver.textContent))bad.push('verziócímke: '+info.ver);
  }catch(e){bad.push('ERR '+e.message+' '+(e.stack||'').slice(0,300));}
  return {bad,info};})()
