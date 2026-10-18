@@ -126,3 +126,10 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `controls.fxListUI`: ikonsor (`.fxrow .fxic`, húzás `text/x-vel-fx`), kiválasztás `R.fxSel[L.id]`, lenyitás `R.fxBody[L.id]`, „+” ikonrács (`.fxgrid`). Ikonok: `fxicons.ts` `fxIcon(type,name)` (ismeretlen típus: monogram).
 - `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
 - `textbar.ts` `editTextInPlace(L)` / `closeTextEdit(keep)`: `.tedit` textarea a réteg vászonbeli helyén (kamera nélkül számolva); `#wrap` dblclick → `hitsAt` első szövegtalálata (vagy a kijelölt szöveg). Erősség-gyűrű: `.fxic` `--s` + `::after` conic-gradient maszk.
+
+## Mozgás v1 (2026-10-18)
+- `motion.ts`: `MO` típusok, `makeMo`, `moEval(L,t,aud)` (op/dx/dy/sc/rot; a `render.behav` a `tm`-mel együtt adja, a `setXform` a rot-ot is), `charEase` = **Anime.js** (`spring`, `eases.outBack`; MIT, https://animejs.com) adapter: csak haladás→görbe, az óra a Velé. `syncKLoop(L)` a renderben (`_kl` nem mentett jelölés a kulcsos értékeken), `R.normMo` a `normalize`-ból.
+- `evaluation.ts`: `klVal` (kulcs-Loop), `setVal`: Animálás mód nélkül kulcsos értéknél eltolás (`R.keyShift`).
+- `moui.ts`: `motionsUI` (`R.moUI`, az inspector a régi `timingSection` helyett), `attachMo`/`R.dropMo` (polc, vászon, rétegsor), `R.moMain` (erősség a Fő beállításokban), `R.updMoArrow` (vászon-nyíl a loopból). Polc-előnézet: `shelf.setAudition` → `R.moAud` (saját órával, a loop addig renderel).
+- Idővonal: `timeline.layerSegs` `mo`/`kloop` szakaszok, `segGet/segSet` (`mo:<id>`), `retime.timeFields` a beúszással.
+

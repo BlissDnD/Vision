@@ -35,7 +35,7 @@ export function renderInsp(){
     if(L.macros.length)T('content',section('Vezérlők','macro',true,...L.macros.map(m=>{const o={v:m.v,a:0};return ctlSlider(o,{k:'m',l:m.l,min:0,max:1},{big:true,noAnim:true,onInput:()=>macroApply(L,m,o.v)});})));
     T('look',section('Megjelenés','blend',true,blendRow(L),ctlSlider(L.n.opacity,BASEK.opacity),ctlSwitch('Vágás az alatta lévő rétegbe',L.clip,v=>{L.clip=v;commit();renderLayers();})));
     T('fx',section('Csoporteffektek','fx',true,fxListUI(L)));
-    T('motion',motionSummary(L));T('motion',timingSection(L));
+    T('motion',motionSummary(L));T('motion',R.moUI?R.moUI(L):timingSection(L));
     T('place',placement(L,'Elhelyezés (az egész csoport)'));
     T('content',section('Rétegek','grp',true,h('p',{class:'small'},`${L.children.length} réteg van benne. Nyisd ki a rétegfában, és bármelyiket finomhangolhatod.`),
       h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>{L.open=!L.open;renderLayers();renderInsp();}},L.open?'Rétegek elrejtése':'Rétegek mutatása'),h('button',{class:'btn',onclick:()=>ungroup(L)},'Csoport felbontása'))));
@@ -76,6 +76,7 @@ export function renderInsp(){
     ta.oninput=()=>{clearTimeout(tmo);tmo=setTimeout(()=>{L.code=ta.value;check();scheduleSave();},350);};ta.onchange=()=>{L.code=ta.value;commit();};
     ta.onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();ta.setRangeText('  ',ta.selectionStart,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input'));}};mainKids.push(ta,msg);if(R.cpEditor)mainKids.push(R.cpEditor(L));setTimeout(check,0);}
   for(const key of mainKeys){const pd=PS.find(p=>p.k===key);if(pd)mainKids.push(ctlParam(L,pd,true));}
+  if(R.moMain)mainKids.push(...R.moMain(L));
   if(L.type==='sdfscene')T('content',sdfObjectsSection(L));
   T('content',section(k==='fx'?'Szűrő':'Fő beállítások','main',true,...mainKids));
   const detKids=PS.filter(p=>!mainKeys.includes(p.k)&&!AK.includes(p.k)).map(pd=>ctlParam(L,pd));
@@ -92,7 +93,7 @@ export function renderInsp(){
   T('fx',section('Rétegeffektek','fx',true,fxListUI(L)));
   if(AK.length){const cp=key=>ctlParam(L,pdefOf(L,key));T('motion',section(L.type==='mtext'?'Szövegmozgás':'Mozgás beállításai','animp',true,...AK.slice(0,8).map(cp)));
     if(AK.length>8)T('motion',section('Mozgás finomhangolása','animp2',false,...AK.slice(8).map(cp)));}
-  T('motion',motionSummary(L));if(k!=='fx')T('motion',timingSection(L));
+  T('motion',motionSummary(L));if(k!=='fx')T('motion',R.moUI?R.moUI(L):timingSection(L));
   T('place',placement(L,k==='fx'?'Középpont':'Elhelyezés'));
   const ls=linesSection(L);T('content',ls);
   T('content',childVariantSection(L));
@@ -157,7 +158,7 @@ function tabbed(P,L,TB,_noTiming?){
   P.appendChild(bar);P.appendChild(h('div',{class:'itab-title'},(ITABS.find(t=>t[0]===R.itab)||ITABS[0])[1]));
   for(const [k] of avail)P.appendChild(h('div',{class:'ipane','data-tab':k,role:'tabpanel',hidden:k!==R.itab},...TB[k]));
   bar.addEventListener('click',()=>{const t=P.querySelector('.itab-title');if(t)t.textContent=(ITABS.find(x=>x[0]===R.itab)||ITABS[0])[1];});}
-export function layerAnimated(L){return paramList(L).some(q=>animKinds(q.o))||!!(L.tm&&(L.tm.in||L.tm.out));}
+export function layerAnimated(L){return paramList(L).some(q=>animKinds(q.o))||!!(L.tm&&(L.tm.in||L.tm.out))||!!(L.mo&&L.mo.length);}
 /** Mozgás tab head: Animálás mode, Eljátszás, and every animated parameter of the layer with what drives it. */
 export function motionSummary(L){
   const prs=paramList(L).map(q=>({...q,kinds:animKinds(q.o)})).filter(q=>q.kinds);const blk=!!(L.tm&&(L.tm.in||L.tm.out));

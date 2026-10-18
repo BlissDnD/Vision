@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (76 fájl)
+## Modulok (78 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -43,7 +43,7 @@
 | `effects/soft3d.ts` | 7 | effect defs: cloud3d, balloon | soft3d |  |
 | `effects/worldBlocks.ts` | 7 | effect defs: skygrad, sun, clouds, terrain, haze | worldBlocks |  |
 | `effects/worlds.ts` | 13 | effect defs: planet, sky, space, bokeh | worlds |  |
-| `evaluation.ts` | 10 | value evaluation: ev() (keys, LFO, signals, links), keyframes, setVal (Animálás mode), key editor | wave, ev, KEY_EASES, KEY_EPS, hasK, keyIdx, bezierY, keyEase, keyVal, curV, DEF_EASE, setKey, delKey, setVal … (+11) | animMode, keyEdit, time, liveKed |
+| `evaluation.ts` | 11 | value evaluation: ev() (keys, LFO, signals, links), keyframes, setVal (Animálás mode), key editor | wave, klVal, ev, KEY_EASES, KEY_EPS, hasK, keyIdx, bezierY, keyEase, keyVal, curV, DEF_EASE, setKey, delKey … (+12) | animMode, keyShift, keyEdit, time, liveKed |
 | `fxicons.ts` | 4 | U4: one small, consistent icon per appearance (Megjelenés) type, for the layer's effect row and the add grid. 24×24 stroke glyphs; unknown types get a two-letter … | fxIcon |  |
 | `gl.ts` | 12 | WebGL2 context, compile/link, getProg/progKey (per-layer program cache), fixed programs, targets/textures | cv, gl, HALF, IFMT, compile, VSO, link, U, fragFor, progCache, codeOf, cpSig, progKey, getProg … (+23) |  |
 | `globals.d.ts` | 0 |  |  |  |
@@ -62,6 +62,8 @@
 | `mesh3d.ts` | 24 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
 | `migrate.ts` | 3 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | toastT |
+| `motion.ts` | 9 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, moEval, moSpan, syncKLoop | normMo |
+| `moui.ts` | 12 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, moUI, moMain … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, rec |
 | `palettes.ts` | 2 | PALS colour palettes, hexRGB, ease names | PALS, PAL_ORDER, ff, v3, palJS, palCSS, EASE_NAMES, hexRGB |  |
 | `partfx.ts` | 3 | M7 · Részecske Megjelenés ("pdisp"): a layer effect that turns its input (text, shape, image) into points, scatters them on an event and reassembles. Events: manual … | pdEvents, pdEnv, pdUniforms, altText, pdMix |  |
@@ -77,7 +79,7 @@
 | `retime.ts` | 6 | M5 · Mozgásblokk és könnyű retime + kézi Jelzések. A layer's motion block = everything timed on it: entry (tm.in*, type "start"), middle events (bento morph), exit … | timeFields, keyRefs, Block, blockOf, cueAt, addCue, removeCue, shiftBlock, stretchBlock |  |
 | `runtime.ts` | 0 | R: shared mutable runtime state and cross-module hooks | R |  |
 | `scenes.ts` | 16 | S1 · Jelenetek és átmenetek (leltár 19.) A scene is a saved copy of the composition (layers keep their ids). The Jelenetek strip lists them in order; the workbench … | Scene, scenes, saveScene, loadScene, overwriteScene, removeScene, moveScene, seqTotal, matchLayers, seqFrame, sceneStart, setSeqPlay, closeScnCard, renderStrip … (+1) | selId, seqFrame, seqPlay, seqDurSave, time, seqExit, renderStrip, updScenes |
-| `shelf.ts` | 5 | library shelf UI: categories, cards, search, thumbnails, audition | libSearch, ikey, dropTag, buildCats, buildShelf, audCache, setAudition | cat, thumbJob, libQ, audition |
+| `shelf.ts` | 7 | library shelf UI: categories, cards, search, thumbnails, audition | libSearch, ikey, dropTag, buildCats, buildShelf, audCache, setAudition | cat, thumbJob, libQ, audition, moAud |
 | `signals.ts` | 9 | audio / beat signals | AUD, TAPS, SIG_BASE, SIG_BEAT, sigList, sigLabel, arrAt, sigVal, bandEnv, pct, smoothEnv, pulseEnv, estimateBpm, ensureAC … (+5) | time |
 | `sim.ts` | 4 | Shared scene clock for stateful layers (feedback / "Visszhang", blob tracking). Contract (Vel "egy közös idő"): - Stateless layers are a pure function of scene time … | frameAt, SIM_HZ, STEP, WARM, tickOf, sceneHasState, resetSim, renderAt |  |
 | `spinegrips.ts` | 11 | M6 · Gerincfelület on-canvas editing: one grip per spine point (projected through the layer's own 3D camera), a thin polyline between them, and the "Gerinc" inspector … | isSurf, spineOf, projectPt, rayAt, camBasis, dragSpinePt, updSpineGrips, hitSurface, glintDrag, panStart, panDrag, wheelDist, spineSection | spSel, glint |
@@ -89,7 +91,7 @@
 | `thumbs.ts` | 2 | thumbnail rendering (renderThumb, thumbOf) | TW, thumbCache, renderThumb, thumbOf | thumbCtx, thumbOut |
 | `thumbstore.ts` | 2 | Persistent shelf-thumbnail cache (IndexedDB). Keyed by build id + shelf + item name, so a new build re-renders once and later loads draw instantly. Every failure … | thumbGet, thumbPut, thumbPrune |  |
 | `time.ts` | 1 | Scene time rules (pure; shared by playback, seek, export and audio). - The project range is [0, st.dur]. Loop on: the range repeats. Loop off: the clock runs on past … | loopOn, sceneT, overrun, audioIndex |  |
-| `timeline.ts` | 26 | timeline + Sávok tracks, paramList, key moves | tlHeadEl, layerSegs, paramList, objAt, layerKeyTimes, keysAt, moveKeys, selKeyRefs, retimeSel, easeSel, queueTL, renderTimeline, itemById, isSelK … (+22) | tlxSels, tlQ, keyClip, tlxView, tlxOpen, selId, tlxOpenIds, keyMenuEl … |
+| `timeline.ts` | 27 | timeline + Sávok tracks, paramList, key moves | tlHeadEl, layerSegs, paramList, objAt, layerKeyTimes, keysAt, moveKeys, selKeyRefs, retimeSel, easeSel, queueTL, renderTimeline, itemById, isSelK … (+22) | tlxSels, tlQ, keyClip, tlxView, tlxOpen, selId, tlxOpenIds, keyMenuEl … |
 | `transport.ts` | 1 | play/pause/seek, syncCtl | setPlay, resetFeedback, fmtT, syncCtl | playing, time, speed, last, fpsAcc, fpsN, fpsT, refine |
 | `types.ts` | 4 | Shared data model of Látomás Stúdió. Everything is plain JSON so projects, undo history and recipes serialize as-is. | Key, NParam, ParamDef, EffectKind, EffectDef, Timing, LineSpec, TextSpec, Prim, Macro, Layer, Look, Camera, Project … (+1) |  |
 | `userlib.ts` | 5 | P1: the user's own, durable library (presets, shaders, later anything else). One generic item shape: {id, kind, cat, name, created, data, thumb}. Kept in memory … | UItem, ULIB_VER, ULIB, ulibId, ulibValid, ulibGet, ulibBy, ulibLoad, ulibPut, ulibDel, ulibRename, ulibMerge, ulibExport, ulibImport … (+1) | ulibOk |

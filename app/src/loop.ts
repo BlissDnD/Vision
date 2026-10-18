@@ -23,7 +23,7 @@ export function frame(now){
   const dt=Math.min(.1,(now-R.last)/1000);R.last=now;
   if(R.playing&&!R.snapping){if(AUD.srcs.length&&AUD.ctx)R.time=AUD.t0+(AUD.ctx.currentTime-AUD.c0)*R.speed;else R.time+=dt*R.speed;
     if(st.loop&&st.dur>0&&R.time>=st.dur){R.time=R.time%st.dur;resetFeedback();audioRestart();}}
-  const need=R.playing||R.dirty>0||R.drag||R.rec;if(!R.snapping&&need){resizeMain();const fr=frameAt(R.time);const items=R.audition&&!R.seqPlay?[...fr.items,R.audition]:fr.items;const out=renderAt(items,R.main,fr.t,st.bg,false);present(R.main,out.t,null,cv.width,cv.height,R.time);if(R.dirty>0)R.dirty--;}
+  const need=R.playing||R.dirty>0||R.drag||R.rec||!!R.moAud;if(!R.snapping&&need){resizeMain();const fr=frameAt(R.time);const items=R.audition&&!R.seqPlay?[...fr.items,R.audition]:fr.items;const out=renderAt(items,R.main,fr.t,st.bg,false);present(R.main,out.t,null,cv.width,cv.height,R.time);if(R.dirty>0)R.dirty--;}
   else if(!R.snapping&&!R.playing&&R.refine&&!R.drag&&now-R.editT>200){R.refine=false;const fr=frameAt(R.time);const items=R.audition&&!R.seqPlay?[...fr.items,R.audition]:fr.items;
     if(sceneHasState(items)){resizeMain();R.main.simT=null;const out=renderAt(items,R.main,fr.t,st.bg,true);present(R.main,out.t,null,cv.width,cv.height,R.time);}}
   autoQuality(dt,need);
@@ -35,7 +35,7 @@ export function frame(now){
   for(const f of R.liveFields){if(f.kbtn){const ks=keyState(f.obj);if(f.kbtn.dataset.k!==ks)f.kbtn.dataset.k=ks;}if(f.ab)paintBadge(f.ab,animKinds(f.obj));if(document.activeElement!==f.inp){const s=fmt(curV(f.obj),f.d);if(f.inp.value!==s)f.inp.value=s;}}
   for(const k of R.liveKed)k.tick();
   if(R.tlxOpen)tlxTick();
-  updGizmo(R.time);updPath(R.time);updLineHandles(R.time);updSpineGrips(R.time);if(R.updCords)R.updCords(R.time);if(R.updScenes)R.updScenes();
+  updGizmo(R.time);updPath(R.time);updLineHandles(R.time);updSpineGrips(R.time);if(R.updCords)R.updCords(R.time);if(R.updMoArrow)R.updMoArrow(R.time);if(R.updScenes)R.updScenes();
   if(need||!R.playing){R.fpsAcc+=dt;R.fpsN++;}if(now-R.fpsT>600){const fps=Math.round(R.fpsN/R.fpsAcc),ld=sceneLoad(),hud=$('#hud');const cap=R.aqCap?Math.round(R.aqCap):0;const col=fps>=50||(cap&&fps>=cap*.9)?'#30d158':fps>=28?'#ffd60a':'#ff453a';
     hud.innerHTML=R.playing?`<i style="background:${col}"></i>${fps}${cap?' / '+cap:''} fps · ${loadLabel(ld)} · ${cv.width}×${cv.height}${st.qMode==='auto'?' · auto':''}`:`<i style="background:var(--fg3)"></i>Szünet · ${loadLabel(ld)} · ${cv.width}×${cv.height}`;
     hud.title=`${cap?`A böngésző ${cap} képkocka/mp-re korlátozza a lejátszást (pl. Chrome Energiatakarékos mód vagy macOS Alacsony fogyasztású mód akkumulátoron). Ilyenkor a felbontást nem csökkentem tovább.\n`:''}Becsült terhelés: ${ld.toFixed(1)} egység.\nHa akad: Vászon → Előnézet 50%, kevesebb 3D réteg, kapcsold ki a 4× élsimítást.\nAz exportot ez nem érinti: a kép és a videó képkockánként, teljes minőségben renderelődik.`;R.fpsAcc=0;R.fpsN=0;R.fpsT=now;}

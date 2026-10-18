@@ -7,6 +7,7 @@ import { curV, ev, setVal } from './evaluation';
 import { textCache } from './text';
 import { camApply, outSize } from './render';
 import { addFromLib } from './itemops';
+import { LIB } from './library';
 import { commit } from './history';
 import { syncCtl } from './transport';
 import { renderTimeline } from './timeline';
@@ -49,6 +50,7 @@ R.wheelT=undefined;wrap.addEventListener('wheel',e=>{if((e.target as HTMLElement
 wrap.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('text/x-latomas-lib')){e.preventDefault();$('#dropHint').hidden=false;}});
 wrap.addEventListener('dragleave',e=>{if(!wrap.contains(e.relatedTarget))$('#dropHint').hidden=true;});
 wrap.addEventListener('drop',e=>{e.preventDefault();$('#dropHint').hidden=true;const lib=e.dataTransfer.getData('text/x-latomas-lib');if(!lib)return;const [c,i]=lib.split(':');
+  if(LIB[c]&&LIB[c][+i]&&LIB[c][+i].mo){R.dropMo&&R.dropMo(+i,e);return;}
   const r=R.selId&&findItem(R.selId);addFromLib(c,+i,r&&!r.parent?r.it.id:null);
   const L=sel();if(L&&L.type!=='group'&&EFFECTS[L.type].kind!=='fx'){const p=toAsp(e);L.n.x.v=p.x;L.n.y.v=p.y;commit();}});
 export const m3x=(a,v)=>{const c=Math.cos(a),s=Math.sin(a);return [v[0],c*v[1]-s*v[2],s*v[1]+c*v[2]];};

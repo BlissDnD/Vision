@@ -15,12 +15,13 @@
  // outside Animálás an un-keyed param just changes
  R.time=1;setVal(L.n.opacity,.8);if(L.n.opacity.k||L.n.opacity.v!==.8)bad.push('Animálás nélkül kulcs keletkezett');
  // non-animatable controls (timing) never key, even in Animálás
- setAnimMode(true);renderInsp();setITab('motion');const tctl=[...document.querySelectorAll('#insp .ctl')].find(c=>c.textContent.includes('Belépés kezdete'));
+ setAnimMode(true);L.tm={in:1,inAt:0,inDur:.8,out:0,outAt:9,outDur:.8,ease:0};R.moSel[L.id]='tm:in';renderInsp();setITab('motion');const tctl=[...document.querySelectorAll('#insp .ipane[data-tab=motion] .ctl')].find(c=>c.textContent.includes('Kezdés (mp)'));
  if(!tctl)bad.push('Időzítés csúszka hiányzik a Mozgás fülön');else{const r=tctl.querySelector('input[type=range]');r.value='1.25';r.dispatchEvent(new Event('input'));
    if(!L.tm||L.tm.inAt!==1.25)bad.push('Időzítés csúszka nem írt: '+JSON.stringify(L.tm));if(L.tm&&L.tm.k)bad.push('Időzítés proxyra kulcs került');}
  setAnimMode(false);delete L.tm;
  // editing a keyed value while playing pauses (keys must not smear along the timeline)
- setPlay(true);R.time=2;setVal(L.n.x,.7);info.pausedOnEdit=!R.playing;if(R.playing)bad.push('kulcsos érték állítása lejátszás közben nem állította meg a lejátszást');
+ setPlay(true);R.time=2;setVal(L.n.x,.7);info.keepsPlayingOutsideAnim=R.playing;if(!R.playing)bad.push('Animálás mód nélkül az állítás megállította a lejátszást (Mozgás v1: az animáció eltolódik)');
+ setAnimMode(true);setVal(L.n.x,curV(L.n.x));info.pausedOnEdit=!R.playing;if(R.playing)bad.push('Animálás módban a kulcsos érték állítása lejátszás közben nem állította meg a lejátszást');setAnimMode(false);
  if(L.n.x.k.length!==2)bad.push('lejátszás közbeni állítás több kulcsot írt: '+L.n.x.k.length);
  setVal(L.n.x,.6);commit();
 

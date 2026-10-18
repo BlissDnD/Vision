@@ -16,11 +16,12 @@ import { fitCanvas } from './stage';
 import { renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { openPop } from './popovers';
+import { moEval, syncKLoop } from './motion';
 
 export function bindTex(u,t){gl.activeTexture(gl.TEXTURE0+u);gl.bindTexture(gl.TEXTURE_2D,t||BLANK);}
 export function setXform(p,L,t){const n=L.n,B=behav(L,t);let ox=ev(n.x,BASEK.x,t),oy=ev(n.y,BASEK.y,t),sc=Math.max(.01,ev(n.s,BASEK.s,t));
   if(B){ox+=B.dx;oy+=B.dy;sc*=Math.max(.001,B.sc);}
-  let rot=ev(n.r,BASEK.r,t)+n.spin.v*t;if(R.CAMON&&L.type!=='group'&&kindOf(L)!=='fx')[ox,oy,sc,rot]=camApply(L,t,ox,oy,sc,rot);
+  let rot=ev(n.r,BASEK.r,t)+n.spin.v*t+(B&&B.rot||0);if(R.CAMON&&L.type!=='group'&&kindOf(L)!=='fx')[ox,oy,sc,rot]=camApply(L,t,ox,oy,sc,rot);
   gl.uniform2f(U(p,'uOff'),ox,oy);gl.uniform1f(U(p,'uScale'),Math.max(1e-4,sc));
   gl.uniform1f(U(p,'uRot'),rot*Math.PI/180);}
 /* ----- 2.5D camera: per-layer depth (n.z), parallax + depth of field on top-level layers ----- */
@@ -54,10 +55,11 @@ export const MOVES=['Nincs','Átúszás','Emelkedés','Süllyedés','Balról','J
 export function moveFx(type,e){const r={op:1,dx:0,dy:0,sc:1};if(!type)return r;const u=1-e,o=Math.max(0,Math.min(1,e*1.5));
   switch(type){case 1:r.op=Math.max(0,Math.min(1,e));break;case 2:r.op=o;r.dy=-u*.12;break;case 3:r.op=o;r.dy=u*.12;break;case 4:r.op=o;r.dx=-u*.35;break;case 5:r.op=o;r.dx=u*.35;break;
     case 6:r.op=o;r.sc=.7+.3*e;break;case 7:r.op=o;r.sc=1.4-.4*e;break;case 8:r.op=Math.max(0,Math.min(1,e*3));r.sc=Math.max(.001,e);break;}return r;}
-export function behav(L,t){const T=L.tm;if(!T||(!T.in&&!T.out))return null;const E=(EASES[T.ease|0]||EASES[0])[1];let a={op:1,dx:0,dy:0,sc:1};
+/** Entry/exit (tm, shown as Beúszás/Kiúszás motions) + draggable motions (L.mo, motion.ts) + a hovered shelf motion (R.moAud). */
+export function behav(L,t){const M=moEval(L,t,R.moAud&&R.moAud.id===L.id?R.moAud:null);const T=L.tm;if(!T||(!T.in&&!T.out))return M;const E=(EASES[T.ease|0]||EASES[0])[1];let a:any={op:1,dx:0,dy:0,sc:1,rot:0};
   if(T.in){const x=Math.min(1,Math.max(0,(t-T.inAt)/Math.max(.01,T.inDur)));a=moveFx(T.in,E(x));if(t<T.inAt)a.op=0;}
   if(T.out){const x=Math.min(1,Math.max(0,(t-T.outAt)/Math.max(.01,T.outDur)));if(x>0){const b=moveFx(T.out,1-E(x));a.op*=b.op;a.dx+=b.dx;a.dy+=b.dy;a.sc*=b.sc;}}
-  return a;}
+  if(M){a.op*=M.op;a.dx+=M.dx;a.dy+=M.dy;a.sc*=M.sc;a.rot=(a.rot||0)+M.rot;}return a;}
 /* ----- Bento grid: per-box rects computed in JS (spring morph + staggered entrances) ----- */
 export const BENTO_PD=Object.fromEntries(EFFECTS.bento.params.map(p=>[p.k,p]));
 export function bentoRects(li,bw,bh,gap){const Lr=(BENTO[li]||BENTO[0])[1];
@@ -205,7 +207,7 @@ export function renderList(items,set,ctx,t0,clear){
   clearTarget(set.A,clear);
   let baseOK=false,baseHidden=false,baseKey=0;
   for(const L of items){
-    const t=postT(t0+(L._toff||0),L.tm&&L.tm.fps||0);const camHere=!!(st.cam&&st.cam.on)&&!ctx.noCam;R.CAMON=camHere;
+    syncKLoop(L);const t=postT(t0+(L._toff||0),L.tm&&L.tm.fps||0);const camHere=!!(st.cam&&st.cam.on)&&!ctx.noCam;R.CAMON=camHere;
     if(L.clip){if(baseHidden)continue;}else{baseHidden=!L.vis;baseOK=false;}
     if(!L.vis)continue;
     let out;const kind=kindOf(L);

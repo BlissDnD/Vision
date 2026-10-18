@@ -23,7 +23,7 @@ export function makeLayer(type:string,o:any={}):Layer{
 }
 export function makeGroup(name:string,children:Layer[],o:any={}):Layer{const g:Layer={id:uid(),type:'group',name,vis:true,open:o.open??false,blend:o.blend||'normal',clip:!!o.clip,n:{},fx:[],children,macros:[]};for(const b of BASE)g.n[b.k]=mkN(b.def);return g;}
 export function normalize(L:any):Layer{
-  if(!L.id)L.id=uid();L.n=L.n||{};L.fx=(L.fx||[]).filter(f=>EFFECTS[f.type]).map(normalize);
+  if(!L.id)L.id=uid();if(R.normMo)R.normMo(L);L.n=L.n||{};L.fx=(L.fx||[]).filter(f=>EFFECTS[f.type]).map(normalize);
   for(const b of BASE)if(!L.n[b.k])L.n[b.k]=mkN(b.def);
   if(L.type==='group'){L.children=(L.children||[]).filter(c=>c.type!=='group'&&EFFECTS[c.type]).map(normalize);L.macros=L.macros||[];return L;}
   const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of paramsOf(L))if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);

@@ -1,9 +1,9 @@
-# Vel – átadó a folytatáshoz (2026-10-18, U4 után)
+# Vel – átadó a folytatáshoz (2026-10-18, Mozgás v1 után)
 
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
-Verzió **0.28.0-u4**, a teljes tesztkör (31 teszt) zöld, minden commitolva. Kész és headless tesztekkel demonstrálva: **P1** (presetek ChatGPT-vel, saját könyvtár, saját shader csúszkákkal) és **U4** (tömörebb jobb panel, felső szövegsáv, effekt-ikonsor; `docs/spec/vel-ui-visszajelzes-2026-10-18.md` első fele). **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
+Verzió **0.29.0-mo1**, a teljes tesztkör (32 teszt) zöld, minden commitolva. Kész és headless tesztekkel demonstrálva: **P1** (presetek ChatGPT-vel, saját könyvtár, saját shader csúszkákkal) **Mozgás v1** (ráhúzható mozgások, rétegenkénti kulcs-Loop, kulcs csak Animálás módban, Rugalmas beúszás) és **U4** (tömörebb jobb panel, felső szövegsáv, effekt-ikonsor; `docs/spec/vel-ui-visszajelzes-2026-10-18.md` első fele). **Az élő próbát a felhasználó végzi** (próbalista: `PROGRESS.md` legfelül). Élő böngészős ellenőrzést ne futtass, csak szólj, ha kész.
 
 **CodePen-könyvtári integráció (2026-10-18):** a Liquid Glass a Megjelenések között ráhúzható effekt; a Szélben lobogó láng a Források között van. Két új szerkeszthető recept is készült. A shaderfordítás, könyvtári beillesztés, rétegre húzás és mentés–újranyitás célzott böngészős tesztje zöld; a felhasználói látványpróba még hátra van. Az eredeti portfájlok megmaradtak. A láng műterméke és a licenc kérdése nyitott.
 
@@ -29,6 +29,7 @@ Verzió **0.28.0-u4**, a teljes tesztkör (31 teszt) zöld, minden commitolva. K
 - **Szabály- és eseményvezérelt viselkedés** (`FUNKCIO-LELTAR.md` 23. sor): „kövesse ezt”, „lebegjen e körül”, „reagáljon a szélre”, „erősödjön a Glow érintkezéskor”. Nincs előre beírt kulcssoruk, szabály vagy esemény vezérli őket, és a Loop kikapcsolása után is élnek. Mielőtt bármi épül, külön végig kell gondolni a felhasználóval (kulcsokkal való viszony, jelölés, export, kapcsolat a Kapcsolatokkal és az E szakasszal).
 
 ## Mi történt legutóbb
+- Mozgás v1: `motion.ts` (L.mo, moEval, Anime.js-adapter, syncKLoop), `moui.ts` (Mozgások szekció, ráhúzás, nyíl), `evaluation.ts` (klVal, setVal eltolás). Technikai jegyzet: `app/README.md` „Mozgás v1”.
 - U4: egysoros csúszkák, Részletek a Fő beállítások alatt, mozgásparaméterek a Mozgás fülön (szinkron fő vezérlőkkel), effekt-ikonsor + ikonrács (`fxicons.ts`), felső szövegsáv (`textbar.ts`). Technikai jegyzet: `app/README.md` „U4”.
 - P1: saját könyvtár + polcok, Mentés presetként (☆), Projekt → Utasítás ChatGPT-nek / Preset beillesztése, vezérlők a formátumban, saját shader elnevezett csúszkákkal. Technikai jegyzet: `app/README.md` „P1”.
 - U3: könyvtár balra a rétegek fölé, húzható elválasztó, rétegjelvények, kártyacímkék, egységes tooltip, gyorsbillentyű-panel (`workspace.ts`).

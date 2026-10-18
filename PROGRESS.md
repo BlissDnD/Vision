@@ -19,6 +19,19 @@ Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; a
 - `presets/egyedi/lang-eredeti-demo.vel.json`: a CodePenben használt zajtextúrát a projektbe ágyazva futtatja az eredeti lángképlet portját. A saját shader képbemenetéhez `mediaFor()` most elfogad `asset` mezőt. A lángban még látszik egy függőleges műtermék; az eredeti Shadertoy-kód licence sem tisztázott. Részletek: `presets/egyedi/EREDETI-PORTOK.md` és `BUGS.md`.
 - Ellenőrzés: TypeScript typecheck és production build sikeres; mindkét projektnél böngészős shaderfordítás és betöltési próba hibamentes. Felhasználói, valós GPU-s összevetés még nincs.
 
+## Állapot: 2026-10-18 — Mozgás v1: 0.29.0-mo1
+
+- **Mozgás polc → Ráhúzható mozgások:** Lebegés, Forgás, Lüktetés, Keringés, Remegés, Rugalmas beúszás (ikonos kártya, „rétegre” címke). Rámutatva a **kijelölt rétegen élő előnézet** (saját órával, állított lejátszásnál is); kattintás = a kijelölt rétegre, húzás = a vásznon a mutató alatti rétegre vagy a rétegsorra. Ráhúzás után a Mozgás fül nyílik, a lejátszás indul (ha állt), ⌘Z visszavonja.
+- **Mozgás fül → Mozgások:** ikonsor (mint az effekteknél, erősség-gyűrűvel), „+” ikonrács, kiválasztott mozgás beállításai, be/ki, törlés. A régi Belépés/Kilépés ugyanitt **Beúszás/Kiúszás** chipként (az adat változatlan, régi projektek ugyanúgy mozognak); a régi Időzítés szekció megszűnt. Képkocka-ütem itt egy sor. A mozgások erőssége a Fő beállításokban is (szinkron).
+- **Folyamatos mozgások** tiszta időfüggvények: a projekt Loopjától függetlenül, Loop nélkül is futnak, varrat nélkül.
+- **Rugalmas beúszás:** Anime.js-görbe (spring / outBack, ~6 KB, MIT) szűk adapteren át, a Vel órája a mester (prototípus: tetszőleges sorrendű ugrás ugyanazt adja). Kezdés a lejátszófejnél; karakter Lágy / Ütés / Rugó, távolság, irány, beúszó áttetszőség, kezdő méret. **Vásznon szaggatott nyíl**, a végét húzva állítod, honnan érkezik. Idővonalon narancs szakasz, retime/nyújtás érti.
+- **⟲ Kulcsanimáció ismétlése (rétegenként):** a réteg utolsó kulcsa után állítható idő alatt simán visszatér az elsőre és ismétel, a többi rétegtől függetlenül; az idővonalon csíkozott jelölés.
+- **Kulcs csak Animálás módban:** A nélkül egy kulcsolt érték állítása nem ír kulcsot, hanem az egész animációt eltolja, és a lejátszás nem áll meg. Animálás módban a régi viselkedés.
+- **Késői kulcsok jelzése** (BUGS.md): ha Loopnál a projekt hossza után is van kulcs, a Mozgás fül szól, egy gombbal kiterjeszti a hosszt.
+- Teszt: `tests/mo_motion.js` (polc, előnézet, kattintás + undo, periodikusság és Loop nélküli futás, vászonra ejtés, beúszás kezdete/vége/iránya, ugrás-determinizmus pixelre, ikonsor, régi Időzítés eltűnt, erősség két helyen, nyílhúzás, idővonal + retime, kulcs-Loop, eltolás vs. Animálás mód, késői kulcs jelzés, mentés → megnyitás, normalizálás). A `u1_anim` és `u4_ui` az új szabályhoz igazítva. **32/32 zöld.**
+- **Felhasználói próba (4 perc):** 1) Jelölj ki egy formát, vidd az egeret a Lebegés kártya fölé (előnézet), húzd a Lüktetést egy szövegre; Loop ki: tovább mozognak. 2) Rugalmas beúszás egy feliratra; a vásznon a nyíl végével fordítsd balról érkezőre; az idővonalon nyújtsd. 3) A módban két kulcs egy formára → ⟲ ismétlés; A nélkül húzd arrébb: a pálya vele megy. 4) Régi projekt Belépés/Kilépéssel: Beúszás chipként látszik.
+- Korlát: a mozgások paraméterei még nem kulcsolhatók; szavankénti/soronkénti lépcsőzés és kamerás ráúszás a Mozgás v2-ben; a kulcs-Loop a projekt Loop körbeérésénél (ha nem többszöröse) ugorhat.
+
 ## Állapot: 2026-10-18 — U4 „Tömörebb jobb panel, szövegsáv, effekt-ikonsor”: 0.28.0-u4
 
 - **Egysoros csúszkák:** név (38%) · vékony sáv · érték egy sorban (16 px magas); az animálás/kulcs ikonjai rámutatáskor a név végén jelennek meg (animált/kulcsolt értéknél mindig). A csoportok nagy Vezérlői maradtak kétsorosak. Szorosabb szakaszok.

@@ -12,7 +12,11 @@ import { markDirty } from './loop';
 import { toast } from './modals';
 
 export function wave(w,ph){const fr=((ph%1)+1)%1;if(w===1)return 1-4*Math.abs(((ph+.25)%1+1)%1-.5);if(w===2)return 2*fr-1;if(w===3)return fr<.5?1:-1;return Math.sin(TAU*ph);}
-export function ev(n,def,t){let v=n._pv!=null?n._pv:n.k&&n.k.length?keyVal(n.k,t):n.v;if(n.a)v+=wave(n.w,t*n.f)*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
+/** Mozgás v1: per-layer key Loop (n._kl = {a,b,ret}, set each frame by motion.syncKLoop): after the layer's last key the
+ *  animation glides back to its first value in `ret` seconds and repeats, independent of the project Loop. */
+export function klVal(K,t,kl){const span=kl.b-kl.a+kl.ret;if(t<=kl.b||span<=1e-6)return keyVal(K,t);const tt=kl.a+((t-kl.a)%span);if(tt<=kl.b)return keyVal(K,tt);
+  const u=Math.min(1,(tt-kl.b)/Math.max(1e-6,kl.ret)),e=u*u*(3-2*u);return keyVal(K,kl.b)*(1-e)+keyVal(K,kl.a)*e;}
+export function ev(n,def,t){let v=n._pv!=null?n._pv:n.k&&n.k.length?(n._kl?klVal(n.k,t,n._kl):keyVal(n.k,t)):n.v;if(n.a)v+=wave(n.w,t*n.f)*n.a*(def.max-def.min)*.5;if(n.s)v+=sigVal(n.s,t)*(n.sa??.5)*(def.max-def.min);if(n._lk)v=n._lk.f(t,v);return v;}
 
 /* ----- keyframes: n.k=[{t,v,e,z?,w?,bz?}] on any slider param; e = curve of the segment that starts at this key ----- */
 export const KEY_EASES=[...EASE_NAMES,'Egyedi rugó','Egyedi görbe (Bézier)'];
@@ -35,6 +39,8 @@ export function delKey(n,i){n.k.splice(i,1);if(!n.k.length)delete n.k;}
  * along the timeline while the playhead moves. Non-animatable controls (noAnim sliders, proxies) never come through here. */
 R.animMode=false;
 export function setVal(n,v){if(R.perfHook&&R.perfHook(n,v))return;
+  // Mozgás v1: outside Animálás mode a keyed value is not re-keyed: the whole animation shifts by the change (playback keeps going)
+  if(hasK(n)&&!R.animMode&&typeof n.v==='number'&&!R.perform){const d=v-curV(n);if(d){for(const k of n.k)k.v+=d;n.v+=d;R.keyShift=(R.keyShift||0)+1;}return;}
   if(hasK(n)||R.animMode){if(R.playing&&!R.perform)setPlay(false);if(!hasK(n)&&R.time>KEY_EPS&&typeof n.v==='number')setKey(n,0,n.v);setKey(n,R.time,v);R.keyEdit=(R.keyEdit||0)+1;}
   else n.v=v;}
 /** What animates a param, for the badges: k = keys, w = wave (LFO), s = signal, l = Kapcsolat. */

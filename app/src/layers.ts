@@ -4,6 +4,7 @@ import { SVG_CHEV, SVG_EYE, SVG_EYEOFF, iconKind, kindOf } from './effects/index
 import { st } from './state';
 import { itemCost, itemError } from './cost';
 import { addFromLib, attachFx, moveItemTo } from './itemops';
+import { LIB } from './library';
 import { renderInsp } from './inspector';
 import { commit } from './history';
 import { variantBadge } from './variantsui';
@@ -50,4 +51,4 @@ export function renderLayers(){
   if(!st.layers.length)ul.appendChild(h('li',{class:'lempty'},'Üres. Válassz egy receptet lent, vagy húzz ide bármit a könyvtárból.'));
   $('#layerCount').textContent=n?String(n):'';}
 $('#ltree').ondragover=e=>e.preventDefault();
-$('#ltree').ondrop=e=>{e.preventDefault();const lib=e.dataTransfer.getData('text/x-latomas-lib');if(lib){const [c,i]=lib.split(':');R.selId=null;addFromLib(c,+i,null);}};
+$('#ltree').ondrop=e=>{e.preventDefault();const lib=e.dataTransfer.getData('text/x-latomas-lib');if(lib){const [c,i]=lib.split(':');if(LIB[c]&&LIB[c][+i]&&LIB[c][+i].mo){addFromLib(c,+i,null);return;}R.selId=null;addFromLib(c,+i,null);}};

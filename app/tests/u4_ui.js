@@ -28,12 +28,12 @@
  const P=makeLayer('plasma');st.layers=[P];R.selId=P.id;renderInsp();if(R.liveCtl.filter(c=>c.obj===P.p.speed).length!==2)bad.push('Plazma sebesség nem két helyen');
  // 3) effect icon row, add grid, drag reorder, open settings
  P.fx=[makeLayer('blur'),makeLayer('glow')];commit();renderInsp();setITab('fx');
- const ics=[...document.querySelectorAll('#insp .fxrow .fxic:not(.add)')];info.icons=ics.map(b=>b.getAttribute('aria-label'));
+ const ics=[...document.querySelectorAll('#insp .ipane[data-tab=fx] .fxrow .fxic:not(.add)')];info.icons=ics.map(b=>b.getAttribute('aria-label'));
  if(ics.length!==2||!ics[0].querySelector('svg'))bad.push('ikonsor: '+info.icons);
- document.querySelector('#insp .fxic.add').click();const grid=document.querySelector('#insp .fxgrid');if(!grid||grid.hidden||grid.querySelectorAll('.fxg').length<20)bad.push('ikonrács');
+ document.querySelector('#insp .ipane[data-tab=fx] .fxic.add').click();const grid=document.querySelector('#insp .ipane[data-tab=fx] .fxgrid');if(!grid||grid.hidden||grid.querySelectorAll('.fxg').length<20)bad.push('ikonrács');
  const bal=[...grid.querySelectorAll('.fxg')].find(b=>/Lufi/.test(b.textContent));if(!bal||!bal.disabled)bad.push('a Lufi nem tiltott Plazmán');
  [...grid.querySelectorAll('.fxg')].find(b=>/Kaleidoszkóp/.test(b.textContent)).click();if(P.fx.length!==3||P.fx[2].type!=='kaleido')bad.push('hozzáadás a rácsból');
- const dt=new DataTransfer();const ic=()=>[...document.querySelectorAll('#insp .fxrow .fxic:not(.add)')];
+ const dt=new DataTransfer();const ic=()=>[...document.querySelectorAll('#insp .ipane[data-tab=fx] .fxrow .fxic:not(.add)')];
  ic()[2].dispatchEvent(new DragEvent('dragstart',{dataTransfer:dt}));ic()[0].dispatchEvent(new DragEvent('drop',{dataTransfer:dt,cancelable:true}));
  info.order2=P.fx.map(f=>f.type);if(info.order2.join()!=='kaleido,blur,glow')bad.push('húzásos átrendezés: '+info.order2);
  undo();if(st.layers[0].fx.map(f=>f.type).join()!=='blur,glow,kaleido')bad.push('undo átrendezés: '+st.layers[0].fx.map(f=>f.type));
@@ -46,7 +46,7 @@
   const c=document.querySelector('#textbar input[type=color]');c.value='#ff0000';c.dispatchEvent(new Event('input'));c.dispatchEvent(new Event('change'));if(T.p.color1.v!=='#ff0000'||Math.round(T.p.fill.v)!==0)bad.push('szín');
   undo();if(T.text.font!=='Fraunces'&&st.layers[0].text.font!=='Fraunces')bad.push('undo szín után a betű');}
  // 5) strength ring on the effect icons
- {const P2=makeLayer('plasma',{fx:[['blur',{}]]});P2.fx[0].n.opacity.v=.25;st.layers=[P2];R.selId=P2.id;commit();renderInsp();const ic=document.querySelector('#insp .fxrow .fxic:not(.add)');
+ {const P2=makeLayer('plasma',{fx:[['blur',{}]]});P2.fx[0].n.opacity.v=.25;st.layers=[P2];R.selId=P2.id;commit();renderInsp();const ic=document.querySelector('#insp .ipane[data-tab=fx] .fxrow .fxic:not(.add)');
   if(!ic||Math.abs(parseFloat(ic.style.getPropertyValue('--s'))-.25)>1e-6)bad.push('erősség-gyűrű: '+(ic&&ic.style.getPropertyValue('--s')));
   if(getComputedStyle(ic,'::after').content==='none')bad.push('nincs gyűrű');}
  // 6) double click on a text: in-place editing, ⌘Enter keeps, Esc cancels, one undo step

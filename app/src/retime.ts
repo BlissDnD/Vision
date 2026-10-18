@@ -20,6 +20,7 @@ export function timeFields(L: any): Field[] {
   if (T && T.in) f.push({ role: 'in', get: () => T.inAt, set: v => { T.inAt = r3(v); }, len: () => T.inDur });
   if (T && T.out) f.push({ role: 'out', get: () => T.outAt, set: v => { T.outAt = r3(v); }, len: () => T.outDur, setLen: v => { T.outDur = Math.max(.05, Math.round(v * 1000) / 1000); } });
   const pv = (k: string, role: Field['role'], len?: () => number) => { const o = P(k); if (o) f.push({ role, get: () => o.v, set: v => { o.v = r3(v); }, len }); };
+  for (const m of L.mo || []) if (m.t === 'spring' && m.on !== false) f.push({ role: 'in', get: () => m.p.at.v, set: v => { m.p.at.v = r3(v); }, len: () => m.p.dur.v, setLen: v => { m.p.dur.v = Math.max(.1, Math.round(v * 1000) / 1000); } });
   if (L.type === 'mtext') { // staggered units: letters / words / lines, as the timeline segments count them
     const n = () => { const tc = textCache.get(L.id), u = Math.round(P('unit').v); if (tc && tc.info) return u === 0 ? tc.info[0] : u === 1 ? tc.info[1] : tc.geo[0];
       const str = (L.text && L.text.str) || ''; return u === 2 ? str.split('\n').length : u === 1 ? str.split(/\s+/).filter(Boolean).length : [...str.replace(/\s/g, '')].length; };

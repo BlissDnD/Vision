@@ -16,8 +16,14 @@ import { addCue, blockOf, removeCue, shiftBlock, stretchBlock } from './retime';
 
 export const tlHeadEl=$('#tlHead'),tlTrack=$('#tlTrack');
 /* timing segments of a layer: [{a,b,cls,f:[[group,key],…]}] – f = fields that shift together when the bar is dragged */
-export function layerSegs(L){const out=[];const add=(a,b,cls,f)=>{if(b>a)out.push({a,b,cls,f});};if(!L||L.type==='group'&&!L.tm)return out;
+const moById=(L,g)=>(L.mo||[]).find(m=>'mo:'+m.id===g);
+const segGet=(L,g,k)=>g==='tm'?L.tm[k]:g.startsWith('mo:')?(moById(L,g)||{p:{[k]:{v:0}}}).p[k].v:L.p[k].v;
+const segSet=(L,g,k,v)=>{if(g==='tm')L.tm[k]=v;else if(g.startsWith('mo:')){const m=moById(L,g);if(m)m.p[k].v=v;}else L.p[k].v=v;};
+const keyLoopRange=L=>{let a=Infinity,b=-Infinity;for(const q of paramList(L))if(q.o.k&&q.o.k.length){a=Math.min(a,q.o.k[0].t);b=Math.max(b,q.o.k[q.o.k.length-1].t);}return b>a?{a,b}:null;};
+export function layerSegs(L){const out=[];const add=(a,b,cls,f)=>{if(b>a)out.push({a,b,cls,f});};if(!L||L.type==='group'&&!L.tm&&!(L.mo&&L.mo.length))return out;
   const T=L.tm;if(T&&T.in)add(T.inAt,T.inAt+T.inDur,'',[['tm','inAt']]);if(T&&T.out)add(T.outAt,T.outAt+T.outDur,'out',[['tm','outAt']]);
+  for(const m of L.mo||[])if(m.t==='spring'&&m.on!==false)add(m.p.at.v,m.p.at.v+m.p.dur.v,'mo',[['mo:'+m.id,'at']]);
+  if(L._klSet){const kl=keyLoopRange(L);if(kl)add(kl.b,Math.max(kl.b+.01,st.dur),'kloop',[]);}
   if(L.type==='group')return out;const P=k=>L.p[k].v;
   if(L.type==='mtext'){const tc=textCache.get(L.id),u=Math.round(P('unit'));const n=tc&&tc.info?(u===0?tc.info[0]:u===1?tc.info[1]:tc.geo[0]):(L.text.str||'').length;
     add(P('start'),P('start')+P('dur')+P('stagger')*n,'',[['p','start']]);if(P('outAt')>0)add(P('outAt'),P('outAt')+P('dur')+P('stagger')*n,'out',[['p','outAt']]);}
@@ -174,9 +180,9 @@ export function keyMenu(ev,L,t,p?){ev.preventDefault();ev.stopPropagation();if(!
 function outside(e){if(R.keyMenuEl&&!R.keyMenuEl.contains(e.target))closeKeyMenu();}
 export function closeKeyMenu(){if(R.keyMenuEl){R.keyMenuEl.remove();R.keyMenuEl=null;}document.removeEventListener('pointerdown',outside,true);}
 export function segDrag(ev,L,s,lane){ev.stopPropagation();ev.preventDefault();const tgt=ev.currentTarget;try{tgt.setPointerCapture(ev.pointerId);}catch(_){}const [va,vb]=viewAB();
-  const orig=s.f.map(([g,k])=>g==='tm'?L.tm[k]:L.p[k].v);let moved=false;if(R.selId!==L.id){R.selId=L.id;renderLayers();renderInsp();}const l0=parseFloat(tgt.style.left);
+  if(!s.f.length)return;const orig=s.f.map(([g,k])=>segGet(L,g,k));let moved=false;if(R.selId!==L.id){R.selId=L.id;renderLayers();renderInsp();}const l0=parseFloat(tgt.style.left);
   tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);if(!e.shiftKey){const sn=snapT(orig[0]+dt,lane);dt=sn-orig[0];}
-    s.f.forEach(([g,k],i)=>{const v=Math.max(0,Math.round((orig[i]+dt)*100)/100);if(g==='tm')L.tm[k]=v;else L.p[k].v=v;});markDirty();tgt.style.left=(l0+dt/(vb-va)*100)+'%';};
+    s.f.forEach(([g,k],i)=>{const v=Math.max(0,Math.round((orig[i]+dt)*100)/100);segSet(L,g,k,v);});markDirty();tgt.style.left=(l0+dt/(vb-va)*100)+'%';};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(moved){commit();renderInsp();}else{seekTo(s.a);}};}
 R.blockSel=new Set();
 /** Drag a motion block: move / stretch the middle / slow the close. Shift+click adds blocks; the op hits every selected block. */
@@ -184,8 +190,8 @@ export function blockDrag(ev,L,lane,mode){ev.stopPropagation();ev.preventDefault
   if(ev.shiftKey&&mode==='move'){R.blockSel.has(L.id)?R.blockSel.delete(L.id):R.blockSel.add(L.id);renderTracks();return;}
   if(!R.blockSel.has(L.id))R.blockSel=new Set([L.id]);
   const tgt=ev.currentTarget;try{tgt.setPointerCapture(ev.pointerId);}catch(_){}const [va,vb]=viewAB();const ids=[...R.blockSel];
-  const snap0=ids.map(id=>{const it=itemById(id);return it?[it,JSON.stringify({tm:it.tm,p:it.p,n:it.n}),blockOf(it)]:null;}).filter(Boolean);
-  const restore=()=>{for(const [it,js] of snap0){const o=JSON.parse(js);if(o.tm)it.tm=o.tm;if(o.p)it.p=o.p;it.n=o.n;}};
+  const snap0=ids.map(id=>{const it=itemById(id);return it?[it,JSON.stringify({tm:it.tm,p:it.p,n:it.n,mo:it.mo}),blockOf(it)]:null;}).filter(Boolean);
+  const restore=()=>{for(const [it,js] of snap0){const o=JSON.parse(js);if(o.tm)it.tm=o.tm;if(o.p)it.p=o.p;it.n=o.n;if(o.mo)it.mo=o.mo;}};
   let moved=false,kept=0;const B0=blockOf(L);
   tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);
     const ref=mode==='move'?B0.a:B0.b;if(!e.shiftKey)dt=snapT(ref+dt,lane)-ref;restore();kept=0;

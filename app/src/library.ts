@@ -2,6 +2,7 @@ import { R } from './runtime';
 import { EFFECTS } from './effects/index';
 import { makeLayer } from './state';
 import { RECIPES, makeRecipe } from './recipes';
+import { MO, MO_ORDER } from './motion';
 
 export const L3=(name,o)=>({name,make:()=>makeLayer('obj3d',{name,...o})});
 export const LS=(name,p,o={})=>({name,make:()=>makeLayer('shape',{name,pal:5,...o,p})});
@@ -61,6 +62,9 @@ export const LIB={
   {name:'Mély űr',make:()=>makeLayer('space',{name:'Mély űr',pal:7,p:{mw:.5,nebula:.4,stars:1.4,seed:91}})},
   {name:'Bokeh',make:()=>makeLayer('bokeh',{pal:15})}],
  motion:[
+  {head:'Ráhúzható mozgások'},
+  ...MO_ORDER.map(t=>({name:MO[t].name,mo:t,make:()=>makeLayer('shape',{name:MO[t].name,pal:5,p:{kind:0,size:.16}})})),
+  {head:'Mozgásos elemek'},
   ...RECIPES.filter(R=>R.cat==='motion').map(R=>({name:R.n,make:()=>makeRecipe(R)})),
   {head:'Bento'},
   {name:'Bento · hős + 3',make:()=>makeLayer('bento')},
@@ -113,5 +117,5 @@ export const LIB={
 };
 // plan §5: users think in Receptek / Források / Formák / Megjelenések / Mozgás / Részecskék, not in shader kinds (keys stay stable)
 export const CATS=[['recipes','Receptek'],['gen','Források'],['shapes','2D Formák'],['3d','3D Formák'],['fx','Megjelenések'],['motion','Mozgás'],['particles','Részecskék'],['world','Világok'],['media','Szöveg és kép']];
-export const CAT_HINT={world:'Kész tájak darabokból (bontsd ki és alakítsd), alattuk a darabok: égszín, nap, felhők, dombvonal + talaj, pára, bolygók.',motion:'Bento-rácsok, kinetikus szöveg rugóval, átmenetek, analóg vetítő. Szöveget dobozba: kapcsold be rajta a vágást.',particles:'Képből részecske. Tedd egy kép vagy szöveg fölé.',recipes:'Kész kombinációk, mind továbbalakítható. Kattints, vagy húzd a vászonra.',fx:'Kattintás: új szűrőréteg · Rétegre húzva csak arra hat (a Blob-követés is)',shapes:'Formák rajzhoz vagy maszknak',
+export const CAT_HINT={world:'Kész tájak darabokból (bontsd ki és alakítsd), alattuk a darabok: égszín, nap, felhők, dombvonal + talaj, pára, bolygók.',motion:'Felül ráhúzható mozgások: húzd egy rétegre (vagy jelöld ki, és kattints); rámutatva a kijelölt rétegen előnézet. Alul mozgásos elemek: Bento, kinetikus szöveg, átmenetek, vetítő.',particles:'Képből részecske. Tedd egy kép vagy szöveg fölé.',recipes:'Kész kombinációk, mind továbbalakítható. Kattints, vagy húzd a vászonra.',fx:'Kattintás: új szűrőréteg · Rétegre húzva csak arra hat (a Blob-követés is)',shapes:'Formák rajzhoz vagy maszknak',
  '3d':'Elöl a szerkeszthető jelenet: alapformákból gyúrod össze, a vásznon húzva mozgatod. Mögötte kész 3D testek. A kamera a 3D forgatás eszközzel (O) kering.',gen:'Teljes képet adó források',media:'Szöveg, saját kép, saját shader'};

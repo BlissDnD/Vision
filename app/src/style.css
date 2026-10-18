@@ -500,3 +500,12 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .fxic.add::after{display:none}
 /* inline text editing on the canvas */
 .tedit{position:absolute;z-index:6;min-width:120px;resize:none;border:1.5px solid var(--accent);border-radius:8px;background:rgba(10,10,16,.72);color:#fff;padding:4px 8px;line-height:1.15;outline:none;box-shadow:0 6px 24px rgba(0,0,0,.4);overflow:hidden}
+/* Mozgás v1 */
+.tl-seg.mo{background:color-mix(in srgb,#ffb340 30%,transparent);border-color:#ffb340}
+.tl-seg.kloop,.tlx-seg.kloop{background:repeating-linear-gradient(90deg,var(--accent-soft) 0 6px,transparent 6px 10px);border:1px dashed var(--accent);opacity:.7;pointer-events:none}
+.tlx-seg.mo{background:color-mix(in srgb,#ffb340 30%,transparent);border-color:#ffb340}
+.moarrow{position:absolute;inset:0;pointer-events:none;z-index:4}
+.moarrow svg{position:absolute;left:0;top:0;overflow:visible}
+.moarrow line{stroke:#ffb340;stroke-width:2;stroke-dasharray:6 5}
+.mohandle{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#ffb340;box-shadow:0 0 0 3px rgba(0,0,0,.35);pointer-events:auto;cursor:grab}
+.small.warn{color:var(--warn,#e8b04a)}
