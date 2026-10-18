@@ -50,3 +50,7 @@ Eltérés a csomag-pillanatképtől: a csomag (5a884ea) írásakor a MAT/FLUID/P
 ## 4. Következő konkrét szeletjavaslat
 
 **STAB-01 mini** (3 hiba, kis kockázat) → utána **U5** vagy **M6b** a felhasználó választása szerint. Mindkettőhöz a 13. fejezet szerinti javaslat kell indulás előtt.
+
+## 5. Szabály: átfedő addonok (a felhasználó döntése, 2026-10-18)
+
+Ha egy extension-lab addon egy már natívan elkészült funkcióval fedésben van, **nem hagyjuk ki**: a forrását átnézve a natív változatot feljavítjuk vele, ahol segít (minőség, funkció, robusztusság). Párok: `fluid-field`↔F1, `rigid-bodies`/`rapier-physics`↔F2, `path-tube`/`tapered-line`/`vector-paths`↔P2, `curved-text`/`extrude`↔T6, `camera-framing`↔K3, `planar-reflection`/`glass-material`/`custom-material`↔FÉNY2/MAT1, `gpu-particle-state`/`quarks-emitter`↔E1, `polyhaven-intake`↔PH1. Minden érintett szeletjavaslat sorolja fel, mit javít az addon.
