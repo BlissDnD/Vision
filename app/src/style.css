@@ -633,7 +633,7 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .help-card p{margin:8px 0}.help-card ul{padding-left:18px;margin:8px 0}.help-card li+li{margin-top:5px}
 .help-links{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.help-links button{text-decoration:underline;text-underline-offset:3px;background:transparent}
 .help-card small{display:block;margin-top:10px;opacity:.75}
-#helpModeBtn[aria-pressed="true"],#helpPickBtn[aria-pressed="true"]{outline:1px solid var(--accent);color:var(--accent)}
+#helpModeBtn[aria-pressed="true"]{outline:1px solid var(--accent);color:var(--accent)}
 @media(max-width:719px){.help-card{max-height:55vh}}
 
 .help-card .help-inline{display:inline;padding:0;border:0;border-radius:2px;background:transparent;text-decoration:underline;text-underline-offset:3px}

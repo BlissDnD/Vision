@@ -6,11 +6,11 @@ const pref = (v?: boolean) => { try { if (v === undefined) return localStorage.g
 let enabled = pref(), picking = false, dragging = false, pinned = false;
 let target: HTMLElement | null = null, rootTopic: HelpTopic | null = null;
 let history: string[] = [], openTimer = 0, closeTimer = 0, installed = false;
-let root: HTMLElement, child: HTMLElement, toggle: HTMLButtonElement, pick: HTMLButtonElement;
+let root: HTMLElement, child: HTMLElement, toggle: HTMLButtonElement;
 let described: HTMLElement | null = null, previousDescription: string | null = null;
 let modalObserver: MutationObserver, restoringFocus = false;
 const $ = (id: string) => document.getElementById(id);
-const inHelp = (el: Element | null) => el instanceof Element && !!el.closest('.help-card,#helpModeBtn,#helpPickBtn');
+const inHelp = (el: Element | null) => el instanceof Element && !!el.closest('.help-card,#helpModeBtn');
 export const helpModeOn = () => enabled;
 export const helpPicking = () => picking;
 export const helpOpen = () => !!root && (!root.hidden || !child.hidden);
@@ -28,10 +28,9 @@ export function closeHelp(focus = false) {
 }
 function syncButtons() {
   toggle?.setAttribute('aria-pressed', String(enabled));
-  if (pick) { pick.hidden = !enabled; pick.textContent = picking ? 'Mégse' : 'Mi ez?'; pick.setAttribute('aria-pressed', String(picking)); }
 }
 export function setHelpMode(on: boolean) { enabled = on; pref(on); picking = false; closeHelp(); syncButtons(); }
-export function setHelpPicking(on: boolean) { picking = on && enabled; closeHelp(); syncButtons(); }
+export function setHelpPicking(on: boolean) { picking = on && enabled; closeHelp(); }
 function topicFor(el: HTMLElement): HelpTopic | null {
   const id = el.dataset.helpId;
   if (id && helpTopic(id)) return helpTopic(id)!;
@@ -126,8 +125,7 @@ function dismissLater() { clearTimeout(openTimer); clearTimeout(closeTimer); if 
 export function installHelp() {
   if (installed) return; installed = true;
   toggle = h('button', { id: 'helpModeBtn', type: 'button', class: 'pill', 'aria-label': 'Részletes súgó mód', onclick: () => setHelpMode(!enabled) }, '? Súgó');
-  pick = h('button', { id: 'helpPickBtn', type: 'button', class: 'pill', onclick: () => setHelpPicking(!picking) }, 'Mi ez?');
-  $('helpBtn')?.before(toggle, pick);
+  $('helpBtn')?.before(toggle);
   for (const [id, topic] of Object.entries(HELP_BINDINGS)) { const el = $(id); if (el) el.dataset.helpId = topic; }
   root = h('section', { id: 'vel-help-root', class: 'help-card', role: 'dialog', 'aria-modal': 'false', 'aria-labelledby': 'vel-help-root-title', hidden: true });
   child = h('section', { id: 'vel-help-child', class: 'help-card', role: 'dialog', 'aria-modal': 'false', 'aria-labelledby': 'vel-help-child-title', hidden: true });
@@ -154,6 +152,7 @@ export function installHelp() {
   });
   document.addEventListener('pointerdown', e => {
     if (!enabled || inHelp(e.target as Element)) return;
+    if (e.pointerType === 'touch' && candidate(e.target as Element)) { picking = true; return; }
     if (picking) return; // click handles activation, including synthetic keyboard clicks
     dragging = true; closeHelp();
   }, true);

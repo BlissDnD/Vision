@@ -34,7 +34,7 @@
  const wasPlaying=R.playing;root.querySelector('button').dispatchEvent(new KeyboardEvent('keydown',{key:' ',bubbles:true,cancelable:true}));
  check(R.playing===wasPlaying,'reading triggers playback');closeHelp();
  let activated=0;const fixture=document.createElement('button');fixture.title='Teszt vezérlő';fixture.onclick=()=>activated++;document.body.append(fixture);
- setHelpPicking(true);
+ check(!document.getElementById('helpPickBtn'),'redundant inspect button');
  const down=new PointerEvent('pointerdown',{bubbles:true,cancelable:true,pointerType:'touch'});
  fixture.dispatchEvent(down);check(down.defaultPrevented,'touch pointer-start not blocked');fixture.click();
  check(activated===0&&helpOpen()&&!helpPicking(),'one-shot inspection activated target');

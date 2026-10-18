@@ -3,7 +3,7 @@ export type HelpPart = string | { term: string; label?: string };
 export interface HelpTopic { parts?: HelpPart[]; id: string; title: string; summary: string; steps: string[]; relatedIds: string[]; sourceRefs: string[]; }
 const topic = (id: string, title: string, summary: string, steps: string[], relatedIds: string[], sourceRefs: string[]): HelpTopic => ({ id, title, summary, steps, relatedIds, sourceRefs });
 export const HELP_TOPICS: HelpTopic[] = [
-  topic('help', 'Súgó mód', 'Mutass egy vezérlőre, és olvasd el a hozzá tartozó magyarázatot. A fogalmakra kattintva tovább léphetsz.', ['A Rögzítés gombbal vagy F1-gyel tartsd nyitva a kártyát.', 'A Mi ez? gomb után érints meg egy vezérlőt: annak a leírása nyílik meg.'], ['library', 'animation'], ['workspace.ts', 'help.ts']),
+  topic('help', 'Súgó mód', 'Mutass egy vezérlőre, és olvasd el a hozzá tartozó magyarázatot. A fogalmakra kattintva tovább léphetsz.', ['A Rögzítés gombbal vagy F1-gyel tartsd nyitva a kártyát.', 'Érintőképernyőn, bekapcsolt Súgó módban érints meg egy vezérlőt a magyarázatához.'], ['library', 'animation'], ['workspace.ts', 'help.ts']),
   topic('library', 'Könyvtár és keresés', 'A könyvtárból forrásokat, formákat, megjelenéseket, mozgásokat és kész recepteket választhatsz.', ['Írj a keresőbe; a szerep szerinti szűrőkkel szűkítheted a találatokat.', 'A könyvtár elemének szokásos beillesztési gesztusát használd; a súgólink csak magyarázatot nyit.'], ['source', 'appearance', 'motion', 'recipe'], ['catalog.ts:catSearch', 'shelf.ts']),
   topic('source', 'Forrás és forma', 'A forrás hozza létre a képet vagy látványt; a forma az alakzatot adja, amivel kompozíciót építhetsz.', ['Válassz elemet a megfelelő könyvtári polcról, majd a réteg beállításain finomíts.'], ['layer', 'appearance'], ['library.ts', 'catalog.ts:ROLES']),
   topic('appearance', 'Megjelenés', 'Egy rétegre húzott Megjelenés annak a rétegnek a látványát alakítja.', ['Húzz egy Megjelenést a könyvtárból a kívánt rétegre.', 'Több effekt esetén figyelj a sorrendre: a későbbi hatás a korábbi eredményét is átalakíthatja.'], ['blur', 'layer', 'library'], ['shelf.ts', 'inspector.ts']),
@@ -30,7 +30,7 @@ HELP_TOPICS.find(t => t.id === 'animation')!.parts = [
   { term: 'keyframe', label: 'kulcsképkocka' }, ' készül.'
 ];
 export const helpTopic = (id: string) => HELP_TOPICS.find(t => t.id === id);
-export const HELP_BINDINGS: Record<string, string> = { helpModeBtn: 'help', helpPickBtn: 'help', helpBtn: 'help', keysBtn: 'shortcuts', libSearch: 'library', playBtn: 'playback', projBtn: 'project', exportBtn: 'export', animBtn: 'animation', tlxBtn: 'timeline', loopBtn: 'loop' };
+export const HELP_BINDINGS: Record<string, string> = { helpModeBtn: 'help', helpBtn: 'help', keysBtn: 'shortcuts', libSearch: 'library', playBtn: 'playback', projBtn: 'project', exportBtn: 'export', animBtn: 'animation', tlxBtn: 'timeline', loopBtn: 'loop' };
 export function validateHelpTopics(): string[] {
   const errors: string[] = [], ids = new Set<string>();
   for (const t of HELP_TOPICS) { if (ids.has(t.id)) errors.push('duplicate: ' + t.id); ids.add(t.id); }
