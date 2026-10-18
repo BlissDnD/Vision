@@ -11,8 +11,10 @@ export function makeLayer(type:string,o:any={}):Layer{
   for(const p of paramsOf(L))L.p[p.k]=mkN(o.p?.[p.k]??p.def);
   if(type==='text')L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12,...(o.text||{})};
   if(type==='mtext')L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01,...(o.text||{})};
+  if(d.usesText)L.text={str:'VEL · ÉLŐ SZÖVEG · ',font:'Unbounded',weight:'700',track:.06,...(o.text||{})};
   if(type==='sdfscene'){L.prims=JSON.parse(JSON.stringify(o.prims||DEF_PRIMS));L.psel=0;}
   if(type==='particles')L.asset=o.asset||null;
+  if(type==='pathshape')L.pts=(o.pts||[[-.55,-.12],[-.2,.16],[.18,-.14],[.55,.1]]).map(p=>[p[0],p[1]]);
   if(o.tm)L.tm={...o.tm};
   if(type==='custom')L.code=o.code||DEFAULT_CODE;
   if(type==='image'||type==='lottie')L.asset=o.asset||null;
@@ -28,7 +30,8 @@ export function normalize(L:any):Layer{
   for(const b of BASE)if(!L.n[b.k])L.n[b.k]=mkN(b.def);
   if(L.type==='group'){L.children=(L.children||[]).filter(c=>c.type!=='group'&&EFFECTS[c.type]).map(normalize);L.macros=L.macros||[];return L;}
   const d=EFFECTS[L.type];L.p=L.p||{};for(const pd of paramsOf(L))if(!L.p[pd.k])L.p[pd.k]=mkN(pd.def);
-  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(L.type==='lottie'){L.media=L.media||{};L.media.start=Number.isFinite(+L.media.start)?Math.max(0,+L.media.start):0;L.media.speed=Number.isFinite(+L.media.speed)?Math.max(0,+L.media.speed):1;L.media.loop=L.media.loop!==false;}if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
+  if(L.type==='pathshape'&&!(Array.isArray(L.pts)&&L.pts.length>=2&&L.pts.every(p=>Array.isArray(p)&&isFinite(p[0])&&isFinite(p[1]))))L.pts=[[-.55,-.12],[-.2,.16],[.18,-.14],[.55,.1]];
+  if(L.type==='text'&&!L.text)L.text={str:'ÉBREDÉS',font:'Cinzel',weight:'700',track:.12};if(L.type==='mtext'&&!L.text)L.text={str:'Új látomás',font:'Bricolage Grotesque',weight:'800',track:-.01};if(d&&d.usesText&&!L.text)L.text={str:'VEL · ÉLŐ SZÖVEG · ',font:'Unbounded',weight:'700',track:.06};if(L.type==='lottie'){L.media=L.media||{};L.media.start=Number.isFinite(+L.media.start)?Math.max(0,+L.media.start):0;L.media.speed=Number.isFinite(+L.media.speed)?Math.max(0,+L.media.speed):1;L.media.loop=L.media.loop!==false;}if(L.type==='sdfscene'&&!Array.isArray(L.prims)){L.prims=JSON.parse(JSON.stringify(DEF_PRIMS));L.psel=0;}if(L.type==='custom'&&!L.code)L.code=DEFAULT_CODE;if(L.type==='blob'&&L.btext==null)L.btext='{id} · {x}, {y}';if(d.spine&&!Array.isArray(L.spine))L.spine=JSON.parse(JSON.stringify(d.spine));return L;}
 export const SIZES:[string,string[][]][]=[['Képernyő',[['1920x1080','16:9 · 1920 × 1080'],['1080x1080','1:1 · 1080 × 1080'],['1080x1350','4:5 · 1080 × 1350'],['1080x1920','9:16 · 1080 × 1920'],['3840x2160','4K · 3840 × 2160']]],
  ['Bannerek',[['300x250','300 × 250'],['300x600','300 × 600'],['728x90','728 × 90'],['970x250','970 × 250'],['160x600','160 × 600']]]];
 export const LOOKP=[S('exposure','Expozíció',-2,2,0),S('bloom','Bloom',0,2,.5),S('radius','Bloom-sugár',0,1,.6),S('thresh','Bloom-küszöb',0,2,.8),S('hal','Halation (filmes vörös derengés)',0,1.5,.3),

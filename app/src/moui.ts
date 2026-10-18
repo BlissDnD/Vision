@@ -20,6 +20,7 @@ import { paramList, renderTimeline } from './timeline';
 import { markDirty } from './loop';
 import { toast } from './modals';
 import { setPlay } from './transport';
+import { physOut } from './physics';
 
 R.moSel = {};
 const ring = (el: any, v: number) => el.style.setProperty('--s', String(Math.max(0, Math.min(1, v))));
@@ -32,6 +33,7 @@ export function attachMo(i: number, refId?: string | null) {
   if (!li || !li.mo) return null;
   if (!r) { toast(`${li.name}: jelölj ki egy réteget, vagy húzd rá egy rétegre (vásznon vagy a rétegsorban).`); return null; }
   const L = r.it; const m = makeMo(li.mo, li.mo === 'spring' ? { at: Math.round(Math.max(0, R.time) * 100) / 100 } : {});
+  if (li.mo === 'path' && R.pathFirst) { const id = R.pathFirst(L.id); if (id) (m as any).path = id; else toast('Útvonalon: előbb rajzolj egy Útvonalat (2D Formák → Útvonal), és válaszd ki a Mozgás fülön.'); }
   (L.mo = L.mo || []).push(m); R.moSel[L.id] = m.id; R.selId = L.id; R.moAud = null; R.itab = 'motion';
   try { localStorage.setItem('vel.itab', 'motion'); } catch (_) { /* ignore */ }
   commit(); renderAll(); markDirty(); const wasPlaying = !!R.playing; if (!wasPlaying && !R.noAutoPlay) setPlay(true);
@@ -118,7 +120,8 @@ export function motionsUI(L: any) {
     const del = h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás' }, '×'); del.onclick = () => { mos.splice(i, 1); commit(); renderInsp(); markDirty(); };
     const ic = row.children[leg.length + i];
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, d.name), eye, del),
-      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q)), ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
+      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), m.t === 'path' && R.pathPick ? R.pathPick(m, 'path', L.id) : null, d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q)), ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
+        m.t === 'phys' ? physRow(L, m) : null,
         m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a nyíl végét húzva állítod, honnan érkezik; ⌘ + fel/le a tempó, ⌘ + oldalra a karakter, ⌥ vagy a nyíl közepe: ív, ⇧: 15°-os szögek.') : null,
         h('button', { class: 'btn mobake', type: 'button', title: 'A mozgást valódi X / Y / Méret / Szög / Átlátszóság kulcsokká alakítja (a mozgás eltűnik; ⌘Z visszavonja)', onclick: () => {
           const n = bakeMo(L, m); delete R.moSel[L.id]; commit(); renderAll(); markDirty(); toast(`${d.name} → ${n} kulcskocka a réteg saját értékein · ⌘Z visszavonja`); } }, 'Kulcsokká alakítás')))); }
@@ -140,4 +143,10 @@ R.moUI = motionsUI;
 /** Main settings: the strength of each motion (the same value as on the Mozgás tab). */
 R.moMain = (L: any) => (L.mo || []).map((m: any) => ctlSlider(m.p.amt, { ...AMT, l: MO[m.t].name + ' erőssége' }));
 
+/** Fizikai test: whether the body has left the canvas by the end of the scene, with a one-click Visszahozás (walls back on). */
+function physRow(L: any, m: any) {
+  const o = physOut(L, Math.max(R.time, st.dur)); if (o < 0) return null;
+  return h('div', { class: 'small physout' }, `A test a vásznon kívül kerül (${o.toFixed(1)} mp-től). `,
+    h('button', { class: 'btn', type: 'button', title: 'A vászon szélét újra fallá teszi, így a test bent marad', onclick: () => { m.p.walls.v = 0; commit(); renderInsp(); markDirty(); toast('Fizikai test: visszahozva (a vászon széle fal)'); } }, 'Visszahozás'));
+}
 /* The on-canvas arrow (Rugalmas beúszás, Beúszás/Kiúszás) and the handles of the continuous motions live in gesture.ts. */

@@ -32,6 +32,7 @@ export interface EffectDef {
   feedback?: boolean;
   points?: boolean;
   blob?: boolean;
+  fluid?: boolean;
   usesPal?: boolean;
   noPal?: boolean;
   groups?: { t: string; keys: string[]; open?: boolean; text?: boolean }[];
@@ -73,7 +74,7 @@ export interface Layer {
 }
 
 export interface Look { preset: string; tone: number; fps: number; p: Record<string, NParam> }
-export interface Camera { id: '__cam'; name: string; type: 'cam'; vis: boolean; on: boolean; n: Record<string, NParam>; p: Record<string, NParam> }
+export interface Camera { id: '__cam'; name: string; type: 'cam'; vis: boolean; on: boolean; n: Record<string, NParam>; p: Record<string, NParam>; mode?: number; shots?: { t: number; id: string }[]; path?: string; ploop?: number; focusT?: boolean }
 
 /** The whole project state (what is saved, undone and exported). */
 export interface Project {

@@ -133,6 +133,17 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - Kamera: `mesh3d.ts` `camOf` és MSAA-cél (`targets`, most exportálva). `gridN`: 160/384/640 csúcs, ≥1800 px magas kimeneten ×2 és +1 oktáv (4K export).
 - Licenc: a zajmag (hash12, vnoise, fbm, ridged, terrace, crater2, dune2, vnoised2) a ZyFou/ProceduralTerrains-ből származik (MIT, © 2026 ZyFou); a szöveg a fájl fejlécében van.
 
+## F2 Fizikai test (2026-10-18)
+- `src/physics.ts`: 2D impulzusos merevtest-megoldó (kör–kör, kör–doboz, doboz–doboz SAT, Coulomb-súrlódás, pattanás, vászonfalak, 8 iteráció, 60 Hz). A világ = a felső szintű, látható rétegek bekapcsolt `phys` mozgással; állapot t-ben = lépések 0-tól, 1 s-os ellenőrzőpontokkal, a fizikára ható adatok kulcsa (`keyOf`) érvényteleníti.
+- `motion.ts`: új `phys` mozgás (Mozgás polc), `moEval` a `physAt(L,t)` eltolását adja hozzá; a Kulcsokká alakítás a fizikai pályát is kulcsokká süti. Rögzített test / Kezdés előtt: kinematikus, a saját animációját követi és tolja a többit.
+- `moui.ts` `physRow`: ha a test a jelenet végéig kiesik (Vászon széle = Átengedi), felirat + Visszahozás. Teszt: `tests/f2_physics.js`.
+
+## F1 Folyadékmező (2026-10-18)
+- `src/fluid.ts`: Stable Fluids GPU-n, rétegenként saját FBO-párokkal a `ctx.fluid` térképben (sebesség, nyomás, festék RGBA16F; curl → örvényerősítés → divergencia → 20 Jacobi → gradiens → advekció). A rács csak a képaránytól és a Minőségtől függ (96/144/220 sor), nem a kimeneti mérettől.
+- `effects/fluid.ts`: `fluid` (Forrás, Áramló tinta) és `fluidfx` (Megjelenés, Torzítás/Feltárás); a kijelző shader `uDye`/`uVel` textúrát kap (`setU` = `bindField`). Források: seedből számolt Lissajous-pályák a réteg x/y-ja körül (`emitters`, tiszta függvény); a réteg két lépés közti elmozdulása lökés (vásznon húzás).
+- Közös óra: `sim.ts` állapotosnak veszi (`fluid:true`), `resetSim` → `resetFluid`; a `render.ts` csak `ctx.advance` mellett léptet (`fluidPrep`), a nem használt mezőket `fluidSweep` szabadítja fel. A modul a `gl.ts`-sel körkörös importban van, ezért a programok első használatkor linkelődnek.
+- Teszt: `tests/f1_fluid.js`.
+
 ## L1 Lottie vektoranimáció (2026-10-18)
 - `lottieCore.ts` ellenőrzi a helyi, csak vektoros JSON-t (méret/mélység/rétegtípus/expression) és a Vel jelenetidejéből számolja a képkockát; `lottie.ts` a MIT-licencű `lottie-web` light Canvas renderelőjét használja, méret- és képkockaérzékeny WebGL-textúra-gyorsítótárral.
 - `lottieImport.ts` adja az előnézetet és a fájlválasztást, valamint külső hivatkozást a LottieFiles gyűjteményére; nincs online katalógus-integráció. A `presets.ts` globális JSON-ejtése Lottie esetén ide irányít. A `lottie` réteg ugyanazt a képútvonalat és Megjelenés-láncot használja, mint az `image`.
@@ -147,6 +158,27 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `rndq.ts`: `measureImg` (nyers statisztika RGBA-ból), `SYMPTOMS` (bővíthető tünetlista: `{k,name,w,p(stats)}`), `judgeStats`/`scoreSym` (0–100, `qThreshold(strict)`), `capture`/`judgeScene` (saját `R.qCtx`, ≤640 px, `st.look` ideiglenesen cserélve), `fixCulprit` (gyanús effekt kihagyása → gyengítés/kivétel).
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
+
+## T6 Szöveg 3D (2026-10-18)
+- `effects/text3d.ts`: `usesText` effektek (a `makeLayer`/`normalize` `L.text`-et ad, a `mediaFor` a `textTex`-et köti `uImage`-re, az inspector szövegmezője és a `textbar` is kezeli). `textwrap`: perspektivikus sugár, gömb/henger metszés **stabil képlettel** (legközelebbi pont, nem `b²−c`: SwiftShaderen kioltódott), u = szög × Ismétlés, v-sáv a szöveg arányából; két oldal (elöl/túloldal). `textextrude`: doboz-metszés + 64 lépéses menetelés a szöveg alfáján, 5 lépés finomítás, oldalnormál az alfa gradienséből.
+- `textpath.ts`: betűatlasz (canvas, 96 px), betűnként négyszög ívhossz szerint (`glyphsAt`), útvonal nélkül saját ív (`ARC`); Körbe ér = periódus max(úthossz, szöveghossz).
+
+## K3 Kamera-rendezés (2026-10-18)
+- `camdir.ts` `camDir(t)` → `{dx,dy,droll,focus}`, a `render.camXf` adja hozzá a kulcsolt X/Y/Döntéshez (követő módban így eltolás). Képkockánként memoizált (`R.camFrame` a `renderScene` elején nő).
+- Célpontok: `st.cam.shots=[{t,id}]`, aktív = utolsó `t ≤ idő`; átúszás quintic easinggel `trans` alatt; követés = 8 múltbeli minta lineáris súllyal (`lag`), a cél nyers helye a kamera nélkül (`placeAt`, `R.CAMON=false`). Útvonalon: `pathAt(st.cam.path, t, u)`, `pper`, `ploop`.
+- Új `CAMP`: `shake`, `lag`, `trans`, `pper` (kulcsolhatók a Kamera soron). `normCam` csak meglévő K3-mezőt másol. UI: `camui.ts` (`R.camExtra` az `openCam`-ben).
+
+## P2 Közös útvonal (2026-10-18)
+- `paths.ts`: a közös görbemodell. `L.pts` (helyi egység) → `curve` (Catmull-Rom, zárt/nyitott, szögletes) → `toWorld` a réteg elhelyezésével (`placeAt`, ugyanaz, mint a `setXform`; óramutató szerinti forgatás, mint a `glsl.ts` `toUV`) → `arc`/`sampleArc`/`resample` ívhossz szerint. `simplify` = RDP a rajzhoz, `insertPt` a legközelebbi kontrollszakaszra. `R.pathAt(id,t,u)` a többi modulnak.
+- `pathdraw.ts`: `pathshape` saját rajzolás (VAO, háromszögszalag: across/ív/mag-arány/félszélesség attribútum), a kinézet, Kirajzolás, szaggatás a fragment shaderben; zárt kitöltés `earClip`.
+- `pathedit.ts`: fogantyúk (`.pgrips`, `R.updPathGrips` a `loop.ts`-ben), dupla kattintás a `.phit` vonalon, Alt+kattintás törlés, rajzpad (`armPathDraw`, a polc `drawPath` eleme élesíti), `R.pathPick` (Mozgás-kártya és emitter), `R.pathSection` (inspector).
+- `motion.ts` `path` mozgás (`m.path` = rétegazonosító, `normMo` megőrzi): dx/dy = útvonalpont − alaphely, Irányba fordul = −szög. Emitter 6. alak: 128 egyenletes pont `uPath` uniformban.
+
+## E1 Részecske Forrás (2026-10-18)
+- `emitter.ts`: `emitter` effekt (`draw` hook a `render.renderList`-ben, GL pontok). Állapot nélküli: rekesz i születése `i/cap + k·W` (folyamatos), löketnél `j=i/M` csoport, `m ≡ j (mod B)` legutóbbi lökete; jelzésnél az utolsó 16 `st.cues`. A hash (cyc, i, seed) adja a sorsot.
+- `placeAt(L,t)` = a `setXform` számítása (behav + kamera); 32 minta az utolsó Élettartamra (`uTr`), a Mennyiség is (`uTrR`, a kapacitás 1,25-ös lépcsőkre kerekítve, így az animált mennyiség nem keveri át a rekeszeket).
+- Mozgás zárt képlettel: közegellenállás `fk/gk`, gravitáció és szél állandó erő, széllökés = közös 1D zaj különbsége (integrál), örvény = 3D zaj eltolás; padló legfeljebb 5 pattanás ballisztikusan. Alak 5: elutasító mintavétel az alatta lévő képből (alfa + háttérszíntől eltérés).
+- Kinézetek a fragment shaderben (`vSh` = szög, flip/csíkhossz, méretarány). Teszt: `tests/e1_emitter.js`.
 
 ## Gesztus-mozgás (2026-10-18)
 - `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).

@@ -71,7 +71,7 @@ export function renderInsp(){
       ctlSlider(speed,{k:'speed',l:'Sebesség',min:.05,max:8,def:1,step:.01},{noAnim:true,onInput:()=>{L.media.speed=speed.v;markDirty();renderTimeline();}}),
       ctlSwitch('Média Loop',L.media.loop,v=>{L.media.loop=v;commit();renderTimeline();})));
   }
-  if(L.type==='text'||L.type==='mtext'){const ti=h('textarea',{class:'txt',rows:String(Math.min(5,Math.max(1,String(L.text.str).split('\n').length))),'aria-label':'Felirat (Enter = új sor)'});ti.value=L.text.str;ti.oninput=()=>{L.text.str=ti.value;ti.rows=Math.min(5,Math.max(1,ti.value.split('\n').length));};ti.onchange=commit;
+  if(L.type==='text'||L.type==='mtext'||d.usesText){const ti=h('textarea',{class:'txt',rows:String(Math.min(5,Math.max(1,String(L.text.str).split('\n').length))),'aria-label':'Felirat (Enter = új sor)'});ti.value=L.text.str;ti.oninput=()=>{L.text.str=ti.value;ti.rows=Math.min(5,Math.max(1,ti.value.split('\n').length));};ti.onchange=commit;
     const FONTS=['Bricolage Grotesque','Instrument Sans','Fraunces','Cinzel','Unbounded','Syne','Orbitron','Major Mono Display','Bodoni Moda'];
     const fs=h('select',{'aria-label':'Betűtípus'},...FONTS.map(f=>{const o=h('option',null,f);if(f===L.text.font)o.selected=true;return o;}));fs.onchange=()=>{L.text.font=fs.value;commit();};
     const ws=h('select',{'aria-label':'Vastagság'},...[['300','Vékony'],['400','Normál'],['500','Közepes'],['700','Félkövér'],['800','Extra']].map(w=>{const o=h('option',{value:w[0]},w[1]);if(w[0]===L.text.weight)o.selected=true;return o;}));ws.onchange=()=>{L.text.weight=ws.value;commit();};
@@ -91,6 +91,7 @@ export function renderInsp(){
   for(const key of mainKeys){const pd=PS.find(p=>p.k===key);if(pd)mainKids.push(ctlParam(L,pd,true));}
   if(R.moMain)mainKids.push(...R.moMain(L));
   if(L.type==='sdfscene')T('content',sdfObjectsSection(L));
+  if(R.pathSection){const ps=R.pathSection(L);if(ps)T('content',ps);}
   T('content',section(k==='fx'?'Szűrő':'Fő beállítások','main',true,...mainKids));
   const detKids=PS.filter(p=>!mainKeys.includes(p.k)&&!AK.includes(p.k)).map(pd=>ctlParam(L,pd));
   if(L.type!=='custom')detKids.push(h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>showCode(L)},'GLSL kód megnyitása')));

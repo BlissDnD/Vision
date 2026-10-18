@@ -2,6 +2,59 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — Összefésülés: F1 Folyadék + F2 Fizika ide (0.41.0-merge)
+
+- A `claude/vel-fluid-797dca` ág (F1 Folyadékmező, F2 Fizikai test) összefésülve az E1/P2/K3/T6 ággal. Ütközések: `cost.ts`, `effects/index.ts`, `render.ts` (rajzolóhook + folyadék-előkészítés), `motion.ts`/`moui.ts` (Útvonalon + Fizikai test együtt: a Mozgás polcon 8 mozgás), verzió, doksik.
+- Teljes kör az összefésült állapotra: **46/46 zöld**, typecheck 0 hiba, build `app/dist/index.html`.
+
+## Állapot: 2026-10-18 — T6 Szöveg 3D (0.40.0-t6)
+
+- Szöveg és média → **Térbeli szöveg**: Szöveg hengeren / gömbön / Szalaggyűrű (forgás, dőlés, ismétlés, túloldal áttetszik, Tömör test), **Kihúzott 3D szöveg** (mélység, homlok- és oldalszín, fény, csillanás, billegés), **Szöveg útvonalon** (P2 Útvonal vagy saját ív, Eltolás, Úszás, Betűköz, az úttal fordul / egyenesen áll). Mind élő szöveg: a felső szövegsávban vagy a Tartalom fülön írod át.
+- Teljes kör az E1+P2+K3+T6 állapotra: **44/44 zöld**. Célzott teszt `tests/t6_text3d.js` zöld (renderel, átírás látszik, forog és seek-determinisztikus, tömör test, túloldal, mélység + oldalszín, betűk az úton és úsznak, újranyitás, 6 könyvtári elem).
+- Próba: 1) Szöveg hengeren, írd át; 2) Kihúzott 3D szöveg: Mélység, Fordulat; 3) Útvonal + Szöveg útvonalon (Útvonal választó a Tartalom fülön), Úszás; 4) mentés → újranyitás.
+- Korlát: nincs szöveg alakú kivágás, a 3D szöveg nem háromszögháló (nem árnyékol más tárgyra), a gömb sarkain a betűk torzulnak.
+
+## Állapot: 2026-10-18 — K3 Kamera: célzás, követés, útvonal (0.39.0-k3)
+
+- Kamera ablak → **Mód**: Kézi / **Célpontok** („Kijelölt réteg mostantól”; több célpont = célváltás lágy átúszással; mozgó cél követése „Követés késése” szerint; **Élesség a célon** = fókuszváltás) / **Útvonalon** (Útvonal réteg, Bejárás ideje, Körbe/Oda-vissza/Egyszer). **Kézikamera** csúszka minden módban. Követő módban a kulcsolt X/Y eltolás.
+- Célzott teszt `tests/k3_camera.js` zöld (középre áll, célváltás átúszik és előtte nem mozdul, késleltetett követés, fókusz a célon, útvonal, determinisztikus remegés, újranyitás, régi kamera változatlan).
+- Próba: 1) Kamera be, Mód: Célpontok, 0 mp-nél A réteg, 3 mp-nél B → lejátszás; 2) A-ra Lebegés, Követés késése 0,6; Élesség a célon + blende; 3) Mód: Útvonalon; Kézikamera 0,3; 4) mentés → újranyitás.
+- Korlát: 2,5D kamera (nincs valódi 3D nézőpont), a célpontok nem húzható blokkok a Sávokon, nincs kamerafogantyú a vásznon.
+
+## Állapot: 2026-10-18 — P2 Közös útvonal, első szelet (0.38.0-p2)
+
+- **2D Formák → Útvonal (rajzolj)**: egy húzással rajzolod (simított, kevés pont), utána a pontokat húzod, dupla kattintás a szaggatott vonalon = új pont, Alt+kattintás = törlés; inspector: Újrarajzolás, pont törlése, irány megfordítása. 7 kész változat (Neon vonal, Cső, Csavart szalag, Gyöngysor, Kirajzolódó vonal, Zárt forma, Élő hullám).
+- Kinézet: Vonal / Cső (3D árnyalás, csillanás) / Csavart szalag / Neon / Gyöngysor; vastagság elején/végén, Színátmenet/Paletta, Kirajzolás (eleje/vége/eltolás), szaggatás, zárt kitöltés (maszknak is), élő hullámzás.
+- Ugyanaz az útvonal: **Mozgás → Útvonalon** (Körbe/Oda-vissza/Egyszer, Irányba fordul; az útvonal átszerkesztését/mozgatását követi), **Részecske Forrás → Alak: Útvonal**.
+- Célzott teszt `tests/p2_path.js` zöld (görbe, egyenletes mintavétel, egyszerűsítés, háromszögelés, 5 kinézet, kirajzolás, szaggatás, kitöltés, hullám, mozgás a vonalon + követés + Egyszer, emitter a vonalon, újranyitás, 8 könyvtári elem). A `regression` a saját rajzolójú effekteket kihagyja a shaderfordításból; a `polyhaven_import` tesztet stabilabbra javítottam.
+- Próba: 1) 2D Formák → Útvonal (rajzolj), húzz egy vonalat; Kinézet: Cső, majd Neon; 2) húzz egy pontot, dupla kattintással adj hozzá; 3) Szöveg + Mozgás → Útvonalon; 4) Részecske Forrás, Alak: Útvonal; mentés → újranyitás.
+- Korlát: nincs tangensfogantyú, boole/üreg/kontúreltolás, 3D útvonal és szövegút; éles kanyarban a vastag vonal széle megtörhet.
+
+## Állapot: 2026-10-18 — E1 Részecske Forrás (0.37.0-e1)
+
+- **Részecskék → Részecske Forrás** + 8 kész változat (Szikraeső, Konfetti, Hulló levelek szélben, Hóesés, Füst, Tűzijáték-löket, Pattogó golyók, Szövegből szálló por). Alak: Pont/Vonal/Gyűrű/Korong/Téglalap/Alatta lévő kép alakja; Mennyiség, Élettartam, Irány, Szórás, Sebesség, Gravitáció, Szél + lökések, Örvény, Közegellenállás, pattogó Padló; 7 kinézet (pötty, kör, szikra, csík, konfetti, levél, füstfolt).
+- Ütemezés: Folyamatos / Löketek / Jelzésekre (J). A réteget mozgatva (húzás, kulcs, Mozgás) csóvát húz. Állapot nélküli: tekerés = export = újranyitás.
+- Célzott teszt `tests/e1_emitter.js` zöld (seek, mennyiség, gravitáció, szél, padló, löket, jelzés, előmelegítés, csóva, képalak, 7 kinézet, 5 alak, 9 könyvtári elem, újranyitás). Typecheck 0 hiba.
+- Próba: 1) Részecskék → Szikraeső, lejátszás közben húzd a réteget; 2) Gravitáció 0, Szél jobbra, Padló: Pattog; 3) Ütemezés: Jelzésekre, lejátszás közben J; 4) tekerj vissza, mentés → újranyitás.
+- Korlát: nincs útvonal-emitter (következő szelet), nincs ütközés más rétegekkel, nem valódi lépésenkénti szimuláció; M1 Max frame-idő mérése hátra.
+## Állapot: 2026-10-18 — F2 Fizikai test (0.38.0-f2, `claude/vel-fluid-797dca` ág)
+
+- **Mozgás polc → Fizikai test:** bármely rétegre húzva merev test lesz: Alak (Automatikus/Kör/Doboz), Gravitáció + irány (alapból 0), Tömeg, Pattanás, Súrlódás, Kezdő lökés + irány, Pörgetés, Ütközés (Mindennel/Csak a csoportjával/Semmivel), Csoport, Rögzített, Vászon széle (Fal/Átengedi), Kezdés.
+- A vászon széle alapból fal; a rögzített, kulcsokkal mozgatott réteg tolja a többit; kiesett testnél felirat + Visszahozás; Kulcsokká alakítás a fizikai pályát kulcsokká süti.
+- Saját kód (`src/physics.ts`, Oimo.js/Box2D-lite elv), függőség nincs. Ugrás = ugyanaz a helyzet (t = 0-tól, 1 s-os ellenőrzőpontok).
+- Célzott teszt: `tests/f2_physics.js` zöld (esés + megállás a falon, gravitáció alapból ki, ütközés + visszapattanás, Semmivel/Csoport-szűrés, rögzített doboz megtartja, két doboz egymáson, seek, kiesés + Visszahozás, renderelt kép, Kulcsokká alakítás, mentés–újranyitás). Teljes kör 41/42; a bukó `mo_motion` csak a polc elemszámát (6) várta, 7-re frissítve külön zöld. Typecheck 0 hiba.
+- Próba: 1) 3 alakzat, mindre Fizikai test, Gravitáció 1 → leesnek, pattannak; 2) az egyik Rögzített, kulcsokkal oldalra mozgatva meglöki a többit; 3) Vászon széle = Átengedi → kiesik → Visszahozás; 4) tekerj előre-hátra → ugyanaz.
+- Korlát: 2D (a 3D réteg is lapos testként ütközik), csak felső szintű rétegek, nincs csukló/rugó, helyi gravitációs mező, ütközés-esemény, a Kapcsolatok felületén ütközéslista; hosszú jelenetben az első ugrás a végére t = 0-tól számol (≈ 60 lépés/mp, néhány testnél gyors).
+
+## Állapot: 2026-10-18 — F1 Folyadékmező (0.37.0-f1, `claude/vel-fluid-797dca` ág)
+
+- **Források → Áramló tinta** (+ füstcsík, örvények, tintacsepp): valódi GPU-folyadékszimuláció, 1–6 seedelt vándorló forrás palettaszínű tintát fúj; Örvénylés, Lecsengés, Szél + irány, Lüktetés, Minőség. A réteget lejátszás közben húzva belefújsz.
+- **Megjelenések → Folyadékos torzítás / Folyadékos feltárás:** a sebességmező csak a célréteg képét mozdítja el; Feltárás módban a réteg csak a tinta nyomában látszik (Perem fény).
+- Közös óra: ugrás = újraszimulálás 3 s előfutással, export megismételhető; a mező felbontása a kimenettől független (4K = ugyanaz a mező).
+- Célzott teszt: `tests/f1_fluid.js` zöld (idővel változik, seek = azonos kép, Örvénylés hat, 3 minőség, torzítás csak a saját rétegen, Feltárás maszkol, bélyegkép, mentés–újranyitás). Teljes kör 40/41, a bukó `polyhaven_import` az ismert ingadozó teszt (`BUGS.md`). Typecheck 0 hiba.
+- Próba: 1) Áramló tinta behúzása, Lejátszás, Örvénylés fel; 2) lejátszás közben húzd a réteget; 3) Szövegre húzd a Folyadékos torzítást, Mód = Feltárás; 4) tekerj vissza ugyanarra az időre → ugyanaz a kép.
+- Korlát: megállított ugrás után az első képkocka egy lépés, a pontos kép ~0,2 s múlva finomodik (mint a Visszhangnál); a vászon-kattintás csak a források közelében választja ki a réteget; akadály, közös mező több réteg közt, részecske-kapcsolat még nincs; a húzásból fújás csak kulcsozva kerül exportba.
+
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 
 - **Rugalmas beúszás nyila:** vég húzása = irány + távolság; ⌘ + fel/le = tempó (fel = rövidebb), ⌘ + oldalra = karakter (Lágy/Ütés/Rugó); ⌥ vagy a nyíl közepe = ív (a réteg valóban az íven érkezik, `bend` paraméter); ⇧ = 15°-os szögek.
