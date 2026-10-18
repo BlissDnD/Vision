@@ -286,3 +286,8 @@ Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
 - Szerkeszthető Library + Edit, gyors mentés, gépi hordozhatóság, példányhatókör, Random/Variations.
 - A csatolt átadó másolata/provenance megőrizve; FORM-forrás és futási/vizuális paritás nem ellenőrzött.
 - Appkód/build változatlan; külön terv-ZIP, nem a régi snapshot csendes átírása.
+
+### 2026-10-18 — Help mód előkészítés (Codex)
+- `docs/claude-handoff/help-mode/00-START-HERE.md`: forrásra illesztett Help mód terv a 0.45.0-cat1 alapnál.
+- Rögzítés, fogalomlánc, fókusz/modal/érintés szabályok, tartalomszerződés, négy szelet és elfogadási esetek.
+- Csak dokumentáció; appkód/build nem változott, UI-próba nem futott.

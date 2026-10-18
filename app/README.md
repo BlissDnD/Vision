@@ -253,3 +253,7 @@ A `../docs/claude-handoff/shapegen/00-START-HERE.md` a FORM v8 generátorainak �
 - `catalog.ts`: `catalogIndex()` lustán épül LIB-ből (keresés nélkül `resetCatalog`), `catSearch(q, role)`, `catRoleCounts`, `catId`, `roleOf`. A típus az elem nevéből (EFFECTS) és a `make` forrás string-literáljaiból jön.
 - Pontozás: névprefix 100, egyéb saját szó 40, szinonima a névben 60, szinonima a leírásban 15; a szinonima nem illeszt a polc nevére.
 - `shelf.ts` `libSearch` → `catSearch`; `buildCats` keresés közben `.rolechip` gombokat rajzol (`R.libRole`).
+
+### Help mód terve
+
+`../docs/claude-handoff/help-mode/00-START-HERE.md`: a workspace tooltipútjára épülő rögzíthető fogalomkártyák terve, esemény/fókusz határokkal és külön súgóadatokkal. Nincs új futásidejű modul.

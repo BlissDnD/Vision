@@ -125,3 +125,7 @@ Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18
 ## FORM / ShapeGen beépítés – terv (2026-10-18)
 
 `docs/claude-handoff/shapegen/00-START-HERE.md`: új alkalmazáson belüli ShapeGen fül, Blob/Pattern/BG/Gradient + rajz/geometry/Lottie/ikon eszközök megtartása. Önálló/célhoz kötött Add from Gen/Library; Solo/Scene/Split valódi Vel-preview; Alkalmazás egy undo + opcionális Library-mentés; szerkeszthető forrás és Edit in ShapeGen; teljes random és hat közeli Variations, példányhatókör. 89 funkciótétel, 8 SG task, a mai 0.43.0-merge alapokra illesztve. A FORM v8 Markdown forráskódot nem tartalmaz; source gate a kódoló agentnél. Csak terv, nincs appimplementáció; a korábbi önálló FORM-fejlesztési utasításokat nem hajtjuk végre.
+
+## Help mód — előkészített terv (2026-10-18)
+
+`docs/claude-handoff/help-mode/00-START-HERE.md`: kapcsolható bővebb hover, rögzíthető kártya, explicit fogalom-/effektlinkek, Vissza/Escape, legfeljebb két látható kártya, billentyűzet és érintéses Mi ez?. A meglévő workspace-tooltipra építendő, jelenetmódosítás nélkül. Négy fejlesztési szelet és tartalom-/runtime-agenthatárok; csak terv, implementáció nem kezdődött.
