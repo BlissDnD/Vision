@@ -44,3 +44,7 @@ A Vel natív TypeScript/DOM + CSS app, nem React. A Material Design szabályrend
 - https://m3.material.io/styles/color/the-color-system — szemantikus színszerepek.
 - https://developers.google.com/fonts/docs/material_symbols — ikonok, SVG és testreszabás.
 - https://github.com/material-components/material-web — webkomponensek és maintenance státusz.
+
+## Elkészült starter — 2026-10-18
+
+A felhasználó Claude-ban véglegesítendő alapcsomagot kért. Az implementált források egyelőre `prototypes/material-ui/src/` alatt vannak, nem az appban; belépési pont: `prototypes/material-ui/AGENTS.md`. Offline bemutató, 11 hivatalos ikon, 19/19 célzott próba. A fenti `app/src/ui/` útvonalak továbbra is jövőbeli integrációs tervet jelentenek; ne hozz létre párhuzamos komponensmásolatot. Teljes rendszer és appmigráció nincs kész.

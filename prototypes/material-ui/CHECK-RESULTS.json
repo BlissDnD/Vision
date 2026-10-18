@@ -1,0 +1,78 @@
+[
+  {
+    "check": "three example panels",
+    "passed": true
+  },
+  {
+    "check": "numeric change commits",
+    "passed": true
+  },
+  {
+    "check": "number and slider stay synchronized",
+    "passed": true
+  },
+  {
+    "check": "reset restores default",
+    "passed": true
+  },
+  {
+    "check": "switch commits",
+    "passed": true
+  },
+  {
+    "check": "choice selection",
+    "passed": true
+  },
+  {
+    "check": "direction keyboard",
+    "passed": true
+  },
+  {
+    "check": "curve drawing commits",
+    "passed": true
+  },
+  {
+    "check": "smooth changes curve",
+    "passed": true
+  },
+  {
+    "check": "reset restores curve",
+    "passed": true
+  },
+  {
+    "check": "dialog opens",
+    "passed": true
+  },
+  {
+    "check": "dialog Escape closes",
+    "passed": true
+  },
+  {
+    "check": "library filter",
+    "passed": true
+  },
+  {
+    "check": "theme toggle",
+    "passed": true
+  },
+  {
+    "check": "no horizontal overflow at 320",
+    "passed": true
+  },
+  {
+    "check": "no horizontal overflow at 390",
+    "passed": true
+  },
+  {
+    "check": "no horizontal overflow at 768",
+    "passed": true
+  },
+  {
+    "check": "no horizontal overflow at 1280",
+    "passed": true
+  },
+  {
+    "check": "no browser errors",
+    "passed": true
+  }
+]

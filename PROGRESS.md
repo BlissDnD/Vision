@@ -1,5 +1,11 @@
 ## 2026-10-18 — English-default localization foundation
 
+## 2026-10-18 — Material 3 starter Claude-nak (Codex)
+- `prototypes/material-ui/`: közös tokenek/CSS/TS-vezérlők, 11 hivatalos offline SVG, három mintapanel, AGENTS/README.
+- Rajzolható/simítható görbe és iránykör prototípus; Vel runtime/undo/mentés nincs bekötve.
+- Strict typecheck/build zöld, célzott Playwright 19/19; 320/390/768/1280 px elrendezés ellenőrizve, képek és eredmények a csomagban.
+- Felhasználói próba és Claude-ban véglegesítés hátra; a főapp nem változott.
+
 ## 2026-10-18 — UI/UX-próba visszajelzésének rögzítése (Codex)
 - A UI-spec 6. fejezete: egész appra Apple-jellegű design system, görberajzolás/simítás, ikonok, kapcsolók, iránykör, színek elhelyezése, toolbar és kategóriaszínek.
 - Hét felhasználói képkivágás tartós referenciaként elmentve; feliratlevágás és zsúfoltság a BUGS-ban is.

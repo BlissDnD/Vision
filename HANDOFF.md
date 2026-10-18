@@ -149,3 +149,7 @@ A felhasználó a működést alapvetően jónak, a színeket jónak tartja, de 
 ## Material Design 3 választás — 2026-10-18 (Codex)
 
 A felhasználó Material Design alapot választott. Ez felülírja a korábbi Apple/shadcn alapirányt. Kutatás, Vel-komponensmegfeleltetés, tervezett közös CSS/TS-fájlok és bevezetési sorrend: `docs/spec/VEL-MATERIAL-DESIGN-SYSTEM.md`. Csak terv; következő: konkrét komponensbemutató-szelet javaslata. A Material Web maintenance státusz miatt a Material-spec és a kész csomag kiválasztása külön döntés.
+
+## Material 3 agent-alapcsomag — 2026-10-18 (Codex)
+
+A felhasználó kérésére elkészült a Claude-ban véglegesítendő alap: `prototypes/material-ui/AGENTS.md` és `README.md`. Közös tokenek, CSS, típusos natív DOM-vezérlők, 11 hivatalos Material Symbols + licenc; offline `index.html`, Mozgás/Színek/Részletek példák. Görberajz/simítás/reset és iránykör működik prototípusként; Vel undo/mentés/renderer nincs bekötve. Strict typecheck/build és 19/19 célzott headless próba zöld, 320–1280 px túlcsordulás nélkül. Következő: felhasználói próba és Claude-véglegesítés, majd külön panelintegráció. Nem a teljes kész design system.
