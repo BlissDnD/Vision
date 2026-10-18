@@ -53,3 +53,9 @@ Pipáld ki, ami jó (`[x]`). Ami rossz vagy furcsa, írd mellé egy szóval, vag
 - [ ] Lejátszás közben **húzd a réteget** a vásznon → a tinta a húzás irányába csóvázik.
 - [ ] Szövegre húzd a **Folyadékos torzítás**t → csak a szöveg hullámzik; Mód = Feltárás (vagy a polcról a *Folyadékos feltárás*) → a szöveg a tintából bukkan elő.
 - [ ] Tekerj előre-hátra ugyanarra az időre → ugyanaz a kép; exportálj 2 s-ot. Mérd a frame-időt (cél: Normál minőségen sima 60 fps).
+
+## F2 Fizikai test (0.38.0-f2) – 3 perc
+- [ ] 3 alakzat (kör, téglalap), mindegyikre a Mozgás polcról **Fizikai test**, Gravitáció 1 → leesnek, pattannak, egymásra borulnak.
+- [ ] Az egyiknél Test = Rögzített, és kulcsokkal mozgasd oldalra → meglöki a többit.
+- [ ] Egy testnél Vászon széle = Átengedi + Kezdő lökés → kiesik; a Mozgás fülön **Visszahozás** → újra bent.
+- [ ] Tekerj előre-hátra → ugyanaz a helyzet; Kulcsokká alakítás → a pálya kulcsokként marad.

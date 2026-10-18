@@ -3,6 +3,7 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**F2 Fizikai test (0.38.0-f2, `claude/vel-fluid-797dca` ág):** Mozgás polc → Fizikai test, saját 2D merevtest-megoldó a közös órán; headless teszttel demonstrálva (`tests/f2_physics.js`), próba: `PROGRESS.md`.
 **F1 Folyadékmező (0.37.0-f1, `claude/vel-fluid-797dca` ág):** Áramló tinta Forrás + Folyadékos torzítás/feltárás Megjelenés, közös órán; headless teszttel demonstrálva (`tests/f1_fluid.js`), próba: `PROGRESS.md`.
 
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).

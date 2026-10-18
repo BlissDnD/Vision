@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — F2 Fizikai test (0.38.0-f2, `claude/vel-fluid-797dca` ág)
+
+- **Mozgás polc → Fizikai test:** bármely rétegre húzva merev test lesz: Alak (Automatikus/Kör/Doboz), Gravitáció + irány (alapból 0), Tömeg, Pattanás, Súrlódás, Kezdő lökés + irány, Pörgetés, Ütközés (Mindennel/Csak a csoportjával/Semmivel), Csoport, Rögzített, Vászon széle (Fal/Átengedi), Kezdés.
+- A vászon széle alapból fal; a rögzített, kulcsokkal mozgatott réteg tolja a többit; kiesett testnél felirat + Visszahozás; Kulcsokká alakítás a fizikai pályát kulcsokká süti.
+- Saját kód (`src/physics.ts`, Oimo.js/Box2D-lite elv), függőség nincs. Ugrás = ugyanaz a helyzet (t = 0-tól, 1 s-os ellenőrzőpontok).
+- Célzott teszt: `tests/f2_physics.js` zöld (esés + megállás a falon, gravitáció alapból ki, ütközés + visszapattanás, Semmivel/Csoport-szűrés, rögzített doboz megtartja, két doboz egymáson, seek, kiesés + Visszahozás, renderelt kép, Kulcsokká alakítás, mentés–újranyitás). Teljes kör 41/42; a bukó `mo_motion` csak a polc elemszámát (6) várta, 7-re frissítve külön zöld. Typecheck 0 hiba.
+- Próba: 1) 3 alakzat, mindre Fizikai test, Gravitáció 1 → leesnek, pattannak; 2) az egyik Rögzített, kulcsokkal oldalra mozgatva meglöki a többit; 3) Vászon széle = Átengedi → kiesik → Visszahozás; 4) tekerj előre-hátra → ugyanaz.
+- Korlát: 2D (a 3D réteg is lapos testként ütközik), csak felső szintű rétegek, nincs csukló/rugó, helyi gravitációs mező, ütközés-esemény, a Kapcsolatok felületén ütközéslista; hosszú jelenetben az első ugrás a végére t = 0-tól számol (≈ 60 lépés/mp, néhány testnél gyors).
+
 ## Állapot: 2026-10-18 — F1 Folyadékmező (0.37.0-f1, `claude/vel-fluid-797dca` ág)
 
 - **Források → Áramló tinta** (+ füstcsík, örvények, tintacsepp): valódi GPU-folyadékszimuláció, 1–6 seedelt vándorló forrás palettaszínű tintát fúj; Örvénylés, Lecsengés, Szél + irány, Lüktetés, Minőség. A réteget lejátszás közben húzva belefújsz.

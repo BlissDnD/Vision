@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (91 fájl)
+## Modulok (92 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -69,12 +69,13 @@
 | `mesh3d.ts` | 24 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, targets, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
 | `migrate.ts` | 4 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | toastT |
-| `motion.ts` | 17 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
-| `moui.ts` | 15 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
+| `motion.ts` | 18 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
+| `moui.ts` | 16 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, rec |
 | `palettes.ts` | 2 | PALS colour palettes, hexRGB, ease names | PALS, PAL_ORDER, ff, v3, palJS, palCSS, EASE_NAMES, hexRGB |  |
 | `partfx.ts` | 3 | M7 · Részecske Megjelenés ("pdisp"): a layer effect that turns its input (text, shape, image) into points, scatters them on an event and reassembles. Events: manual … | pdEvents, pdEnv, pdUniforms, altText, pdMix |  |
 | `perform.ts` | 8 | M5 + U1 · Eljátszás simítással. Armed (E): playback stops. The first value change of any animatable parameter during a pointer gesture (canvas drag of position / size … | Sample, MSample, smoothTakeN, smoothTake, applyTakeN, applyTake, setPerform, perfState | perform, perfSmooth, lastTake, perfHook |
+| `physics.ts` | 13 | F2 · Fizikai test: 2D impulse rigid bodies on the top-level layers carrying the 'phys' motion (motion.ts adds the result). World state at t = fixed 60 Hz steps from t … | PHYS_HZ, physAt, physOut, physReset |  |
 | `pick.ts` | 6 | Rétegválasztás a vásznon: mi van a kattintási pont alatt? Pixel-exact and type-agnostic: every candidate (top-level item; children of an open group) is rendered alone … | units, hitsAt, closePick | selId |
 | `polyhaven.ts` | 6 | Small, offline-searchable Poly Haven CC0 texture shelf. Only the chosen 2K image is downloaded. | POLY_HAVEN_TEXTURES, polyHavenImageURL, addPolyHavenTexture, openPolyHaven | openPolyHaven |
 | `popovers.ts` | 9 | Look / camera / export popovers | closePop, openPop, mi, EXP_DEF, EXP, applyExp, renderMB, dimsFor, updLookLbl, openLook, setTheme | popEl, popOff, aqF, speed, selId |
