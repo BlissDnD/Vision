@@ -1,0 +1,45 @@
+diff --git a/app/src/history.ts b/app/src/history.ts
+index 12d666f..9a417a3 100644
+--- a/app/src/history.ts
++++ b/app/src/history.ts
+@@ -47,9 +47,11 @@ export function loadMsg(){const m=R.lastLoad;if(!m)return 'Betöltve.';const old
+   const missing=m.missingMedia?.length?` Hiányzó vektoranimáció: ${m.missingMedia.slice(0,4).join(', ')}${m.missingMedia.length>4?' …':''}.`:'';
+   return `Betöltve${old}.${dropped}${missing}`;}
+ export function renderAll(){renderLayers();renderInsp();}
++/** A link end still exists (layer/fx, or something inside a shared base). Links whose both ends are gone are dropped on load. */
++const linkEnd=id=>!!(findItem(id)||findItem(String(id).split('.')[0])||JSON.stringify(st.bases).includes(JSON.stringify(String(id))));
+ /** bases + links (v4). Missing in older files = none. */
+ export function setShared(o){o=o||{};st.bases={};for(const id in (o.bases||{})){const b=o.bases[id];if(b&&Array.isArray(b.children))st.bases[id]={id,name:b.name||'Közös alap',children:b.children.map(normalize)};}
+-  st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to):[];attachLinks(ev);
++  st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to&&(linkEnd(l.from.id)||linkEnd(l.to.id))):[];attachLinks(ev);
+   st.cues=Array.isArray(o.cues)?o.cues.filter(c=>c&&isFinite(c.t)).map(c=>({id:c.id||'C'+Math.random().toString(36).slice(2,8),t:+c.t,label:c.label||''})):[];}
+ /** S1 scenes (saved compositions in order, each with its incoming transition). Missing in older files = none. */
+ export function setScenes(o){const src=o&&Array.isArray(o.scenes)?o.scenes:[];
+diff --git a/app/tests/polyhaven_import.js b/app/tests/polyhaven_import.js
+index 8a08358..8cde8b9 100644
+--- a/app/tests/polyhaven_import.js
++++ b/app/tests/polyhaven_import.js
+@@ -16,7 +16,7 @@
+   const cx=sample.getContext('2d');cx.fillStyle='#a83242';cx.fillRect(0,0,32,32);
+   const blob=await new Promise(resolve=>sample.toBlob(resolve,'image/jpeg',.9));
+   window.fetch=async url=>{if(url!==polyHavenImageURL('marble_01'))throw new Error('wrong source URL');return new Response(blob,{headers:{'content-type':'image/jpeg','content-length':String(blob.size)}});};
+-  if(choices[0])choices[0].click();await new Promise(r=>setTimeout(r,120));
++  if(choices[0])choices[0].click();for(let i=0;i<60&&!(st.layers[0]&&assets[st.layers[0].asset]);i++)await new Promise(r=>setTimeout(r,50));
+   const layer=st.layers[0];info.layer={name:layer?.name,source:layer?.source,asset:!!assets[layer?.asset]};
+   if(layer?.type!=='image'||layer?.source?.id!=='marble_01'||!assets[layer?.asset])bad.push('image not imported');
+   const saved=JSON.parse(projectJSON());if(!saved.assets[layer.asset]||!saved.state.layers[0].source)bad.push('offline project lacks source/image');
+diff --git a/app/tests/bug_orphan_link.js b/app/tests/bug_orphan_link.js
+new file mode 100644
+index 0000000..90d3a0b
+--- /dev/null
++++ b/app/tests/bug_orphan_link.js
+@@ -0,0 +1,9 @@
++// Orphan Kapcsolat (both ends missing) is dropped on load; a live one survives.
++(()=>{const bad=[],info={};
++  const j=JSON.parse(projectJSON());
++  const a=makeLayer('shape'),b=makeLayer('shape');j.state.layers=[a,b];
++  j.state.links=[{id:'k1',on:true,from:{id:a.id,g:'n',k:'x'},to:{id:b.id,g:'n',k:'s'}},{id:'k2',on:true,from:{id:'ZZ',g:'n',k:'x'},to:{id:'YY',g:'n',k:'s'}}];
++  loadProject(JSON.parse(JSON.stringify(j)));const ids=st.links.map(l=>l.id);info.ids=ids;
++  if(!ids.includes('k1'))bad.push('live link dropped');if(ids.includes('k2'))bad.push('orphan link kept');
++  st.layers=[];st.links=[];commit();
++  return {bad,info};})()
