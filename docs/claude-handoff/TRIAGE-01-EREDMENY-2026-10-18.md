@@ -75,3 +75,15 @@ A csomag hullámai (`FEJLESZTESI-TERV.md`) maradnak a gerinc; az M6–M10 bennü
 | később | SCENE-01 + Three-híd döntés (`gltf-import`, `model-animation`, `ik-chain`, `decal`), VIDEO-01, CHARACTER-01, RELIGHT-01, AI-PREVIZ-01 | | – | külön javaslat; nagy 3D fájl: beágyazás vs. hivatkozás döntés |
 
 Az M10 két helyen van: a 3'. hullámban egy korai, kipróbálható layoutrecept (hogy a minőséget valós munkán mérjük), a 6.-ban a teljes receptcsalád.
+
+## 7. Döntés: beágyazás + teljesítmény (a felhasználó döntése, 2026-10-18)
+
+Nagy médiát (3D modell, videó, hang, kép) **beágyazunk** a projektfájlba (hordozható, egy fájl). Feltétel: a program a lehető legoptimálisabban fusson. Minden addon/média szelet ezeket tartja:
+1. **Lusta indítás:** nehéz kód (pl. glTF-betöltő, fizika-WASM) tömörítve a HTML-ben, első használatkor csomagolódik ki és indul; nélküle a megnyitás nem lassul.
+2. **Asset egyszer:** tartalom-hash alapú azonosító, egy fájl egyszer van a projektben akárhány réteg/jelenet használja; törölt használat után takarítás mentéskor.
+3. **Dekódolás egyszer, GPU-élettartam:** dekódolt textúra/mesh gyorsítótárban, nem használt erőforrás felszabadul (dispose); nincs per-frame újrafeltöltés.
+4. **Előnézeti minőség vs. export:** nagy modell/textúra előnézetben csökkentett felbontás/LOD, exportban eredeti.
+5. **Költségjelzés:** a `cost.ts`/inspector mutassa a nehéz réteget; méret- és memóriakorlát figyelmeztetéssel, nem csendes vágással.
+6. **Mentés nem blokkol:** nagy projekt automatikus mentése nem akaszthatja meg a lejátszást (darabolt/háttér-szerializálás, ha mérés indokolja).
+
+Mérés: a szelet végén M1 Max frame-idő és megnyitási idő a felhasználói próbán; headless csak funkcionális.
