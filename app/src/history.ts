@@ -18,7 +18,7 @@ import { clearLottieCache } from './lottie';
 import { saveAuto } from './autosave';
 
 R.hist=[];R.hi=-1;
-export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,light:st.light,cam:st.cam,dur:R.seqPlay?R.seqDurSave:st.dur,scenes:st.scenes,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff,bases:st.bases,links:st.links,cues:st.cues});
+export const snapshot=()=>JSON.stringify({layers:st.layers,bg:st.bg,size:st.size,look:st.look,light:st.light,cam:st.cam,dur:R.seqPlay?R.seqDurSave:st.dur,scenes:st.scenes,loop:st.loop,bpm:st.bpm,bpmOff:st.bpmOff,bases:st.bases,links:st.links,cues:st.cues,ko:st.ko});
 export function commit(){gcBases();attachLinks(ev);markDirty();const s=snapshot();if(R.hist[R.hi]!==s){R.hist.splice(R.hi+1);R.hist.push(s);if(R.hist.length>100)R.hist.shift();R.hi=R.hist.length-1;}updUndo();scheduleSave();}
 export function restore(s){const o=JSON.parse(s);if(R.seqExit)R.seqExit();st.layers=o.layers;st.cam=normCam(o.cam);st.bg=o.bg;st.size=o.size;st.look=normLook(o.look);st.light=normLight(o.light);updLookLbl();setTL(o);setShared(o);setScenes(o);if(!findItem(R.selId))R.selId=(st.layers[st.layers.length-1]||{}).id||null;resizeMain();renderAll();}
 export function undo(){if(R.hi>0){R.hi--;restore(R.hist[R.hi]);updUndo();scheduleSave();}}
@@ -50,7 +50,7 @@ export function renderAll(){renderLayers();renderInsp();}
 /** bases + links (v4). Missing in older files = none. */
 export function setShared(o){o=o||{};st.bases={};for(const id in (o.bases||{})){const b=o.bases[id];if(b&&Array.isArray(b.children))st.bases[id]={id,name:b.name||'Közös alap',children:b.children.map(normalize)};}
   st.links=Array.isArray(o.links)?o.links.filter(l=>l&&l.from&&l.to):[];attachLinks(ev);
-  st.cues=Array.isArray(o.cues)?o.cues.filter(c=>c&&isFinite(c.t)).map(c=>({id:c.id||'C'+Math.random().toString(36).slice(2,8),t:+c.t,label:c.label||''})):[];}
+  st.ko=R.normKo?R.normKo(o.ko):null;if(!st.ko)delete st.ko;st.cues=Array.isArray(o.cues)?o.cues.filter(c=>c&&isFinite(c.t)).map(c=>({id:c.id||'C'+Math.random().toString(36).slice(2,8),t:+c.t,label:c.label||''})):[];}
 /** S1 scenes (saved compositions in order, each with its incoming transition). Missing in older files = none. */
 export function setScenes(o){const src=o&&Array.isArray(o.scenes)?o.scenes:[];
   st.scenes=src.filter(s=>s&&Array.isArray(s.layers)).map((s,i)=>({id:s.id||'S'+Math.random().toString(36).slice(2,9),name:s.name||`Jelenet ${i+1}`,dur:s.dur>0?+s.dur:5,layers:s.layers.map(normalize),

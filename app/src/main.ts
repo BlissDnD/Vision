@@ -48,6 +48,7 @@ import './textbar';
 import './moui';
 import './gesture';
 import './xfer';
+import './choreo';
 import './tap';
 import './version';
 import './boot';

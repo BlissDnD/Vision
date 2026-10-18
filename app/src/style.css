@@ -583,3 +583,11 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .tlx-clip.tlx-spread{cursor:pointer;background:color-mix(in srgb,#ffb340 14%,transparent);border-color:color-mix(in srgb,#ffb340 70%,transparent)}
 .tlx-spread u{position:absolute;top:0;transform:translateX(-50%);text-decoration:none;font-size:9px;color:#ffb340}
 .tlx-xfname{opacity:.8;font-size:11px}
+/* KO1 Koreográfia */
+.kobtn{margin-left:auto;width:24px;height:22px;font-size:13px;color:#ffb340}
+.kocard{max-height:calc(100% - 20px);overflow:auto}
+.kodet summary{cursor:pointer;font-size:12px;color:var(--fg2);padding:2px 0}
+.korow{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;font-size:12px;padding:2px 0}
+.korow .kon{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tlx-clip.tlx-ko{background:color-mix(in srgb,#b48cff 26%,transparent);border-color:#b48cff}
+.tlx-clip.tlx-korole{background:color-mix(in srgb,#b48cff 16%,transparent);border-color:color-mix(in srgb,#b48cff 70%,transparent);cursor:pointer}

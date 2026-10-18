@@ -2,6 +2,17 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — KO1 Koreográfia (0.39.0-ko1)
+
+- **✦ Koreográfia** gomb a Rétegek fejlécében: a Vel szerepet javasol minden látható rétegnek (Háttér, Főcím, Kísérő szöveg, Fő forma, Díszítő forma, Kép/Videó, Részecske; típus, méret, sorrend alapján), és egy **Editorial érkezés** jelenetmozgást mutat előnézetben a 0. mp-től. A projekt az Elfogadásig nem változik.
+- A szerepek eltérően mozognak: a háttér nagyításból puhán ül be, majd lebeg; a főcím alulról becsapódik nagyobb méretből; a kísérő szöveg kicsit és később emelkedik; a fő forma rugózva nő; a díszítők különböző irányokból ívesen érkeznek.
+- A kártyán **Mérték / Ritmus (térköz; a belépések sebessége marad) / Hangsúly** állítható, a lenyitható Szerepekben szerepváltás és részvétel, valamint szerepenként súly és késés. Az Elfogadás egy undo-lépés.
+- A Sávokon egyetlen **Jelenetmozgás** blokk jelenik meg: húzva eltolja az egészet, a jobb széle a ritmust nyújtja, a › gombbal szerepsorok nyílnak, dupla kattintásra megnyílnak a beállítások.
+- A réteg Mozgás fülén: „Szerep ebben a jelenetben”, „Részt vesz”, **Önálló mozgássá** (ugyanaz a mozgás valódi Rugalmas beúszás / Lebegés lesz, és kilép a blokkból).
+- Célzott teszt: `tests/ko_choreo.js` zöld (9:16 jelenet: háttér, cím, két szöveg, két forma); teljes kör **43/43 zöld**, typecheck 0 hiba.
+- Próba: 1) 9:16, Színátmenet + nagy cím + két kisebb szöveg + két alakzat; 2) ✦ → nézd az előnézetet, húzd a Mértéket és a Hangsúlyt, Elfogadás; 3) a Sávokon told és nyújtsd a blokkot, egy formánál kapcsold ki a Részt vesz kapcsolót; 4) mentés → újranyitás, ⌘Z.
+- Korlát: egy profil; nincs Kamera/Fény szerep és belső Kapcsolat (cím → háttér ragyogás); nincs szó-/betűszintű bontás; Jelenetsor-lejátszásban a blokk nem fut; a gomb rámutatásra nem ad előnézetet (a kártya ad).
+
 ## Állapot: 2026-10-18 — XF1 Mozgás átadása + Sorrend festése (0.38.0-xf1)
 
 - Mozgáskártya → **⇢ Átadás / Sorrend festése**: végighúzol (vagy rákattintasz) a vásznon a többi elemen. Az érintés sorrendje lesz a lépcső sorrendje, a számjelvények (1, 2, 3) ezt mutatják. A kártyán **Ritmus** (alap: a forrás időzítése és karaktere, saját irány és távolság) / **Út** (a forrás iránya, távolsága és íve, méretarányosan) / **Teljes** választható, plusz **Késés** (mp / cél).

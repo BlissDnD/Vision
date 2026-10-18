@@ -164,8 +164,8 @@ function xfVirtual(L: any): any {
 
 /** Combined motion of a layer at time t: {op, dx, dy, sc, rot (deg)}; null when it has none. aud = a motion previewed on hover. */
 export function moEval(L: any, t0: number, aud?: any): any {
-  const vx = R.xfPv ? xfVirtual(L) : null;
-  const list = aud || vx ? [...(L.mo || []), ...(aud ? [aud.mo] : []), ...(vx ? [vx] : [])] : L.mo; if (!list || !list.length) return null;
+  const vx = R.xfPv ? xfVirtual(L) : null, ko = R.koMos ? R.koMos(L) : null;  // KO1: scene-motion parts of this layer
+  const list = aud || vx || ko ? [...(L.mo || []), ...(aud ? [aud.mo] : []), ...(vx ? [vx] : []), ...(ko || [])] : L.mo; if (!list || !list.length) return null;
   const r = { op: 1, dx: 0, dy: 0, sc: 1, rot: 0 }; let any = false;
   for (const m0 of list) {
     const m = m0 && m0.src ? effMo(m0, L) : m0;

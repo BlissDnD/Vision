@@ -98,6 +98,7 @@ export interface Project {
   links?: any[];
   /** Jelzések: manual cue taps {id, t, label}. */
   cues?: { id: string; t: number; label: string }[];
+  ko?: any;        // KO1 scene-motion block (choreo.ts)
 }
 
 /** A recipe: layer list + macro sliders (+ optional camera / duration). */

@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (90 fájl)
+## Modulok (91 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -25,6 +25,7 @@
 | `autosave.ts` | 2 | Durable project autosave. IndexedDB keeps small embedded vector assets out of localStorage quota. | readAuto, saveAuto |  |
 | `blob.ts` | 11 | Blob-követés: tracking + overlay drawing | blobState, resetBlobs, getSmall, hash1, BLOB_FONTS, blobPrep, rnd, blobLabel, scrambleTxt, drawBlobOverlay, gcBlobs | smallT |
 | `boot.ts` | 2 | startup: autosave restore, first render, shelf build (imported last) |  | selId, last |
+| `choreo.ts` | 16 | KO1 Koreográfia (row 27, first slice): one scene-motion block st.ko = {prof, at, amt (Mérték), sp (Ritmus = spacing), acc (Hangsúly), ids (participants in play … | ROLES, PROFILES, suggestRoles, newKo, koParts, koEnd, koOpen, koClose, koAccept, koDetach | normKo, koMos, koPv, time, koOpen, koSection, koRows, koTlOpen … |
 | `cloud.ts` | 4 | M7b · Felhő + Lufi: blob layout of the shared shape (deterministic from Alak + Változat), the uniforms of the cloud shader (scene light + the Lufi appearance found in … | cloudBlobs, balloonOf, balloonVals |  |
 | `controls.ts` | 16 | inspector widgets: ctlSlider/Select/Color/Switch, section, fxListUI (effect icon row), palette picker | fmt, SECOPEN, section, setFill, ctlSlider, syncTwins, paintBadge, liveKinds, ctlSelect, ctlColor, ctlSwitch, ctlParam, scrubField, palettePicker … (+2) | liveCtl, liveFields, liveSel, fxSel, fxBody |
 | `cost.ts` | 2 | COST table, itemCost/sceneLoad, compile-error flag | COST, itemError, itemCost, sceneLoad, loadLabel |  |

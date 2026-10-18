@@ -103,6 +103,7 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
     m.onpointerdown=ev=>{ev.stopPropagation();if(ev.altKey){removeCue(c.id);commit();renderTracks();}else seekTo(c.t);};cl.appendChild(m);}
   cl.ondblclick=ev=>{const r=cl.getBoundingClientRect();addCue(va+Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width))*VW);commit();renderTracks();};
   body.appendChild(h('div',{class:'tlx-row'},h('div',{class:'tlx-name'},'Jelzések'),cl));
+  if(R.koRows)for(const el of R.koRows(va,vb,X))body.appendChild(el);  // KO1 Jelenetmozgás block
   const rows=trackRows();if(!rows.length)body.appendChild(h('p',{class:'small',style:'padding:8px 10px'},'Még nincs réteg.'));
   for(const {L,d} of rows){const isSel=L.id===R.selId;
     const name=h('div',{class:'tlx-name'+(L===st.cam?' cam':''),style:`padding-left:${8+d*14}px`,title:L.name},L.name);name.onclick=()=>{if(L===st.cam){openCam(name);return;}R.selId=L.id;renderAll();};

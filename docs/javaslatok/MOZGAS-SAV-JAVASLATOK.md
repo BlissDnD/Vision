@@ -61,6 +61,48 @@ A felhasználó 2026-10-18-án ezt írta: „oké de nem leszek itt, hagyd jóv�
 3. A terjedési blokk jobb szélét húzva a késés nő; az első mozgás Időtartamát átírva a célok követik.
 4. Mentés, újranyitás, ⌘Z.
 
-## 3. KO1 – Koreográfia gomb + szerepek (27. sor első szelete)
+## 3. KO1 – Koreográfia gomb + szerepérzékeny jelenetmozgás (27. sor első szelete)
 
-A 2. szelet után írom meg ide, a tényleges kód ismeretében.
+**Cél:** egy gombnyomásra szinte kész, szerepenként eltérő, összehangolt érkezés egy tipográfiai jeleneten. Az első profil az **Editorial érkezés**.
+
+**A felhasználó ezt tudja majd:**
+- A Rétegek fejlécében megnyomja a **✦ Koreográfia** gombot.
+- A Vel minden látható réteghez **javasolt szerepet** ad: Háttér, Főcím, Kísérő szöveg, Fő forma, Díszítő forma, Kép/Videó, Részecske. A szerep a rétegtípusból, a méretből és a sorrendből adódik.
+- A kártya azonnal előnézetet játszik a 0. mp-től, a projekt még nem változik.
+- A kártyán három vezérlő van: **Mérték** (mekkora a mozdulat), **Ritmus** (milyen sűrűn követik egymást, az egyes belépések sebessége nem változik), **Hangsúly** (a főcím becsapódása).
+- A „Szerepek” lenyitásban rétegenként a szerep átállítható, a részvétel kikapcsolható (például a logó maradjon nyugton). Szerepenként súly és késés állítható.
+- Az **Elfogadás** egyetlen undo-lépés.
+- A Sávok tetején egyetlen **Jelenetmozgás** blokk jelenik meg. A közepét húzva eltolja az egészet, a jobb szélét húzva a ritmust nyújtja. Lenyitva szerepcsoportokat mutat.
+- A rétegek Mozgás fülén: „Szerep ebben a jelenetben” választó, „Részt vesz” kapcsoló és **Önálló mozgássá** gomb. Ez utóbbi a réteg részét valódi, szerkeszthető Rugalmas beúszás(ok)ká alakítja, és kiveszi a blokkból.
+
+**Hogyan mozognak a szerepek (Editorial érkezés):**
+- Háttér: lassú, puha beúszás nagyításból, majd enyhe lebegés (parallax).
+- Főcím: alulról, Ütés vagy (nagy Hangsúlynál) Rugó karakterrel, nagyobb kezdőméretből; több cím lépcsőzve.
+- Kísérő szöveg: a cím után kicsi, puha emelkedés.
+- Fő forma: kicsiből rugózva nő.
+- Díszítők: különböző irányokból ívesen, sűrű lépcsőben.
+- Kép: puha nagyításos beúszás.
+- Részecske: a végén beúszik.
+
+A blokk meglévő Mozgásokból (Rugalmas beúszás, Lebegés) áll össze, kiértékeléskor. Ugrás, export és újranyitás ugyanazt adja.
+
+**Megépül:**
+- `st.ko` (mentett, régi projektben hiányzik).
+- `choreo.ts`: szerepjavaslat, profil, kártya, rétegszintű vezérlők.
+- Virtuális mozgások a `moEval`-ban.
+- Jelenetmozgás-sor a Sávokon.
+- Célzott teszt egy 9:16 tipográfiai jeleneten (háttér, főcím, két kísérő szöveg, két forma).
+
+**Nem (későbbi):**
+- További profilok (Szétesik → visszaáll, Energia-kitörés, Lágy organikus, Anyagváltó).
+- Kamera/Fény szerep, belső Kapcsolatok (cím érkezése → háttér ragyogása).
+- Szó-/betűszintű bontás.
+- Hosszabb szövegre átírás utáni újracélzás-előnézet.
+- Jelenetsoronként külön blokk (a Jelenetsor-lejátszásban a blokk nem fut).
+- A gomb rámutatásra adott előnézete (a kártya nyitása ad előnézetet).
+
+**Próba:**
+1. 9:16, háttér-Színátmenet, nagy cím, két kisebb szöveg, két alakzat.
+2. ✦ Koreográfia: az előnézetben a háttér, a cím, a szövegek és a formák eltérően érkeznek. Elfogadás.
+3. A Sávokon tolj és nyújts a blokkon; egy formánál kapcsold ki a részvételt.
+4. Mentés, újranyitás, ⌘Z.

@@ -118,7 +118,7 @@ export function motionsUI(L: any) {
     ...(['in', 'out'] as const).filter(w => !(L.tm && L.tm[w])).map(w => h('button', { class: 'fxg', type: 'button', role: 'menuitem', title: w === 'in' ? 'Egyszerű belépés (átúszás, emelkedés, oldalról …)' : 'Egyszerű kilépés', onclick: () => {
       L.tm = L.tm || { in: 0, inAt: 0, inDur: .8, out: 0, outAt: Math.max(0, (st.dur || 10) - 1), outDur: .8, ease: 0 }; L.tm[w] = 1; R.moSel[L.id] = 'tm:' + w; commit(); renderInsp(); } }, h('span', { class: 'gi', html: svg(TMI[w]) }), h('span', null, w === 'in' ? 'Beúszás' : 'Kiúszás'))));
   add.onclick = () => { grid.hidden = !grid.hidden; add.setAttribute('aria-expanded', String(!grid.hidden)); };
-  const kids: any[] = [row, grid];
+  const kids: any[] = [R.koSection ? R.koSection(L) : null, row, grid];
   if (cur && cur.startsWith('tm:')) { const w = cur.slice(3) as 'in' | 'out';
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, w === 'in' ? 'Beúszás' : 'Kiúszás'), h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás', onclick: () => { L.tm[w] = 0; commit(); renderInsp(); } }, '×')),
       h('div', { class: 'fxb' }, ...tmBody(L, w)))); }
