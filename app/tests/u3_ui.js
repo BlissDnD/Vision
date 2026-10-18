@@ -33,9 +33,9 @@
  // 4) library cards say where they can go
  R.cat='fx';R.libQ='';buildShelf();
  const card=n=>[...document.querySelectorAll('#items .item')].find(b=>b.querySelector('span').textContent===n);
- const lb=card('Lufi');info.lufiTag=lb&&lb.querySelector('.ftag')?.textContent;
- if(!lb||!lb.querySelector('.ftag.only')||!/Felhő/.test(info.lufiTag))bad.push('Lufi kártya: '+info.lufiTag);
- const bl=card('Elmosás');if(!bl||!bl.querySelector('.ftag')||bl.querySelector('.ftag.only'))bad.push('Elmosás kártya címke');
+ const lb=card('Balloon');info.lufiTag=lb&&lb.querySelector('.ftag')?.textContent;
+ if(!lb||!lb.querySelector('.ftag.only')||!/restricted/.test(info.lufiTag))bad.push('Lufi kártya: '+info.lufiTag);
+ const bl=card('Blur');if(!bl||!bl.querySelector('.ftag')||bl.querySelector('.ftag.only'))bad.push('Elmosás kártya címke');
  R.cat='shapes';buildShelf();if(document.querySelector('#items .ftag'))bad.push('forma kártyán felesleges címke');
  R.cat='recipes';buildShelf();
  // 5) tooltip: native title becomes our tip, "(V)" a key cap; accessible name kept

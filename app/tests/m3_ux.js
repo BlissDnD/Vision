@@ -16,12 +16,12 @@
  if(!c.every(x=>x.prev&&x.prev.width>0))bad.push('előnézet hiányzik');
  // 2) library: plan categories, accent-insensitive search across shelves
  info.cats=CATS.map(x=>x[1]);
- for(const want of ['Receptek','Források','2D Formák','3D Formák','Megjelenések','Mozgás','Részecskék'])if(!info.cats.includes(want))bad.push('kategória hiányzik: '+want);
+ for(const want of ['Recipes','Sources','2D Shapes','3D Shapes','Appearances','Motion','Particles'])if(!info.cats.includes(want))bad.push('kategória hiányzik: '+want);
  const f=libSearch('FELHO');info.search=f.slice(0,4).map(([cat,i])=>LIB[cat][i].name);
  if(!f.length||!f.every(([cat,i])=>!LIB[cat][i].head))bad.push('keresés');if(libSearch('   ').length)bad.push('üres keresés');
  // 3) effect chain: numbered, reorder with ▼
  const L=makeLayer('plasma');L.fx=[LIB.fx.find(x=>x.make).make(),LIB.fx.filter(x=>x.make)[1].make()];st.layers=[L];R.selId=L.id;commit();renderInsp();
- const before=L.fx.map(x=>x.type);const dn=[...document.querySelectorAll('#insp .fxi button')].find(b=>b.getAttribute('aria-label')==='Hátrébb a láncban');
+ const before=L.fx.map(x=>x.type);const dn=[...document.querySelectorAll('#insp .fxi button')].find(b=>b.getAttribute('aria-label')==='Move later in chain');
  if(dn)dn.click();info.fx={before,after:L.fx.map(x=>x.type)};
  if(!dn||info.fx.after[0]!==before[1])bad.push('effektlánc átrendezés');
  st.layers=[];commit();

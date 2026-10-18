@@ -20,10 +20,10 @@
  // 2) LFO pane switch: new wave with Loop on → Körbeér on, label shows cycles
  const A=makeLayer('shape',{name:'Kör',p:{kind:0,size:.15}});st.layers=[A];R.selId=A.id;setITab&&setITab('layer');commit();renderAll();
  const anb=[...document.querySelectorAll('#insp .ctl .anb')].find(b=>!b.closest('.ctl').classList.contains('anim'));
- if(!anb)bad.push('nincs ∿ gomb');else{anb.click();const box=anb.closest('.ctl'),cb=box.querySelector('.lfo input[aria-label="Körbeér"]');
+ if(!anb)bad.push('nincs ∿ gomb');else{anb.click();const box=anb.closest('.ctl'),cb=box.querySelector('.lfo input[aria-label="Seamless loop"]');
   const ctlObjs=R.liveCtl.filter(c=>c.box===box);const o=ctlObjs[0]&&ctlObjs[0].obj;
   if(!cb)bad.push('nincs Körbeér kapcsoló');else{if(!cb.checked||!o||o.lp!==1)bad.push('új hullámon nincs bekapcsolva');
-   info.lfoLabel=box.querySelector('.lpinfo').textContent;if(!/kör \/ 10 mp/.test(info.lfoLabel))bad.push('felirat: '+info.lfoLabel);
+   info.lfoLabel=box.querySelector('.lpinfo').textContent;if(!/cycles \/ 10 s/.test(info.lfoLabel))bad.push('felirat: '+info.lfoLabel);
    cb.checked=false;cb.onchange();if('lp' in o)bad.push('kikapcsolás után maradt lp');cb.checked=true;cb.onchange();}}
  // 3) continuous motions: attach with Loop on → lp=1; frame at 0 == frame at dur
  const idx=t=>LIB.motion.findIndex(x=>x.mo===t);

@@ -36,7 +36,7 @@
   const lum=()=>{px(1);const q=new Uint8Array(4);gl.readPixels(X,Y,1,1,gl.RGBA,gl.UNSIGNED_BYTE,q);return q[0]+q[1]+q[2];};
   st.light.p.az.v=140;st.light.p.el.v=-5;const g0=lum();glint3(C,P);const g1=lum();info.glint=[g0,g1];if(!(g1>g0+30))bad.push('csillanás-húzás a lufin');
   st.light.p.az.v=-39.81;st.light.p.el.v=45.58;}
- R.selId=C.id;renderInsp();const tx=document.querySelector('#insp').textContent;if(!tx.includes('Jelenetfény'))bad.push('nincs Jelenetfény szekció');if(!tx.includes('Lufi'))bad.push('a Lufi nem látszik a láncban');
+ R.selId=C.id;renderInsp();const tx=document.querySelector('#insp').textContent;if(!tx.includes('Scene lighting affects it'))bad.push('scene lighting description missing');if(!tx.includes('Balloon'))bad.push('a Lufi nem látszik a láncban');
  // mentés → újranyitás, könyvtár
  setKey(B.p.infl,0,0);setKey(B.p.infl,2,1);commit();const snap=snapshot();const r0=px(1.3);loadProject(JSON.parse(projectJSON()));
  if(snapshot()!==snap)bad.push('újranyitás: állapot');const r1=px(1.3);if(diff(r0,r1)>0)bad.push('újranyitás: más kép');

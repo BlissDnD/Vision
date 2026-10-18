@@ -27,7 +27,7 @@
  macroApply(g,g.macros[1],1);if(Math.abs(g.children[1].p.size.a-.2)>1e-6)bad.push('LFO-makró');
  if(!(r.cost&&r.cost.w>0))bad.push('nincs gépigény-mérés');
  const before=st.layers.length;insertPreset(r);if(st.layers.length!==before+1)bad.push('beillesztés');
- R.selId=g.id;renderInsp();if(!document.querySelector('#insp')||!/Vezérlők/.test(document.querySelector('#insp').textContent))bad.push('a Vezérlők nem látszanak');
+ R.selId=g.id;renderInsp();if(!document.querySelector('#insp')||!/Controls/.test(document.querySelector('#insp').textContent))bad.push('a Vezérlők nem látszanak');
  undo();if(st.layers.length!==before)bad.push('undo a beillesztés után: '+st.layers.length);redo();undo();
  // 4) custom shader with named sliders: compiles, renders, animates, survives save → reopen
  const code='vec4 fx(){vec2 p=P(); float d=exp(-length(p)*3.0)*p_glow; return vec4(p_tint*d,1.0);}';

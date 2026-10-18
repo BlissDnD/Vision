@@ -61,7 +61,7 @@
  L=st.layers[0];m=L.mo[0];R.selId=L.id;R.moSel[L.id]=m.id;renderInsp();setITab('motion');
  const path='mo:'+m.id+'.p.amp';if(!paramList(L).some(q=>q.path===path))bad.push('paramList nem látja a mozgásparamétert');
  // ◆ on the Kitérés slider writes a key at the playhead
- R.time=1;const ctl=[...document.querySelectorAll('#insp .ipane[data-tab=motion] .ctl')].find(c=>/Kitérés/.test(c.textContent));const kb=ctl&&ctl.querySelector('.kb:not(.kgr)');
+ R.time=1;const ctl=[...document.querySelectorAll('#insp .ipane[data-tab=motion] .ctl')].find(c=>/Distance/.test(c.textContent));const kb=ctl&&ctl.querySelector('.kb:not(.kgr)');
  if(!kb)bad.push('nincs ◆ a mozgáscsúszkán');else{kb.click();m=st.layers[0].mo[0];if(!m.p.amp.k||m.p.amp.k.length!==1)bad.push('◆ nem írt kulcsot');}
  R.time=3;setAnimMode(true);setVal(st.layers[0].mo[0].p.amp,.1);setAnimMode(false);m=st.layers[0].mo[0];if(!m.p.amp.k||m.p.amp.k.length!==2)bad.push('Animálás módban nem lett 2. kulcs');
  L=st.layers[0];R.tlxOpenIds.add(L.id+'|'+m.id);renderTracks();const sk=document.querySelectorAll(`#tlxBody .tlx-key.sub[data-p="${path}"]`);info.subKeys=sk.length;if(sk.length!==2)bad.push('a mozgás paramétersorán nincs 2 kulcs: '+sk.length);

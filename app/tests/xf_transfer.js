@@ -52,7 +52,7 @@
  R.selId=B.id;R.moSel[B.id]=L(B.id).mo[0].id;setITab('motion');renderInsp();
  const gets=document.querySelector('#insp .xfgets');info.gets=gets&&gets.textContent;if(!gets||!/Ritmust kap ettől: Címszó/.test(gets.textContent))bad.push('cél kártyája: '+info.gets);
  const labs=[...document.querySelectorAll('#insp .fxi .ctl .lt')].map(x=>x.textContent);info.labs=labs;
- if(labs.includes('Időtartam (mp)')||!labs.includes('Távolság'))bad.push('cél mezői: '+labs);
+ if(labs.includes('Duration (s)')||!labs.includes('Distance'))bad.push('cél mezői: '+labs);
  // 8) timeline: spread block under the source, ticks, right edge stretches the delay
  setTlx(true);if(R.tlxOpenIds){R.tlxOpenIds.add(S.id);R.tlxOpenIds.add(B.id);}renderTracks();
  const sp=document.querySelector('.tlx-spread');if(!sp)bad.push('nincs terjedési blokk');
