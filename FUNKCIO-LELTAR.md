@@ -65,3 +65,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 - Gerincfelület, Jelenetfény (M6); részecskés szétesés és visszaállás (M7a); Felhő + Lufi (M7b).
 
 **Külön R2-előkészítés (2026-10-18):** Unwoven adapter demonstrálva a `prototypes/extension-lab/layouts/` alatt; WIDE saját elrendezéstanulmány, eredeti port továbbra is hiányzik. Ez nem változtatja készre az R2 termékállapotát.
+
+**Közös részletes leltár és ötlettár (2026-10-18):** `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` – minden jelenlegi könyvtári elem, működés és bővítési ötlet; prototípusok és új receptek külön státusszal. Dokumentáció, nem megvalósítás; a fenti funkcióállapotok változatlanok.

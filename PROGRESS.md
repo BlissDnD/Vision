@@ -139,3 +139,10 @@ Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
 - WIDE: saját ötkompozíciós tanulmány; eredeti forrás/animáció átemelése nyitott.
 - 48/48 Node, build sikeres, 7/7 layout headless próba. Átadó: `prototypes/extension-lab/layouts/README.md`.
 - Főalkalmazás/build változatlan; felhasználói próba és R2-integráció nincs elvégezve.
+
+### 2026-10-18 – teljes elemleltár és fejlesztési ötlettár (Codex)
+- Egy fájlban 72 elemtípus, 54 recept és mind a 259 könyvtári bejegyzés; működés/vezérlők/jobbá tétel.
+- Mind a 63 külön modul, két layout és az előző 20 ötlet; 32 új részletes recept/világ, 24 Megjelenésötlet, 20 lánc.
+- Bolygó: jelenlegi funkciók pontosítva; hold-komponens, közös domborzat, légkör és háttérbe simulás terve.
+- Lefedettség forráslistákkal ellenőrizve; alkalmazáskód/build és funkcióállapot nem változott.
+- Fájl: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md`.

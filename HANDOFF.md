@@ -85,3 +85,7 @@ Lásd **`BUGS.md`** (minden jelzett hiba ott van, állapottal).
 ## Külön layout-prototípusok (2026-10-18, Codex)
 
 A `prototypes/extension-lab/layouts/README.md` az átadó: Unwoven eredeti shader/geometria, állítható paraméterek és visszatekerhető idő; WIDE saját ötkompozíciós tanulmány. A WIDE eredeti kódja továbbra is hiányzik, teljes vizuális egyezés nincs igazolva. 48 Node + 7 célzott headless próba zöld. A főalkalmazás nem változott; R2 integráció továbbra is külön jóváhagyandó.
+
+## Közös elemleltár és ötlettár (2026-10-18, Codex)
+
+Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md`. Forrásalapú leltár: 72 típus, 54 recept, 259 polcbejegyzés; 63 külön modul + 2 layout; 20 fejlesztési irány, 32 új recept/világ, 24 Megjelenés-/viselkedésötlet és 20 effektlánc. Minden elemnél működés és fejlesztési lehetőség, a beépített/prototípus/ötlet állapot elkülönítve. A Bolygó/Terep/hold/légkör külön részletes fejezet. Csak dokumentáció változott; nincs új integráció. A böngészőben tárolt Saját könyvtár tartalmához export kell, az nincs a leltárban.

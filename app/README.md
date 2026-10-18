@@ -174,3 +174,7 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `moui.ts`: `motionsUI` (`R.moUI`, az inspector a régi `timingSection` helyett), `attachMo`/`R.dropMo` (polc, vászon, rétegsor), `R.moMain` (erősség a Fő beállításokban), `R.updMoArrow` (vászon-nyíl a loopból). Polc-előnézet: `shelf.setAudition` → `R.moAud` (saját órával, a loop addig renderel).
 - Idővonal: `timeline.layerSegs` `mo`/`kloop` szakaszok, `segGet/segSet` (`mo:<id>`), `retime.timeFields` a beúszással.
 
+
+### Teljes elemleltár és ötlettár
+
+A `../docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18.md` forrásalapú katalógus: elemtípusok, polcbejegyzések, receptek és prototípusok. A működő elemeket és fejlesztési terveket külön jelöli; nem új alkalmazásfunkció.
