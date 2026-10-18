@@ -1,3 +1,8 @@
+## 2026-10-18 — English migration: Library identity and labels
+- 300 built-in Library labels now have English display copy under catalog IDs; legacy names remain for saved projects.
+- English and Hungarian Library search both work; three duplicate IDs made unique with quickbar aliases.
+- Targeted Library/search checks pass. Other UI surfaces and final validation remain pending.
+
 ## 2026-10-18 — English-default localization foundation
 
 ## 2026-10-18 — Material 3 starter Claude-nak (Codex)

@@ -3,17 +3,21 @@
 import { CATS, LIB } from './library';
 import { EFFECTS } from './effects/index';
 import { MO } from './motion';
+import { CATALOG_EN } from './catalogcopy';
 
 export const fold = (s: any) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const slug = (s: string) => fold(s).replace(/ /g, '-');
 
 /** The four roles of the library (plan §5 / CAT-01). Receptek belong to every role filter only under „Mind”. */
-export const ROLES: [string, string][] = [['src', 'Források'], ['form', 'Formák'], ['look', 'Megjelenések'], ['mo', 'Mozgás']];
+export const ROLES: [string, string][] = [['src', 'Sources'], ['form', 'Shapes'], ['look', 'Appearances'], ['mo', 'Motion']];
 const CAT_ROLE: Record<string, string | null> = { recipes: null, gen: 'src', world: 'src', particles: 'src', media: 'src', shapes: 'form', '3d': 'form', fx: 'look', motion: 'mo' };
 export const roleOf = (cat: string, it: any) => (it && it.mo ? 'mo' : CAT_ROLE[cat] ?? null);
 
 /** Stable id of a library entry: survives reordering of the shelf (name-based), own items keep their own id. */
-export const catId = (cat: string, i: number) => { const it = LIB[cat][i]; return it.own ? 'own:' + it.own : `${cat}:${slug(it.name)}`; };
+export const catId = (cat: string, i: number) => { const it = LIB[cat][i]; return it.own ? 'own:' + it.own : it.id || `${cat}:${slug(it.name)}`; };
+
+/** English display copy is separate from the legacy name used by saved layers and IDs. */
+export const catalogLabel = (cat: string, i: number): string => { const it = LIB[cat][i]; return it.own ? it.name : CATALOG_EN[catId(cat, i)] || it.name; };
 
 /** Synonym groups: a query word matching any member also searches the others (Hungarian + common English, accent-free). */
 const SYN = [
@@ -57,8 +61,9 @@ export function catalogIndex() {
     const descs = effKeysIn(it).map(k => k.startsWith('mo:') ? (MO[k.slice(3)] || {}).desc || '' : `${(EFFECTS as any)[k].name} ${(EFFECTS as any)[k].desc || ''} ${k}`);
     let id = catId(c, i); while (seen.has(id)) id += '~'; seen.add(id);
     // hay: everything incl. the shelf label (direct words); own: the entry's own words only (synonym matches, so „lebeg” ≠ every motion)
-    const own = fold(`${it.name} ${it.desc || ''} ${descs.join(' ')} ${(it.tags || []).join(' ')}`).split(' ');
-    IDX!.push({ cat: c, i, id, role: roleOf(c, it), name: fold(it.name), own, hay: [...own, ...fold(cl).split(' ')] });
+    const display = catalogLabel(c, i);
+    const own = fold(`${display} ${it.name} ${it.desc || ''} ${descs.join(' ')} ${(it.tags || []).join(' ')}`).split(' ');
+    IDX!.push({ cat: c, i, id, role: roleOf(c, it), name: fold(display), legacyName: fold(it.name), own, hay: [...own, ...fold(cl).split(' ')] });
   });
   return IDX;
 }
@@ -72,7 +77,7 @@ export function catSearch(q: string, role: string | null = null): [string, numbe
     if (role && r.role !== role) continue;
     let s = 0, ok = true;
     for (const w of words) {
-      const nameHit = r.name.split(' ').some((x: string) => x.startsWith(w));
+      const nameHit = [r.name, r.legacyName].some((name: string) => name.split(' ').some((x: string) => x.startsWith(w)));
       if (nameHit) { s += 100; continue; }
       if (r.hay.some((x: string) => x.startsWith(w))) { s += 40; continue; }
       const syn = expand(w).filter(x => x !== w);
@@ -81,10 +86,10 @@ export function catSearch(q: string, role: string | null = null): [string, numbe
       ok = false; break;
     }
     if (!ok) continue;
-    if (r.name === f) s += 500; else if (r.name.startsWith(f)) s += 200;
+    if (r.name === f || r.legacyName === f) s += 500; else if (r.name.startsWith(f) || r.legacyName.startsWith(f)) s += 200;
     hits.push({ r, s });
   }
-  hits.sort((a, b) => b.s - a.s || a.r.name.localeCompare(b.r.name, 'hu'));
+  hits.sort((a, b) => b.s - a.s || a.r.name.localeCompare(b.r.name, 'en'));
   return hits.map(x => [x.r.cat, x.r.i]);
 }
 /** Count of hits per role (for the chips). */
@@ -93,13 +98,13 @@ export function catRoleCounts(q: string) { const o: Record<string, number> = {};
 /** CAT-01 2nd slice: theme collections across shelves. An entry belongs to a theme when one of its own words
  *  (name, description, effect key) starts with one of the theme's words; the same entry can be in several themes. */
 export const TOPICS: [string, string, string][] = [
-  ['fluid', 'Folyadék', 'folyad fluid tinta viz csepp hullam lava liquid ink olvad metaball'],
-  ['light', 'Fény és anyag', 'feny glow ragyog neon kroma krom fem uveg glass tukor anyag hologram rajzolt csillan bloom lencse flare lens'],
-  ['text', 'Szöveg', 'szoveg text betu felirat cim tipogra font'],
-  ['nature', 'Természet', 'felho fust tuz lang terep taj hegy eg nap hold bolygo viz virag level ho csillag aurora kod para'],
-  ['space', 'Tér / 3D', '3d terbeli gomb henger test kamera terep obj3d sdf mesh extrud kihuz bolygo'],
-  ['retro', 'Retró', 'crt vhs glitch jelhiba pixel ascii halftone raszter film szemcse retro'],
-  ['motion', 'Mozgás-alapok', 'lebeg forog pulzal rezeg rugo kering beuszas fizika utvonal ritmus'],
+  ['fluid', 'Fluid', 'folyad fluid tinta viz csepp hullam lava liquid ink olvad metaball'],
+  ['light', 'Light and material', 'feny glow ragyog neon kroma krom fem uveg glass tukor anyag hologram rajzolt csillan bloom lencse flare lens'],
+  ['text', 'Text', 'szoveg text betu felirat cim tipogra font'],
+  ['nature', 'Nature', 'felho fust tuz lang terep taj hegy eg nap hold bolygo viz virag level ho csillag aurora kod para'],
+  ['space', 'Space / 3D', '3d terbeli gomb henger test kamera terep obj3d sdf mesh extrud kihuz bolygo'],
+  ['retro', 'Retro', 'crt vhs glitch jelhiba pixel ascii halftone raszter film szemcse retro'],
+  ['motion', 'Motion basics', 'lebeg forog pulzal rezeg rugo kering beuszas fizika utvonal ritmus'],
   ['layout', 'Layout', 'bento racs grid magazin galeria kartya layout keret'],
 ];
 export function topicItems(topic: string): [string, number][] {

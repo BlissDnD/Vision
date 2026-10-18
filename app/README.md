@@ -267,3 +267,7 @@ Help-alap implementáció előkészítve: `help.ts` és tiszta `helpdata.ts`, a 
 ### English-default localization foundation
 
 `src/helpdata.ts` contains linked English Help topics; `src/helptooltips.ts` contains stable IDs, reviewed short descriptions and temporary Hungarian source-title aliases. `workspace.ts` maps old `title` attributes to English display text; `help.ts` resolves descriptions by ID. This does not localize the rest of the editor. The migration rules and full acceptance gate are in `../docs/spec/VEL-ENGLISH-DEFAULT-LOCALIZATION.md`.
+
+### English Library labels
+
+`catalogcopy.ts` maps 300 built-in catalog IDs to English display labels. `catalogLabel` displays them; `catalogIndex` searches both English and frozen legacy names. Do not translate `LIB[*].name` directly: it remains part of persisted identity and default layer data. `tests/catalog_english.js` guards coverage and identity.

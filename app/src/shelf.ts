@@ -8,7 +8,8 @@ import { thumbGet, thumbPut } from './thumbstore';
 import { EFFECTS } from './effects/index';
 import { makeMo, moIcon } from './motion';
 import { findItem } from './state';
-import { ROLES, TOPICS, catRoleCounts, catSearch, resetCatalog, topicItems } from './catalog';
+import { ROLES, TOPICS, catRoleCounts, catSearch, resetCatalog, topicItems, catalogLabel } from './catalog';
+import { SECTION_EN } from './catalogcopy';
 
 R.cat='recipes';R.thumbJob=0;R.libQ='';
 /** Search across every shelf by name (accent-insensitive): [cat, index] pairs. */
@@ -19,31 +20,31 @@ const tagCache={};
 /** Cache key of a card: own (user library) items by id, so deleting one never shifts another's thumbnail. */
 export const ikey=(cat,i)=>{const it=LIB[cat][i];return it&&it.own?'own:'+it.own:cat+':'+i;};
 /** U3: what a library card can be dropped on (Megjelenések only), e.g. „csak Felhő”. null = a normal standalone element. */
-export function dropTag(cat,i){if(LIB[cat][i]&&LIB[cat][i].mo)return {only:false,s:'rétegre',tip:'Rétegre húzva rá kerül; kattintva a kijelölt rétegre. Rámutatva előnézet a kijelölt rétegen.'};if(cat!=='fx'&&cat!=='particles')return null;const key=ikey(cat,i);
+export function dropTag(cat,i){if(LIB[cat][i]&&LIB[cat][i].mo)return {only:false,s:'on layer',tip:'Drag onto a layer to attach it, or select a layer and click. Hover to preview it.'};if(cat!=='fx'&&cat!=='particles')return null;const key=ikey(cat,i);
   if(!(key in tagCache)){let t=null;try{const d=EFFECTS[LIB[cat][i].make().type];
-    if(d&&d.host)t={only:true,s:'csak '+d.host.map(x=>EFFECTS[x].name).join(', '),tip:`Csak ${d.host.map(x=>EFFECTS[x].name).join(', ')} rétegre húzható`};
-    else if(d&&(cat==='fx'||d.kind==='fx'))t={only:false,s:'rétegre is',tip:'Rétegre húzva csak arra hat; kattintva önálló szűrőréteg'};}catch(_){}tagCache[key]=t;}
+    if(d&&d.host)t={only:true,s:'restricted',tip:`Only compatible with ${d.host.join(', ')} layers`};
+    else if(d&&(cat==='fx'||d.kind==='fx'))t={only:false,s:'on layer too',tip:'Drag onto a layer to affect only that layer. Click to add a separate filter layer.'};}catch(_){}tagCache[key]=t;}
   return tagCache[key];}
 export function buildCats(){const s=$('#cats');s.innerHTML='';
   // CAT-01: while searching, the shelf row turns into role chips (Mind + the four roles with hit counts)
   if(R.libQ&&R.libQ.trim()){const tp0=$('#topics');if(tp0)tp0.hidden=true;const n=catRoleCounts(R.libQ);const chip=(k,l)=>h('button',{class:'rolechip','aria-pressed':String((R.libRole||null)===k),onclick:()=>{R.libRole=k;buildCats();buildShelf();}},l);
-    s.appendChild(chip(null,'Mind'));for(const [k,l] of ROLES)if(n[k]||R.libRole===k)s.appendChild(chip(k,`${l} ${n[k]}`));return;}
+    s.appendChild(chip(null,'All'));for(const [k,l] of ROLES)if(n[k]||R.libRole===k)s.appendChild(chip(k,`${l} ${n[k]}`));return;}
   R.libRole=null;resetCatalog();
   // CAT-01 themes: a second chip row under the shelves; a theme lists its entries from every shelf
-  let tp=$('#topics');if(!tp){tp=h('div',{class:'seg topics',id:'topics',role:'group','aria-label':'Témák'});s.after(tp);}tp.hidden=false;tp.innerHTML='';
+  let tp=$('#topics');if(!tp){tp=h('div',{class:'seg topics',id:'topics',role:'group','aria-label':'Themes'});s.after(tp);}tp.hidden=false;tp.innerHTML='';
   for(const [k,l] of TOPICS)tp.appendChild(h('button',{'aria-pressed':String(R.libTopic===k),onclick:()=>{R.libTopic=R.libTopic===k?null:k;buildCats();buildShelf();}},l));for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&!R.libTopic&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';R.libTopic=null;$('#libSearch').value='';buildCats();buildShelf();}},l));}
 export function buildShelf(){
   const box=$('#items');box.innerHTML='';const found=R.libQ?libSearch(R.libQ):R.libTopic?topicItems(R.libTopic):null;
-  $('#shelfHint').textContent=found?(found.length?`${found.length} találat minden polcról`:'Nincs találat. Próbálj rövidebb szót.'):CAT_HINT[R.cat]||'';
+  $('#shelfHint').textContent=found?(found.length?`${found.length} results across shelves`:'No results. Try a shorter search.'):CAT_HINT[R.cat]||'';
   const job=++R.thumbJob;const todo=[];
   // P1: own items first (under „Saját”), then the built-in shelf
   let list=found;if(!list){const all=LIB[R.cat].map((_,i)=>[R.cat,i]);const own=all.filter(([c,i])=>LIB[c][i].own),rest=all.filter(([c,i])=>!LIB[c][i].own);
-    list=own.length?[['#head','Saját'],...own,...(rest.length&&!LIB[R.cat][rest[0][1]].head?[['#head','Beépített']]:[]),...rest]:rest;}
+    list=own.length?[['#head','Yours'],...own,...(rest.length&&!LIB[R.cat][rest[0][1]].head?[['#head','Built in']]:[]),...rest]:rest;}
   list.forEach(([cat,i])=>{if(cat==='#head'){box.appendChild(h('div',{class:'shsep','aria-hidden':'true'},i));return;}const item=LIB[cat][i];
-    if(item.head){box.appendChild(h('div',{class:'shsep','aria-hidden':'true'},item.head));return;}
-    const c=h('canvas',{width:TW,height:TH});const tg=dropTag(cat,i);const own=item.own;
-    const b=h('button',{class:'item'+(own?' own':''),draggable:'true',title:(tg?`${item.name} · ${tg.tip}`:item.name)+(own?' · saját · jobb klikk: átnevezés, polc, törlés':'')},c,h('span',null,item.name),
-      own?h('span',{class:'ftag own'},'saját',h('i',{class:'omenu',role:'button','aria-label':'Saját elem kezelése',title:'Átnevezés, polc, törlés',onclick:e=>{e.stopPropagation();R.ownMenu&&R.ownMenu(own);}},'⋯')):tg?h('span',{class:'ftag'+(tg.only?' only':'')},tg.s):null);
+    if(item.head){box.appendChild(h('div',{class:'shsep','aria-hidden':'true'},SECTION_EN[item.head] || item.head));return;}
+    const c=h('canvas',{width:TW,height:TH});const tg=dropTag(cat,i);const own=item.own;const label=catalogLabel(cat,i);
+    const b=h('button',{class:'item'+(own?' own':''),draggable:'true',title:(tg?`${label} · ${tg.tip}`:label)+(own?' · yours · right-click to rename, move or delete':'')},c,h('span',null,label),
+      own?h('span',{class:'ftag own'},'yours',h('i',{class:'omenu',role:'button','aria-label':'Manage your item',title:'Rename, move or delete',onclick:e=>{e.stopPropagation();R.ownMenu&&R.ownMenu(own);}},'⋯')):tg?h('span',{class:'ftag'+(tg.only?' only':'')},tg.s):null);
     if(own)b.oncontextmenu=e=>{e.preventDefault();R.ownMenu&&R.ownMenu(own);};
     const key=ikey(cat,i);if(thumbCache[key])c.getContext('2d').drawImage(thumbCache[key],0,0);
     else if(own&&item.thumb){const im=new Image();im.onload=()=>{const cnv=document.createElement('canvas');cnv.width=TW;cnv.height=TH;cnv.getContext('2d').drawImage(im,0,0,TW,TH);thumbCache[key]=cnv;c.getContext('2d').drawImage(cnv,0,0);};im.src=item.thumb;}
@@ -65,12 +66,12 @@ export function buildShelf(){
     if(++checked===todo.length&&pending.length)setTimeout(step,30);});}
 R.audition=null;export const audCache={};
 export function setAudition(c,i?){markDirty();if(c==null){R.audition=null;R.moAud=null;$('#audition').hidden=true;return;}
-  if(LIB[c][i].lottie){R.audition=null;R.moAud=null;const a=$('#audition');a.hidden=false;a.textContent='Vektoranimáció (Lottie) · kattints a helyi JSON-fájl kiválasztásához';return;}
-  if(LIB[c][i].polyhaven){R.audition=null;R.moAud=null;const a=$('#audition');a.hidden=false;a.textContent='Poly Haven CC0 textúrák · kattints a válogatás megnyitásához';return;}
+  if(LIB[c][i].lottie){R.audition=null;R.moAud=null;const a=$('#audition');a.hidden=false;a.textContent='Vector animation (Lottie) · click to choose a local JSON file';return;}
+  if(LIB[c][i].polyhaven){R.audition=null;R.moAud=null;const a=$('#audition');a.hidden=false;a.textContent='Poly Haven CC0 textures · click to browse';return;}
   if(LIB[c][i].mo){const L=R.selId&&findItem(R.selId);const a=$('#audition');a.hidden=false;R.audition=null;
-    if(L){R.moAud={id:L.it.id,mo:makeMo(LIB[c][i].mo,{at:0}),t0:performance.now()};a.textContent=`Előnézet: ${LIB[c][i].name} a(z) „${L.it.name}” rétegen · kattints vagy húzd rá`;}
-    else{R.moAud=null;a.textContent=`${LIB[c][i].name}: jelölj ki egy réteget az előnézethez, vagy húzd rá egy rétegre`;}return;}const key=ikey(c,i);R.audition=audCache[key]||(audCache[key]=LIB[c][i].make());
-  const a=$('#audition');a.textContent=`Előnézet: ${LIB[c][i].name} · kattints a hozzáadáshoz`;a.hidden=false;}
+    if(L){R.moAud={id:L.it.id,mo:makeMo(LIB[c][i].mo,{at:0}),t0:performance.now()};a.textContent=`Preview: ${catalogLabel(c,i)} on “${L.it.name}” · click or drag to apply`;}
+    else{R.moAud=null;a.textContent=`${catalogLabel(c,i)}: select a layer to preview, or drag onto a layer`;}return;}const key=ikey(c,i);R.audition=audCache[key]||(audCache[key]=LIB[c][i].make());
+  const a=$('#audition');a.textContent=`Preview: ${catalogLabel(c,i)} · click to add`;a.hidden=false;}
 
 /** Motion cards: their icon on a dark tile (a still frame cannot show a motion; hovering previews it on the selected layer). */
 function drawMoThumb(c,t,key){const im=new Image();im.onload=()=>{const cnv=document.createElement('canvas');cnv.width=TW;cnv.height=TH;const x=cnv.getContext('2d');

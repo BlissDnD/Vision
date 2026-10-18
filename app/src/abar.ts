@@ -4,7 +4,7 @@
 import { R } from './runtime';
 import { $, h } from './dom';
 import { LIB } from './library';
-import { catId, catalogIndex } from './catalog';
+import { catId, catalogIndex, catalogLabel } from './catalog';
 import { addFromLib, attachFx } from './itemops';
 import { applyColorTo } from './colorsum';
 import { findItem } from './state';
@@ -19,7 +19,8 @@ type Item = { t: 'lib' | 'col'; id: string; name: string };
 export function abarItems(): Item[] { try { const a = JSON.parse(ls(K) || '[]'); return Array.isArray(a) ? a.filter(x => x && x.id) : []; } catch (_) { return []; } }
 const save = (a: Item[]) => ls(K, JSON.stringify(a.slice(0, 16)));
 /** Library item from its stable id (survives shelf reordering). */
-export function libById(id: string): [string, number] | null { const r = catalogIndex().find(x => x.id === id); return r ? [r.cat, r.i] : null; }
+export function libById(id: string): [string, number] | null { const legacy: Record<string,string> = { 'motion:bento-atrendezodes~':'motion:bento-layout-rearrangement', 'world:jegvilag~':'world:ice-planet-object', 'world:lavabolygo~':'world:lava-planet-object' };
+  const r = catalogIndex().find(x => x.id === (legacy[id] || id)); return r ? [r.cat, r.i] : null; }
 
 export function addToBar(it: Item) { const a = abarItems().filter(x => x.id !== it.id); a.push(it); save(a); renderBar(); }
 function useItem(it: Item) {
@@ -29,7 +30,8 @@ function useItem(it: Item) {
 export function renderBar() {
   const bar = $('#abar'); if (!bar) return; bar.innerHTML = '';
   abarItems().forEach((it, j) => {
-    const b = h('button', { class: 'abtn', draggable: 'true', title: `${it.name} · kattints: a kijelölt rétegre · húzd: rá egy rétegre · jobb klikk: levétel`, style: it.t === 'col' ? `background:${it.id};width:26px` : '' }, it.t === 'col' ? '' : it.name);
+    const ref = it.t === 'lib' ? libById(it.id) : null; const name = ref ? catalogLabel(ref[0], ref[1]) : it.name;
+    const b = h('button', { class: 'abtn', draggable: 'true', title: `${name} · click: apply to selected layer · drag: drop on a layer · right-click: remove`, style: it.t === 'col' ? `background:${it.id};width:26px` : '' }, it.t === 'col' ? '' : name);
     b.onclick = () => useItem(it);
     b.oncontextmenu = (e: Event) => { e.preventDefault(); save(abarItems().filter(x => x.id !== it.id)); renderBar(); };
     b.ondragstart = (e: DragEvent) => { const dt = e.dataTransfer!; dt.setData('text/x-vel-abar', String(j));
@@ -49,7 +51,7 @@ function setup() {
     if (from !== '') { const a = abarItems(), [m] = a.splice(+from, 1); const btns = [...bar.children] as HTMLElement[];
       let to = btns.findIndex(b => { const r = b.getBoundingClientRect(); return e.clientX < r.left + r.width / 2; }); if (to < 0) to = a.length; else if (to > +from) to--; a.splice(to, 0, m); save(a); renderBar(); return; }
     const col = dt.getData(COLOR_MIME); if (col) { addToBar({ t: 'col', id: col, name: col }); return; }
-    const lib = dt.getData('text/x-latomas-lib'); if (lib) { const [c, i] = lib.split(':'); const it = LIB[c] && LIB[c][+i]; if (it) addToBar({ t: 'lib', id: catId(c, +i), name: it.name }); } };
+    const lib = dt.getData('text/x-latomas-lib'); if (lib) { const [c, i] = lib.split(':'); const it = LIB[c] && LIB[c][+i]; if (it) addToBar({ t: 'lib', id: catId(c, +i), name: catalogLabel(c, +i) }); } };
   renderBar();
 }
 /* ---------- workspace presets: shelf split, inspector tab, library shelf ---------- */

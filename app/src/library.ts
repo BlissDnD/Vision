@@ -79,8 +79,8 @@ export const LIB={
   {head:'Bolygók és űr'},
   {name:'Óceánbolygó',make:()=>makeLayer('planet',{name:'Óceánbolygó',p:{ptype:1,seed:7}})},
   {name:'Gázóriás gyűrűvel',make:()=>makeLayer('planet',{name:'Gázóriás',p:{ptype:2,seed:21,ring:.9,clouds:0,atmocol:'#ffcf9a'}})},
-  {name:'Jégvilág',make:()=>makeLayer('planet',{name:'Jégvilág',p:{ptype:3,seed:5,atmocol:'#bfe6ff',clouds:.3}})},
-  {name:'Lávabolygó',make:()=>makeLayer('planet',{name:'Lávabolygó',p:{ptype:4,seed:13,atmo:.6,atmocol:'#ff6a2a',clouds:0,sunang:150}})},
+  {id:'world:ice-planet-object',name:'Jégvilág',make:()=>makeLayer('planet',{name:'Jégvilág',p:{ptype:3,seed:5,atmocol:'#bfe6ff',clouds:.3}})},
+  {id:'world:lava-planet-object',name:'Lávabolygó',make:()=>makeLayer('planet',{name:'Lávabolygó',p:{ptype:4,seed:13,atmo:.6,atmocol:'#ff6a2a',clouds:0,sunang:150}})},
   {name:'Sziklás hold',make:()=>makeLayer('planet',{name:'Hold',p:{ptype:0,seed:3,atmo:0,clouds:0,craters:1}})},
   {name:'Sivatagbolygó',make:()=>makeLayer('planet',{name:'Sivatagbolygó',p:{ptype:5,seed:9,atmocol:'#ffb27a',clouds:.15}})},
   {name:'Erdőbolygó éjjel',make:()=>makeLayer('planet',{name:'Erdőbolygó',p:{ptype:6,seed:31,sunang:160,lights:1.4}})},
@@ -97,7 +97,7 @@ export const LIB={
   {name:'Bento · hős + 3',make:()=>makeLayer('bento')},
   {name:'Bento · 2 × 2 kinyílás',make:()=>makeLayer('bento',{p:{layout:0,anim:0,order:1}})},
   {name:'Bento · üveg kártyák',make:()=>makeLayer('bento',{p:{layout:7,anim:2,fill:1,bh:.6}})},
-  {name:'Bento · átrendeződés',make:()=>makeLayer('bento',{pal:13,p:{layout:5,layout2:4,morphAt:2,fill:2,anim:1,order:2}})},
+  {id:'motion:bento-layout-rearrangement',name:'Bento · átrendeződés',make:()=>makeLayer('bento',{pal:13,p:{layout:5,layout2:4,morphAt:2,fill:2,anim:1,order:2}})},
   {name:'Bento · 3 × 3 körvonal',make:()=>makeLayer('bento',{p:{layout:10,fill:3,anim:1,order:1,outline:.002,shadow:0}})},
   {name:'Alsó harmad sáv',make:()=>makeLayer('bento',{name:'Alsó harmad',x:-.38,y:-.3,p:{layout:9,anim:4,accent:1,bw:.95,bh:.17,round:.012,gap:.012}})},
   {head:'Kinetikus szöveg'},
@@ -161,6 +161,6 @@ export const LIB={
   {name:'Szöveg útvonalon',make:()=>makeLayer('textpath',{name:'Szöveg útvonalon',text:{str:'a vonal mentén úszik a szöveg'},p:{speed:.08,size:.07}})}],
 };
 // plan §5: users think in Receptek / Források / Formák / Megjelenések / Mozgás / Részecskék, not in shader kinds (keys stay stable)
-export const CATS=[['recipes','Receptek'],['gen','Források'],['shapes','2D Formák'],['3d','3D Formák'],['fx','Megjelenések'],['motion','Mozgás'],['particles','Részecskék'],['world','Világok'],['media','Szöveg és média']];
-export const CAT_HINT={world:'Kész tájak darabokból (bontsd ki és alakítsd), alattuk a darabok: égszín, nap, felhők, dombvonal + talaj, pára, bolygók.',motion:'Felül ráhúzható mozgások: húzd egy rétegre (vagy jelöld ki, és kattints); rámutatva a kijelölt rétegen előnézet. Alul mozgásos elemek: Bento, kinetikus szöveg, átmenetek, vetítő.',particles:'Saját emitter: pontból, vonalból, területből vagy a kép alakjából szálló részecskék (mozgasd: csóvát húz). Alul: képből részecske, tedd egy kép vagy szöveg fölé.',recipes:'Kész kombinációk, mind továbbalakítható. Kattints, vagy húzd a vászonra.',fx:'Kattintás: új szűrőréteg · Rétegre húzva csak arra hat (a Blob-követés is)',shapes:'Formák rajzhoz vagy maszknak',
- '3d':'Elöl a szerkeszthető jelenet: alapformákból gyúrod össze, a vásznon húzva mozgatod. Mögötte kész 3D testek. A kamera a 3D forgatás eszközzel (O) kering.',gen:'Teljes képet adó források',media:'Szöveg, saját kép, Poly Haven textúrák, saját shader'};
+export const CATS=[['recipes','Recipes'],['gen','Sources'],['shapes','2D Shapes'],['3d','3D Shapes'],['fx','Appearances'],['motion','Motion'],['particles','Particles'],['world','Worlds'],['media','Text and media']];
+export const CAT_HINT={world:'Ready-made landscapes built from editable parts, followed by sky, sun, clouds, terrain, haze and planets.',motion:'Drag a motion onto a layer, or select a layer and click. Hover to preview it on the selected layer. Animated elements follow below.',particles:'Create particles from a point, line, area or image shape. Drag the emitter to make a trail. Image-based particles follow below.',recipes:'Ready-made combinations that you can edit. Click to add one, or drag it onto the canvas.',fx:'Click to add a filter layer. Drag an Appearance onto a layer to affect only that layer.',shapes:'Shapes for drawing and masks.',
+ '3d':'Start with an editable scene built from basic shapes, or choose a ready-made 3D object. Orbit the camera with the 3D Orbit tool (O).',gen:'Sources that fill the whole frame.',media:'Text, your images, Poly Haven textures and custom shaders.'};

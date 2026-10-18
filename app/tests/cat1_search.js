@@ -23,8 +23,8 @@
  if(ikey('fx',0)!=='fx:0')bad.push('ikey changed');
  // UI: typing shows role chips, clicking one narrows the shelf
  const inp=$('#libSearch');inp.value='lebeg';inp.dispatchEvent(new Event('input'));
- const chips=[...document.querySelectorAll('#cats .rolechip')].map(b=>b.textContent);info.chips=chips;if(!chips.some(t=>/^Mozgás/.test(t)))bad.push('no Mozgás chip');
- const mo=[...document.querySelectorAll('#cats .rolechip')].find(b=>/^Mozgás/.test(b.textContent));mo&&mo.click();
+ const chips=[...document.querySelectorAll('#cats .rolechip')].map(b=>b.textContent);info.chips=chips;if(!chips.some(t=>/^Motion/.test(t)))bad.push('no Mozgás chip');
+ const mo=[...document.querySelectorAll('#cats .rolechip')].find(b=>/^Motion/.test(b.textContent));mo&&mo.click();
  const shown=document.querySelectorAll('#items .item').length;info.shown=shown;if(shown!==onlyMo.length)bad.push('chip did not narrow shelf');
  inp.value='';inp.dispatchEvent(new Event('input'));if(R.libRole)bad.push('role kept after clearing search');
  return {bad,info};})()

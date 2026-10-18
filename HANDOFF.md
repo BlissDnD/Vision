@@ -153,3 +153,7 @@ A felhasználó Material Design alapot választott. Ez felülírja a korábbi Ap
 ## Material 3 agent-alapcsomag — 2026-10-18 (Codex)
 
 A felhasználó kérésére elkészült a Claude-ban véglegesítendő alap: `prototypes/material-ui/AGENTS.md` és `README.md`. Közös tokenek, CSS, típusos natív DOM-vezérlők, 11 hivatalos Material Symbols + licenc; offline `index.html`, Mozgás/Színek/Részletek példák. Görberajz/simítás/reset és iránykör működik prototípusként; Vel undo/mentés/renderer nincs bekötve. Strict typecheck/build és 19/19 célzott headless próba zöld, 320–1280 px túlcsordulás nélkül. Következő: felhasználói próba és Claude-véglegesítés, majd külön panelintegráció. Nem a teljes kész design system.
+
+## English migration: stable catalog display keys — 2026-10-18 (Codex)
+
+`app/src/catalogcopy.ts` now holds English display labels for all 300 built-in Library entries, keyed by catalog IDs. `catalog.ts` keeps legacy Hungarian `name` values for saved data and bilingual search; three duplicate IDs received explicit unique keys and quickbar aliases. Shelf categories, section headings, role/theme chips and preview copy are English. The rest of the app remains in migration. Targeted `catalog_english.js` and `cat1_search.js` pass; full suite and final code audit pending.
