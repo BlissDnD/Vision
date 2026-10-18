@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (89 fájl)
+## Modulok (91 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -32,6 +32,7 @@
 | `dom.ts` | 1 | $ and h() DOM helpers | TAU, h |  |
 | `effects/codepen.ts` | 4 | effect defs: liquidglass, windflame | codepenEffects |  |
 | `effects/filters.ts` | 19 | effect defs: blur, glow, lens, kaleido, feedback, swirl, warp, ripple, radial, edge, mirror, polar, chroma, psycolor, grade, glitch, film, crt, castlight, texture, … | filters |  |
+| `effects/fluid.ts` | 2 | effect defs: fluid, fluidfx | fluidEffects |  |
 | `effects/generators.ts` | 16 | effect defs: plasma, fire, aurora, nebula, liquid, tunnel, sacred, kali, julia, moire, hyper, grid, blackhole, gradient, galaxy, waves, lava, cells, flare | generators |  |
 | `effects/helpers.ts` | 3 | S/SEL/COL param constructors, shared GLSL libs | S, SEL, COL, SKYLIB, CLOUDLIB, BENTO, BENTO_NAMES, BENTO_ANIMS |  |
 | `effects/index.ts` | 12 | EFFECTS registry, BASE params, paramsOf/pdefOf (per-layer params), animKeysOf/mainDupOf, icons, DEFAULT_CODE | EFFECTS, fxFits, fxHostNote, BLOB_PD, DEFAULT_CODE, CP_MAX, CP_KEY, cpDefs, paramsOf, pdefOf, SDF_MAP, SDF_RENDER, DEF_PRIMS, PRIM_T … (+18) |  |
@@ -45,6 +46,7 @@
 | `effects/worldBlocks.ts` | 7 | effect defs: skygrad, sun, clouds, terrain, haze | worldBlocks |  |
 | `effects/worlds.ts` | 13 | effect defs: planet, sky, space, bokeh | worlds |  |
 | `evaluation.ts` | 12 | value evaluation: ev() (keys, LFO, signals, links), keyframes, setVal (Animálás mode), key editor | wave, klVal, ev, KEY_EASES, SMOOTH_E, KEY_EPS, hasK, keyIdx, bezierY, keyEase, keyVal, curV, DEF_EASE, setKey … (+13) | animMode, keyShift, keyEdit, time, liveKed |
+| `fluid.ts` | 11 | F1 · Folyadékmező: GPU Stable Fluids per layer (Áramló tinta source, Folyadékos torzítás appearance), on the shared sim clock. Grid size depends only on aspect + … | resetFluid, fluidMark, fluidSweep, Emitter, emitters, fluidPrep |  |
 | `fxicons.ts` | 4 | U4: one small, consistent icon per appearance (Megjelenés) type, for the layer's effect row and the add grid. 24×24 stroke glyphs; unknown types get a two-letter … | fxIcon |  |
 | `gesture.ts` | 16 | Gesztus-mozgás: motion set by showing it on the canvas. The arrow of Rugalmas beúszás / Beúszás / Kiúszás (tail = direction + distance, ⌘ ↕ tempo · ↔ character, ⌥ or … |  | updMoArrow, moScrub |
 | `gl.ts` | 12 | WebGL2 context, compile/link, getProg/progKey (per-layer program cache), fixed programs, targets/textures | cv, gl, HALF, IFMT, compile, VSO, link, U, fragFor, progCache, codeOf, cpSig, progKey, getProg … (+23) |  |

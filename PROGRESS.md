@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — F1 Folyadékmező (0.37.0-f1, `claude/vel-fluid-797dca` ág)
+
+- **Források → Áramló tinta** (+ füstcsík, örvények, tintacsepp): valódi GPU-folyadékszimuláció, 1–6 seedelt vándorló forrás palettaszínű tintát fúj; Örvénylés, Lecsengés, Szél + irány, Lüktetés, Minőség. A réteget lejátszás közben húzva belefújsz.
+- **Megjelenések → Folyadékos torzítás / Folyadékos feltárás:** a sebességmező csak a célréteg képét mozdítja el; Feltárás módban a réteg csak a tinta nyomában látszik (Perem fény).
+- Közös óra: ugrás = újraszimulálás 3 s előfutással, export megismételhető; a mező felbontása a kimenettől független (4K = ugyanaz a mező).
+- Célzott teszt: `tests/f1_fluid.js` zöld (idővel változik, seek = azonos kép, Örvénylés hat, 3 minőség, torzítás csak a saját rétegen, Feltárás maszkol, bélyegkép, mentés–újranyitás). Teljes kör 40/41, a bukó `polyhaven_import` az ismert ingadozó teszt (`BUGS.md`). Typecheck 0 hiba.
+- Próba: 1) Áramló tinta behúzása, Lejátszás, Örvénylés fel; 2) lejátszás közben húzd a réteget; 3) Szövegre húzd a Folyadékos torzítást, Mód = Feltárás; 4) tekerj vissza ugyanarra az időre → ugyanaz a kép.
+- Korlát: megállított ugrás után az első képkocka egy lépés, a pontos kép ~0,2 s múlva finomodik (mint a Visszhangnál); a vászon-kattintás csak a források közelében választja ki a réteget; akadály, közös mező több réteg közt, részecske-kapcsolat még nincs; a húzásból fújás csak kulcsozva kerül exportba.
+
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 
 - **Rugalmas beúszás nyila:** vég húzása = irány + távolság; ⌘ + fel/le = tempó (fel = rövidebb), ⌘ + oldalra = karakter (Lágy/Ütés/Rugó); ⌥ vagy a nyíl közepe = ív (a réteg valóban az íven érkezik, `bend` paraméter); ⇧ = 15°-os szögek.
