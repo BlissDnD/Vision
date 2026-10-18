@@ -1,5 +1,7 @@
 # WA1 – Web Awesome alap és közös vezérlők (mérföldkő-terv, jóváhagyásra vár)
 
+> **Állapot: megvalósítva** a `claude/english-wa1-2419a5` ágon (0.49.0-wa1), felhasználói próba hátra. Az angol fordítás előbb lezárult, ezért a függőségi javaslat teljesült.
+
 ## Mit tud majd a felhasználó
 1. Megnyitja a buildet: az egész felület az új sötét téma (`vel-theme.css`, a DESIGN-SYSTEM.md színeivel) – egységes gombok, menük, tooltipek.
 2. A **toolbar ikonos**, a kategóriák színnel és általános ikonnal jelölve (effekt = kék stb.); ráviszi az egeret: egy mondatos tooltip.

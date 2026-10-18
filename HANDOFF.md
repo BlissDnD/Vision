@@ -160,7 +160,7 @@ Két prioritás: (1) UI-frissítés (`docs/final-updates/UI-UPDATE.md`, angol le
 
 **FELÜLÍRVA (2026-10-18, felhasználói döntés): a UI-alap nem Material 3, hanem Web Awesome** (WA1: `docs/final-updates/MILESTONE-WA1.md`, `claude/project-organization-ui-update-746ad1` ág). A Material-anyag csak történeti hivatkozás.
 
-Jelenleg: WA1 (ikonos toolbar, új téma, közös vezérlők a Mozgás kártyán) fut a `claude/project-organization-ui-update-746ad1` ágon, párhuzamosan az angol lokalizációval. A `prototypes/material-ui/` nem a követendő irány.
+**Érvényes változat (felhasználói döntés, 2026-10-18): a `claude/english-wa1-2419a5` ág.** Ebben van együtt az angol lokalizáció és a WA1 (Web Awesome). Az ág a WA1 két párhuzamos változatából egyesítette a jobbat. A `claude/project-organization-ui-update-746ad1` ág WA1 commitja (`048ca1d`) és a `claude/hogyan-folytatjuk-868702` ág félkész munkája **elavult**, ne ebből dolgozz. A `prototypes/material-ui/` nem a követendő irány.
 
 ## (Elavult) Material Design 3 választás — 2026-10-18 (Codex)
 

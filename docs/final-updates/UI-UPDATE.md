@@ -1,6 +1,6 @@
 # UI-frissítés – feladatlista (innen dolgozunk)
 
-Állapot: **tervezett, még nem kezdődött el.** Létrehozva: 2026-10-18.
+Állapot: **0. (Web Awesome / WA1) megvalósítva az `claude/english-wa1-2419a5` ágon, felhasználói próba hátra; A. (angol) nagyrészt kész, lásd `ENGLISH-REMAINING.md`; 1–7. tervezett.** Létrehozva: 2026-10-18.
 Minden feladat alatt ott van **a felhasználó eredeti szövege** szó szerint (idézet, az elírásokkal együtt). Ha egy feladat elkészül, ide kerül a jelölés (tervezett / részben / demonstrálva / kipróbálva), és a `FUNKCIO-LELTAR.md` megfelelő sora is frissül.
 
 Sorrend (javaslat, jóváhagyás kell): **0 → A → 1 → 2 → …** A „0. Design system” az alap, mert minden más UI-feladat arra épül.
