@@ -1,4 +1,5 @@
 import { COL, S, SEL } from './helpers';
+import { MAT_GLSL } from './mat3d';
 
 /** 3D */
 import type { EffectDef } from '../types';
@@ -30,6 +31,7 @@ obj3d:{kind:'3d',name:'3D objektum',desc:'Fizikai alapú (PBR) 3D test: környez
   SEL('aa','Élsimítás',['Gyors','4× (lassabb)'],0),
   S('displace','Torzítás',0,1,.15),S('spin','Forgás',-2,2,.3),S('rx','Dőlés °',-180,180,20),S('ry','Fordulat °',-180,180,0),S('twist','Csavarás',-3,3,0),S('ring','Gyűrű',0,1,0),S('speed','Anyag tempója',0,3,.5),SEL('sceneL','Jelenetfény hat rá',['Nem','Igen'],1)],
  code:`uniform vec3 uLDir; uniform vec3 uLEnv; uniform vec3 uLCol; uniform float uLSoftK; uniform float uLSize; uniform float uLWrap;   // scene light (render.ts lightU)
+${MAT_GLSL}
 mat3 gM;
 mat3 rX(float a){float c=cos(a),s=sin(a);return mat3(1.0,0.0,0.0,0.0,c,s,0.0,-s,c);}
 mat3 rY(float a){float c=cos(a),s=sin(a);return mat3(c,0.0,-s,0.0,1.0,0.0,s,0.0,c);}
@@ -91,12 +93,16 @@ vec4 render(vec2 p){
   for(int i=0;i<110;i++){vec3 pos=ro+rd*tt; vec2 m=map(pos); md=min(md,m.x); if(m.x<0.0007*(1.0+tt)){hit=vec2(tt,m.y);break;} tt+=m.x*0.75; if(tt>9.0) break;}
   vec3 L=uLDir;
   if(hit.y<-0.5){
-    vec4 res=vec4(0.0);
+    vec4 res=vec4(0.0); float fsh=0.0; vec2 fq=vec2(0.0);
     if(p_floor>0.001&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; float sh=softShadow(fp+vec3(0.0,0.002,0.0),L); float ao=clamp(map(fp).x*1.2,0.0,1.0);
-      res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0);}
+      res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0); fsh=res.a; fq=fp.xz;}
     float halo=exp(-max(md,0.0)*14.0)*p_glow*0.5; res.rgb+=pal(0.6)*halo; res.a=max(res.a,clamp(halo,0.0,1.0));
+    if(uMt>0.5) res=mix(res,matMiss(md,fsh,fq,3.5/(uRes.y*uScale*1.8)),uMs);
     return res;}
   vec3 pos=ro+rd*hit.x; vec3 n=calcN(pos); vec3 lq=gM*pos; vec3 v=-rd;
+  if(uMt>0.5){float ao0=calcAO(pos,n),sh0=softShadow(pos+n*0.003,L); vec3 g0=shadePBR(n,rd,vec3(0.7),0.55,0.0,ao0,sh0);   // MAT1: host appearance (material3d)
+    gMat=matHit(dot(g0,vec3(0.2126,0.7152,0.0722)),max(dot(n,v),0.0),lq,gM*n,hit.x/(uRes.y*uScale*1.8),pal(0.3+lq.y*0.25)*g0*1.3,pos.y);
+    if(uMs>0.999) return gMat;}
   float fres=pow(1.0-max(dot(n,v),0.0),3.0);
   float rough=clamp(p_rough,0.02,1.0); float metal=p_metal; vec3 alb=vec3(0.8); vec3 emit=vec3(0.0); float a=1.0;
   if(p_detail>0.001){vec3 q=lq*10.0; float e=0.01;
@@ -110,21 +116,21 @@ vec4 render(vec2 p){
   else if(mt==2){float f=fbm(lq.xy*2.2+lq.z*1.3)*0.6+fbm(lq.yz*2.0+3.1)*0.4; float land=smoothstep(0.48,0.53,f);
     alb=mix(pal(0.6)*0.3,pal(0.12+f*0.6)*0.85,land); rough=mix(0.18,0.85,land);
     float cl=smoothstep(0.55,0.75,fbm(lq.xz*3.0+vec2(t*0.1,0.0)+lq.y)); alb=mix(alb,vec3(0.95),cl*0.7); rough=mix(rough,1.0,cl); emit=pal(0.6)*fres*0.5;}
-  else if(mt==3){float ln=smoothstep(0.85,1.0,sin(lq.y*70.0+t*4.0)*0.5+0.5); vec3 col=pal(0.55+lq.y*0.3)*(fres*1.6+ln*0.7+0.08); a=clamp(fres*1.2+ln*0.6+0.12,0.0,1.0); return vec4(col*a,a);}
+  else if(mt==3){float ln=smoothstep(0.85,1.0,sin(lq.y*70.0+t*4.0)*0.5+0.5); vec3 col=pal(0.55+lq.y*0.3)*(fres*1.6+ln*0.7+0.08); a=clamp(fres*1.2+ln*0.6+0.12,0.0,1.0); return MX(vec4(col*a,a));}
   else if(mt==4){alb=mix(vec3(0.95),pal(0.5),0.3); metal=1.0; rough=rough*0.5;}
   else if(mt==5){float f=fbm(lq.xy*3.0+lq.z*2.0+t*0.1); float hot=smoothstep(0.5,0.68,f); alb=vec3(0.06,0.05,0.05); rough=0.9; metal=0.0; emit=pal(0.04+hot*0.12)*3.0*hot;}
   else if(mt==6){float nv=max(dot(n,v),0.0); vec3 Fg=vec3(0.04)+0.96*pow(1.0-nv,5.0); vec3 rf=refract(rd,n,0.7);
-    vec3 col=envMap(rf,rough)*mix(vec3(1.0),pal(0.5),0.4)*0.8+envMap(reflect(rd,n),rough)*Fg*1.3; a=clamp(0.3+fres*1.1,0.0,1.0); return vec4(col*max(a,0.5),a);}
-  else if(mt==7){return vec4((n*0.5+0.5)*(0.65+0.35*diffK)+specK*0.3,1.0);}
-  else if(mt==8){float lv=floor(diffK*3.0+0.5)/3.0; vec3 col=pal(0.15+lv*0.5)*(0.25+lv)+step(0.97,specK)*0.8; col*=1.0-step(0.6,fres)*0.85; return vec4(col,1.0);}
+    vec3 col=envMap(rf,rough)*mix(vec3(1.0),pal(0.5),0.4)*0.8+envMap(reflect(rd,n),rough)*Fg*1.3; a=clamp(0.3+fres*1.1,0.0,1.0); return MX(vec4(col*max(a,0.5),a));}
+  else if(mt==7){return MX(vec4((n*0.5+0.5)*(0.65+0.35*diffK)+specK*0.3,1.0));}
+  else if(mt==8){float lv=floor(diffK*3.0+0.5)/3.0; vec3 col=pal(0.15+lv*0.5)*(0.25+lv)+step(0.97,specK)*0.8; col*=1.0-step(0.6,fres)*0.85; return MX(vec4(col,1.0));}
   else if(mt==9){alb=mix(vec3(0.82,0.79,0.75),pal(0.5),0.35); rough=max(rough,0.7); metal=0.0;}
   else if(mt==10){alb=mix(vec3(0.93,0.92,0.95),pal(fres*0.7+n.y*0.2+t*0.03),0.45); rough=min(rough,0.3); metal=0.0; emit=pal(fres*0.8)*fres*0.25;}
   else {alb=pal(0.3+n.y*0.1)*0.55; rough=0.95; metal=0.0; emit=pal(0.35)*pow(1.0-max(dot(n,v),0.0),2.0)*0.8;}
   float ao=calcAO(pos,n); float sh=softShadow(pos+n*0.003,L);
   vec3 col=shadePBR(n,rd,alb,rough,metal,ao,sh)+emit+pal(0.6)*fres*p_glow*0.25;
-  return vec4(col*a,a);}
+  return MX(vec4(col*a,a));}
 vec4 fx(){
-  vec2 p=P();
+  vec2 p=matWarp(P());
   gM=rX(p_rx*PI/180.0)*rY(p_ry*PI/180.0+uTime*p_spin);
   if(p_aa<0.5) return render(p);
   vec2 px=vec2(1.0/(uRes.y*uScale));
@@ -139,5 +145,15 @@ gyroid:{kind:'3d',name:'Giroid-barlang',desc:'Végtelen 3D járat izzó membrán
   for(int i=0;i<70;i++){vec3 q=ro+rd*tt; float s=p_scale; float g=abs(dot(sin(q*s),cos(q.zxy*s)))/s-p_thick*0.05; float d=abs(g)+0.003;
     col+=pal(q.z*0.04+tt*0.03)*0.006/d*exp(-tt*0.12); tt+=d*0.8; if(tt>25.0) break;}
   return vec4(1.0-exp(-col*p_glow),1.0);
-}`}
+}`},
+inksketch:{kind:'fx',name:'Rajzolt toll',host:['obj3d','sdfscene','surface3d'],desc:'Ráhúzható Megjelenés 3D tárgyra: golyóstollal papírra satírozott rajz. A sötétebb részeken sűrűbb, keresztező vonalak, rezgő kontúr, a talajárnyék is satírozott. Felülírja a tárgy Anyagát; az Erősség csúszkával fokozatosan beúszik. (R3F Sketch Material ötlete, saját WebGL2 megvalósítás.)',
+ main:['ink','paper','density','width','press','contour'],
+ params:[COL('ink','Tollszín','#1d1f2a'),COL('paper','Papír','#f3f1ec'),S('density','Sűrűség',4,60,22),S('width','Vonalvastagság',0.05,0.5,0.2),S('press','Nyomás',0,1.5,0.9),S('contour','Kontúr',0,4,1.5),
+  S('boil','Élő vonal (rajz/mp)',0,12,0),S('orig','Eredeti szín',0,1,0),S('angle','Satír szöge °',-90,90,0),SEL('paperbg','Papír háttér',['Nem','Igen'],1)],
+ code:`vec4 fx(){return IN(vUv);}`},
+hologram:{kind:'fx',name:'Hologram',host:['obj3d','sdfscene','surface3d'],desc:'Ráhúzható Megjelenés 3D tárgyra: áttetsző, világító peremű test mozgó pásztázó csíkokkal, fénysávval, villódzással és időnként elcsúszó képsávokkal. Felülírja a tárgy Anyagát; az Erősség csúszkával fokozatosan beúszik.',
+ main:['color','alpha','rim','lines','scan','flick','glitch'],
+ params:[COL('color','Szín','#3fe8ff'),S('alpha','Fedés',0,1,0.8),S('rim','Perem élessége',0.5,6,2.2),S('lines','Csíksűrűség',0,60,18),S('scan','Pásztázás tempója',0,3,0.6),
+  S('flick','Villódzás',0,1,0.35),S('glitch','Elcsúszás',0,1,0.3),S('band','Fénysáv',0,2,1)],
+ code:`vec4 fx(){return IN(vUv);}`}
 };

@@ -3,6 +3,8 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**MAT1 3D anyagok (0.37.0-mat1, 2026-10-18, 3D lane, ág `claude/happy-thompson-41c815`):** közös anyag-interfész a 3D úton (obj3d, sdfscene, Gerincfelület) és két ráhúzható Megjelenés: **Rajzolt toll** (satírozott tollrajz) és **Hologram**. Headless teszttel demonstrálva (`tests/mat1_materials.js`), felhasználói próba hátra (`PROGRESS.md` legfelül). **Következő a 3D lane-ben:** 4. sor (több fény, fényformák, tükrözés/törés, padlótükör), majd 35. sor (Skybox / Környezet); mindkettő előtt javaslat.
+
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).
 
 **PH1 Poly Haven képek (0.35.0-ph1, 2026-10-18):** Szöveg és média → Poly Haven textúrák: 12 elemes, kereshető, kurált CC0-katalógus; kiválasztáskor hivatalos 2K JPG-ből beágyazott képréteg és forrásmetaadat. Célzott teszt zöld (`tests/polyhaven_import.js`); teljes kör első futás 37/39, a két tesztfeltétel javítása után mindkettő külön zöld (`PROGRESS.md`). A valódi hálózatos felhasználói próba hátra. Ez 2D képimport, nem 3D PBR-anyag vagy teljes online katalógus. Következőhöz külön javaslat kell: PBR-anyagcsatlakozó vagy új médiakatalógus.

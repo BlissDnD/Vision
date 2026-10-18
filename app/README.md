@@ -148,6 +148,12 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
 
+## MAT1 3D anyag-interfész (2026-10-18)
+- `effects/mat3d.ts` `MAT_GLSL`: uniformok `uMt` (0/1 toll/2 holo), `uMs` erősség, `uMsc` host-lépték (SDF 1, háló 0.12), `uMa/uMb` paramétercsomag, `uMc1/2` színek; `matHit` (találat), `matMiss` (SDF: sziluettkontúr, satírozott talajárnyék, papír), `matWarp` (holo glitch a sugáron), `MX()` keverés.
+- SDF-hostok (obj3d, sdfscene): a találatnál semleges szürke `shadePBR` fényessége a tónus; `uMs≈1` esetén korai visszatérés (nincs plusz költség), különben minden `return` `MX()`-en át. A sdfscene a `head` szeletelés miatt automatikusan megkapja.
+- Háló (surface3d): `MESH_FS` végén `matHit`, `MESH_VS`-ben holo glitch; aktív anyagnál (`matVals().s>0.5`) nincs tükörpadló/háttér, Rajzolt tollnál papírszínű törlés.
+- Új host-Megjelenéshez: kulcs a `MAT_TYPES`-ba + ág a `matVals`/`matHit`-be.
+
 ## Gesztus-mozgás (2026-10-18)
 - `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).
 - Módváltáskor (⌘/⌥/semmi) újrahorgonyoz (`snap`), így minden mód a saját kezdőpontjához képest relatív; ⌘ tempó = `v·2^(dy/90)`, karakter 45 px-enként. Egy húzás = egy `commit()` elengedéskor.

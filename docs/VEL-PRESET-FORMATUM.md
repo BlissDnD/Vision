@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.32.0-t1.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.37.0-mat1.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.
@@ -63,6 +63,9 @@ SHADER CONTRACT (layer type "custom"):
 
 CATALOG (key [kind] name: params; sel params list index:label):
 surface3d [3d] Gerincfelület: arch=0.4..1.6(1); width=2..12(7); thick=0.02..0.6(0.09); color=#hex; rough=0.02..0.8(0.18); metal=0..1(0.85); coat=0..1(0.35); refl=0..1.6(0.9); expo=0.1..2(0.72); taper=-0.9..0.9(0); bend=-0.5..0.5(0.12); lean=-2.5..2.5(0.9); leanEnd=-2.5..2.5(-1.2); twist=-3..3(0); fillet=0..1.2(0.35); tint=0..1(0.92); silver=0..1(0.9); dot=0..1(0.8); dotS=0.01..0.15(0.035); stripPos=-6..6(0.6); stripSize=0.2..2.5(1); stripI=0..8(2.5); backI=0..4(0.8); sky=0.3..2(0.95); floor=0:Nincs|1:Tükröző padló; bg=0:Átlátszó|1:Stúdió; blur=0..4(1); ao=0..2(1); ry=-180..180(-11); rx=-80..80(-6); dist=2..30(8.4); fov=15..100(62); tx=-10..10(1); ty=-2..8(1.35); tz=-12..6(-3)
+terrain3d [3d] 3D Terep: ttype=0:Hegy|1:Dűne|2:Sziget|3:Kanyon|4:Fennsík|5:Kráter; seed=0..999(7); style=0:Mérsékelt|1:Sivatag|2:Havas|3:Vulkáni|4:Idegen; size=0.3..4(0.9); relief=0..2(1); detail=0..1(0.5); water=0..1(0.22); bg=0:Átlátszó|1:Égbolt; fog=0..3(0.8); expo=0.2..2(1); qual=0:Vázlat|1:Normál|2:Részletes; ry=-180..180(32); rx=-5..85(26); dist=3..40(14); fov=15..90(42); tx=-12..12(0); ty=-2..6(0.6); tz=-12..12(0)
+inksketch [fx] Rajzolt toll: ink=#hex; paper=#hex; density=4..60(22); width=0.05..0.5(0.2); press=0..1.5(0.9); contour=0..4(1.5); boil=0..12(0); orig=0..1(0); angle=-90..90(0); paperbg=0:Nem|1:Igen
+hologram [fx] Hologram: color=#hex; alpha=0..1(0.8); rim=0.5..6(2.2); lines=0..60(18); scan=0..3(0.6); flick=0..1(0.35); glitch=0..1(0.3); band=0..2(1)
 shape [shape] Alakzat: kind=0:Kör|1:Gyűrű|2:Téglalap|3:Sokszög|4:Csillag|5:Félhold|6:Vesica|7:Szív|8:Virág|9:Spirál|10:Szem|11:Kereszt|12:Végtelen|13:Dombvonal; size=0.02..1.5(0.3); soft=0..1(0); fill=0:Szín|1:Paletta|2:Szivárvány; color=#hex; aspect=0.2..5(1); round=0..1(0.15); sides=3..12(6); inner=0..1(0.45); thick=0.002..0.4(0.04); outline=0..0.1(0); speed=0..3(0.3)
 plasma [gen] Plazma: speed=0..4(1); zoom=0.3..6(1.5); warp=0..2(0.6); bands=0.2..4(1.2)
 fire [gen] Tűz: height=0.1..1.5(0.75); intensity=0..2(1.1); speed=0..3(1); tint=0..1(0); width=0.05..2(0.55); turb=0.3..3(1)
@@ -85,6 +88,7 @@ cells [gen] Sejtszövet: zoom=1..14(5); speed=0..3(0.8); glow=0..3(1.2); fill=0.
 flare [gen] Lencsefény: size=0.2..3(1); rays=0..16(6); streak=0..2(1); ghosts=0..3(1); ring=0..2(0.6); flicker=0..1(0.3)
 text [text] Szöveg: tint=0..1(0.7); glow=0..3(1); spread=0..3(0.6); shimmer=0..4(1)
 image [image] Kép: bright=0..3(1); sat=0..3(1)
+lottie [image] Vektoranimáció: bright=0..3(1); sat=0..3(1)
 custom [gen] Saját GLSL: (own GLSL, see SHADER CONTRACT; default sliders a=0..1(0.5); b=0..1(0.5); c=0..1(0.5); d=0..1(0.5))
 blur [fx] Elmosás: radius=0..10(2)
 glow [fx] Ragyogás: amount=0..3(1); radius=0.2..4(1.5); thresh=0..1(0.35)

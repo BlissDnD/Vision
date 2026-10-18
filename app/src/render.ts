@@ -9,6 +9,7 @@ import { ev, hasK } from './evaluation';
 import { mediaFor } from './text';
 import { blobPrep } from './blob';
 import { drawMesh } from './mesh3d';
+import { matU } from './material3d';
 import { drawTerrain } from './terrain3d';
 import { pdMix, pdUniforms } from './partfx';
 import { ctlSlider, ctlSwitch } from './controls';
@@ -114,8 +115,8 @@ export function lightU(p,L,t){const v=lightVals(L,t),off=v.az===LDEF.az&&v.el===
   const w=v.warm,c=[1+Math.max(-w,0)*-.2,.97+Math.max(w,0)*-.12+Math.max(-w,0)*-.03,.92+Math.max(w,0)*-.3+Math.max(-w,0)*.08].map(x=>x*v.pow);
   gl.uniform3f(U(p,'uLDir'),d[0],d[1],d[2]);gl.uniform3f(U(p,'uLEnv'),e[0],e[1],e[2]);gl.uniform3f(U(p,'uLCol'),c[0],c[1],c[2]);
   gl.uniform1f(U(p,'uLSoftK'),v.soft<=.5?16-12*v.soft:10-16*(v.soft-.5));gl.uniform1f(U(p,'uLWrap'),Math.max(0,v.soft-.5)*1.6);gl.uniform1f(U(p,'uLSize'),v.size);}
-EFFECTS.obj3d.setU=lightU;
-EFFECTS.sdfscene.setU=(p,L,t)=>{lightU(p,L,t);const P=(L.prims||[]).slice(0,8);const A=new Float32Array(32),B=new Float32Array(32),C=new Float32Array(32);
+EFFECTS.obj3d.setU=(p,L,t)=>{lightU(p,L,t);matU(p,L,t,U);};
+EFFECTS.sdfscene.setU=(p,L,t)=>{lightU(p,L,t);matU(p,L,t,U);const P=(L.prims||[]).slice(0,8);const A=new Float32Array(32),B=new Float32Array(32),C=new Float32Array(32);
   P.forEach((o,i)=>{A.set([o.x,o.y,o.z,o.t],i*4);B.set([o.sx,o.sy,o.sz,o.op],i*4);C.set([o.ry*Math.PI/180,o.rx*Math.PI/180,o.k,o.c],i*4);});
   gl.uniform4fv(U(p,'uA'),A);gl.uniform4fv(U(p,'uB'),B);gl.uniform4fv(U(p,'uC'),C);gl.uniform1f(U(p,'uN'),P.length);};
 /* ----- particles: GL points sampled from a texture ----- */

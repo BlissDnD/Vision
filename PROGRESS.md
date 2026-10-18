@@ -2,6 +2,16 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — MAT1 3D anyagok: Rajzolt toll + Hologram (0.37.0-mat1)
+
+- **Anyag-interfész a 3D úton:** közös GLSL-blokk (`effects/mat3d.ts`) és uniform-beállító (`material3d.ts`) a 3D objektumhoz, 3D jelenethez és Gerincfelülethez; a host-Megjelenés felülírja a tárgy Anyagát, az Erősség fokozatosan keveri.
+- **Rajzolt toll** (Megjelenések): tárgytérbeli satírozás tónusszintekkel (ritka → kereszt → sűrű), papírszemcse, tintakihagyás, rezgő kontúr, satírozott talajárnyék; tollszín, papír, sűrűség, vastagság, nyomás, kontúr, élő vonal, eredeti szín, papír háttér.
+- **Hologram** (Megjelenések): áttetsző, világító perem, pásztázó csíkok, fénysáv, villódzás, elcsúszás (glitch). Gerincfelületen a stúdió és a tükörpadló kimarad alóla.
+- 3D polc új blokkja „Rajzolt és hologram”: Rajzolt tóruszcsomó, Rajzolt hóember, Hologram-fej, Hologram-szalag. Mentési formátum nem változott (az anyag a meglévő `fx` listában), migráció nincs.
+- Célzott teszt: `tests/mat1_materials.js` zöld; typecheck 0 hiba; teljes kör 41/41 zöld. Javaslat: `docs/javaslatok/MAT1-ANYAGOK-JAVASLAT.md` (a felhasználó távollétében önjóváhagyva).
+- Próba: 1) 3D → Rajzolt tóruszcsomó: satírozott rajz, a sötét oldalon sűrűbb; 2) Hologram húzása a Gerincfelületre; 3) Erősség 0→1 kulcsozva; 4) mentés → újranyitás.
+- Korlát: a kontúr perem + sziluett (nem geometriai él); a hologram hátlapjai nem látszanak; Terep/Felhő/2D nem célpont; M1 Max frame-idő nincs mérve.
+
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 
 - **Rugalmas beúszás nyila:** vég húzása = irány + távolság; ⌘ + fel/le = tempó (fel = rövidebb), ⌘ + oldalra = karakter (Lágy/Ütés/Rugó); ⌥ vagy a nyíl közepe = ív (a réteg valóban az íven érkezik, `bend` paraméter); ⇧ = 15°-os szögek.

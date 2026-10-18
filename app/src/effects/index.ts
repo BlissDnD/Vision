@@ -72,21 +72,25 @@ export const SDF_RENDER=`vec4 render(vec2 p){
   float tt=0.0; float md=1e9; float hit=-1.0;
   for(int i=0;i<128;i++){vec3 pos=ro+rd*tt; float d=map(pos).x; md=min(md,d); if(d<0.0007*(1.0+tt)){hit=tt;break;} tt+=d*0.8; if(tt>10.0) break;}
   vec3 L=uLDir;
-  if(hit<0.0){vec4 res=vec4(0.0);
+  if(hit<0.0){vec4 res=vec4(0.0); float fsh=0.0; vec2 fq=vec2(0.0);
     if(p_floor>0.001&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; float sh=softShadow(fp+vec3(0.0,0.002,0.0),L); float ao=clamp(map(fp).x*1.2,0.0,1.0);
-      res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0);}
-    float halo=exp(-max(md,0.0)*14.0)*p_glow*0.4; res.rgb+=pal(0.6)*halo; res.a=max(res.a,clamp(halo,0.0,1.0)); return res;}
+      res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0); fsh=res.a; fq=fp.xz;}
+    float halo=exp(-max(md,0.0)*14.0)*p_glow*0.4; res.rgb+=pal(0.6)*halo; res.a=max(res.a,clamp(halo,0.0,1.0));
+    if(uMt>0.5) res=mix(res,matMiss(md,fsh,fq,3.5/(uRes.y*uScale*1.8)),uMs); return res;}
   vec3 pos=ro+rd*hit; vec3 n=calcN(pos); vec3 v=-rd; float ct=map(pos).y-2.0;
+  if(uMt>0.5){float ao0=calcAO(pos,n),sh0=softShadow(pos+n*0.003,L); vec3 g0=shadePBR(n,rd,vec3(0.7),0.55,0.0,ao0,sh0);   // MAT1: host appearance (material3d)
+    gMat=matHit(dot(g0,vec3(0.2126,0.7152,0.0722)),max(dot(n,v),0.0),(gM*pos),gM*n,hit/(uRes.y*uScale*1.8),pal(0.3+(gM*pos).y*0.25)*g0*1.3,pos.y);
+    if(uMs>0.999) return gMat;}
   float fres=pow(1.0-max(dot(n,v),0.0),3.0); float rough=clamp(p_rough,0.02,1.0); float metal=p_metal; vec3 alb;
   int mt=int(p_material+0.5);
   if(mt==0) alb=pal(ct);
   else if(mt==1){alb=mix(vec3(0.82,0.79,0.75),pal(ct),0.35); rough=max(rough,0.7); metal=0.0;}
   else if(mt==2){alb=mix(vec3(0.95),pal(ct),0.3); metal=1.0; rough=rough*0.5;}
   else if(mt==3){alb=pal(fres*0.9+n.y*0.3+ct); metal=max(metal,0.75); rough=rough*0.6;}
-  else return vec4(n*0.5+0.5,1.0);
+  else return MX(vec4(n*0.5+0.5,1.0));
   float ao=calcAO(pos,n); float sh=softShadow(pos+n*0.003,L);
-  return vec4(shadePBR(n,rd,alb,rough,metal,ao,sh)+pal(0.6)*fres*p_glow*0.25,1.0);}
-vec4 fx(){vec2 p=P(); gM=rX(p_rx*PI/180.0)*rY(p_ry*PI/180.0+uTime*p_spin);
+  return MX(vec4(shadePBR(n,rd,alb,rough,metal,ao,sh)+pal(0.6)*fres*p_glow*0.25,1.0));}
+vec4 fx(){vec2 p=matWarp(P()); gM=rX(p_rx*PI/180.0)*rY(p_ry*PI/180.0+uTime*p_spin);
   if(p_aa<0.5) return render(p);
   vec2 px=vec2(1.0/(uRes.y*uScale));
   return (render(p+px*vec2(-0.25,-0.25))+render(p+px*vec2(0.25,-0.25))+render(p+px*vec2(-0.25,0.25))+render(p+px*vec2(0.25,0.25)))*0.25;}`;

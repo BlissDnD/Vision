@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (89 fájl)
+## Modulok (91 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -35,10 +35,11 @@
 | `effects/generators.ts` | 16 | effect defs: plasma, fire, aurora, nebula, liquid, tunnel, sacred, kali, julia, moire, hyper, grid, blackhole, gradient, galaxy, waves, lava, cells, flare | generators |  |
 | `effects/helpers.ts` | 3 | S/SEL/COL param constructors, shared GLSL libs | S, SEL, COL, SKYLIB, CLOUDLIB, BENTO, BENTO_NAMES, BENTO_ANIMS |  |
 | `effects/index.ts` | 12 | EFFECTS registry, BASE params, paramsOf/pdefOf (per-layer params), animKeysOf/mainDupOf, icons, DEFAULT_CODE | EFFECTS, fxFits, fxHostNote, BLOB_PD, DEFAULT_CODE, CP_MAX, CP_KEY, cpDefs, paramsOf, pdefOf, SDF_MAP, SDF_RENDER, DEF_PRIMS, PRIM_T … (+18) |  |
+| `effects/mat3d.ts` | 6 | MAT1 · 3D material interface (GLSL side). One block shared by every 3D render path: the SDF raymarchers (obj3d, sdfscene) and the triangle mesh (surface3d). A host … | MAT_GLSL |  |
 | `effects/media.ts` | 2 | effect defs: text, image, lottie, custom | media |  |
 | `effects/motionDesign.ts` | 7 | effect defs: bento, projector | motionDesign |  |
 | `effects/motionText.ts` | 9 | effect defs: mtext, reveal | motionText |  |
-| `effects/objects3d.ts` | 14 | effect defs: surface3d, terrain3d, obj3d, gyroid | objects3d |  |
+| `effects/objects3d.ts` | 16 | effect defs: surface3d, terrain3d, obj3d, gyroid, inksketch, hologram | objects3d |  |
 | `effects/particles.ts` | 3 | effect defs: pdisp, particles, sdfscene | particles |  |
 | `effects/shapes.ts` | 4 | effect defs: shape | shapes |  |
 | `effects/soft3d.ts` | 7 | effect defs: cloud3d, balloon | soft3d |  |
@@ -64,7 +65,8 @@
 | `lottieImport.ts` | 4 | Local, vector-only Lottie import UI. JSON routing happens before the preset drop handler. | importLottieFile, chooseLottieFile | openLottie, importLottieFile |
 | `macros.ts` | 1 | group macros (Vezérlők): pathObj, macroApply/macroRead | pathObj, macroTargets, macroRead, macroApply |  |
 | `main.ts` | 1 | import order = init order (a module may only use modules imported before it at top level) |  |  |
-| `mesh3d.ts` | 24 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, targets, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
+| `material3d.ts` | 2 | MAT1 · 3D material interface (JS side): finds the host material appearance on a 3D layer (Rajzolt toll / Hologram) and sets the shared uM* uniforms of … | MAT_TYPES, matOf, matVals, matU |  |
+| `mesh3d.ts` | 25 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, targets, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
 | `migrate.ts` | 4 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | toastT |
 | `motion.ts` | 17 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
