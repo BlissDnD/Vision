@@ -15,12 +15,13 @@
 
 ## Olvasási sorrend
 1. `HANDOFF.md`: **hol tartunk, mi a következő lépés**, mire vár jóváhagyás.
-2. `BUGS.md`: nyitott hibák (érintett területen dolgozva nézd meg).
-3. `FUNKCIO-LELTAR.md`: minden kért funkció tényleges állapota (a 18 soros hiánylista).
-4. `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md`: **elsődleges követelmény** (mit akar a felhasználó, próbák, 14. fejezet: linklista).
-5. `docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md`: mozgás- és Kapcsolat-UX iránya (2026-10-18), a 4. kiegészítése.
-6. `docs/spec/vel-fejlesztesi-terv-jovahagyasra.md`: A–G szakaszok (7. fejezet), termékszabályok.
-7. Csak ha kell: `docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md` (E/F, 4K), `docs/spec/vel-voros-felulet-webgl-prototipus-brief.md` (1. kép), `app/README.md` (kódfelépítés, modulok).
+2. `app/CODEMAP.md`: **generált kódtérkép** (modulonként cél, exportok, R-hookok + „feladat → hol”). Ebből válaszd ki az érintett fájlokat.
+3. `BUGS.md`: nyitott hibák (érintett területen dolgozva nézd meg).
+4. `FUNKCIO-LELTAR.md`: minden kért funkció tényleges állapota (a 18 soros hiánylista).
+5. `docs/spec/VEL-TELJES-FUNKCIO-ES-MERFOLDKO-ATADAS-CLAUDE-NAK.md`: **elsődleges követelmény** (mit akar a felhasználó, próbák, 14. fejezet: linklista).
+6. `docs/spec/vel-intuitiv-mozgas-es-kapcsolatok.md`: mozgás- és Kapcsolat-UX iránya (2026-10-18), az 5. kiegészítése.
+7. `docs/spec/vel-fejlesztesi-terv-jovahagyasra.md`: A–G szakaszok (7. fejezet), termékszabályok.
+8. Csak ha kell: `docs/spec/vel-reszecske-fizika-folyadek-teljesitmeny.md` (E/F, 4K), `docs/spec/vel-voros-felulet-webgl-prototipus-brief.md` (1. kép), `app/README.md` (kódfelépítés, modulok).
 
 ## Mappatérkép
 ```
@@ -31,6 +32,7 @@ vel/                     git repo (master, helyi, nincs remote)
   FUNKCIO-LELTAR.md      funkciónkénti állapot a teljes átadó ellen
   BUGS.md                jelzett hibák állapottal (nem mind azonnal javítandó)
   app/                   a Vel forrása: src/, tests/, scripts/build.mjs, dist/index.html (build)
+  app/CODEMAP.md         generált kódtérkép (a build írja; scripts/codemap.mjs)
   docs/spec/             a felhasználó követelményei és terve (ELSŐDLEGES)
   docs/referenciak/      külső minták (CodePen stb.) + kepek/01–09.png referenciaképek
   docs/archiv/           régi átadók, döntésvázlat, naplók, felülírt leírások (csak visszakereséshez)
@@ -53,6 +55,14 @@ node scripts/build.mjs --test --dev && .venv/bin/python tests/run_all.py   # ös
 - `app/.venv`: Playwright + Chromium. Ha hiányzik: `python3 -m venv .venv && .venv/bin/pip install playwright && .venv/bin/python -m playwright install chromium`.
 - A teszt-JS a `window.__L` kontextusában fut (minden modul exportja elérhető), a hibákat a `bad` listába teszi; minta: `tests/m6_mesh.js`. Képernyőkép: `SHOT=cv run.py html teszt.js "<JS-kód>"` → `shot0.png`.
 - Headless = SwiftShader (CPU). Valódi GPU-mérés a beépített böngészőpanelben (M1 Max).
+
+## Token-takarékos munkarend (a felhasználó kérése)
+- Indulás: `HANDOFF.md` + `app/CODEMAP.md`. A spec-fájlokat csak az adott szelet témájában, célzottan (`grep -n`, fejezet) olvasd.
+- Kódban: `grep -n` a függvényre, és csak a szükséges sorokat olvasd (`sed -n`); egész modult ne olvass végig, ha a térkép és a grep elég.
+- Új modul elejére 1–3 soros fejléc-megjegyzés (ebből lesz a térkép sora). Ha egy fájlnak nincs fejléce, a `scripts/codemap.mjs` DESC táblájába írj egy sort.
+- Fejlesztés közben csak a célzott tesztet futtasd; a teljes tesztkört egyszer, a szelet végén, háttérben (csak az összesítőt olvasd).
+- Dokumentáció szeletenként: `PROGRESS.md` egy rövid bejegyzés (≤10 sor), `HANDOFF.md` állapotsor + következő lépés, `FUNKCIO-LELTAR.md` érintett sor, `app/README.md` 3–5 soros technikai jegyzet. A régi PROGRESS-bejegyzések: `docs/archiv/PROGRESS-korabbi.md` (ne olvasd).
+- Szeletenként egy commit (plusz külön a dokumentációs commit, ha kell); csak a saját fájljaidat add hozzá (`git add <fájlok>`), mert más munkamenet (pl. ChatGPT-agent) is dolgozhat a mappában.
 
 ## Konvenciók
 - Közös, változó állapot: `R` (`src/runtime.ts`). Projekt: `st` (`src/state.ts`). Minden változtatás után `commit()` (undo + automatikus mentés).

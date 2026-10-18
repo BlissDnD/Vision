@@ -64,5 +64,6 @@ fs.writeFileSync(path.join(root, 'dist/index.html'), full);
   const tmp = path.join(os.tmpdir(), `vel-presetfmt-${process.pid}.mjs`); fs.writeFileSync(tmp, r2.outputFiles[0].text);
   try { const m = await import(tmp); fs.writeFileSync(path.join(root, '../docs/VEL-PRESET-FORMATUM.md'), m.presetDoc(JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version)); } finally { fs.rmSync(tmp, { force: true }); }
 }
+await import('./codemap.mjs'); // CODEMAP.md from the source
 const kb = n => (n / 1024).toFixed(0) + ' KB';
 console.log(`built in ${Date.now() - t0} ms · js ${kb(js.length)} · css ${kb(css.length)} · dist/latomas.html ${kb(fragment.length)}`);

@@ -58,11 +58,7 @@ Forrás: [lo-th/Oimo.js](https://github.com/lo-th/Oimo.js), MIT. **A felhasznál
 
 Első használható szelet: két külön térbeli testre bekapcsolható Fizikai test; ütköznek, de globális gravitáció nélkül nem esnek le. A felhasználó bekapcsolja a gravitációt vagy behúz egy helyi mezőt, majd állítja a tömeget és rugalmasságot. A jelenet ugyanarra az időpontra visszaugorva és exportálva ugyanazt az állapotot adja. A közös Fizika rendszerhez később a 2D rétegek vastagsággal/ütközőalakkal és a kontaktusra reagáló Megjelenések (például érintkezéskor erősödő Glow) csatlakozhatnak; ne állítsd, hogy ez már az Oimo első szeletével mind elkészül.
 
-## Kifejezetten kihagyott jelöltek
 
-- **GSAP:** a [jelenlegi standard licenc](https://gsap.com/community/standard-license/) a Webflow-val versengő vizuális animációépítő eszközökbe való használatot előzetes engedély nélkül tiltja. A Vel közvetlen beépítését ne tervezd jogi tisztázás nélkül.
-- **Real World Shader:** ezen a körön kívül hagyjuk; külön, konkrét hatásválasztás és az adott kód licencének ellenőrzése után lehet új mérföldkő.
-- **Halfmaps/Vectiler forráskód és valódi térképadat:** csak a fiktív város-generátor inspirációja; nem az oldal vagy szolgáltatás átvétele.
 
 ## Mérföldkőjavaslat elvárt formája Claude-tól
 
