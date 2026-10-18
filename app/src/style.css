@@ -622,3 +622,4 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .abar:empty::before{content:'Húzz ide eszközt, Megjelenést vagy Mozgást';font-size:11px;color:var(--fg3);padding:0 6px}
 .abtn{height:26px;min-width:26px;padding:0 7px;border-radius:7px;border:0;background:var(--fill2);color:var(--fg);font-size:11.5px;cursor:pointer;white-space:nowrap}
 .abtn:hover{background:var(--fill)}
+.seg.topics{flex-wrap:wrap;margin-top:4px}.seg.topics button{font-size:11px;padding:2px 8px}
