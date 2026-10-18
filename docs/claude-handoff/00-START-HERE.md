@@ -10,7 +10,7 @@
 2. Olvasd el az [állapotot](ALLAPOT-ES-HATAROK.md), a [munkarendet](AGENT-MUNKAREND.md) és a [fejlesztési sorrendet](FEJLESZTESI-TERV.md). Ne töltsd be az összes mellékletet.
 3. Ellenőrizd az aktuális branch/verzió/dirty fájlok helyzetét; a pillanatképet vesd össze a valósággal. A másik munkamenet módosításait őrizd meg.
 4. Válassz egy konkrét szeletet a [backlogból](data/backlog.json), olvasd csak a hozzá tartozó `tasks/<ID>.md` kártyát és célzott kódtérképrészt.
-5. Írj rövid mérföldkő-javaslatot a projekt szabályai szerint. A mostani engedély az előkészítésre szól. Jövőbeli termékfejlesztést csak a korábban vagy most kifejezetten jóváhagyott hatókörben indíts; egy összefüggő hullám több kisebb feladata egyben jóváhagyható.
+5. Írj rövid mérföldkyorső-javaslatot a projekt szabályai szerint. A mostani engedély az előkészítésre szól. Jövőbeli termékfejlesztést csak a korábban vagy most kifejezetten jóváhagyott hatókörben indíts; egy összefüggő hullám több kisebb feladata egyben jóváhagyható.
 
 ## Alapelvek
 
