@@ -8,6 +8,8 @@ import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, moLoop
 import { findItem, sel, st } from './state';
 import { S, SEL } from './effects/index';
 import { ctlSelect, ctlSlider, ctlSwitch, section } from './controls';
+import { segIcons, switchRow } from './ui/common';
+import { ICON_SPEED, ICON_STRENGTH, RY_ICON } from './ui/icons';
 import { commit, renderAll } from './history';
 import { FPS_OPTS, fpsObj, renderInsp, setITab } from './inspector';
 import { EASES, MOVES, outSize } from './render';
@@ -65,9 +67,10 @@ const RY_MAX = 2;
 const ryPath = (P: number[]) => { let d = ''; for (let i = 0; i <= 80; i++) { const u = i / 80, v = ryValU(P, u % 1 === 0 && i ? 0 : u); d += (i ? 'L' : 'M') + (u * 200).toFixed(1) + ' ' + ((1 - v / RY_MAX) * 48).toFixed(1); } return d; };
 function rhythmUI(L: any, m: any) {
   const k = m.ry ? m.ry.k : 0, pts = m.ry ? m.ry.pts : Array(RY_N).fill(1);
-  const chips = h('div', { class: 'rychips', role: 'radiogroup', 'aria-label': 'Ritmus' },
-    ...RY_PRE.map((P, i) => h('button', { class: 'rychip' + (i === k ? ' on' : ''), type: 'button', role: 'radio', 'aria-checked': String(i === k), title: P.tip, onclick: () => { setRy(m, i); commit(); renderInsp(); markDirty(); } }, P.name)),
-    k === 5 ? h('span', { class: 'rychip on', role: 'radio', 'aria-checked': 'true', title: "Custom curve (drag on the strip)" }, "Custom") : null);
+  // WA1: the rhythm presets are an icon group (the icon draws the rhythm); the name lives in the tooltip, so nothing truncates
+  const chips = h('div', { class: 'rychipw' },
+    segIcons('Rhythm', RY_PRE.map((P, i) => ({ icon: RY_ICON[i] || RY_ICON[0], tip: `${P.name} — ${P.tip}`, name: P.name })), k, i => { setRy(m, i); commit(); renderInsp(); markDirty(); }),
+    k === 5 ? h('span', { class: 'rychip on', title: "Custom curve (drag on the strip)" }, "Custom") : null);
   const strip = h('div', { class: 'rystrip', 'data-mo': m.id, title: "One cycle: drag a point down to slow or pause, up to speed up. Drag the right edge to change cycle length." });
   strip.innerHTML = `<svg viewBox="0 0 200 48" preserveAspectRatio="none"><line x1="0" x2="200" y1="24" y2="24" class="rymid"/><path class="rycv" d="${ryPath(pts)}"/></svg>`;
   const cvp: any = strip.querySelector('.rycv');
@@ -87,8 +90,11 @@ function rhythmUI(L: any, m: any) {
   strip.append(edge, h('i', { class: 'rydot' }));
   const kids: any[] = [chips, strip];
   if (m.ry && m.t !== 'spin') { const tg = m.ry.tgt === 1 ? 1 : 0;
-    kids.push(h('div', { class: 'seg rytgt', role: 'radiogroup', 'aria-label': 'Mire hat a ritmus' }, ...["Speed (holds its position when paused)", "Strength (returns to rest)"].map((l, i) =>
-      h('button', { type: 'button', role: 'radio', class: i === tg ? 'on' : '', 'aria-checked': String(i === tg), 'aria-pressed': String(i === tg), onclick: () => { m.ry.tgt = i; commit(); renderInsp(); markDirty(); } }, l)))); }
+    kids.push(h('div', { class: 'vel-row rytgt' }, h('span', { class: 'vel-row-lab' }, 'What the rhythm drives'),
+      h('span', { class: 'vel-row-ctl' }, segIcons('What the rhythm drives', [
+        { icon: ICON_SPEED, tip: 'Speed — the motion holds its position while paused.', name: 'Speed' },
+        { icon: ICON_STRENGTH, tip: 'Strength — the motion returns to rest while paused.', name: 'Strength' },
+      ], tg, i => { m.ry.tgt = i; commit(); renderInsp(); markDirty(); })))); }
   if (m.ry && m.ry.rnd) kids.push(h('button', { class: 'btn', type: 'button', title: "Different, repeatable pause pattern", onclick: () => { m.ry.seed = (m.ry.seed || 1) + 1; commit(); markDirty(); toast("New pause pattern: " + m.ry.seed); } }, "🎲 New pattern"));
   const C = moClip(m);
   kids.push(h('p', { class: 'small' }, `Clip: ${C.a.toFixed(1).replace('.', ',')} mp – ${C.b == null ? "throughout (open end)" : C.b.toFixed(1).replace('.', ',') + ' mp'}. Drag it under the layer ▸ in Tracks; it eases in and out at the ends.`));
@@ -104,8 +110,10 @@ R.updMoRy = (t: number) => { const s: any = document.querySelector('#insp .rystr
 /* Körbeér (row 22): whole cycles per loop, so the loop export joins exactly; the stored Ütem is not rewritten */
 const loopTip = (m: any) => { const el = document.getElementById('moLoopInfo'); if (el) el.textContent = m.lp ? moLoopInfo(m) || '' : ''; };
 function loopRow(m: any) {
-  const sw = ctlSwitch("Seamless loop (whole cycles)", !!m.lp, v => { if (v) m.lp = 1; else delete m.lp; commit(); renderInsp(); markDirty(); });
-  sw.title = "Speed snaps to fit a whole number of cycles in the scene, so the end of the loop meets its beginning.";
+  // WA1: a real switch (wa-switch) with a wrapping label
+  const sw = switchRow("Seamless loop (whole cycles)",
+    "Speed snaps to fit a whole number of cycles in the scene, so the end of the loop meets its beginning.",
+    !!m.lp, v => { if (v) m.lp = 1; else delete m.lp; commit(); renderInsp(); markDirty(); });
   return h('div', { class: 'moloop' }, sw, h('p', { class: 'small', id: 'moLoopInfo' }, m.lp ? moLoopInfo(m) || '' : ''));
 }
 export function motionsUI(L: any) {

@@ -43,10 +43,10 @@
  st.loop=false;{const m=L.mo.find(x=>x.t==='float');const one={...L,mo:[m]};if(!near(moEval(one,1.1).dy,Math.sin(2*Math.PI*(1.1/3+m.p.phase.v))*m.p.amp.v))bad.push('Loop nélkül is igazít (mozgás)');}st.loop=true;
  // 4) Mozgás tab switch + label
  R.moSel[L.id]=L.mo[0].id;setITab('motion');renderInsp();
- const sw=[...document.querySelectorAll('#insp .moloop input')][0],lab=document.getElementById('moLoopInfo');info.moLabel=lab&&lab.textContent;
+ const sw=document.querySelector('#insp .moloop wa-switch'),lab=document.getElementById('moLoopInfo');info.moLabel=lab&&lab.textContent;
  if(!sw||!sw.checked)bad.push('nincs Körbeér kapcsoló a Mozgás fülön');
- if(!lab||!/3 kör \/ 10 mp/.test(lab.textContent))bad.push('mozgásfelirat: '+info.moLabel);
- if(sw){sw.checked=false;sw.onchange();if('lp' in st.layers[0].mo[0])bad.push('mozgás kikapcsolva is lp');renderInsp();const s2=document.querySelector('#insp .moloop input');s2.checked=true;s2.onchange();}
+ if(!lab||!/3 loops \/ 10 s/.test(lab.textContent))bad.push('mozgásfelirat: '+info.moLabel);
+ if(sw){sw.checked=false;sw.dispatchEvent(new Event('change'));if('lp' in st.layers[0].mo[0])bad.push('mozgás kikapcsolva is lp');renderInsp();const s2=document.querySelector('#insp .moloop wa-switch');s2.checked=true;s2.dispatchEvent(new Event('change'));}
  // 5) save → open keeps the flags
  st.layers[0].n.x.a=.3;st.layers[0].n.x.f=.37;st.layers[0].n.x.lp=1;commit();loadProject(JSON.parse(projectJSON()));
  L=st.layers[0];if(!L.n.x.lp||L.mo.some(m=>m.lp!==1))bad.push('mentés után elveszett: '+JSON.stringify([L.n.x.lp,L.mo.map(m=>m.lp)]));
