@@ -263,3 +263,7 @@ A `../docs/claude-handoff/shapegen/00-START-HERE.md` a FORM v8 generátorainak �
 - `layouts.ts`: `makeMagazine`, `relayout` (`g.layout={k:'wide',comp}`, gyerek `role` = img/title/sub), `layoutControls` (`R.layoutControls`), `unwoven` effekt saját `draw`-val, `L.imgs` assetlista (a `usedAssets` is gyűjti). Kép effekt: `fw/fh/ox/oy/round`.
 
 Help-alap implementáció előkészítve: `help.ts` és tiszta `helpdata.ts`, a workspace tooltipútjára illesztve; nincs state/history import és nincs új függőség. A Help-kártyák a DOM-ban élnek, nem a WebGL-exportban. Review/commit és tesztállapot: `../docs/claude-handoff/help-mode/CLAUDE-REVIEW-AND-COMMIT.md`.
+
+### English-default localization foundation
+
+`src/helpdata.ts` contains linked English Help topics; `src/helptooltips.ts` contains stable IDs, reviewed short descriptions and temporary Hungarian source-title aliases. `workspace.ts` maps old `title` attributes to English display text; `help.ts` resolves descriptions by ID. This does not localize the rest of the editor. The migration rules and full acceptance gate are in `../docs/spec/VEL-ENGLISH-DEFAULT-LOCALIZATION.md`.

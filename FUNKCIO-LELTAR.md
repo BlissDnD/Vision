@@ -77,3 +77,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 **Help mód (2026-10-18): tervezett.** `docs/claude-handoff/help-mode/00-START-HERE.md`: bővített hover + rögzíthető és fogalomlinkekkel bejárható súgó. Nem implementált funkció.
 
 **Help mód frissítés:** működő alap és kezdő fogalomtár elkészült, Claude-review/commit és felhasználói próba előtt. Teljes effekt-/paramétersúgó még nincs. Átadó: `docs/claude-handoff/help-mode/CLAUDE-REVIEW-AND-COMMIT.md`; bizonyíték: `CHECK-RESULTS.md` ugyanott.
+
+**English default (2026-10-18): partially implemented.** User scope covers the whole software. Help topics and 128 static tooltip descriptions have English copy; most editor UI remains Hungarian. Implementation handoff: `docs/spec/VEL-ENGLISH-DEFAULT-LOCALIZATION.md`. Do not mark complete until all UI paths and old-project compatibility pass.

@@ -1,3 +1,9 @@
+## 2026-10-18 — English-default localization foundation
+- Scope clarified by user: the entire Vel interface must become English by default, not just Help.
+- Added whole-app migration/compatibility handoff; English Help topics and 128 static tooltip descriptions use stable IDs.
+- The remaining Hungarian UI/catalog copy is pending. No claim of completed English locale or `lang=en` yet.
+- Targeted Help checks 28/28; typecheck and build pass.
+
 # Vel — PROGRESS
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.

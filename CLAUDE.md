@@ -2,7 +2,7 @@
 
 **Vel** (korábban Látomás Stúdió): böngészős, rétegalapú **WebGL2 vizuális és motion editor** TypeScriptben, egyetlen önálló HTML-fájlba fordul. Egy felhasználó (Miksa) alkotói eszköze.
 
-- **Magyarul válaszolj, egyszerűen.** Kód, azonosítók, commit üzenetek angolul; a felület magyarul.
+- **Magyarul válaszolj, egyszerűen.** Kód, azonosítók, commit üzenetek angolul. A felület célállapota teljes egészében angol alapnyelvű; a jelenlegi magyar szövegek migrálandók (`docs/spec/VEL-ENGLISH-DEFAULT-LOCALIZATION.md`).
 - A cél: a fejlesztések minél előbb bekerüljenek, jó minőségű rendereléssel (nem kell pixelpontos egyezés a referenciával). Kevés kézi teszt: mérföldkövenként 2–4 lépéses próba.
 - Takarékos munka: dev-szerveren dolgozz, ne küldd a teljes HTML-t vagy kódot a chatbe; minden lezárt szelet után commit + dokumentumfrissítés.
 

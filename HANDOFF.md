@@ -137,3 +137,7 @@ Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18
 ## Help mód — commitra előkészítve (2026-10-18)
 
 `docs/claude-handoff/help-mode/CLAUDE-REVIEW-AND-COMMIT.md`: a felhasználó kérésére működő Help-alap és 16 témás kezdő fogalomtár készült; rögzítés, kapcsolódó kártyák, Escape/F1, egyszeri Mi ez?, keskeny és modalnézet. Nem teljes paraméterkézikönyv. Szándékosan nincs commit, Claude ellenőrizze és commitolja; tesztek: Help 27/27 két ablakméretben, teljes kör 57/57, typecheck/build zöld (`CHECK-RESULTS.md`).
+
+## English-default localization — 2026-10-18 (Codex)
+
+The user's latest instruction applies English default language to the **entire Vel app**, not only Help. `docs/spec/VEL-ENGLISH-DEFAULT-LOCALIZATION.md` is the implementation handoff and compatibility rule. The 16 Help topics and 128 static tooltip descriptions have English copy with stable IDs and old Hungarian title aliases. The remainder of the editor remains Hungarian, so localization is **in progress**, not complete; do not switch document `lang` yet. Next: inventory/migrate all app text and catalog display names without changing persisted identifiers, then validate old projects and every major UI path. Targeted Help test: 28/28; typecheck and build pass.

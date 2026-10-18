@@ -1,6 +1,7 @@
 /* Help mode: transient/pinned linked cards, keyboard and one-shot touch inspection. UI only. */
 import { h } from './dom';
 import { HELP_BINDINGS, helpTopic, HelpTopic } from './helpdata';
+import { tooltipForId, tooltipForSource } from './helptooltips';
 
 const pref = (v?: boolean) => { try { if (v === undefined) return localStorage.getItem('vel.help') === '1'; localStorage.setItem('vel.help', v ? '1' : '0'); } catch (_) {} return false; };
 let enabled = pref(), picking = false, dragging = false, pinned = false;
@@ -35,7 +36,9 @@ function topicFor(el: HTMLElement): HelpTopic | null {
   const id = el.dataset.helpId;
   if (id && helpTopic(id)) return helpTopic(id)!;
   const text = el.dataset.tip || el.title || el.getAttribute('aria-label');
-  return text ? { id: '', title: text, summary: 'Ehhez a vezérlőhöz még nincs részletes súgó. A fenti felirat a meglévő rövid magyarázat.', steps: [], relatedIds: [], sourceRefs: [] } : null;
+  const copy = (id && tooltipForId(id)) || (text && tooltipForSource(text));
+  if (copy) return { id: copy.id, title: copy.title, summary: copy.summary, steps: [], relatedIds: [], sourceRefs: [copy.file] };
+  return text ? { id: '', title: text, summary: 'Detailed help for this control has not been written yet.', steps: [], relatedIds: [], sourceRefs: [] } : null;
 }
 function candidate(el: Element | null) {
   // Prefer the nearest control: an ancestor's general topic must not mask a precise local title.
@@ -66,15 +69,15 @@ function position() {
 }
 function cardContents(card: HTMLElement, t: HelpTopic, isChild: boolean) {
   card.replaceChildren();
-  const close = h('button', { type: 'button', 'aria-label': isChild ? 'Kapcsolódó leírás bezárása' : 'Súgókártya bezárása', onclick: () => isChild ? backHelp() : closeHelp(true) }, '×');
+  const close = h('button', { type: 'button', 'aria-label': isChild ? 'Close related description' : 'Close help card', onclick: () => isChild ? backHelp() : closeHelp(true) }, '×');
   const header = h('div', { class: 'help-head' }, h('strong', { id: card.id + '-title' }, t.title), close);
   const summary = h('p', { id: card.id + '-summary' }, ...(t.parts || [t.summary]).map(part => typeof part === 'string' ? part : h('button', { type: 'button', class: 'help-inline', 'data-help-term': part.term, onclick: () => openHelpTerm(part.term) }, part.label || helpTopic(part.term)?.title || part.term)));
   card.append(header, summary);
-  if (!isChild && !pinned) header.insertBefore(h('button', { type: 'button', 'data-help-pin': '', onclick: () => pinHelp() }, 'Rögzítés'), close);
-  if (isChild) card.insertBefore(h('button', { type: 'button', 'data-help-back': '', onclick: () => backHelp() }, '← Vissza'), header);
+  if (!isChild && !pinned) header.insertBefore(h('button', { type: 'button', 'data-help-pin': '', onclick: () => pinHelp() }, 'Pin'), close);
+  if (isChild) card.insertBefore(h('button', { type: 'button', 'data-help-back': '', onclick: () => backHelp() }, '← Back'), header);
   if (t.steps.length) card.append(h('ul', null, ...t.steps.map(s => h('li', null, s))));
-  if (t.relatedIds.length) card.append(h('nav', { 'aria-label': 'Kapcsolódó fogalmak', class: 'help-links' }, ...t.relatedIds.map(id => h('button', { type: 'button', 'data-help-term': id, onclick: () => openHelpTerm(id) }, helpTopic(id)!.title))));
-  if (!isChild && !pinned) card.append(h('small', null, 'Rögzítés: gomb vagy F1 · Kilépés: Escape'));
+  if (t.relatedIds.length) card.append(h('nav', { 'aria-label': 'Related terms', class: 'help-links' }, ...t.relatedIds.map(id => h('button', { type: 'button', 'data-help-term': id, onclick: () => openHelpTerm(id) }, helpTopic(id)!.title))));
+  if (!isChild && !pinned) card.append(h('small', null, 'Pin: button or F1 · Close: Escape'));
 }
 export function showHelpFor(el: HTMLElement, lock = false) {
   if (!enabled || !el.isConnected || dragging) return;
@@ -85,8 +88,10 @@ export function showHelpFor(el: HTMLElement, lock = false) {
   host.append(root, child);
   // Help mode owns the native title too, avoiding duplicate browser tooltips.
   if (el.title) {
-    el.dataset.tip = el.title;
-    if (!el.getAttribute('aria-label') && !el.textContent?.trim()) el.setAttribute('aria-label', el.title);
+    const copy = tooltipForSource(el.title);
+    el.dataset.tip = copy?.title || el.title;
+    if (copy && !el.dataset.helpId) el.dataset.helpId = copy.id;
+    if (!el.getAttribute('aria-label') && !el.textContent?.trim()) el.setAttribute('aria-label', copy?.title || el.title);
     el.removeAttribute('title');
   }
   cardContents(root, t, false); root.hidden = false;
@@ -124,7 +129,7 @@ function schedule(el: HTMLElement) {
 function dismissLater() { clearTimeout(openTimer); clearTimeout(closeTimer); if (!pinned) closeTimer = window.setTimeout(() => closeHelp(), 220); }
 export function installHelp() {
   if (installed) return; installed = true;
-  toggle = h('button', { id: 'helpModeBtn', type: 'button', class: 'pill', 'aria-label': 'Részletes súgó mód', onclick: () => setHelpMode(!enabled) }, '? Súgó');
+  toggle = h('button', { id: 'helpModeBtn', type: 'button', class: 'pill', 'aria-label': 'Help mode', onclick: () => setHelpMode(!enabled) }, '? Help');
   $('helpBtn')?.before(toggle);
   for (const [id, topic] of Object.entries(HELP_BINDINGS)) { const el = $(id); if (el) el.dataset.helpId = topic; }
   root = h('section', { id: 'vel-help-root', class: 'help-card', role: 'dialog', 'aria-modal': 'false', 'aria-labelledby': 'vel-help-root-title', hidden: true });

@@ -10,17 +10,17 @@
  setHelpMode(true);
  check(helpModeOn()&&localStorage.getItem('vel.help')==='1','mode persistence');
  btn.dispatchEvent(new PointerEvent('pointerover',{bubbles:true})); await wait(500);
- check(helpOpen()&&root.textContent.includes('Lejátszás'),'hover topic');
+ check(helpOpen()&&root.textContent.includes('Play'),'hover topic');
  check(!document.querySelector('.vtip:not([hidden])'),'duplicate tooltip');
  root.dispatchEvent(new PointerEvent('pointerover',{bubbles:true}));await wait(250);
  check(helpOpen(),'moving to card closes it');
  root.querySelector('[data-help-pin]').click();
  anim.dispatchEvent(new PointerEvent('pointerover',{bubbles:true}));await wait(500);
- check(root.textContent.includes('Lejátszás'),'pinned root replaced');
+ check(root.textContent.includes('Play'),'pinned root replaced');
  root.querySelector('[data-help-term="timeline"]').click();
- check(!child.hidden&&child.textContent.includes('Sávok'),'term link navigation');
+ check(!child.hidden&&child.textContent.includes('Timeline'),'term link navigation');
  child.querySelector('[data-help-term="keyframe"]').click();
- check(child.textContent.includes('Kulcsképkocka'),'nested term');
+ check(child.textContent.includes('Keyframe'),'nested term');
  child.querySelector('[data-help-term="timeline"]').click();
  document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
  check(child.hidden&&!root.hidden,'cycle history not collapsed');
@@ -39,10 +39,10 @@
  fixture.dispatchEvent(down);check(down.defaultPrevented,'touch pointer-start not blocked');fixture.click();
  check(activated===0&&helpOpen()&&!helpPicking(),'one-shot inspection activated target');
  closeHelp();fixture.click();check(activated===1,'normal click not restored');
- showHelpFor(fixture,true);check(root.textContent.includes('még nincs részletes'),'missing help invented');
+ showHelpFor(fixture,true);check(root.textContent.includes('has not been written yet'),'missing help invented');
  fixture.remove();await wait(0); // observer only covers UI roots; next layout validates all anchors
  window.dispatchEvent(new Event('resize'));check(!helpOpen(),'removed target left orphan');
- showHelpFor(anim,true);const inline=root.querySelector('.help-inline');check(!!inline,'inline term missing');inline.click();check(child.textContent.includes('Kulcsképkocka'),'inline term navigation');closeHelp();
+ showHelpFor(anim,true);const inline=root.querySelector('.help-inline');check(!!inline,'inline term missing');inline.click();check(child.textContent.includes('Keyframe'),'inline term navigation');closeHelp();
  showHelpFor(btn,true);openHelpTerm('timeline');backHelp();check(child.hidden&&!root.hidden,'back failed');
  const modal=document.getElementById('modal');modal.hidden=false;await wait(0);
  check(!helpOpen(),'modal left unrelated help above it');

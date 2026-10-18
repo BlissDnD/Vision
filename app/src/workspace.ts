@@ -2,6 +2,7 @@
    Pure UI: never touches the project (no commit). Per-viewer choices live in localStorage. */
 import { $, h } from './dom';
 import { helpModeOn, installHelp } from './help';
+import { tooltipForSource } from './helptooltips';
 
 export const SHORTCUTS: [string, [string, string][]][] = [
   ['Idő', [['Szóköz', 'Lejátszás / szünet'], ['Home', 'Vissza az elejére'], [', .', 'Előző / következő kulcskocka'], ['J', 'Jelzés az aktuális időre'], ['T', 'Koppintás: kosár élesítése'], ['J (élesítve)', 'Koppintás: a következő elem belép']]],
@@ -57,8 +58,11 @@ function showTip(el: Element) {
 /** Move a native title into data-tip (keeps an accessible name), so only our tooltip shows. */
 export function adoptTitle(el: Element) {
   const t = el.getAttribute('title'); if (t == null) return;
-  (el as HTMLElement).dataset.tip = t; el.removeAttribute('title');
-  if (!el.getAttribute('aria-label') && !(el.textContent || '').trim()) el.setAttribute('aria-label', t);
+  const copy = tooltipForSource(t);
+  (el as HTMLElement).dataset.tip = copy?.title || t;
+  if (copy && !(el as HTMLElement).dataset.helpId) (el as HTMLElement).dataset.helpId = copy.id;
+  el.removeAttribute('title');
+  if (!el.getAttribute('aria-label') && !(el.textContent || '').trim()) el.setAttribute('aria-label', copy?.title || t);
 }
 document.addEventListener('pointerover', e => {
   if (helpModeOn()) { hideTip(); return; }
@@ -80,4 +84,5 @@ export const keyHelpOn = () => !kh.hidden;
 kb.onclick = () => setKeyHelp(kh.hidden);
 setKeyHelp(ls('vel.keys') === '1');
 
+document.querySelectorAll('[title]').forEach(adoptTitle);
 installHelp();
