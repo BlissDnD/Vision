@@ -3,6 +3,8 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**T1 3D Terep (0.33.0-terep1, 2026-10-18):** Források → 3D Terep: valódi táj-háló seedből (6 típus, 5 stílus, vízszint, vetett árnyék, jelenetfény, égbolt). Húzás = körbeforgatás, görgő = távolság. Headless teszttel demonstrálva (`tests/t1_terrain3d.js`); M1 Max frame-idő és felhasználói próba hátra. **Következő ehhez:** T2 Bolygó domborzata (vázlat: `docs/javaslatok/3D-TEREP-JAVASLAT.md`, prototípus + jóváhagyás kell).
+
 **Időzítés gyorsan (0.32.0-t1, 2026-10-18):** Koppintás kosárral (T, J), Tempó-chip (½×/1×/2× + csúszka), Sima (átmenő) kulcsgörbe az Eljátszásnak; headless teszttel demonstrálva (`tests/tap_timing.js`), felhasználói próba hátra (`PROGRESS.md` legfelül). Következő a sorban: Gesztus-szelet (jóváhagyva).
 
 **R1 (0.31.0-r1, 2026-10-18):** két új Megjelenés, a CRT-képernyő és a Színes vetett fény, headless teszttel demonstrálva (`tests/r1_crt_light.js`). Az új referenciák ütemterve a `FUNKCIO-LELTAR.md` 37–42. sorában van (forrás: `docs/spec/VEL-UJ-REFERENCIAK-KODTERV-2026-10-18.md`). Következő ebből: R1b (fényfogantyú, spektrum, CRT+Jelhiba recept), majd R2 (WIDE + Unwoven). Mindkettő előtt javaslat kell. Az eredeti forráskódok nincsenek letöltve.

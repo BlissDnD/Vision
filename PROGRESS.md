@@ -2,6 +2,15 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — T1 3D Terep: 0.33.0-terep1
+
+- **Források → 3D Terep** (és Világok → 3D Terep: hegyvidék, dűnék, sziget, kanyon, fennsík, kráteres): valódi magasságmező-háló saját kamerával, jelenetfénnyel, vetett árnyékkal, vízzel, égbolttal és távoli párával.
+- Fő vezérlők: Tereptípus (6), Mag (kockával új változat), Stílus (Mérsékelt, Sivatag, Havas, Vulkáni, Idegen), Méret, Domborzat, Részletek, Vízszint; Kép: Háttér, Pára, Expozíció, Minőség (Vázlat/Normál/Részletes). Minden animálható.
+- A vásznon húzás = körbeforgatás (nem kell az O eszköz), görgő = távolság; a Jelenetfény szakasz az inspectorban.
+- Magasságfüggvény: ZyFou/ProceduralTerrains (MIT) zajmagja portolva (`terrain3d.ts`, licenc a fejlécben).
+- Teszt: `tests/t1_terrain3d.js` zöld (seed ugyanaz/más, 6 típus eltér, víz, fényirány, seek, Domborzat-animáció, újranyitás). Frame-idő M1 Max-on még nincs mérve (élő próba).
+- Próba: 1) Források → 3D Terep, kocka 3×, Mag vissza; 2) Kanyon → Sziget, Vízszint fel, húzással körbe; 3) Jelenetfény iránya; Domborzat 0→1 kulcsokkal; 4) mentés → újranyitás, 4K PNG.
+
 ## Állapot: 2026-10-18 — Időzítés gyorsan: 0.32.0-t1
 
 - **Koppintás kosárral** (T vagy a ✋ gomb az idővonal sávján): rétegekre kattintva (vásznon/listában) kosárba, számozott jelvény a soron és a vásznon, újrakattintás kivesz, jelvény/chip húzással átrendez; élesítéskor a kijelölt csoport gyerekei vagy a kijelölt kulcsok rétegei bekerülnek. Szóköz + **J** minden ütemre: a következő réteg belépése oda tolódik (nincs belépés → Rugalmas beúszás), a koppintás J-jelzés is. Egy undo; Esc visszavonja a menetet, újabb Esc kilép.

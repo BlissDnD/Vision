@@ -127,6 +127,12 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
 - `textbar.ts` `editTextInPlace(L)` / `closeTextEdit(keep)`: `.tedit` textarea a réteg vászonbeli helyén (kamera nélkül számolva); `#wrap` dblclick → `hitsAt` első szövegtalálata (vagy a kijelölt szöveg). Erősség-gyűrű: `.fxic` `--s` + `::after` conic-gradient maszk.
 
+## T1 3D Terep (2026-10-18)
+- `terrain3d.ts` (`terrain3d`, `terrain:true` → `render.ts` → `drawTerrain`): N×N rács [-1,1]², a VS kifelé ritkítja (|g|^1.8 → közel sűrű, távol ritka = távolsági LOD), és ott számolja a magasságot (`terrainH`), a normált és a görbületet középdifferenciával, valamint a vetett árnyékot (28 lépés a fény felé, 3 oktáv). A CPU-n nincs geometria-újraépítés.
+- FS: stílus szerinti anyag (magasság, lejtő, nedvesség), finom normál analitikus deriváltas zajból, jelenetfény (`lightU` paraméterként, nincs körkörös import), ég-ambiens, pára. A víz egy sík: `terrainH` 3 oktávval → mélység, hab, Fresnel. Az égbolt teljes képernyős háromszög.
+- Kamera: `mesh3d.ts` `camOf` és MSAA-cél (`targets`, most exportálva). `gridN`: 160/384/640 csúcs, ≥1800 px magas kimeneten ×2 és +1 oktáv (4K export).
+- Licenc: a zajmag (hash12, vnoise, fbm, ridged, terrace, crater2, dune2, vnoised2) a ZyFou/ProceduralTerrains-ből származik (MIT, © 2026 ZyFou); a szöveg a fájl fejlécében van.
+
 ## Időzítés gyorsan (2026-10-18)
 - `tap.ts`: nem mentett állapot `R.tapArm/tapBasket/tapIdx/tapS0`; `tapNow(t)` az első koppintáskor `snapshot()`-ot tesz el, `shiftBlock(L, t−entranceStart, false)` vagy `makeMo('spring',{at:t})`, `addCue`; commit csak a menet végén (egy undo), `tapEsc` = `restore(tapS0)`. Vászonkattintás `document` capture-ben (a `pick`/`stage` elé), listakattintás `R.tapToggle`, jelvény `R.tapBadge`, vászonszámok `R.updTap` (loop.ts).
 - `retime.ts` `tempoItem(it,f)`: t → a+(t−a)/f a blokk elejéhez (`tempoPivot`, csoportnál közös), hosszak /f, period/ry.cyc /f, speed/rate/hullám-f ×f; `it.tpo` a chip-állapot (opcionális mező, hiánya = 1×).
