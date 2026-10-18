@@ -19,6 +19,11 @@ Pipáld ki, ami jó (`[x]`). Ami rossz vagy furcsa, írd mellé egy szóval, vag
 - [ ] Rugalmas beúszás → **Kulcsokká alakítás**.
 - [ ] Animálás módban (A) két kulcs egy formára → **⟲ ismétlés**; A nélkül húzd arrébb: az egész pálya vele megy, új kulcs nem lesz.
 
+## 2b. Gesztus-mozgás (G1) – 3 perc
+- [ ] Rugalmas beúszás nyila: **⌘ + fel/le** tempó, **⌘ + oldalra** karakter, **⌥** a nyíl közepén = ív (íven érkezik), **⇧** = 15°-os irány. Húzás közben halvány szellemképek, módosítóval kis címke.
+- [ ] Lebegés / Keringés / Forgás / Lüktetés / Remegés chipjét kijelölve a vásznon saját fogantyú: húzd, és ⌘-del a tempót.
+- [ ] A fogantyút a pálya mentén húzva a mozgás „tekerhető” (előnézet).
+
 ## 3. Időzítés gyorsan – 3 perc
 - [ ] 3 réteg, **T**, kattints rájuk sorban (számozott jelvények), húzással cserélj sorrendet.
 - [ ] Szóköz, majd **J-J-J** ütemre: sorban beérkeznek. ⌘Z / Esc.
