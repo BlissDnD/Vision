@@ -35,7 +35,7 @@ const res = await esbuild.build({
   write: false,
   outdir: 'out',
   loader: { '.css': 'css' },
-  define: { __BUILD__: JSON.stringify(Date.now().toString(36)) },
+  define: { __BUILD__: JSON.stringify(Date.now().toString(36)), __VERSION__: JSON.stringify(JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version), __BUILT__: JSON.stringify(new Date().toISOString()) },
   logLevel: 'warning',
 });
 const js = res.outputFiles.find(f => f.path.endsWith('.js')).text;

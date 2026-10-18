@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (78 fájl)
+## Modulok (79 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `adaptive.ts` | 1 | adaptive preview quality (fps-driven resolution) | autoQuality | aqF, aqAcc, aqN, aqT, aqCap, aqPrev |
@@ -62,8 +62,8 @@
 | `mesh3d.ts` | 24 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
 | `migrate.ts` | 3 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
 | `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | toastT |
-| `motion.ts` | 9 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, moEval, moSpan, syncKLoop | normMo |
-| `moui.ts` | 12 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, moUI, moMain … |
+| `motion.ts` | 16 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, RY_N, RY_PRE, setRy, ryValU, ryVal, ryTau … (+6) | normMo |
+| `moui.ts` | 17 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, rec |
 | `palettes.ts` | 2 | PALS colour palettes, hexRGB, ease names | PALS, PAL_ORDER, ff, v3, palJS, palCSS, EASE_NAMES, hexRGB |  |
 | `partfx.ts` | 3 | M7 · Részecske Megjelenés ("pdisp"): a layer effect that turns its input (text, shape, image) into points, scatters them on an event and reassembles. Events: manual … | pdEvents, pdEnv, pdUniforms, altText, pdMix |  |
@@ -91,10 +91,11 @@
 | `thumbs.ts` | 2 | thumbnail rendering (renderThumb, thumbOf) | TW, thumbCache, renderThumb, thumbOf | thumbCtx, thumbOut |
 | `thumbstore.ts` | 2 | Persistent shelf-thumbnail cache (IndexedDB). Keyed by build id + shelf + item name, so a new build re-renders once and later loads draw instantly. Every failure … | thumbGet, thumbPut, thumbPrune |  |
 | `time.ts` | 1 | Scene time rules (pure; shared by playback, seek, export and audio). - The project range is [0, st.dur]. Loop on: the range repeats. Loop off: the clock runs on past … | loopOn, sceneT, overrun, audioIndex |  |
-| `timeline.ts` | 27 | timeline + Sávok tracks, paramList, key moves | tlHeadEl, layerSegs, paramList, objAt, layerKeyTimes, keysAt, moveKeys, selKeyRefs, retimeSel, easeSel, queueTL, renderTimeline, itemById, isSelK … (+22) | tlxSels, tlQ, keyClip, tlxView, tlxOpen, selId, tlxOpenIds, keyMenuEl … |
+| `timeline.ts` | 31 | timeline + Sávok tracks, paramList, key moves | tlHeadEl, layerSegs, paramList, objAt, layerKeyTimes, keysAt, moveKeys, selKeyRefs, retimeSel, easeSel, queueTL, renderTimeline, itemById, isSelK … (+23) | tlxSels, tlQ, keyClip, tlxView, tlxOpen, selId, itab, tlxOpenIds … |
 | `transport.ts` | 1 | play/pause/seek, syncCtl | setPlay, resetFeedback, fmtT, syncCtl | playing, time, speed, last, fpsAcc, fpsN, fpsT, refine |
 | `types.ts` | 4 | Shared data model of Látomás Stúdió. Everything is plain JSON so projects, undo history and recipes serialize as-is. | Key, NParam, ParamDef, EffectKind, EffectDef, Timing, LineSpec, TextSpec, Prim, Macro, Layer, Look, Camera, Project … (+1) |  |
 | `userlib.ts` | 5 | P1: the user's own, durable library (presets, shaders, later anything else). One generic item shape: {id, kind, cat, name, created, data, thumb}. Kept in memory … | UItem, ULIB_VER, ULIB, ulibId, ulibValid, ulibGet, ulibBy, ulibLoad, ulibPut, ulibDel, ulibRename, ulibMerge, ulibExport, ulibImport … (+1) | ulibOk |
 | `variants.ts` | 14 | Közös alap (shared base) / Változat (variant) / Kapcsolat (link). Három külön fogalom, semmi rejtett frissülés (terv 0.4): - Csoport: plain `type:'group'` layer, as … | Base, DiffEntry, LocalDiff, Link, flatten, isVariant, variantsOf, localDiff, diffCount, rematerialize, makeBase, newVariant, transfer, detach … (+10) |  |
 | `variantsui.ts` | 8 | Inspector sections for Közös alap / Változat and Kapcsolat. Every action is one commit (undoable) and says what it did. | variantSection, childVariantSection, linkSection, variantBadge | selId |
+| `version.ts` | 1 | Version + build stamp next to the brand (top left), so the running build is always identifiable. Values come from the build (package.json version, build time); the … | VERSION, BUILT, buildLabel |  |
 | `workspace.ts` | 6 | U3 workspace chrome: library/layers splitter, one tooltip style for every titled control, toggleable shortcut panel. Pure UI: never touches the project (no commit). … | SHORTCUTS, setShelfFrac, shelfFrac, tipNodes, adoptTitle, setKeyHelp, keyHelpOn |  |

@@ -2,6 +2,13 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — Mozgás v1.1: 0.30.0-mo11
+
+- **Ritmus** a folytonos mozgásokon (Lebegés, Forgás, Lüktetés, Keringés, Remegés): chipek (Folyamatos · Megáll időnként · Lassul–gyorsul · Elcsendesedik · Véletlen szünetek), szerkeszthető együtemes **ritmus-szalag** (pont le = lassabb/megáll, fel = gyorsabb, jobb szél = ütemhossz, élő pötty), **Tempó** (ott áll meg, ahol van) / **Erő** (nyugalomba tér). Projekt-Looptól független, ugrás = export = élő (analitikus fázisintegrál).
+- **Mozgássávok** a Sávokon: réteg ▸ mozgás (húzható sáv, kezdés/vége, puha felfutás; vég a jelenet végéig húzva = nyitott) ▸ paraméterek ▸ kulcsok. A mozgáscsúszkákon ◆ és ∿. **Kulcsokká alakítás**: a mozgásból valódi X/Y/Méret/Szög/Átlátszóság kulcsok (egy ⌘Z).
+- **Verziócímke** bal felül a név mellett (`v0.30.0-mo11 · hó.nap óra:perc`), rámutatva a teljes build-idő.
+- Teszt: `tests/mo_rhythm.js` zöld; teljes kör: lásd HANDOFF. Felhasználói próba: 1) Lebegés egy körre → Ritmus: Megáll időnként; 2) a szalagon egy pontot húzz le/fel lejátszás közben; 3) Sávok → réteg ▸ → a mozgássáv végét húzd be; 4) Rugalmas beúszás → Kulcsokká alakítás.
+
 ## 2026-10-18 — CodePen-portok a könyvtárban
 
 - Liquid Glass a Megjelenésekben: ráhúzható rétegre, elmozdítható lencse, eredeti 9×9 mintavétel vagy valóban olcsóbb Gyors mód. Szélben lobogó láng a Forrásokban, beágyazott zajtextúrával. Két új recept: Liquid Glass · fénykép és Láng · szélben.

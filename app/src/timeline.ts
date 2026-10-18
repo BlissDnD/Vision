@@ -13,6 +13,7 @@ import { AUD, audioRestart } from './signals';
 import { markDirty } from './loop';
 import { toast } from './modals';
 import { addCue, blockOf, removeCue, shiftBlock, stretchBlock } from './retime';
+import { MO, moClip, moParam } from './motion';
 
 export const tlHeadEl=$('#tlHead'),tlTrack=$('#tlTrack');
 /* timing segments of a layer: [{a,b,cls,f:[[group,key],…]}] – f = fields that shift together when the bar is dragged */
@@ -37,8 +38,9 @@ export function paramList(L){const out=[];if(!L)return out;
   const pd=X=>k=>pdefOf(X,k);
   add('n',L.n,k=>L===st.cam?null:BASEK[k],'','');if(L.p)add('p',L.p,L===st.cam?(()=>null):pd(L),'','');
   (L.fx||[]).forEach((F,i)=>{const nm=(EFFECTS[F.type]||{name:F.type}).name+' · ';add('p',F.p,pd(F),'f'+i+'.',nm);add('n',F.n,k=>k==='opacity'?{...BASEK.opacity,l:'Erősség'}:BASEK[k],'f'+i+'.',nm);});
+  for(const m of L.mo||[])if(MO[m.t])add('p',m.p,k=>moParam(m,k),'mo:'+m.id+'.',MO[m.t].name+' · ');
   return out;}
-export function objAt(L,path){const a=path.split('.');let o=L;if(a[0][0]==='f'&&a.length===3){o=(L.fx||[])[+a[0].slice(1)];a.shift();}return o&&o[a[0]]?o[a[0]][a[1]]:null;}
+export function objAt(L,path){const a=path.split('.');let o=L;if(a[0].startsWith('mo:')){o=(L.mo||[]).find(m=>'mo:'+m.id===a[0]);a.shift();}else if(a[0][0]==='f'&&a.length===3){o=(L.fx||[])[+a[0].slice(1)];a.shift();}return o&&o[a[0]]?o[a[0]][a[1]]:null;}
 export function layerKeyTimes(L,path?){const m=new Map();for(const q of paramList(L)){if(path&&q.path!==path)continue;const o=q.o;if(hasK(o))o.k.forEach(x=>{const t=Math.round(x.t*1000)/1000;m.set(t,(m.get(t)||0)+1);});}return m;}
 export function keysAt(L,t,path?){const r=[];for(const q of paramList(L)){if(path&&q.path!==path)continue;const o=q.o;if(!hasK(o))continue;o.k.forEach((x,i)=>{if(Math.abs(x.t-t)<KEY_EPS)r.push({o,i,path:q.path});});}return r;}
 export function moveKeys(L,t0,t1,copy,path?){t1=Math.max(0,Math.round(t1*1000)/1000);if(Math.abs(t1-t0)<KEY_EPS&&!copy)return;
@@ -113,21 +115,40 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
       const e=h('i',{class:'tlx-key'+(isSelK(L.id,t)?' on':''),style:`left:${X(t)}%`,'data-t':String(t),title:`${n} kulcskocka @ ${fmtT(t)} · húzás: áthelyezés · Shift+katt: több · Alt+húzás: nyújtás (több kijelölt időpontnál) · ⌘/Ctrl+húzás: másolás · jobb klikk: görbe`});
       e.onpointerdown=ev=>keyDrag(ev,L,t,lane);e.oncontextmenu=ev=>keyMenu(ev,L,t);lane.appendChild(e);}
     lane.onpointerdown=ev=>{if(ev.target!==lane)return;laneDown(ev,L,lane);};
-    const prs=animParams(L);const open=R.tlxOpenIds.has(L.id);
-    if(prs.length){const chev=h('button',{class:'tlx-chev'+(open?' open':''),type:'button',title:open?'Paraméterek elrejtése':'Animált paraméterek mutatása','aria-label':(open?'Elrejtés: ':'Kinyitás: ')+L.name,'aria-expanded':String(open)},'›');
+    const prs=animParams(L).filter(q=>!q.path.startsWith('mo:'));const mos=L===st.cam?[]:(L.mo||[]).filter(m=>MO[m.t]);const open=R.tlxOpenIds.has(L.id);
+    if(prs.length||mos.length){const chev=h('button',{class:'tlx-chev'+(open?' open':''),type:'button',title:open?'Mozgások és paraméterek elrejtése':'Mozgások és animált paraméterek mutatása','aria-label':(open?'Elrejtés: ':'Kinyitás: ')+L.name,'aria-expanded':String(open)},'›');
       chev.onclick=ev=>{ev.stopPropagation();open?R.tlxOpenIds.delete(L.id):R.tlxOpenIds.add(L.id);renderTracks();};name.prepend(chev);
-      name.appendChild(h('span',{class:'tlx-sym',title:'Animálva: '+[...new Set(prs.flatMap(q=>[...q.kinds]))].map(c=>ANIM_TIP[c]).join(', ')},[...new Set(prs.flatMap(q=>[...q.kinds]))].map(c=>ANIM_SYM[c]).join('')));}
+      if(prs.length)name.appendChild(h('span',{class:'tlx-sym',title:'Animálva: '+[...new Set(prs.flatMap(q=>[...q.kinds]))].map(c=>ANIM_TIP[c]).join(', ')},[...new Set(prs.flatMap(q=>[...q.kinds]))].map(c=>ANIM_SYM[c]).join('')));}
     body.appendChild(h('div',{class:'tlx-row'+(isSel?' sel':'')+(L.vis?'':' off')},name,lane));
-    if(open)for(const q of prs){const pl=h('div',{class:'tlx-lane','data-id':L.id,'data-p':q.path});
-      if(q.kinds.includes('w'))pl.appendChild(h('i',{class:'tlx-wave',title:`Hullám (LFO): ${(q.o.f||0).toFixed(2)} Hz · mélység ${Math.round((q.o.a||0)*100)}%`}));
-      if(q.kinds.includes('s'))pl.appendChild(h('i',{class:'tlx-sig',title:'Hang / jel vezérli'}));
-      if(q.kinds.includes('l'))pl.appendChild(h('i',{class:'tlx-link',title:'Kapcsolat: egy másik elem értéke hajtja'}));
+    // a param row (keys, wave / signal / link marks); dep = indent level
+    const prow=(q,dep)=>{const pl=h('div',{class:'tlx-lane','data-id':L.id,'data-p':q.path});
+      if(q.kinds&&q.kinds.includes('w'))pl.appendChild(h('i',{class:'tlx-wave',title:`Hullám (LFO): ${(q.o.f||0).toFixed(2)} Hz · mélység ${Math.round((q.o.a||0)*100)}%`}));
+      if(q.kinds&&q.kinds.includes('s'))pl.appendChild(h('i',{class:'tlx-sig',title:'Hang / jel vezérli'}));
+      if(q.kinds&&q.kinds.includes('l'))pl.appendChild(h('i',{class:'tlx-link',title:'Kapcsolat: egy másik elem értéke hajtja'}));
       if(hasK(q.o))for(const k of q.o.k){if(!inV(k.t))continue;const kt=Math.round(k.t*1000)/1000;
         const e=h('i',{class:'tlx-key sub'+(isSelK(L.id,kt,q.path)?' on':''),style:`left:${X(kt)}%`,'data-t':String(kt),'data-p':q.path,title:`${q.label} · ${fmtT(kt)} · ${KEY_EASES[k.e??5]||''} · jobb klikk: görbe`});
         e.onpointerdown=ev=>keyDrag(ev,L,kt,pl,q.path);e.oncontextmenu=ev=>keyMenu(ev,L,kt,q.path);pl.appendChild(e);}
       pl.onpointerdown=ev=>{if(ev.target!==pl)return;laneDown(ev,L,pl);};
-      const nm=h('div',{class:'tlx-name tlx-pname',style:`padding-left:${22+d*14}px`,title:q.label},h('span',{class:'tlx-sym'},[...q.kinds].map(c=>ANIM_SYM[c]).join('')),h('span',null,q.label));
-      body.appendChild(h('div',{class:'tlx-row tlx-prow'+(L.vis?'':' off')},nm,pl));}}
+      const nm=h('div',{class:'tlx-name tlx-pname',style:`padding-left:${22+dep*14}px`,title:q.label},h('span',{class:'tlx-sym'},[...(q.kinds||'')].map(c=>ANIM_SYM[c]).join('')),h('span',null,q.short||q.label));
+      body.appendChild(h('div',{class:'tlx-row tlx-prow'+(L.vis?'':' off')},nm,pl));};
+    if(open){
+      // Mozgássávok: one clip row per motion (layer ▸ motion ▸ param ▸ keys)
+      for(const m of mos){const key=L.id+'|'+m.id,mopen=R.tlxOpenIds.has(key);const cl=h('div',{class:'tlx-lane tlx-molane'});
+        const C:any=m.t==='spring'?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v,r:0,timed:true}:moClip(m);const b=C.b??Math.max(st.dur,vb);
+        if(!(b<va||C.a>vb)){const l=Math.max(0,X(C.a)),r=Math.min(100,X(b));const rp=C.r/(b-C.a||1)*100;
+          const clip=h('i',{class:'tlx-clip'+(m.on===false?' off':'')+(C.b==null?' open':''),style:`left:${l}%;width:${Math.max(.6,r-l)}%;--ri:${C.a>0?rp:0}%;--ro:${C.b!=null?rp:0}%`,
+            title:`${MO[m.t].name} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég (jelenet vége után is fut)':fmtT(C.b)} · húzás: eltolás · szélek: kezdés / vége${C.timed?'':' (a végét a jelenet végéig húzva nyitott lesz)'}`});
+          const ea=h('b',{class:'tlx-ce a',title:'Kezdés'}),eb=h('b',{class:'tlx-ce b',title:C.timed?'Időtartam':'Vége (a jelenet végéig húzva: nyitott vég)'});clip.append(ea,h('span',null,MO[m.t].name),eb);
+          clip.onpointerdown=ev=>clipDrag(ev,L,m,cl,ev.target===ea?'a':ev.target===eb?'b':'move');cl.appendChild(clip);}
+        const qs=paramList({mo:[m]}).map(q=>({...q,kinds:animKinds(q.o),short:q.d?q.d.l:q.label}));
+        const ch=h('button',{class:'tlx-chev'+(mopen?' open':''),type:'button','aria-expanded':String(mopen),'aria-label':(mopen?'Elrejtés: ':'Paraméterek: ')+MO[m.t].name,title:'A mozgás paraméterei (kulcsok)'},'›');
+        ch.onclick=ev=>{ev.stopPropagation();mopen?R.tlxOpenIds.delete(key):R.tlxOpenIds.add(key);renderTracks();};
+        const nk=qs.reduce((s,q)=>s+(hasK(q.o)?q.o.k.length:0),0);
+        const nm=h('div',{class:'tlx-name tlx-moname',style:`padding-left:${14+d*14}px`,title:MO[m.t].name},ch,h('span',null,MO[m.t].name),nk?h('span',{class:'tlx-sym',title:nk+' kulcs'},'◆'):null);
+        nm.onclick=()=>{R.selId=L.id;R.moSel[L.id]=m.id;R.itab='motion';renderAll();};
+        body.appendChild(h('div',{class:'tlx-row tlx-morow'+(L.vis?'':' off')},nm,cl));
+        if(mopen)for(const q of qs)if(!(q.d&&q.d.type==='sel'))prow(q,d+2);}
+      for(const q of prs)prow(q,d);}}
   body.appendChild(h('i',{class:'tlx-ph',id:'tlxPh'}));
   const sb=h('div',{class:'tlx-scroll',hidden:!R.tlxView},h('i',{style:`left:${va/Math.max(.1,st.dur)*100}%;width:${VW/Math.max(.1,st.dur)*100}%`}));
   sb.onpointerdown=ev=>{const r=sb.getBoundingClientRect();const D=Math.max(.1,st.dur);const c=(ev.clientX-r.left)/r.width*D;setView(c-VW/2,c+VW/2);};body.appendChild(sb);
@@ -184,6 +205,19 @@ export function segDrag(ev,L,s,lane){ev.stopPropagation();ev.preventDefault();co
   tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);if(!e.shiftKey){const sn=snapT(orig[0]+dt,lane);dt=sn-orig[0];}
     s.f.forEach(([g,k],i)=>{const v=Math.max(0,Math.round((orig[i]+dt)*100)/100);segSet(L,g,k,v);});markDirty();tgt.style.left=(l0+dt/(vb-va)*100)+'%';};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(moved){commit();renderInsp();}else{seekTo(s.a);}};}
+/** Drag a motion clip: move it, or its start ('a') / end ('b'). The timed Rugalmas beúszás moves at / stretches dur;
+ *  a continuous motion's end dragged to the scene end becomes open-ended again. */
+export function clipDrag(ev,L,m,lane,mode){ev.stopPropagation();ev.preventDefault();const tgt=ev.currentTarget;try{tgt.setPointerCapture(ev.pointerId);}catch(_){}const [va,vb]=viewAB();
+  const sp=m.t==='spring',a0=sp?m.p.at.v:moClip(m).a,b0=sp?a0+m.p.dur.v:moClip(m).b;const D=Math.max(.1,st.dur);let moved=false;
+  if(R.selId!==L.id||R.moSel[L.id]!==m.id){R.selId=L.id;R.moSel[L.id]=m.id;renderLayers();renderInsp();}
+  tgt.onpointermove=e=>{if(!moved&&Math.abs(e.clientX-ev.clientX)<3)return;moved=true;const r=lane.getBoundingClientRect();let dt=(e.clientX-ev.clientX)/r.width*(vb-va);
+    const ref=mode==='b'?(b0??D):a0;if(!e.shiftKey)dt=snapT(ref+dt,lane)-ref;const R3=v=>Math.round(v*100)/100;
+    if(mode==='move'){const a=Math.max(0,R3(a0+dt));if(sp)m.p.at.v=a;else{if(a>0)m.a=a;else delete m.a;if(b0!=null)m.b=R3(b0+(a-a0));}}
+    else if(mode==='a'){const lim=(sp?b0:(b0??Infinity))-.1;const a=Math.max(0,Math.min(lim,R3(a0+dt)));if(sp){m.p.at.v=a;m.p.dur.v=R3(b0-a);}else if(a>0)m.a=a;else delete m.a;}
+    else{const b=Math.max(a0+.1,R3(ref+dt));if(sp)m.p.dur.v=R3(b-a0);else if(b>=D-1e-3)delete m.b;else m.b=b;}
+    markDirty();const C=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m);const bb=C.b??Math.max(D,vb);tgt.style.left=Math.max(0,(C.a-va)/(vb-va)*100)+'%';tgt.style.width=Math.max(.6,(Math.min(vb,bb)-Math.max(va,C.a))/(vb-va)*100)+'%';tgt.classList.toggle('open',C.b==null);};
+  tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(!moved){seekTo(a0);renderTracks();return;}commit();renderInsp();renderTimeline();
+    const C=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m);toast(`${MO[m.t].name}: ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)}`);};}
 R.blockSel=new Set();
 /** Drag a motion block: move / stretch the middle / slow the close. Shift+click adds blocks; the op hits every selected block. */
 export function blockDrag(ev,L,lane,mode){ev.stopPropagation();ev.preventDefault();

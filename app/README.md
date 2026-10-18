@@ -127,6 +127,11 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `textbar.ts`: `#textbar` a `#wrap`-ban, `renderInsp` elején `R.updTextbar()`; a vászon-pointer/wheel/pick kezelők kihagyják a `.textbar`-t.
 - `textbar.ts` `editTextInPlace(L)` / `closeTextEdit(keep)`: `.tedit` textarea a réteg vászonbeli helyén (kamera nélkül számolva); `#wrap` dblclick → `hitsAt` első szövegtalálata (vagy a kijelölt szöveg). Erősség-gyűrű: `.fxic` `--s` + `::after` conic-gradient maszk.
 
+## Mozgás v1.1 (2026-10-18)
+- `motion.ts`: `m.ry = {k, cyc, pts[RY_N=10] 0..2, tgt 0 Tempó/1 Erő, rnd, seed}`; a pontok közt smoothstep, a fázis (`ryTau`) a görbe zárt alakú integrálja (Véletlennél a kihagyott ütemek megszámolva) → `moTime(m,t) = {tau, amp}`; a sáv `m.a`/`m.b` (hiányzó = 0 / nyitott), a végeken `RAMP` puha felfutás (ott Simpson-integrál). `bakeMo` mintavételez + RDP-egyszerűsít, lineáris kulcsok.
+- `timeline.ts`: `paramList` a mozgásparamétereket is adja (`mo:<id>.p.<k>`, `objAt` kezeli) → kulcsmozgatás/nyújtás/kijelölés a meglévő úton; `renderTracks` mozgássorok (`.tlx-clip`, `clipDrag`), `R.tlxOpenIds` kulcsa a mozgássornál `L.id|m.id`.
+- `moui.ts`: `rhythmUI` (chipek, `.rystrip`, élő pötty `R.updMoRy` a `loop.ts`-ből), „Kulcsokká alakítás”. `version.ts`: `__VERSION__`/`__BUILT__` (build.mjs, vite.config) a `.brand .ver` címkében.
+
 ## Mozgás v1 (2026-10-18)
 - `motion.ts`: `MO` típusok, `makeMo`, `moEval(L,t,aud)` (op/dx/dy/sc/rot; a `render.behav` a `tm`-mel együtt adja, a `setXform` a rot-ot is), `charEase` = **Anime.js** (`spring`, `eases.outBack`; MIT, https://animejs.com) adapter: csak haladás→görbe, az óra a Velé. `syncKLoop(L)` a renderben (`_kl` nem mentett jelölés a kulcsos értékeken), `R.normMo` a `normalize`-ból.
 - `evaluation.ts`: `klVal` (kulcs-Loop), `setVal`: Animálás mód nélkül kulcsos értéknél eltolás (`R.keyShift`).
