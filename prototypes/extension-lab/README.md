@@ -59,3 +59,7 @@ npm run build
 ```
 
 A headless próba csak ideiglenes helyi kiszolgálót és külön, láthatatlan Chromiumot használ. Nem nyúl a felhasználó böngészőjéhez. Eredmény: `browser-report.json`. A számítási teszt eredménye és a headless ellenőrzés pontos hatóköre az átadóban szerepel.
+
+## Külön layoutműhely (2026-10-18)
+
+A `layouts/README.md` az Unwoven eredeti shaderre épülő, vezérelhető adapterének és az öt WIDE-elrendezéstanulmánynak az átadója. Belépés: `layouts.html`. A WIDE eredeti forrása hiányzik: a tanulmány nem hű port. A 63 modul mellett külön csomag, nincs Vel-integráció.

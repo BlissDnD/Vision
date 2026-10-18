@@ -81,3 +81,7 @@ A modulonkénti technikai jegyzetek: `app/README.md` („Újabb modulok” szaka
 
 ## Ismert hibák
 Lásd **`BUGS.md`** (minden jelzett hiba ott van, állapottal).
+
+## Külön layout-prototípusok (2026-10-18, Codex)
+
+A `prototypes/extension-lab/layouts/README.md` az átadó: Unwoven eredeti shader/geometria, állítható paraméterek és visszatekerhető idő; WIDE saját ötkompozíciós tanulmány. A WIDE eredeti kódja továbbra is hiányzik, teljes vizuális egyezés nincs igazolva. 48 Node + 7 célzott headless próba zöld. A főalkalmazás nem változott; R2 integráció továbbra is külön jóváhagyandó.

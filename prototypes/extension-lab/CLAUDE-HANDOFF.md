@@ -44,3 +44,7 @@ Külön nagy mérföldkő: fizika (24 vagy 55), részecskeengine (23 vagy 49), f
 A számszerű végső eredményeket lásd `VALIDATION.md`. A headless bootstrap csak a példák betöltését és alap időállítását ellenőrzi; nem minden gombot, fájlformátumot vagy eszköztípust. Külön célzott ellenőrzés van a fluid képi visszatekerésére, az atlasz hordozhatóságára és az MP4-re.
 
 Főalkalmazás-tesztek nem futottak: a csomag nem módosítja az appot. A fő fejlesztésben meglévő idegen változásokat nem vettem át ebbe a csomagba.
+
+## Külön layoutműhely (2026-10-18)
+
+A `layouts/README.md` az Unwoven eredeti shaderre épülő, vezérelhető adapterének és az öt WIDE-elrendezéstanulmánynak az átadója. Belépés: `layouts.html`. A WIDE eredeti forrása hiányzik: a tanulmány nem hű port. A 63 modul mellett külön csomag, nincs Vel-integráció.

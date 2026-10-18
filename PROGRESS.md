@@ -133,3 +133,9 @@ Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; a
 
 ---
 Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
+
+### 2026-10-18 – külön layoutlabor (Codex)
+- Unwoven: eredeti shader/geometria, 14 vezérlő, képcsere, determinisztikus idő, JSON-beállítás.
+- WIDE: saját ötkompozíciós tanulmány; eredeti forrás/animáció átemelése nyitott.
+- 48/48 Node, build sikeres, 7/7 layout headless próba. Átadó: `prototypes/extension-lab/layouts/README.md`.
+- Főalkalmazás/build változatlan; felhasználói próba és R2-integráció nincs elvégezve.

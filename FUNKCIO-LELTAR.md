@@ -63,3 +63,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 - Soronkénti tipográfia sorfogantyúkkal (M4).
 - Mozgásblokk-tolás és -nyújtás (a belépés sebessége marad, Alt: a zárás lassul), J-jelzések, x/y Eljátszás simítással (M5).
 - Gerincfelület, Jelenetfény (M6); részecskés szétesés és visszaállás (M7a); Felhő + Lufi (M7b).
+
+**Külön R2-előkészítés (2026-10-18):** Unwoven adapter demonstrálva a `prototypes/extension-lab/layouts/` alatt; WIDE saját elrendezéstanulmány, eredeti port továbbra is hiányzik. Ez nem változtatja készre az R2 termékállapotát.

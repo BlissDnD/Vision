@@ -1,6 +1,6 @@
 /** Compile every module independently, preserving lazy selection in the gallery. */
 import { build } from "esbuild";
-import { readdir, mkdir, copyFile, rm } from "node:fs/promises";
+import { readdir, mkdir, copyFile, rm, cp } from "node:fs/promises";
 const entries = (await readdir("modules"))
   .filter((f) => f.endsWith(".mjs"))
   .map((f) => `modules/${f}`);
@@ -10,6 +10,7 @@ await build({
   entryPoints: [
     ...entries,
     "gallery.mjs",
+    "layouts/gallery.mjs",
     "lint-demo.mjs",
     "tests/browser-checks.mjs",
   ],
@@ -51,3 +52,7 @@ await copyFile(
   "dist/fixtures/lab-vector-font.otf",
 );
 console.log(`Built ${entries.length} independent modules and gallery.`);
+
+await copyFile("layouts.html", "dist/layouts.html");
+await cp("layouts/assets", "dist/layouts/assets", { recursive: true });
+await copyFile("layouts/style.css", "dist/layouts/style.css");
