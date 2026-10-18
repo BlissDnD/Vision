@@ -141,3 +141,7 @@ Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18
 ## English-default localization — 2026-10-18 (Codex)
 
 The user's latest instruction applies English default language to the **entire Vel app**, not only Help. `docs/spec/VEL-ENGLISH-DEFAULT-LOCALIZATION.md` is the implementation handoff and compatibility rule. The 16 Help topics and 128 static tooltip descriptions have English copy with stable IDs and old Hungarian title aliases. The remainder of the editor remains Hungarian, so localization is **in progress**, not complete; do not switch document `lang` yet. Next: inventory/migrate all app text and catalog display names without changing persisted identifiers, then validate old projects and every major UI path. Targeted Help test: 28/28; typecheck and build pass.
+
+## Új UI/UX-visszajelzés — 2026-10-18 (Codex)
+
+A felhasználó a működést alapvetően jónak, a színeket jónak tartja, de a teljes UI túl zsúfolt. Rögzítve: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 6. fejezet, hét tartós képi referenciával. Közvetlen görbeszerkesztés és rajz → sima görbe, ritmusikonok, Tempó/Erő kapcsoló, színek csak a Színek alatt, paraméterhez illő vezérlők (szél: iránykör), levágásjavítás, ikonos toolbar és következetes kategóriaszínek; egész appra Apple-jellegű design system javasolt. Hiba a `BUGS.md`-ben is. Csak dokumentálva; következő lépés konkrét design system/UI-javaslat, implementáció külön jóváhagyással.

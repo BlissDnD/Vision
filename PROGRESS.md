@@ -1,4 +1,9 @@
 ## 2026-10-18 — English-default localization foundation
+
+## 2026-10-18 — UI/UX-próba visszajelzésének rögzítése (Codex)
+- A UI-spec 6. fejezete: egész appra Apple-jellegű design system, görberajzolás/simítás, ikonok, kapcsolók, iránykör, színek elhelyezése, toolbar és kategóriaszínek.
+- Hét felhasználói képkivágás tartós referenciaként elmentve; feliratlevágás és zsúfoltság a BUGS-ban is.
+- HANDOFF és funkcióleltár frissítve; csak dokumentáció, appváltozás és tesztfuttatás nincs.
 - Scope clarified by user: the entire Vel interface must become English by default, not just Help.
 - Added whole-app migration/compatibility handoff; English Help topics and 128 static tooltip descriptions use stable IDs.
 - The remaining Hungarian UI/catalog copy is pending. No claim of completed English locale or `lang=en` yet.

@@ -6,6 +6,8 @@ Minden jelzett hiba ide kerül (a felhasználótól vagy tesztből). **Nem kell 
 
 ## Nyitott
 
+- **[nyitott · 2026-10-18 · UI/UX]** A mozgás-/ritmuskártya, színpanel és részletes paramétersorok túl zsúfoltak; feliratok levágódnak, animációs gombok és vezérlők torlódnak. Az angol alapnyelv mellett is rugalmas elrendezés kell. Felhasználói képek, vizuális vezérlők és egységes design system igénye: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 6. fejezet. Feljegyezve, még nincs javítva.
+
 - **[nyitott · 2026-10-18 · Animált szöveg]** Nagy betűköznél (track ≈ .12) az `mtext` réteg utolsó betűje(i) levágódnak (a szövegtextúra szélessége nem számol a betűközzel). Előfordult: Magazinrács alcím; ott a betűköz .05-re csökkentve. Javítás: a textúra-szélességbe a `track × betűszám` is kerüljön.
 
 - **[javítva · 2026-10-18 · teszt]** (A teszt most legfeljebb 4 mp-ig várja a képréteget a fix 120 ms helyett.) A `tests/polyhaven_import.js` a teljes körben néha bukik („image not imported”), önállóan futtatva zöld. Valószínűleg időzítés (a kép betöltésére nem vár eléggé). Nem akadályoz; a tesztben a betöltésre várást érdemes biztosabbá tenni.
