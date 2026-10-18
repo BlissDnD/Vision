@@ -1,7 +1,7 @@
-/* S1 · Jelenetek és átmenetek (leltár 19.)
- * A scene is a saved copy of the composition (layers keep their ids). The Jelenetek strip lists them in order; the
- * workbench (st.layers) stays the editable canvas: "Betöltés" copies a scene onto it, "Felülírás" stores it back.
- * Jelenetsor mode plays the scenes one after another on the shared clock; st.dur temporarily becomes the total.
+/* S1 · Sceneek és átmenetek (leltár 19.)
+ * A scene is a saved copy of the composition (layers keep their ids). The Sceneek strip lists them in order; the
+ * workbench (st.layers) stays the editable canvas: "Load" copies a scene onto it, "Replace" stores it back.
+ * Scenesor mode plays the scenes one after another on the shared clock; st.dur temporarily becomes the total.
  * Transition into scene i (its first trans.dur seconds): layer by layer —
  *   matched (explicit pair › same id › same Közös alap bid › same type + name): placement, colours and parameters glide
  *   from the previous scene (still running past its end) to the new one;
@@ -25,7 +25,7 @@ const clone = (x: any) => JSON.parse(JSON.stringify(x));
 export const scenes = (): Scene[] => (st as any).scenes || ((st as any).scenes = []);
 /* ---------- editing ---------- */
 export function saveScene(name?: string) {
-  const S = scenes(); const s: Scene = { id: sid(), name: name || `Jelenet ${S.length + 1}`, dur: R.seqPlay ? R.seqDurSave : st.dur, layers: clone(st.layers), trans: { dur: 1, ease: 3, pairs: {} } };
+  const S = scenes(); const s: Scene = { id: sid(), name: name || `Scene ${S.length + 1}`, dur: R.seqPlay ? R.seqDurSave : st.dur, layers: clone(st.layers), trans: { dur: 1, ease: 3, pairs: {} } };
   S.push(s); syncTotal(); return s;
 }
 export function loadScene(id: string) { const s = scenes().find(x => x.id === id); if (!s) return; setSeqPlay(false); st.layers = clone(s.layers).map(normalize); st.dur = s.dur; R.selId = (st.layers[st.layers.length - 1] || {}).id || null; }
@@ -115,7 +115,7 @@ export function seqFrame(T: number) {
 R.seqFrame = seqFrame;
 export const sceneStart = (i: number) => scenes().slice(0, i).reduce((a, s) => a + s.dur, 0);
 
-/* ---------- Jelenetsor mode ---------- */
+/* ---------- Scenesor mode ---------- */
 R.seqPlay = false; R.seqDurSave = 10;
 export function setSeqPlay(on: boolean) {
   if (on === !!R.seqPlay) return;
@@ -139,10 +139,10 @@ function openCard(anchor: HTMLElement, ...kids: any[]) {
 }
 const done = (msg?: string) => { commit(); renderStrip(); if (msg) toast(msg); };
 function sceneCard(s: Scene, el: HTMLElement) {
-  const nm = h('input', { class: 'txt', value: s.name, 'aria-label': 'Jelenet neve' }) as HTMLInputElement; nm.onchange = () => { s.name = nm.value.trim() || s.name; done(); };
-  const du = h('input', { class: 'val', type: 'number', min: .5, max: 120, step: .5, value: s.dur, 'aria-label': 'Jelenet hossza (mp)' }) as HTMLInputElement;
+  const nm = h('input', { class: 'txt', value: s.name, 'aria-label': 'Scene name' }) as HTMLInputElement; nm.onchange = () => { s.name = nm.value.trim() || s.name; done(); };
+  const du = h('input', { class: 'val', type: 'number', min: .5, max: 120, step: .5, value: s.dur, 'aria-label': 'Scene length (s)' }) as HTMLInputElement;
   du.onchange = () => { s.dur = Math.min(120, Math.max(.5, +du.value || s.dur)); syncTotal(); done(); };
-  openCard(el, h('div', { class: 'pl' }, 'Jelenet'), h('div', { class: 'pc' }, nm, h('div', { class: 'row2' }, h('span', null, 'Hossz (mp)'), du)),
+  openCard(el, h('div', { class: 'pl' }, 'Scene'), h('div', { class: 'pc' }, nm, h('div', { class: 'row2' }, h('span', null, 'Length (s)'), du)),
     h('div', { class: 'btnrow' },
       h('button', { class: 'btn', title: "Load this scene onto the canvas for editing (undoable)", onclick: () => { loadScene(s.id); closeScnCard(); commit(); renderAll(); renderStrip(); toast(`Loaded: ${s.name}. Edit it, then choose “Replace with canvas”.`); } }, "Load onto canvas"),
       h('button', { class: 'btn', title: "Replace this scene with the current canvas", onclick: () => { overwriteScene(s.id); closeScnCard(); done(`${s.name}: replaced with the current canvas.`); } }, "Replace with canvas")),
@@ -160,7 +160,7 @@ function transCard(i: number, el: HTMLElement) {
   es.onchange = () => { s.trans.ease = +es.value; done(); };
   const auto = matchLayers(P.layers, s.layers, {});
   const rows = s.layers.filter((b: any) => b.vis).slice().reverse().map((b: any) => {
-    const ap = auto.find(p => p.b === b), an = ap && ap.a ? `Automatikus: ${ap.a.name}` : "Automatic: enters";
+    const ap = auto.find(p => p.b === b), an = ap && ap.a ? `Automatic: ${ap.a.name}` : "Automatic: enters";
     const sel = h('select', { 'aria-label': `${b.name} matches` }, h('option', { value: '*' }, an), h('option', { value: '' }, "No match: enters"),
       ...P.layers.filter((a: any) => a.vis).slice().reverse().map((a: any) => h('option', { value: a.id }, '← ' + a.name))) as HTMLSelectElement;
     sel.value = s.trans.pairs[b.id] === undefined ? '*' : s.trans.pairs[b.id];
@@ -168,7 +168,7 @@ function transCard(i: number, el: HTMLElement) {
     return h('div', { class: 'row2' }, h('span', null, b.name), h('div', { class: 'pop' }, sel));
   });
   openCard(el, h('div', { class: 'pl' }, `Transition · ${P.name} → ${s.name}`),
-    h('div', { class: 'pc' }, h('div', { class: 'row2' }, h('span', null, 'Hossz'), lv), len, h('div', { class: 'row2' }, h('span', null, "Curve"), h('div', { class: 'pop' }, es))),
+    h('div', { class: 'pc' }, h('div', { class: 'row2' }, h('span', null, 'Length'), lv), len, h('div', { class: 'row2' }, h('span', null, "Curve"), h('div', { class: 'pop' }, es))),
     h('p', { class: 'small' }, "Items in both scenes move and transform; items in only one scene enter or exit. Matching:"),
     h('div', { class: 'pc' }, ...rows),
     h('div', { class: 'btnrow' }, h('button', { class: 'btn accent', onclick: () => { closeScnCard(); setSeqPlay(true); R.time = Math.max(0, sceneStart(i) - .6); resetFeedback(); setPlay(true); } }, "Play transition")));
@@ -185,12 +185,12 @@ export function renderStrip() {
   });
   if (!S.length) row.appendChild(h('span', { class: 'small scempty' }, "No scenes yet. Build a composition and save it as a scene. Change the canvas, then save the next scene."));
   strip.appendChild(row);
-  strip.appendChild(h('button', { class: 'btn scadd', title: "Add the current canvas as a new scene at the end", onclick: () => { const s = saveScene(); done(`Mentve: ${s.name}. Change the canvas and save the next scene.`); } }, "+ Save as scene"));
+  strip.appendChild(h('button', { class: 'btn scadd', title: "Add the current canvas as a new scene at the end", onclick: () => { const s = saveScene(); done(`Saved: ${s.name}. Change the canvas and save the next scene.`); } }, "+ Save as scene"));
 }
 export function setStrip(on: boolean) { strip.hidden = !on; btn.setAttribute('aria-pressed', String(on)); $('#wrap').classList.toggle('scn-on', on); try { localStorage.setItem('vel.scn', on ? '1' : '0'); } catch (_) { } if (on) renderStrip(); }
 btn.onclick = () => setStrip(strip.hidden);
 R.renderStrip = renderStrip;
 let lastI = -2;
-/** per frame (from the loop): keep the current scene highlighted while Jelenetsor plays */
+/** per frame (from the loop): keep the current scene highlighted while Scenesor plays */
 R.updScenes = () => { if (!R.seqPlay || strip.hidden) { lastI = -2; return; } const f = seqFrame(R.time), i = f ? f.i : -1; if (i !== lastI) { lastI = i; strip.querySelectorAll('.scb').forEach((b: any, k: number) => b.classList.toggle('on', k === i)); } };
 try { if (localStorage.getItem('vel.scn') === '1') setStrip(true); } catch (_) { }

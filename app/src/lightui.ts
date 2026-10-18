@@ -1,5 +1,5 @@
-/* M6 · Jelenetfény: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first
- * ("lágyabb", "nagyobb csillanás", "melegebb"), global and per-layer switch, and glint drag on the canvas:
+/* M6 · Scene light: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first
+ * ("softer", "larger glint", "melegebb"), global and per-layer switch, and glint drag on the canvas:
  * clicking a point of the object turns the light so that its highlight lands there.
  * FÉNY2: further lights (st.light.more) as chips; the active chip (R.lightSel) gets the sliders and the glint drag. */
 import { R } from './runtime';
@@ -43,21 +43,21 @@ export function glint3(L: any, p: { x: number, y: number }, t = R.time) {
 export function lightSection(L: any) {
   const re = () => import('./inspector').then(m => m.renderInsp());
   const kids: any[] = [
-    ctlSwitch('Jelenetfény (minden 3D tárgyra)', st.light.on, (v: boolean) => { st.light.on = v; commit(); re(); }),
+    ctlSwitch('Scene light (for every 3D object)', st.light.on, (v: boolean) => { st.light.on = v; commit(); re(); }),
     ctlParam(L, EFFECTS[L.type].params.find((d: any) => d.k === 'sceneL')),
-    h('div', { class: 'btnrow' }, h('button', { class: 'btn' + (R.glint ? ' accent' : ''), 'aria-pressed': String(!!R.glint), title: 'Bekapcsolva a tárgyon húzva a fény úgy fordul, hogy a csillanás az egér alatt legyen.',
-      onclick: () => { R.glint = !R.glint; re(); } }, R.glint ? 'Csillanás húzása: be' : 'Csillanás húzása a vásznon')),
+    h('div', { class: 'btnrow' }, h('button', { class: 'btn' + (R.glint ? ' accent' : ''), 'aria-pressed': String(!!R.glint), title: 'When on, dragging on the object turns the light so the glint stays under the pointer.',
+      onclick: () => { R.glint = !R.glint; re(); } }, R.glint ? 'Glint drag: on' : 'Drag the glint on the canvas')),
   ];
   const more = st.light.more || [], A = activeLight();
   const chip = (i: number, o: any, label: string) => h('button', { class: 'btn lchip' + (R.lightSel === i ? ' accent' : '') + (o.on ? '' : ' off'), 'aria-pressed': String(R.lightSel === i), 'data-light': String(i),
-    title: i ? 'További fény (árnyék nélkül). Kattints: ez lesz az aktív, a csúszkák és a csillanás-húzás ezt mozgatják.' : 'Fő fény (ez vet árnyékot).', onclick: () => { R.lightSel = i; re(); } },
+    title: i ? 'Additional light (no shadow). Click to make it active; the sliders and glint drag move this one.' : 'Main light (this one casts the shadow).', onclick: () => { R.lightSel = i; re(); } },
     h('span', { class: 'ldot', style: `display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:${swatch(o)}` }), label);
-  kids.push(h('div', { class: 'btnrow lchips' }, chip(0, st.light, 'Fő'), ...more.map((x: any, i: number) => chip(i + 1, x, String(i + 2))),
-    more.length < XLIGHT_MAX ? h('button', { class: 'btn', title: 'Új fény: elsőre ellenfény, aztán hideg kitöltő, majd meleg felső fény.', onclick: () => { addLight(); commit(); re(); } }, '+ Fény') : null));
-  if (R.lightSel) { const i = R.lightSel; kids.push(ctlSwitch('Ez a fény be', A.on, (v: boolean) => { A.on = v; commit(); re(); }),
-    h('div', { class: 'btnrow' }, h('button', { class: 'btn', onclick: () => { removeLight(i); commit(); re(); } }, 'Fény törlése'))); }
+  kids.push(h('div', { class: 'btnrow lchips' }, chip(0, st.light, 'Main'), ...more.map((x: any, i: number) => chip(i + 1, x, String(i + 2))),
+    more.length < XLIGHT_MAX ? h('button', { class: 'btn', title: 'New light: first a back light, then a cool fill, then a warm top light.', onclick: () => { addLight(); commit(); re(); } }, '+ Light') : null));
+  if (R.lightSel) { const i = R.lightSel; kids.push(ctlSwitch('This light on', A.on, (v: boolean) => { A.on = v; commit(); re(); }),
+    h('div', { class: 'btnrow' }, h('button', { class: 'btn', onclick: () => { removeLight(i); commit(); re(); } }, 'Delete light'))); }
   for (const k of R.lightSel ? ['size', 'warm', 'pow', 'az', 'el'] : ['soft', 'size', 'warm', 'pow', 'az', 'el']) kids.push(ctlSlider(A.p[k], D(k)));
   kids.push(ctlSelect(A.p.shape, D('shape')));
-  kids.push(h('p', { class: 'small' }, 'A fény közös: minden 3D tárgyra és 3D jelenetre hat, amelyeknél a „Jelenetfény hat rá” be van kapcsolva. A további fények nem vetnek árnyékot; a formájuk a fényes felületeken tükörképként látszik. A Gerincfelületnek saját stúdiófénye van (Fény csoport).'));
-  return section('Jelenetfény', 'light', true, ...kids);
+  kids.push(h('p', { class: 'small' }, 'The light is shared: it affects every 3D object and 3D scene that has “Scene light affects it” turned on. Additional lights cast no shadow; their shape shows as a reflection on glossy surfaces. The Spine surface has its own studio light (Light group).'));
+  return section('Scene light', 'light', true, ...kids);
 }
