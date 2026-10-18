@@ -1,3 +1,8 @@
+## 2026-10-18 — English chrome and effects
+- English static chrome, shortcut guide and project/help dialogs; stable `locale.ts` message keys.
+- Display-only `effectcopy.ts`: 82 effect descriptions, 700 parameter instances, 415 option instances; Inspector and Appearance controls use it.
+- Targeted Help, preset, effect and Inspector checks pass. Motion, recipes, timeline and other panels still pending.
+
 ## 2026-10-18 — English migration: Library identity and labels
 - 300 built-in Library labels now have English display copy under catalog IDs; legacy names remain for saved projects.
 - English and Hungarian Library search both work; three duplicate IDs made unique with quickbar aliases.

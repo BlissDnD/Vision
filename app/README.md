@@ -271,3 +271,7 @@ Help-alap implementáció előkészítve: `help.ts` és tiszta `helpdata.ts`, a 
 ### English Library labels
 
 `catalogcopy.ts` maps 300 built-in catalog IDs to English display labels. `catalogLabel` displays them; `catalogIndex` searches both English and frozen legacy names. Do not translate `LIB[*].name` directly: it remains part of persisted identity and default layer data. `tests/catalog_english.js` guards coverage and identity.
+
+### English UI messages and effect metadata
+
+`src/locale.ts` provides stable UI message keys for shortcuts and dialogs. `src/effectcopy.ts` keys translated names/descriptions by persisted effect `type`, parameter labels by `type` + `k`, and select options by stable index. `ctlParam` clones the display definition, leaving `EFFECTS` and project data intact. The Inspector and effect chain use these adapters. `tests/effect_english.js` checks complete effect-copy coverage and read-only rendering.

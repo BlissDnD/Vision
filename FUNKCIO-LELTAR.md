@@ -83,3 +83,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 **Material 3 UI-starter (2026-10-18):** `prototypes/material-ui/AGENTS.md` — a 21./30. sorhoz külön működő komponensalap, nem integrált appfunkció. 19/19 célzott próba és strict typecheck zöld. Claude-véglegesítés és panelenkénti migráció hátra; a teljes UI állapota ettől nem kész.
 
 **English migration update (2026-10-18):** 300 built-in Library entries have separate English display copy, with legacy IDs/search preserved and covered by a targeted test. Full UI translation and final audit remain open.
+
+**English migration update:** top bar, project/help dialogs, shortcut panel and effect/Inspector display copy have English foundations. Motion, recipes, timeline and secondary panels remain open; full default-English acceptance is not yet met.

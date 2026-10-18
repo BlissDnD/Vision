@@ -20,7 +20,7 @@ import type { EffectDef } from '../types';
 export const EFFECTS:Record<string,EffectDef>={...objects3d,...shapes,...generators,...media,...filters,...worlds,...worldBlocks,...motionText,...motionDesign,...particles,...soft3d,...codepenEffects,...text3d,...fluidEffects};
 /** Can appearance `fxType` act on layer L? Ordinary appearances: always. Host appearances: only on their listed types. */
 export const fxFits = (fxType:string, L:any) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return !h || (!!L && h.includes(L.type)); };
-export const fxHostNote = (fxType:string) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return h ? 'csak ' + h.map((t:string) => EFFECTS[t].name).join(', ') + ' rétegen hat' : ''; };
+export const fxHostNote = (fxType:string) => { const h = EFFECTS[fxType] && EFFECTS[fxType].host; return h ? 'works only on ' + h.map((t:string) => EFFECTS[t].name).join(', ') + ' layers' : ''; };
 export const BLOB_PD=Object.fromEntries(EFFECTS.blob.params.map(p=>[p.k,p]));
 export const DEFAULT_CODE=`// Saját effekt. Elérhető: P() koordináta, uTime, pal(t) paletta,
 // fbm(), noise(), hash(), rot(a), IN(uv) = az alatta lévő kép,
@@ -102,14 +102,14 @@ vec4 fx(){vec2 p=matWarp(P()); gM=rX(p_rx*PI/180.0)*rY(p_ry*PI/180.0+uTime*p_spi
 (()=>{const o3=EFFECTS.obj3d.code;const head=o3.slice(0,o3.indexOf('float body(vec3 q){'));const lib=o3.slice(o3.indexOf('float h1(float n)'),o3.indexOf('vec4 render(vec2 p)'));
   EFFECTS.sdfscene.code=head+SDF_MAP+lib+SDF_RENDER;})();
 export const DEF_PRIMS=[{t:0,op:0,x:0,y:.12,z:0,sx:.55,sy:.55,sz:.55,rx:0,ry:0,k:.25,c:.1},{t:2,op:0,x:0,y:-.38,z:0,sx:.62,sy:.42,sz:.62,rx:0,ry:0,k:.22,c:.55},{t:0,op:1,x:.28,y:.28,z:.38,sx:.26,sy:.26,sz:.26,rx:0,ry:0,k:.12,c:.3}];
-export const PRIM_T=['Gömb','Doboz','Tórusz','Henger','Kapszula','Oktaéder'],PRIM_OP=['Hozzáad','Kivon','Metsz'];
+export const PRIM_T=['Sphere','Box','Torus','Cylinder','Capsule','Octahedron'],PRIM_OP=['Add','Subtract','Intersect'];
 export const PRIM_DEF={t:0,op:0,x:0,y:0,z:0,sx:.3,sy:.3,sz:.3,rx:0,ry:0,k:.15,c:.5};
-export const KIND_LABEL={gen:'Forrás',fx:'Szűrő','3d':'3D',shape:'Alakzat',text:'Szöveg',image:'Kép',group:'Csoport'};
-export const BLENDS=[['normal','Normál'],['add','Hozzáadás'],['screen','Képernyő'],['multiply','Szorzás'],['overlay','Átfedés'],['difference','Különbség'],['lighten','Világosítás'],['darken','Sötétítés'],['dodge','Színfakítás'],['exclusion','Kizárás']];
+export const KIND_LABEL={gen:'Source',fx:'Filter','3d':'3D',shape:'Shape',text:'Text',image:'Image',group:'Group'};
+export const BLENDS=[['normal','Normal'],['add','Add'],['screen','Screen'],['multiply','Multiply'],['overlay','Overlay'],['difference','Difference'],['lighten','Lighten'],['darken','Darken'],['dodge','Color dodge'],['exclusion','Exclusion']];
 export const BLEND_IDX=Object.fromEntries(BLENDS.map((b,i)=>[b[0],i]));
-export const BASE=[S('opacity','Átlátszóság',0,1,1),S('key','Fekete kiütése',0,1,0),S('x','X',-2,2,0),S('y','Y',-1.2,1.2,0),S('s','Méret',.05,5,1),S('r','Szög',-180,180,0),S('spin','Pörgés °/mp',-90,90,0),S('hue','Színeltolás',-.5,.5,0),S('z','Mélység (Z)',-1.5,8,0)];
+export const BASE=[S('opacity','Opacity',0,1,1),S('key','Remove black',0,1,0),S('x','X',-2,2,0),S('y','Y',-1.2,1.2,0),S('s','Scale',.05,5,1),S('r','Angle',-180,180,0),S('spin','Spin °/s',-90,90,0),S('hue','Hue shift',-.5,.5,0),S('z','Depth (Z)',-1.5,8,0)];
 export const BASEK=Object.fromEntries(BASE.map(b=>[b.k,b]));
-export const WAVES=['Szinusz','Háromszög','Fűrész','Négyszög'];
+export const WAVES=['Sine','Triangle','Sawtooth','Square'];
 export const ICONS={
  group:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
  gen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>',

@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (114 fájl)
+## Modulok (117 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `abar.ts` | 6 |  | abarItems, libById, addToBar, renderBar, layoutMenu | cat |
@@ -28,7 +28,8 @@
 | `boot.ts` | 2 | startup: autosave restore, first render, shelf build (imported last) |  | selId, last |
 | `camdir.ts` | 4 | K3 · Kamera-rendezés: where the 2.5D camera looks, from scene time only (seek = export = live). st.cam.mode 0 = Kézi (keys), 1 = Célpontok (st.cam.shots [{t,id}]: … | shotAt, camDir | CAMON, camDir |
 | `camui.ts` | 3 | K3 · Kamera ablak bővítése: Mód (Kézi / Célpontok / Útvonalon), célpontlista („Kijelölt réteg mostantól”, időpont, törlés), útvonalválasztó + ismétlés, „Élesség a … |  | camExtra |
-| `catalog.ts` | 7 |  | fold, ROLES, roleOf, catId, catalogIndex, resetCatalog, catSearch, catRoleCounts, TOPICS, topicItems |  |
+| `catalog.ts` | 7 |  | fold, ROLES, roleOf, catId, catalogLabel, catalogIndex, resetCatalog, catSearch, catRoleCounts, TOPICS, topicItems |  |
+| `catalogcopy.ts` | 13 | English display labels keyed by stable catalog IDs. Keep IDs frozen when editing copy. | CATALOG_EN, SECTION_EN |  |
 | `choreo.ts` | 16 | KO1 Koreográfia (row 27, first slice): one scene-motion block st.ko = {prof, at, amt (Mérték), sp (Ritmus = spacing), acc (Hangsúly), ids (participants in play … | ROLES, PROFILES, suggestRoles, newKo, koParts, koEnd, koOpen, koClose, koAccept, koDetach | normKo, koMos, koPv, time, koOpen, koSection, koRows, koTlOpen … |
 | `cloud.ts` | 4 | M7b · Felhő + Lufi: blob layout of the shared shape (deterministic from Alak + Változat), the uniforms of the cloud shader (scene light + the Lufi appearance found in … | cloudBlobs, balloonOf, balloonVals |  |
 | `colorpick.ts` | 8 |  | COLOR_MIME, projectColors, swatch, closePicker, pickerOpen, openPicker, colorWell |  |
@@ -38,6 +39,7 @@
 | `cost.ts` | 2 | COST table, itemCost/sceneLoad, compile-error flag | COST, itemError, itemCost, sceneLoad, loadLabel |  |
 | `describe.ts` | 9 | Claude description → scene (descPrompt) and buildFromSpec (spec → items, dropped list, macros, custom) | DESC_SKIP, descCatalog, descPrompt, clampP, specVal, buildFromSpec, descModal | SAMPLE, selId, time |
 | `dom.ts` | 1 | $ and h() DOM helpers | TAU, h |  |
+| `effectcopy.ts` | 67 | English effect copy keyed by persisted effect kind and parameter key. Never translate model keys. | ParamCopy, EffectCopy, EFFECT_EN, effectName, effectDescription, effectParam, GROUP_EN |  |
 | `effects/codepen.ts` | 4 | effect defs: liquidglass, windflame | codepenEffects |  |
 | `effects/filters.ts` | 19 | effect defs: blur, glow, lens, kaleido, feedback, swirl, warp, ripple, radial, edge, mirror, polar, chroma, psycolor, grade, glitch, film, crt, castlight, texture, … | filters |  |
 | `effects/fluid.ts` | 2 | effect defs: fluid, fluidfx | fluidEffects |  |
@@ -76,6 +78,7 @@
 | `library.ts` | 21 | built-in shelves: LIB[cat] entries {name, make}, CATS, CAT_HINT | L3, LS, LG, LIB, CATS, CAT_HINT |  |
 | `lightui.ts` | 6 | M6 · Jelenetfény: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first ("lágyabb", "nagyobb csillanás", "melegebb"), global and … | usesLight, activeLight, addLight, removeLight, lightFromGlint, glint3, lightSection | lightSel, glint |
 | `linkcord.ts` | 17 | K1 · Kapcsolat-zsinór (spec: vel-intuitiv-mozgas-es-kapcsolatok.md 2–3., 9.) The selected element shows a small ⇢ point next to its gizmo. Dragging it draws a thin … | placeable, anchorOf, driverOf, Opt, linkOptions, paramChoices, applyOpt, startCord, closeCard, openChoice, openLinkCard, updCords | kdrag, selId, openLinkCard, updCords |
+| `locale.ts` | 4 | Canonical English UI messages. Keys are stable; never use display text or translated names as identity. | EN, MessageKey, tr |  |
 | `loop.ts` | 5 | frame loop (rAF): render, gizmo, live control sync, markDirty | markDirty, frame | snapping, dirty, refine, editT, last, time, fpsAcc, fpsN … |
 | `lottie.ts` | 4 | Seekable Lottie Canvas → WebGL adapter; one paused player per asset and render size. | createLottiePlayer, clearLottieCache, lottieMeta, lottieMediaFor |  |
 | `lottieCore.ts` | 4 | Strict, vector-only Lottie input and scene-time sampling. No browser or renderer dependency. | LOTTIE_LIMITS, LottieMeta, isLottieJSON, parseVectorLottie, sampleLottieFrame |  |
@@ -85,7 +88,7 @@
 | `material3d.ts` | 2 | MAT1 · 3D material interface (JS side): finds the host material appearance on a 3D layer (Rajzolt toll / Hologram) and sets the shared uM* uniforms of … | MAT_TYPES, matOf, matVals, matU |  |
 | `mesh3d.ts` | 25 | Mesh-alapú 3D réteg (C szakasz / M6): „Gerincfelület”. Decision + measurements: prototypes/red-ribbon-webgl/README.md. A layer that renders real triangle geometry … | DEF_SPINE, spinePath, buildSheet, targets, formOf, meshFor, camOf, drawMesh | meshErr, meshTris |
 | `migrate.ts` | 4 | Project file / autosave migration. Every load path (file, autosave, tests) goes through here, so an old project never loses layers silently: anything that cannot be … | PROJECT_VER, Migrated, migrateProject |  |
-| `modals.ts` | 7 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | onModalClose, toastT |
+| `modals.ts` | 6 | modal dialog, toast, help, Projekt dialog (projModal), showCode, image file input | openModal, closeModal, closeBtn, openMedia, showCode, savedList, projModal, toast | onModalClose, toastT |
 | `motion.ts` | 25 | Mozgás v1: draggable motions on a layer (L.mo = [{id, t, on, p:{key: NParam}}]). Every motion is a pure function of scene time (seek = export = live), added on top of … | MoDef, MO, MO_ORDER, moIcon, AMT, makeMo, moParam, charEase, moLoopLen, spinSnap, RY_N, RY_PRE, setRy, ryValU … (+15) | normMo |
 | `moui.ts` | 18 | Mozgás v1 UI: the Mozgások section on the Mozgás tab (icon row like the effects: Beúszás/Kiúszás from L.tm + the draggable motions L.mo, strength ring, „+” grid), the … | attachMo, motionsUI | moSel, selId, moAud, itab, attachMo, dropMo, updMoRy, moUI … |
 | `output.ts` | 9 | export: PNG/MP4 (WebCodecs), saveFile | saveFile, withScale, glOOM, snapPNG, loadMuxer, renderVideo, startRec | DL, snapping, onModalClose, rec |

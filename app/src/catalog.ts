@@ -4,6 +4,7 @@ import { CATS, LIB } from './library';
 import { EFFECTS } from './effects/index';
 import { MO } from './motion';
 import { CATALOG_EN } from './catalogcopy';
+import { effectName, effectDescription } from './effectcopy';
 
 export const fold = (s: any) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const slug = (s: string) => fold(s).replace(/ /g, '-');
@@ -58,7 +59,7 @@ export function catalogIndex() {
   if (IDX) return IDX; IDX = []; const seen = new Set<string>();
   for (const [c, cl] of CATS) LIB[c].forEach((it: any, i: number) => {
     if (it.head) return;
-    const descs = effKeysIn(it).map(k => k.startsWith('mo:') ? (MO[k.slice(3)] || {}).desc || '' : `${(EFFECTS as any)[k].name} ${(EFFECTS as any)[k].desc || ''} ${k}`);
+    const descs = effKeysIn(it).map(k => k.startsWith('mo:') ? (MO[k.slice(3)] || {}).desc || '' : `${effectName(k,(EFFECTS as any)[k].name)} ${effectDescription(k,(EFFECTS as any)[k].desc || '')} ${(EFFECTS as any)[k].name} ${k}`);
     let id = catId(c, i); while (seen.has(id)) id += '~'; seen.add(id);
     // hay: everything incl. the shelf label (direct words); own: the entry's own words only (synonym matches, so „lebeg” ≠ every motion)
     const display = catalogLabel(c, i);

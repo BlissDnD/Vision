@@ -157,3 +157,7 @@ A felhasználó kérésére elkészült a Claude-ban véglegesítendő alap: `pr
 ## English migration: stable catalog display keys — 2026-10-18 (Codex)
 
 `app/src/catalogcopy.ts` now holds English display labels for all 300 built-in Library entries, keyed by catalog IDs. `catalog.ts` keeps legacy Hungarian `name` values for saved data and bilingual search; three duplicate IDs received explicit unique keys and quickbar aliases. Shelf categories, section headings, role/theme chips and preview copy are English. The rest of the app remains in migration. Targeted `catalog_english.js` and `cat1_search.js` pass; full suite and final code audit pending.
+
+## English migration: chrome, project, effects — 2026-10-18 (Codex)
+
+English source catalogs now cover the static top bar, shortcut guide, project/help dialogs, 82 effect names/descriptions, 700 effect parameter instances, 415 option instances, and Inspector/Appearance controls. The translation adapter is display-only; model keys and old project data remain unchanged. Targeted Help, preset, effect, and Inspector tests pass. Motion metadata, recipes, timelines and many secondary panels are still Hungarian. Full-suite and final language audit remain pending.

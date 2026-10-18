@@ -3,11 +3,12 @@
 import { $, h } from './dom';
 import { helpModeOn, installHelp } from './help';
 import { tooltipForSource } from './helptooltips';
+import { tr } from './locale';
 
 export const SHORTCUTS: [string, [string, string][]][] = [
-  ['Idő', [['Szóköz', 'Lejátszás / szünet'], ['Home', 'Vissza az elejére'], [', .', 'Előző / következő kulcskocka'], ['J', 'Jelzés az aktuális időre'], ['T', 'Koppintás: kosár élesítése'], ['J (élesítve)', 'Koppintás: a következő elem belép']]],
-  ['Eszközök', [['V', 'Mozgatás és méretezés'], ['O', '3D forgatás'], ['A', 'Animálás mód'], ['E', 'Eljátszás'], ['K', 'Elhelyezés-kulcskocka'], ['G', 'Fogantyúk'], ['F', 'Teljes képernyő'], ['R', 'Véletlen látomás'], ['Görgő', 'Méretezés a vásznon']]],
-  ['Rétegek', [['⌘D', 'Duplikálás'], ['⌘G', 'Csoportba foglalás'], ['Del', 'Törlés'], ['[ ]', 'Réteg le / fel'], ['H', 'Elrejtés'], ['⌘Z / ⇧⌘Z', 'Visszavonás / újra'], ['⌘C / ⌘V', 'Kulcskockák másolása / beillesztése'], ['Esc', 'Kijelölés és menük bezárása'], ['?', 'Ez a panel']]],
+  [tr('shortcuts.time'), [['Space', tr('shortcuts.play')], ['Home', tr('shortcuts.start')], [', .', tr('shortcuts.keyframe')], ['J', tr('shortcuts.cue')], ['T', tr('shortcuts.tap.arm')], ['J (armed)', tr('shortcuts.tap.enter')]]],
+  [tr('shortcuts.tools'), [['V', tr('shortcuts.move')], ['O', tr('shortcuts.orbit')], ['A', tr('shortcuts.animate')], ['E', tr('shortcuts.perform')], ['K', tr('shortcuts.placement')], ['G', tr('shortcuts.handles')], ['F', tr('shortcuts.fullscreen')], ['R', tr('shortcuts.randomize')], ['Wheel', tr('shortcuts.wheel')]]],
+  [tr('shortcuts.layers'), [['⌘D', tr('shortcuts.duplicate')], ['⌘G', tr('shortcuts.group')], ['Del', tr('shortcuts.delete')], ['[ ]', tr('shortcuts.layer.order')], ['H', tr('shortcuts.hide')], ['⌘Z / ⇧⌘Z', tr('shortcuts.undo')], ['⌘C / ⌘V', tr('shortcuts.copy')], ['Esc', tr('shortcuts.escape')], ['?', tr('shortcuts.panel')]]],
 ];
 
 const ls = (k: string, v?: string) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (_) { } return null; };
@@ -77,7 +78,7 @@ document.addEventListener('keydown', hideTip, true);
 
 /* ---------- shortcut panel on the stage ---------- */
 const kh = $('#keyHelp') as HTMLElement, kb = $('#keysBtn') as HTMLElement;
-kh.appendChild(h('h4', null, 'Gyorsbillentyűk', h('button', { class: 'ib', 'aria-label': 'Bezárás', onclick: () => setKeyHelp(false), style: 'width:22px;height:20px' }, '×')));
+kh.appendChild(h('h4', null, tr('shortcuts.title'), h('button', { class: 'ib', 'aria-label': tr('shortcuts.close'), onclick: () => setKeyHelp(false), style: 'width:22px;height:20px' }, '×')));
 for (const [g, rows] of SHORTCUTS) { kh.appendChild(h('div', { class: 'grp' }, g)); kh.appendChild(h('dl', null, ...rows.flatMap(([k, d]) => [h('dt', null, h('kbd', null, k)), h('dd', null, d)]))); }
 export function setKeyHelp(on: boolean) { kh.hidden = !on; kb.setAttribute('aria-pressed', String(on)); ls('vel.keys', on ? '1' : '0'); }
 export const keyHelpOn = () => !kh.hidden;
