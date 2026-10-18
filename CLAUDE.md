@@ -36,6 +36,8 @@ vel/                     git repo (master, helyi, nincs remote)
   app/                   a Vel forrása: src/, tests/, scripts/build.mjs, dist/index.html (build)
   app/CODEMAP.md         generált kódtérkép (a build írja; scripts/codemap.mjs)
   docs/spec/             a felhasználó követelményei és terve (ELSŐDLEGES)
+  docs/final-updates/    AKTUÁLIS munka: UI-UPDATE.md (feladatlista a felhasználó eredeti szövegével), WA1 terv, design system
+  docs/future-updates/   FUTURE-IDEAS.md: a későbbi (nem aktuális) ötletek és jegyzetek gyűjtője
   docs/claude-handoff/    összehangolt addon/UX/elemkönyvtár + többagentes feladatkártyák; belépés: 00-START-HERE.md
   docs/referenciak/      külső minták (CodePen stb.) + kepek/01–09.png referenciaképek
   docs/archiv/           régi átadók, döntésvázlat, naplók, felülírt leírások (csak visszakereséshez)
