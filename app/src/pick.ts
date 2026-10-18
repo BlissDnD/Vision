@@ -87,3 +87,4 @@ wrap.addEventListener('pointerdown', (e: PointerEvent) => {
   const hit = hitsAt(p.u, p.v)[0];
   if (hit) { select(hit.it); if (e.altKey) { e.stopImmediatePropagation(); toast(`Kijelölve: ${hit.it.name}. Jobb gomb: minden réteg a pont alatt.`); } }
 }, { capture: true });
+R.hitsAt=hitsAt;

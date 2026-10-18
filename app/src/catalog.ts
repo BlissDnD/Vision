@@ -89,3 +89,20 @@ export function catSearch(q: string, role: string | null = null): [string, numbe
 }
 /** Count of hits per role (for the chips). */
 export function catRoleCounts(q: string) { const o: Record<string, number> = {}; for (const [k] of ROLES) o[k] = catSearch(q, k).length; return o; }
+
+/** CAT-01 2nd slice: theme collections across shelves. An entry belongs to a theme when one of its own words
+ *  (name, description, effect key) starts with one of the theme's words; the same entry can be in several themes. */
+export const TOPICS: [string, string, string][] = [
+  ['fluid', 'Folyadék', 'folyad fluid tinta viz csepp hullam lava liquid ink olvad metaball'],
+  ['light', 'Fény és anyag', 'feny glow ragyog neon kroma krom fem uveg glass tukor anyag hologram rajzolt csillan bloom lencse flare lens'],
+  ['text', 'Szöveg', 'szoveg text betu felirat cim tipogra font'],
+  ['nature', 'Természet', 'felho fust tuz lang terep taj hegy eg nap hold bolygo viz virag level ho csillag aurora kod para'],
+  ['space', 'Tér / 3D', '3d terbeli gomb henger test kamera terep obj3d sdf mesh extrud kihuz bolygo'],
+  ['retro', 'Retró', 'crt vhs glitch jelhiba pixel ascii halftone raszter film szemcse retro'],
+  ['motion', 'Mozgás-alapok', 'lebeg forog pulzal rezeg rugo kering beuszas fizika utvonal ritmus'],
+  ['layout', 'Layout', 'bento racs grid magazin galeria kartya layout keret'],
+];
+export function topicItems(topic: string): [string, number][] {
+  const T = TOPICS.find(t => t[0] === topic); if (!T) return []; const ws = T[2].split(' ');
+  return catalogIndex().filter(r => r.own.some((x: string) => ws.some(w => x.startsWith(w)))).map(r => [r.cat, r.i] as [string, number]);
+}

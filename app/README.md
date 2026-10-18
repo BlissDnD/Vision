@@ -257,3 +257,7 @@ A `../docs/claude-handoff/shapegen/00-START-HERE.md` a FORM v8 generátorainak �
 ### Help mód terve
 
 `../docs/claude-handoff/help-mode/00-START-HERE.md`: a workspace tooltipútjára épülő rögzíthető fogalomkártyák terve, esemény/fókusz határokkal és külön súgóadatokkal. Nincs új futásidejű modul.
+### U5 · CAT-01 témák · M10 korai (0.46–0.48)
+- `colorutil.ts` (OKLab/OKLCH, gradiens-mintavétel, WCAG, harmóniák), `colorpick.ts` (`colorWell`, `openPicker`, `COLOR_MIME`), `gradui.ts` (`L.grad={s:[[pos,hex]],m}`; `render.ts` `gradOf`/`setPal(p,i,L)` → `uGOn`, `uG[16]` a négy `pal()` definícióban), `colorsum.ts` (`colorSummary`, `applyColorTo`, `R.dropColor`), `abar.ts` (localStorage `vel.abar`, `vel.ws1/2`).
+- `catalog.ts` `TOPICS`/`topicItems`; `shelf.ts` `#topics` sor, `R.libTopic`.
+- `layouts.ts`: `makeMagazine`, `relayout` (`g.layout={k:'wide',comp}`, gyerek `role` = img/title/sub), `layoutControls` (`R.layoutControls`), `unwoven` effekt saját `draw`-val, `L.imgs` assetlista (a `usedAssets` is gyűjti). Kép effekt: `fw/fh/ox/oy/round`.

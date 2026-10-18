@@ -39,7 +39,8 @@ uniform vec4 uTr[${TN}]; uniform float uTrR[${TN}]; uniform float uCue[${CN}];
 uniform vec2 uPath[128]; uniform float uPathN; uniform vec3 uBg; uniform float uW; uniform float uCap; uniform float uM; uniform float uB; uniform float uEvery;
 ${PV}
 out vec4 vCol; out vec3 vSh;
-vec3 pal(float t){return clamp(uPA+uPB*cos(6.28318530718*(uPC*t+uPD+uHue)),0.0,1.0);}
+uniform vec3 uG[16]; uniform float uGOn;
+vec3 pal(float t){if(uGOn>0.5){float x=1.0-abs(fract((t+uHue)*0.5)*2.0-1.0);float f=x*15.0;int i=int(min(floor(f),14.0));return mix(uG[i],uG[i+1],f-float(i));}return clamp(uPA+uPB*cos(6.28318530718*(uPC*t+uPD+uHue)),0.0,1.0);}
 uint hu(uint x){x^=x>>16;x*=0x7feb352du;x^=x>>15;x*=0x846ca68bu;x^=x>>16;return x;}
 float rn(inout uint s){s=hu(s);return float(s>>8)/16777216.0;}
 float h1(float n){return fract(sin(n)*43758.5453);}
@@ -151,7 +152,7 @@ export function drawEmitter(L: any, target: any, ctx: any, t: number, inTex: any
   { const bg = hexRGB(st.bg); gl.uniform3f(U(p, 'uBg'), bg[0], bg[1], bg[2]); }
   gl.uniform1f(U(p, 'uW'), Y.W); gl.uniform1f(U(p, 'uCap'), Y.cap); gl.uniform1f(U(p, 'uM'), Y.M); gl.uniform1f(U(p, 'uB'), Y.B); gl.uniform1f(U(p, 'uEvery'), Y.every);
   gl.uniform2f(U(p, 'uRes'), ctx.w, ctx.h); gl.uniform1f(U(p, 'uTime'), t); gl.uniform1f(U(p, 'uMaxPS'), maxPS);
-  setPal(p, L.pal || 0); gl.uniform1f(U(p, 'uHue'), ev(L.n.hue, BASEK.hue, t));
+  setPal(p, L.pal || 0, L); gl.uniform1f(U(p, 'uHue'), ev(L.n.hue, BASEK.hue, t));
   for (const d of EFFECTS.emitter.params) { const v = emP(L, d.k, t); if (d.type === 'color') { const c = hexRGB(v); gl.uniform3f(U(p, 'p_' + d.k), c[0], c[1], c[2]); } else gl.uniform1f(U(p, 'p_' + d.k), v); }
   { const pl = new Float32Array(256); let pn = 0; const PL = emP(L, 'shape', t) === 6 && L.path ? findPath(L.path) : null; const W = PL && pathWorld(PL, t);
     if (W && W.A.len > 1e-6) { const q = resample(W.poly, 128); q.forEach((v, i) => { pl[i * 2] = v[0]; pl[i * 2 + 1] = v[1]; }); pn = 128; }

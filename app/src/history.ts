@@ -26,7 +26,7 @@ export function redo(){if(R.hi<R.hist.length-1){R.hi++;restore(R.hist[R.hi]);upd
 export function updUndo(){$('#undoBtn').disabled=R.hi<=0;$('#redoBtn').disabled=R.hi>=R.hist.length-1;}
 $('#undoBtn').onclick=undo;$('#redoBtn').onclick=redo;
 /** Every embedded image used anywhere: current layers, saved scenes and shared bases (STAB: scene-only images were lost). */
-export function usedAssets(){const o={};const take=(list:any[])=>walk(list,l=>{if(l.asset&&assets[l.asset])o[l.asset]=assets[l.asset];});
+export function usedAssets(){const o={};const take=(list:any[])=>walk(list,l=>{if(l.asset&&assets[l.asset])o[l.asset]=assets[l.asset];if(Array.isArray(l.imgs))for(const id of l.imgs)if(assets[id])o[id]=assets[id];});
   take(st.layers);for(const s of st.scenes||[])if(Array.isArray(s.layers))take(s.layers);for(const b of Object.values(st.bases||{}) as any[])if(Array.isArray(b.children))take(b.children);return o;}
 export function usedVectorAssets(){const o:Record<string,string>={};const take=(list:any[])=>walk(list,l=>{if(l.type==='lottie'&&l.asset&&vectorAssets[l.asset])o[l.asset]=vectorAssets[l.asset];});
   take(st.layers);for(const s of st.scenes||[])if(Array.isArray(s.layers))take(s.layers);for(const b of Object.values(st.bases||{}) as any[])if(Array.isArray(b.children))take(b.children);return o;}
@@ -60,3 +60,4 @@ export function setScenes(o){const src=o&&Array.isArray(o.scenes)?o.scenes:[];
     trans:{dur:s.trans&&s.trans.dur>=0?+s.trans.dur:1,ease:s.trans&&isFinite(s.trans.ease)?+s.trans.ease:3,pairs:(s.trans&&s.trans.pairs&&typeof s.trans.pairs==='object')?s.trans.pairs:{}}}));
   if(R.renderStrip)R.renderStrip();}
 export function setTL(o){o=o||{};st.dur=o.dur>0?o.dur:10;st.loop=o.loop!==false;st.bpm=o.bpm>0?o.bpm:120;st.bpmOff=o.bpmOff||0;}
+R.renderAll=renderAll;

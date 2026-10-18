@@ -5,6 +5,8 @@ Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl c
 **Új, közös Claude-előkészítő csomag:** `docs/claude-handoff/00-START-HERE.md` – az addonok, új elemkönyvtár, intuitív/cluttermentes UX és a többagentes fejlesztés együtt tervezve. 28 feladatcsalád, függőségek, egy nagy implementáló + kis segítő munkarend, 65 addon/layout és 96 ötlet útvonala; külön tesztelt keresőmodell. Ez előkészítés, nem a termékszeletek automatikus implementációs engedélye. A kötelező mérföldkő-szabály marad.
 
 ## Állapot egy mondatban
+**1. nagy menet (0.48.0-m10a, 2026-10-18):** U5 Szín+UI (picker, saját átmenet, Színek sor, action bar), CAT-01 témák, M10 korai (Magazinrács, Szövött galéria); célzott tesztek zöldek, felhasználói próba hátra (`PROGRESS.md`). M6b szalag-recept a felhasználó kérésére kimaradt. **Következő (javaslat kell, egy nagy menetben):** M8 Mező + Érintés jelez, M7 maradék (Füst, Virág, Bolygó), M9 folyadékhatár, M10 teljes.
+
 **CAT-01 első szelet (0.45.0-cat1, 2026-10-18):** szinonimatűrő kereső, szerep-chipek keresés közben, stabil elem-id (`src/catalog.ts`); `tests/cat1_search.js` 20/20, felhasználói próba hátra. **Következő (javaslat kell):** 2b U5 szín/UI a színaddonokkal, vagy CAT-01 2. szelet (témagyűjtemények). Ütemterv: `docs/claude-handoff/TRIAGE-01-EREDMENY-2026-10-18.md` 6. pont.
 
 **STAB-01 mini (0.44.0-stab1, 2026-10-18):** jelenet-képek és hang a projektfájlban, azonos kép egyszer, export-bezárás = megszakítás, árva Kapcsolat takarítás; `tests/stab1_persist.js` zöld, felhasználói próba hátra (`PROGRESS.md`). Következő: CAT-01 (jóváhagyva).

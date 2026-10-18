@@ -47,9 +47,9 @@ wrap.addEventListener('pointermove',e=>{if(!R.drag)return;markDirty();const L=se
   else if(R.drag.mode==='orbit'){setVal(L.p.ry,((R.drag.ry+(e.clientX-R.drag.c0[0])*.5+180)%360+360)%360-180);setVal(L.p.rx,Math.max(L.type==='terrain3d'?-5:-180,Math.min(L.type==='terrain3d'?85:180,R.drag.rx+(e.clientY-R.drag.c0[1])*.5)));syncCtl();}});
 export const endDrag=()=>{if(R.drag){if(R.drag.mode==='glint'&&!R.drag.gok)toast('Ide a mennyezeti fénycsík nem tud csillanást tenni (ez a rész lefelé vagy oldalra néz). Próbáld a felület egy felfelé forduló részén.');R.drag=null;commit();renderTimeline();}};wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
 R.wheelT=undefined;wrap.addEventListener('wheel',e=>{if((e.target as HTMLElement).closest('.tlx,.hudbar,.tl,.textbar'))return;const L=sel();if(!L)return;e.preventDefault();markDirty();if(isSurf(L)||L.type==='terrain3d'){wheelDist(L,e.deltaY);syncCtl();clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);return;}setVal(L.n.s,Math.max(.02,Math.min(20,curV(L.n.s)*Math.exp(-e.deltaY*.0012))));clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);},{passive:false});
-wrap.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('text/x-latomas-lib')){e.preventDefault();$('#dropHint').hidden=false;}});
+wrap.addEventListener('dragover',e=>{const ty=[...e.dataTransfer.types];if(ty.includes('text/x-latomas-lib')){e.preventDefault();$('#dropHint').hidden=false;}else if(ty.includes('text/x-vel-color'))e.preventDefault();});
 wrap.addEventListener('dragleave',e=>{if(!wrap.contains(e.relatedTarget))$('#dropHint').hidden=true;});
-wrap.addEventListener('drop',e=>{e.preventDefault();$('#dropHint').hidden=true;const lib=e.dataTransfer.getData('text/x-latomas-lib');if(!lib)return;const [c,i]=lib.split(':');
+wrap.addEventListener('drop',e=>{e.preventDefault();$('#dropHint').hidden=true;const col=e.dataTransfer.getData('text/x-vel-color');if(col){R.dropColor&&R.dropColor(col,e);return;}const lib=e.dataTransfer.getData('text/x-latomas-lib');if(!lib)return;const [c,i]=lib.split(':');
   if(LIB[c]&&LIB[c][+i]&&LIB[c][+i].mo){R.dropMo&&R.dropMo(+i,e);return;}
   if(LIB[c]&&LIB[c][+i]&&LIB[c][+i].make().type==='lottie'){addFromLib(c,+i,null);return;}
   const r=R.selId&&findItem(R.selId);addFromLib(c,+i,r&&!r.parent?r.it.id:null);

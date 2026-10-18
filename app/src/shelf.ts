@@ -8,7 +8,7 @@ import { thumbGet, thumbPut } from './thumbstore';
 import { EFFECTS } from './effects/index';
 import { makeMo, moIcon } from './motion';
 import { findItem } from './state';
-import { ROLES, catRoleCounts, catSearch, resetCatalog } from './catalog';
+import { ROLES, TOPICS, catRoleCounts, catSearch, resetCatalog, topicItems } from './catalog';
 
 R.cat='recipes';R.thumbJob=0;R.libQ='';
 /** Search across every shelf by name (accent-insensitive): [cat, index] pairs. */
@@ -26,11 +26,14 @@ export function dropTag(cat,i){if(LIB[cat][i]&&LIB[cat][i].mo)return {only:false
   return tagCache[key];}
 export function buildCats(){const s=$('#cats');s.innerHTML='';
   // CAT-01: while searching, the shelf row turns into role chips (Mind + the four roles with hit counts)
-  if(R.libQ&&R.libQ.trim()){const n=catRoleCounts(R.libQ);const chip=(k,l)=>h('button',{class:'rolechip','aria-pressed':String((R.libRole||null)===k),onclick:()=>{R.libRole=k;buildCats();buildShelf();}},l);
+  if(R.libQ&&R.libQ.trim()){const tp0=$('#topics');if(tp0)tp0.hidden=true;const n=catRoleCounts(R.libQ);const chip=(k,l)=>h('button',{class:'rolechip','aria-pressed':String((R.libRole||null)===k),onclick:()=>{R.libRole=k;buildCats();buildShelf();}},l);
     s.appendChild(chip(null,'Mind'));for(const [k,l] of ROLES)if(n[k]||R.libRole===k)s.appendChild(chip(k,`${l} ${n[k]}`));return;}
-  R.libRole=null;resetCatalog();for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';$('#libSearch').value='';buildCats();buildShelf();}},l));}
+  R.libRole=null;resetCatalog();
+  // CAT-01 themes: a second chip row under the shelves; a theme lists its entries from every shelf
+  let tp=$('#topics');if(!tp){tp=h('div',{class:'seg topics',id:'topics',role:'group','aria-label':'Témák'});s.after(tp);}tp.hidden=false;tp.innerHTML='';
+  for(const [k,l] of TOPICS)tp.appendChild(h('button',{'aria-pressed':String(R.libTopic===k),onclick:()=>{R.libTopic=R.libTopic===k?null:k;buildCats();buildShelf();}},l));for(const [k,l] of CATS)s.appendChild(h('button',{'aria-pressed':String(!R.libQ&&!R.libTopic&&k===R.cat),onclick:()=>{R.cat=k;R.libQ='';R.libTopic=null;$('#libSearch').value='';buildCats();buildShelf();}},l));}
 export function buildShelf(){
-  const box=$('#items');box.innerHTML='';const found=R.libQ?libSearch(R.libQ):null;
+  const box=$('#items');box.innerHTML='';const found=R.libQ?libSearch(R.libQ):R.libTopic?topicItems(R.libTopic):null;
   $('#shelfHint').textContent=found?(found.length?`${found.length} találat minden polcról`:'Nincs találat. Próbálj rövidebb szót.'):CAT_HINT[R.cat]||'';
   const job=++R.thumbJob;const todo=[];
   // P1: own items first (under „Saját”), then the built-in shelf

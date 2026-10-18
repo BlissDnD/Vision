@@ -1,6 +1,6 @@
 # Vel preset-formátum (generált)
 
-> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.45.0-cat1.
+> Ezt a fájlt a `npm run build` írja a kódból (`app/src/presetfmt.ts`), kézzel ne szerkeszd. Build: 0.48.0-m10a.
 
 ## Mire való
 - **Projekt → Utasítás ChatGPT-nek**: az alábbi szöveg kerül a vágólapra (az aktuális vászonmérettel és hosszal). Egyszer beilleszted a ChatGPT-be, utána csak leírod, milyen presetet kérsz.
@@ -88,7 +88,7 @@ lava [gen] Lávalámpa: count=2..12(7); size=0.05..0.4(0.18); speed=0..3(1); sof
 cells [gen] Sejtszövet: zoom=1..14(5); speed=0..3(0.8); glow=0..3(1.2); fill=0..2(0.8); width=0.1..4(1); variety=0..2(0.6)
 flare [gen] Lencsefény: size=0.2..3(1); rays=0..16(6); streak=0..2(1); ghosts=0..3(1); ring=0..2(0.6); flicker=0..1(0.3)
 text [text] Szöveg: tint=0..1(0.7); glow=0..3(1); spread=0..3(0.6); shimmer=0..4(1)
-image [image] Kép: bright=0..3(1); sat=0..3(1)
+image [image] Kép: bright=0..3(1); sat=0..3(1); fw=0..4(0); fh=0..4(0); ox=-0.5..0.5(0); oy=-0.5..0.5(0); round=0..0.2(0)
 lottie [image] Vektoranimáció: bright=0..3(1); sat=0..3(1)
 custom [gen] Saját GLSL: (own GLSL, see SHADER CONTRACT; default sliders a=0..1(0.5); b=0..1(0.5); c=0..1(0.5); d=0..1(0.5))
 blur [fx] Elmosás: radius=0..10(2)

@@ -15,7 +15,8 @@ float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x),f.y);}
 float fbm(vec2 p){float v=0.0,a=0.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){v+=a*noise(p);p=m*p;a*=0.5;}return v;}
 uniform vec3 uPA; uniform vec3 uPB; uniform vec3 uPC; uniform vec3 uPD;
-vec3 pal(float t){return clamp(uPA+uPB*cos(TAU*(uPC*t+uPD+uHue)),0.0,1.0);}
+uniform vec3 uG[16]; uniform float uGOn;
+vec3 pal(float t){if(uGOn>0.5){float x=1.0-abs(fract((t+uHue)*0.5)*2.0-1.0);float f=x*15.0;int i=int(min(floor(f),14.0));return mix(uG[i],uG[i+1],f-float(i));}return clamp(uPA+uPB*cos(TAU*(uPC*t+uPD+uHue)),0.0,1.0);}
 vec2 ASP(){return vec2(uRes.x/uRes.y,1.0);}
 vec2 TXUV(vec2 p,float ia){float hb=max(uAux2.w,1.0); float a0=uAuxInfo.z>1.5?1.0:(uAuxInfo.z>0.5?0.0:0.5); return vec2(p.x/(ia*hb)+a0,p.y/hb+0.5);}
 vec2 P(){vec2 q=(vUv-0.5)*ASP()-uOff;return rot(-uRot)*q/uScale;}
