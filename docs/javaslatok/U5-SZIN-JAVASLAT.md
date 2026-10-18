@@ -1,4 +1,6 @@
-# Javaslat: U5 — Szín (2b hullám: COLOR-01 + UI-01 első szelet) (2026-10-18)
+# Javaslat: U5 — Szín + UI (2b hullám: COLOR-01 + UI-01, bővített, egy menetben) (2026-10-18)
+
+**Bővítve a felhasználó kérésére (kevesebb kör, kevesebb token):** a korábban „következő szeletre” tett tételek is ide kerültek (lásd *Bővítés* fejezet).
 
 Forrás: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 4–5. pont, `tasks/COLOR-01.md`, `tasks/UI-01.md`. Addonok (5. pont szabálya: beépülnek, nem külön): `57 color-picker` (Coloris, MIT), `19 perceptual-gradient` (culori, MIT), `20 palette-scales` (chroma-js, BSD/Apache). A `63 color-wheel` (iro.js, **MPL-2.0**) csak mintának: a kerék saját kóddal készül, így nem kell copyleft fájl a buildbe.
 
@@ -18,19 +20,28 @@ Forrás: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 4–5. pont, `tasks/COLOR
 - `src/colorsum.ts`: a színforrások összegyűjtése rétegre/csoportra (paletta, color-paraméterek, színt módosító Megjelenések listája a `cost.ts` mellé tett `COLORFX` jelöléssel, csoport, Kapcsolat), a jobb panel tetején egy sor.
 - UI-01 rész: a mostani **effekt-ikonsor sorrendje húzással állítható** (sortable-toolbar elve), alaphelyzet gombbal. A felső, testreszabható action bar a következő UI-szeletbe kerül (ahhoz külön javaslat).
 
+## Bővítés (ugyanebben a szeletben)
+6. **Felső action bar:** testreszabható gyorssáv a vászon fölött. Bármelyik könyvtári elem, Megjelenés, Mozgás vagy eszköz ikonja ráhúzható; onnan kattintással a kijelölt rétegre hat, vagy rétegre húzható. Jobb klikk: eltávolítás. A sáv tartalma böngészőnként megmarad (nem a projektben).
+7. **Gradiens minden kétszínű helyen:** a `c1`/`c2` párt használó összes Forrás/Forma/Megjelenés kap gradiens-sávot (a shaderek közös `gradAt()` függvényt kapnak), nem csak 2 cél.
+8. **Paletta-szerkesztés:** a paletta-választóban saját paletta készíthető a pickerrel (5 szín), „Harmónia” gombokkal (komplementer, triád, analóg — OKLCH-ban); a saját paletták a Saját könyvtárba menthetők.
+9. **Szín ráhúzása:** a Színek sor pöttye vagy a picker színmintája ráhúzható bármelyik másik színmezőre vagy rétegre a vásznon (a réteg fő színe lesz).
+10. **Felső szövegsáv színe:** a szövegsáv (U4) színgombja is az új pickert és gradienst használja (betűszín gradiensként is).
+11. **Panelpreset:** a munkatér (bal/jobb panel szélesség, nyitott fülek) „Alaphelyzet” és két mentett elrendezés.
+
 ## Mit nem
-- Nem írom át az anyag-rendszert és a render színkezelését (csak megmutatom).
-- Felső action bar (húzható eszközök), panelpresetek: következő UI-szelet.
-- Gradiens minden effekten: ebben a szeletben 2 célon (Színátmenet, 2D forma kitöltés), utána bővítés.
+- Nem írom át az anyag-rendszert és a render színkezelési sorrendjét (csak megmutatom és szerkeszthetővé teszem).
+- Teljes UI-keretrendszer-csere nincs.
 
 ## Teljesítmény
-Picker és gradiens-szerkesztő csak megnyitáskor jön létre; a Színek sor számolása csak kijelöléskor/commitkor fut, nem képkockánként. Gradiens a shaderben fix 8 állomás (nincs újrafordítás állomásszám-változáskor). Build-méret: +~20 KB, külső függőség nélkül.
+Picker és gradiens-szerkesztő csak megnyitáskor jön létre; a Színek sor számolása csak kijelöléskor/commitkor fut, nem képkockánként. Gradiens a shaderben fix 8 állomás (nincs újrafordítás állomásszám-változáskor). Build-méret: +~35 KB, külső függőség nélkül.
 
-## Próba (4 lépés)
+## Próba (6 lépés)
 1. Válassz ki egy Alakzatot → jobb panel tetején a **Színek** sor: kattints egy pöttyre → az új pickerrel állíts színt és átlátszóságot, húzás közben élőben változik; ⌘Z egy lépésben visszaviszi.
 2. Tegyél rá egy **Színkorrekció** Megjelenést → a Színek sorban megjelenik, és látszik, hogy a saját színt módosítja.
 3. **Színátmenet** forráson: kattints a gradiens-sávra (új állomás), húzd, majd válts *Egyenes (RGB)* ↔ *Érzékelés szerint* módra — a közép nem szürkül be OKLCH-ban.
 4. Szövegréteg sötét háttéren sötét színnel → kontraszt-jelzés → „Olvashatóvá” → a szöveg kivilágosodik.
+5. Húzz egy Megjelenést a felső action barra, jelölj ki egy másik réteget, kattints az ikonra → rákerül.
+6. Paletta-választó → Saját paletta → Harmónia: triád → mentés a Saját könyvtárba.
 Mérés: picker megnyitása < 30 ms; régi projekt megnyitás után a projektfájl változatlan (nincs csendes módosítás).
 
 ## Hogyan változik a hátralévő lista
