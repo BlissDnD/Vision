@@ -31,7 +31,7 @@
  fxb.click();if(R.cat!=='fx')bad.push('the shelf button no longer switches category');
 
  // 3) a slider row: the ◇ menu is there with the four standard items, and Wave opens the wave pane
- const L=makeLayer('blob');st.layers=[L];R.selId=L.id;renderInsp();
+ const L=makeLayer('shape',{p:{kind:0,size:.15}});st.layers=[L];R.selId=L.id;commit();renderAll();setITab('content');renderInsp();
  const ctl=document.querySelector('#insp .ctl');
  const dd=ctl&&ctl.querySelector('.vel-animmenu');
  if(!dd)bad.push('the ◇ animate menu is missing from the slider row');
@@ -60,15 +60,18 @@
    }}
 
  // 6) the Mozgás card: rhythm presets as an icon group, Seamless loop as a switch
- const M=makeMo('float');L.mo=[M];R.moSel[L.id]=M.id;setITab('motion');renderInsp();
+ const mi=LIB.motion.findIndex(x=>x.mo==='float');attachMo(mi,st.layers[0].id);
+ const M=(st.layers[0].mo||[])[0];
+ if(!M)bad.push('the float motion could not be attached');
+ R.moSel[st.layers[0].id]=M&&M.id;setITab('motion');renderInsp();
  const mp=document.querySelector('#insp .ipane[data-tab=motion]');
  const ry=mp.querySelector('.rychipw .vel-seg');
- const ryb=ry?[...ry.querySelectorAll('button')]:[];
+ const ryb=ry?[...ry.querySelectorAll("button")]:[];
  info.ry=ryb.length;
  if(ryb.length!==RY_PRE.length)bad.push('the rhythm presets are not an icon group: '+ryb.length);
  if(ryb.some(b=>!b.querySelector('svg')))bad.push('a rhythm preset has no icon');
  ryb[1].click();
- if(!M.ry||M.ry.k!==1)bad.push('the rhythm preset click did not apply: '+JSON.stringify(M.ry&&M.ry.k));
+ if(!M||!M.ry||M.ry.k!==1)bad.push('the rhythm preset click did not apply: '+JSON.stringify(M.ry&&M.ry.k));
  renderInsp();
  const mloop=document.querySelector('#insp .moloop wa-switch');
  if(!mloop)bad.push('the motion Seamless loop is not a wa-switch');

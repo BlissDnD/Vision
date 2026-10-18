@@ -1,3 +1,12 @@
+## 2026-10-18 — WA1 Web Awesome alap + angol ág befésülve (0.49.0-wa1)
+- Az angol lokalizációs ág 3 commitja (receptek/könyvtár, mozgás/koreográfia/random/változatok, maradék panelek) cherry-pickelve, ütközés nélkül. Plusz itt: Gerinc szekció + gombjai, Kapcsolat-összefoglalók angolul.
+- Nyolc teszt magyar szelektorral bukott (Új pont utána, Elfogadás, Jelenetfény, Napfény, Lágy, ív, „3 kör / 10 mp”, Vektoranimáció importálása, Loop ki/be) — mind angolra javítva.
+- Hátralévő fordítás mérve és leírva: `docs/final-updates/ENGLISH-REMAINING.md` (1273 magyar literál, dinamikus tooltipek, `lang="en"` kapu).
+- WA1: Web Awesome 3.14 komponensenként (tooltip, switch, dropdown, dropdown-item), ikonkit **nélkül**, így `file://`-ről is betölt; `src/vel-theme.css` a DESIGN-SYSTEM tokenjeivel; `src/ui/` közös vezérlők (ikongomb tooltippel, szegmentált ikoncsoport, kapcsolósor, ◇ animálás-menü).
+- Átállítva: könyvtár-polcsor (kategóriaszín + ikon + egymondatos tooltip), csúszkasor (◇ menü: Wave · Seamless loop · Keyframes · Link; hullám ikoncsoport; Körbeér kapcsoló), Mozgás kártya (ritmus-előbeállítások és ritmus-cél ikoncsoport, Körbeér wa-switch).
+- Mérés: build +57 KB tömörítve (611 → 668 KB), a ≤300 KB korlát alatt; typecheck 0 hiba; `tests/wa1_ui.js` 8 ellenőrzés zöld.
+- Próba (felhasználó): 1) `app/dist/index.html` → új téma, ikonos polcsor, tooltipek. 2) Mozgás fül → mozgáskártya: ritmus-ikonok, Körbeér kapcsoló, nincs levágott felirat. 3) Egy csúszka ◇ gombja → menü négy ponttal, „Wave” megnyitja a hullámpanelt. 4) `dist/index.html` dupla kattintással (`file://`) — minden betölt.
+
 ## 2026-10-18 — Fast English UI pass
 - Converted visible strings in export, settings popovers, presets, scenes, Motion and timeline (including interpolated messages); persisted IDs remain unchanged.
 - Typecheck and production build pass. Nine affected browser tests pass after updating two obsolete Hungarian-label assertions.
