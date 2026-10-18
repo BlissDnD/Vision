@@ -3,3 +3,5 @@ dist/
 dist-vite/
 src/.test-entry.ts
 shot*.png
+.venv
+node_modules
