@@ -15,6 +15,8 @@
   for(const x of [{...root,layers:[{ty:5}]},{...root,layers:[{ty:2}]},{...root,assets:[{id:'pre',layers:[{ty:5}]}]},{...root,layers:[{ty:4,x:'alert(1)'}]},{...root,segments:[{time:1}]}]){
     try{parseVectorLottie(JSON.stringify(x));bad.push('unsafe Lottie accepted');}catch(_){}
   }
+  chooseLottieFile();const libLink=document.querySelector('#dlg a[href="https://lottiefiles.com/free-animations"]');
+  if(!libLink||libLink.getAttribute('rel')!=='noopener noreferrer')bad.push('official library link missing');closeModal();
   await importLottieFile(file);const dlg=document.querySelector('#dlg');
   if(!dlg.textContent.includes('Vektoranimáció importálása')||!dlg.querySelector('canvas'))bad.push('import preview missing');
   await new Promise(r=>setTimeout(r,100));const preview=dlg.querySelector('canvas');const ppx=preview.getContext('2d').getImageData(0,0,preview.width,preview.height).data;info.previewAlpha=ppx.filter((_,i)=>i%4===3&&ppx[i]>0).length;

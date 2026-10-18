@@ -4,7 +4,7 @@ Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; a
 
 ## Állapot: 2026-10-18 — L1 Lottie vektoranimáció (0.34.0-l1)
 
-- **Források → Vektoranimáció (Lottie)** vagy Projekt → Vektoranimáció importálása: helyi, tisztán vektoros `.json` előnézete és hozzáadása; a fájl ablakra ejtése is ide jut, a Vel-projekt/preset továbbra is saját importútján marad.
+- **Források → Vektoranimáció (Lottie)** vagy Projekt → Vektoranimáció importálása: helyi, tisztán vektoros `.json` előnézete és hozzáadása; a fájl ablakra ejtése is ide jut, a Vel-projekt/preset továbbra is saját importútján marad. Az importablak a LottieFiles gyűjteményét külön lapon nyitja meg; onnan a JSON-fájlt le kell tölteni, beépített online kereső nincs.
 - A réteg Megjelenéseket fogad; saját média-Kezdet/Sebesség/Loop értékei vannak (a kulcs-Loop külön), a Sávokon húzható média-blokkal. Visszatekeréskor a Vel idejéből számított képkockát rajzolja; 4K kimenetnél nagyobb felbontású textúrát kér.
 - A projekt a használt Lottie-JSON-t magával viszi; az automatikus mentés IndexedDB-be írja a teljes projektet, sikertelenségnél teljes localStorage-mentést próbál, végső hibát láthatóan jelzi. Régi projekt tovább nyílik; hiányzó Lottie-assetet betöltéskor jelzi.
 - Célzott teszt: `tests/lottie_import.js` (import, vektoros rajz, undo/redo, idő/Loop, seek, projekt/automatikus mentés, régi/hiányzó és hibás fájl) zöld; teljes kör **38/38 zöld**. Typecheck és production build zöld. JS-bundle 1049 KB (korábbi 891 KB-os viszonyítás: +158 KB); egyetlen HTML 1,15 MB.

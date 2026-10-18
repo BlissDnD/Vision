@@ -42,9 +42,16 @@ export async function importLottieFile(file: File, suppliedText?: string) {
   } catch (e) { toast(`Lottie-import: ${e.message || e}`); }
 }
 export function chooseLottieFile() {
-  const input = h('input', { type: 'file', accept: '.json,application/json' }) as HTMLInputElement;
+  const input = h('input', { type: 'file', accept: '.json,application/json', style: 'display:none' }) as HTMLInputElement;
   input.onchange = () => { const f = input.files?.[0]; if (f) void importLottieFile(f); };
-  input.click();
+  openModal(h('h2', null, 'Vektoranimáció hozzáadása'),
+    h('p', null, 'Válassz egy saját Lottie JSON-fájlt, vagy keress animációt a LottieFiles gyűjteményében.'),
+    h('p', { class: 'small' }, 'A gyűjteményből a Lottie JSON változatot töltsd le. A Vel most legfeljebb 2 MB-os, csak vektoros animációt fogad.'),
+    input,
+    h('div', { class: 'bar2' },
+      h('a', { class: 'btn', href: 'https://lottiefiles.com/free-animations', target: '_blank', rel: 'noopener noreferrer' }, 'LottieFiles gyűjtemény ↗'),
+      h('button', { class: 'btn accent', onclick: () => input.click() }, 'JSON-fájl kiválasztása'),
+      h('button', { class: 'btn', onclick: closeModal }, 'Mégsem')));
 }
 R.openLottie = chooseLottieFile;
 R.importLottieFile = importLottieFile;

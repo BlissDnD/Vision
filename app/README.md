@@ -135,7 +135,7 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 
 ## L1 Lottie vektoranimáció (2026-10-18)
 - `lottieCore.ts` ellenőrzi a helyi, csak vektoros JSON-t (méret/mélység/rétegtípus/expression) és a Vel jelenetidejéből számolja a képkockát; `lottie.ts` a MIT-licencű `lottie-web` light Canvas renderelőjét használja, méret- és képkockaérzékeny WebGL-textúra-gyorsítótárral.
-- `lottieImport.ts` adja az előnézetet és a fájlválasztást; a `presets.ts` globális JSON-ejtése Lottie esetén ide irányít. A `lottie` réteg ugyanazt a képútvonalat és Megjelenés-láncot használja, mint az `image`.
+- `lottieImport.ts` adja az előnézetet és a fájlválasztást, valamint külső hivatkozást a LottieFiles gyűjteményére; nincs online katalógus-integráció. A `presets.ts` globális JSON-ejtése Lottie esetén ide irányít. A `lottie` réteg ugyanazt a képútvonalat és Megjelenés-láncot használja, mint az `image`.
 - `L.media` = `{start,speed,loop}`; ez külön van a kulcsanimáció `kloop`-jától. `timeline.ts` kompakt média-blokkot mutat; `history.ts` csak a használt `vectorAssets` rekordokat menti. `autosave.ts` a teljes projektet IndexedDB-ben tárolja, teljes localStorage-tartalékkal és hibajelzéssel.
 - Integrációs próba: `tests/lottie_import.js`; kézi mintafájl: `tests/fixtures/vel-lottie-circle.json`. A képes/szöveges/fontos/expression Lottie ebben a szeletben tiltott. Függőség: `lottie-web` MIT, licence a buildelt HTML-be is beágyazva.
 
