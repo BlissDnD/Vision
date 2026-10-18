@@ -2,6 +2,37 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — T6 Szöveg 3D (0.40.0-t6)
+
+- Szöveg és média → **Térbeli szöveg**: Szöveg hengeren / gömbön / Szalaggyűrű (forgás, dőlés, ismétlés, túloldal áttetszik, Tömör test), **Kihúzott 3D szöveg** (mélység, homlok- és oldalszín, fény, csillanás, billegés), **Szöveg útvonalon** (P2 Útvonal vagy saját ív, Eltolás, Úszás, Betűköz, az úttal fordul / egyenesen áll). Mind élő szöveg: a felső szövegsávban vagy a Tartalom fülön írod át.
+- Teljes kör az E1+P2+K3+T6 állapotra: **44/44 zöld**. Célzott teszt `tests/t6_text3d.js` zöld (renderel, átírás látszik, forog és seek-determinisztikus, tömör test, túloldal, mélység + oldalszín, betűk az úton és úsznak, újranyitás, 6 könyvtári elem).
+- Próba: 1) Szöveg hengeren, írd át; 2) Kihúzott 3D szöveg: Mélység, Fordulat; 3) Útvonal + Szöveg útvonalon (Útvonal választó a Tartalom fülön), Úszás; 4) mentés → újranyitás.
+- Korlát: nincs szöveg alakú kivágás, a 3D szöveg nem háromszögháló (nem árnyékol más tárgyra), a gömb sarkain a betűk torzulnak.
+
+## Állapot: 2026-10-18 — K3 Kamera: célzás, követés, útvonal (0.39.0-k3)
+
+- Kamera ablak → **Mód**: Kézi / **Célpontok** („Kijelölt réteg mostantól”; több célpont = célváltás lágy átúszással; mozgó cél követése „Követés késése” szerint; **Élesség a célon** = fókuszváltás) / **Útvonalon** (Útvonal réteg, Bejárás ideje, Körbe/Oda-vissza/Egyszer). **Kézikamera** csúszka minden módban. Követő módban a kulcsolt X/Y eltolás.
+- Célzott teszt `tests/k3_camera.js` zöld (középre áll, célváltás átúszik és előtte nem mozdul, késleltetett követés, fókusz a célon, útvonal, determinisztikus remegés, újranyitás, régi kamera változatlan).
+- Próba: 1) Kamera be, Mód: Célpontok, 0 mp-nél A réteg, 3 mp-nél B → lejátszás; 2) A-ra Lebegés, Követés késése 0,6; Élesség a célon + blende; 3) Mód: Útvonalon; Kézikamera 0,3; 4) mentés → újranyitás.
+- Korlát: 2,5D kamera (nincs valódi 3D nézőpont), a célpontok nem húzható blokkok a Sávokon, nincs kamerafogantyú a vásznon.
+
+## Állapot: 2026-10-18 — P2 Közös útvonal, első szelet (0.38.0-p2)
+
+- **2D Formák → Útvonal (rajzolj)**: egy húzással rajzolod (simított, kevés pont), utána a pontokat húzod, dupla kattintás a szaggatott vonalon = új pont, Alt+kattintás = törlés; inspector: Újrarajzolás, pont törlése, irány megfordítása. 7 kész változat (Neon vonal, Cső, Csavart szalag, Gyöngysor, Kirajzolódó vonal, Zárt forma, Élő hullám).
+- Kinézet: Vonal / Cső (3D árnyalás, csillanás) / Csavart szalag / Neon / Gyöngysor; vastagság elején/végén, Színátmenet/Paletta, Kirajzolás (eleje/vége/eltolás), szaggatás, zárt kitöltés (maszknak is), élő hullámzás.
+- Ugyanaz az útvonal: **Mozgás → Útvonalon** (Körbe/Oda-vissza/Egyszer, Irányba fordul; az útvonal átszerkesztését/mozgatását követi), **Részecske Forrás → Alak: Útvonal**.
+- Célzott teszt `tests/p2_path.js` zöld (görbe, egyenletes mintavétel, egyszerűsítés, háromszögelés, 5 kinézet, kirajzolás, szaggatás, kitöltés, hullám, mozgás a vonalon + követés + Egyszer, emitter a vonalon, újranyitás, 8 könyvtári elem). A `regression` a saját rajzolójú effekteket kihagyja a shaderfordításból; a `polyhaven_import` tesztet stabilabbra javítottam.
+- Próba: 1) 2D Formák → Útvonal (rajzolj), húzz egy vonalat; Kinézet: Cső, majd Neon; 2) húzz egy pontot, dupla kattintással adj hozzá; 3) Szöveg + Mozgás → Útvonalon; 4) Részecske Forrás, Alak: Útvonal; mentés → újranyitás.
+- Korlát: nincs tangensfogantyú, boole/üreg/kontúreltolás, 3D útvonal és szövegút; éles kanyarban a vastag vonal széle megtörhet.
+
+## Állapot: 2026-10-18 — E1 Részecske Forrás (0.37.0-e1)
+
+- **Részecskék → Részecske Forrás** + 8 kész változat (Szikraeső, Konfetti, Hulló levelek szélben, Hóesés, Füst, Tűzijáték-löket, Pattogó golyók, Szövegből szálló por). Alak: Pont/Vonal/Gyűrű/Korong/Téglalap/Alatta lévő kép alakja; Mennyiség, Élettartam, Irány, Szórás, Sebesség, Gravitáció, Szél + lökések, Örvény, Közegellenállás, pattogó Padló; 7 kinézet (pötty, kör, szikra, csík, konfetti, levél, füstfolt).
+- Ütemezés: Folyamatos / Löketek / Jelzésekre (J). A réteget mozgatva (húzás, kulcs, Mozgás) csóvát húz. Állapot nélküli: tekerés = export = újranyitás.
+- Célzott teszt `tests/e1_emitter.js` zöld (seek, mennyiség, gravitáció, szél, padló, löket, jelzés, előmelegítés, csóva, képalak, 7 kinézet, 5 alak, 9 könyvtári elem, újranyitás). Typecheck 0 hiba.
+- Próba: 1) Részecskék → Szikraeső, lejátszás közben húzd a réteget; 2) Gravitáció 0, Szél jobbra, Padló: Pattog; 3) Ütemezés: Jelzésekre, lejátszás közben J; 4) tekerj vissza, mentés → újranyitás.
+- Korlát: nincs útvonal-emitter (következő szelet), nincs ütközés más rétegekkel, nem valódi lépésenkénti szimuláció; M1 Max frame-idő mérése hátra.
+
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 
 - **Rugalmas beúszás nyila:** vég húzása = irány + távolság; ⌘ + fel/le = tempó (fel = rövidebb), ⌘ + oldalra = karakter (Lágy/Ütés/Rugó); ⌥ vagy a nyíl közepe = ív (a réteg valóban az íven érkezik, `bend` paraméter); ⇧ = 15°-os szögek.

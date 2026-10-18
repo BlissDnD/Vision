@@ -148,6 +148,27 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
 
+## T6 Szöveg 3D (2026-10-18)
+- `effects/text3d.ts`: `usesText` effektek (a `makeLayer`/`normalize` `L.text`-et ad, a `mediaFor` a `textTex`-et köti `uImage`-re, az inspector szövegmezője és a `textbar` is kezeli). `textwrap`: perspektivikus sugár, gömb/henger metszés **stabil képlettel** (legközelebbi pont, nem `b²−c`: SwiftShaderen kioltódott), u = szög × Ismétlés, v-sáv a szöveg arányából; két oldal (elöl/túloldal). `textextrude`: doboz-metszés + 64 lépéses menetelés a szöveg alfáján, 5 lépés finomítás, oldalnormál az alfa gradienséből.
+- `textpath.ts`: betűatlasz (canvas, 96 px), betűnként négyszög ívhossz szerint (`glyphsAt`), útvonal nélkül saját ív (`ARC`); Körbe ér = periódus max(úthossz, szöveghossz).
+
+## K3 Kamera-rendezés (2026-10-18)
+- `camdir.ts` `camDir(t)` → `{dx,dy,droll,focus}`, a `render.camXf` adja hozzá a kulcsolt X/Y/Döntéshez (követő módban így eltolás). Képkockánként memoizált (`R.camFrame` a `renderScene` elején nő).
+- Célpontok: `st.cam.shots=[{t,id}]`, aktív = utolsó `t ≤ idő`; átúszás quintic easinggel `trans` alatt; követés = 8 múltbeli minta lineáris súllyal (`lag`), a cél nyers helye a kamera nélkül (`placeAt`, `R.CAMON=false`). Útvonalon: `pathAt(st.cam.path, t, u)`, `pper`, `ploop`.
+- Új `CAMP`: `shake`, `lag`, `trans`, `pper` (kulcsolhatók a Kamera soron). `normCam` csak meglévő K3-mezőt másol. UI: `camui.ts` (`R.camExtra` az `openCam`-ben).
+
+## P2 Közös útvonal (2026-10-18)
+- `paths.ts`: a közös görbemodell. `L.pts` (helyi egység) → `curve` (Catmull-Rom, zárt/nyitott, szögletes) → `toWorld` a réteg elhelyezésével (`placeAt`, ugyanaz, mint a `setXform`; óramutató szerinti forgatás, mint a `glsl.ts` `toUV`) → `arc`/`sampleArc`/`resample` ívhossz szerint. `simplify` = RDP a rajzhoz, `insertPt` a legközelebbi kontrollszakaszra. `R.pathAt(id,t,u)` a többi modulnak.
+- `pathdraw.ts`: `pathshape` saját rajzolás (VAO, háromszögszalag: across/ív/mag-arány/félszélesség attribútum), a kinézet, Kirajzolás, szaggatás a fragment shaderben; zárt kitöltés `earClip`.
+- `pathedit.ts`: fogantyúk (`.pgrips`, `R.updPathGrips` a `loop.ts`-ben), dupla kattintás a `.phit` vonalon, Alt+kattintás törlés, rajzpad (`armPathDraw`, a polc `drawPath` eleme élesíti), `R.pathPick` (Mozgás-kártya és emitter), `R.pathSection` (inspector).
+- `motion.ts` `path` mozgás (`m.path` = rétegazonosító, `normMo` megőrzi): dx/dy = útvonalpont − alaphely, Irányba fordul = −szög. Emitter 6. alak: 128 egyenletes pont `uPath` uniformban.
+
+## E1 Részecske Forrás (2026-10-18)
+- `emitter.ts`: `emitter` effekt (`draw` hook a `render.renderList`-ben, GL pontok). Állapot nélküli: rekesz i születése `i/cap + k·W` (folyamatos), löketnél `j=i/M` csoport, `m ≡ j (mod B)` legutóbbi lökete; jelzésnél az utolsó 16 `st.cues`. A hash (cyc, i, seed) adja a sorsot.
+- `placeAt(L,t)` = a `setXform` számítása (behav + kamera); 32 minta az utolsó Élettartamra (`uTr`), a Mennyiség is (`uTrR`, a kapacitás 1,25-ös lépcsőkre kerekítve, így az animált mennyiség nem keveri át a rekeszeket).
+- Mozgás zárt képlettel: közegellenállás `fk/gk`, gravitáció és szél állandó erő, széllökés = közös 1D zaj különbsége (integrál), örvény = 3D zaj eltolás; padló legfeljebb 5 pattanás ballisztikusan. Alak 5: elutasító mintavétel az alatta lévő képből (alfa + háttérszíntől eltérés).
+- Kinézetek a fragment shaderben (`vSh` = szög, flip/csíkhossz, méretarány). Teszt: `tests/e1_emitter.js`.
+
 ## Gesztus-mozgás (2026-10-18)
 - `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).
 - Módváltáskor (⌘/⌥/semmi) újrahorgonyoz (`snap`), így minden mód a saját kezdőpontjához képest relatív; ⌘ tempó = `v·2^(dy/90)`, karakter 45 px-enként. Egy húzás = egy `commit()` elengedéskor.

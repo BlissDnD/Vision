@@ -3,6 +3,16 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**Önálló sorozat (2026-10-18, a felhasználó előre jóváhagyta):** Részecske emitter → Közös útvonal → Kamera → Folyadék → Fizika → Szöveg 3D; a szabályvezérelt viselkedés kimarad. Javaslatok: `docs/javaslatok/E1-…`, stb. Ezen az ágon (`claude/possible-features-af7e04`) kész: E1, P2, K3, T6 (teljes kör 44/44). A Folyadék (F1) és a Fizika (F2) a párhuzamos munkamenet ágán van: `claude/vel-fluid-797dca` (két commit); **összefésülés a felhasználó engedélyével**, ütközés várható a `library.ts`, `cost.ts`, `main.ts`, `package.json` és a doksik soraiban.
+
+**T6 Szöveg 3D (0.40.0-t6, 2026-10-18):** Térbeli szöveg polc: Szöveg hengeren/gömbön/Szalaggyűrű, Kihúzott 3D szöveg, Szöveg útvonalon; élő, átírható. Headless teszttel demonstrálva (`tests/t6_text3d.js`), felhasználói próba hátra.
+
+**K3 Kamera (0.39.0-k3, 2026-10-18):** Kamera ablak → Mód: Célpontok (célváltás átúszással, követés késéssel, Élesség a célon) / Útvonalon; Kézikamera. Headless teszttel demonstrálva (`tests/k3_camera.js`), felhasználói próba hátra.
+
+**P2 Közös útvonal, első szelet (0.38.0-p2, 2026-10-18):** 2D Formák → Útvonal (rajzolj) + 7 kész változat; pontszerkesztés a vásznon; Vonal/Cső/Szalag/Neon/Gyöngysor, Kirajzolás, szaggatás, kitöltés; ugyanaz az útvonal a Mozgás → Útvonalon és a Részecske Forrás alakja. Headless teszttel demonstrálva (`tests/p2_path.js`), felhasználói próba hátra.
+
+**E1 Részecske Forrás (0.37.0-e1, 2026-10-18):** Részecskék → Részecske Forrás + 8 kész változat; saját emitter (pont/vonal/gyűrű/korong/téglalap/képalak), gravitáció, szél, örvény, pattogó padló, löket/jelzés, mozgatva csóva. Headless teszttel demonstrálva (`tests/e1_emitter.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).
+
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).
 
 **PH1 Poly Haven képek (0.35.0-ph1, 2026-10-18):** Szöveg és média → Poly Haven textúrák: 12 elemes, kereshető, kurált CC0-katalógus; kiválasztáskor hivatalos 2K JPG-ből beágyazott képréteg és forrásmetaadat. Célzott teszt zöld (`tests/polyhaven_import.js`); teljes kör első futás 37/39, a két tesztfeltétel javítása után mindkettő külön zöld (`PROGRESS.md`). A valódi hálózatos felhasználói próba hátra. Ez 2D képimport, nem 3D PBR-anyag vagy teljes online katalógus. Következőhöz külön javaslat kell: PBR-anyagcsatlakozó vagy új médiakatalógus.
