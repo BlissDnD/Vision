@@ -1,4 +1,5 @@
 import { COL, S, SEL } from './helpers';
+import { MAT_GLSL } from './mat3d';
 
 /** 3D */
 import type { EffectDef } from '../types';
@@ -23,13 +24,16 @@ terrain3d:{kind:'3d',name:'3D Terep',terrain:true,desc:'Valódi 3D táj seedből
   S('ry','Kamera: körbe (°)',-180,180,32),S('rx','Kamera: magasság (°)',-5,85,26),S('dist','Kamera: távolság',3,40,14),S('fov','Látószög (°)',15,90,42),S('tx','Cél X',-12,12,0),S('ty','Cél Y',-2,6,0.6),S('tz','Cél Z',-12,12,0)],
  code:`vec4 fx(){return vec4(0.0);}`},
 obj3d:{kind:'3d',name:'3D objektum',desc:'Fizikai alapú (PBR) 3D test: környezeti fény, lágy árnyék, ambient occlusion, felületi textúra. A 3D forgatás eszközzel (O) húzva forgathatod.',
- main:['shape','material','env','rough','metal','detail','floor','glow'],
+ main:['shape','material','env','rough','metal','reflM','floor','floorM','glow'],
  params:[SEL('shape','Forma',['Gömb','Tórusz','Kocka','Oktaéder','Merkaba','Giroid gömb','Tóruszcsomó','Dodekaéder','Ikozaéder','Metagömbök'],0),
   SEL('material','Anyag',['Irizáló','Plazma','Bolygó','Hologram','Króm','Láva','Üveg','Normál-színek','Toon','Agyag','Gyöngyház','Bársony'],0),
+  SEL('reflM','Tükröződés',['Környezet','Valódi (jelenet)'],0),SEL('floorM','Padló',['Árnyék','Tükör'],0),S('mirror','Padlótükör ereje',0,1,.6),
   SEL('env','Környezet',['Stúdió','Naplemente','Kozmikus','Neon'],0),S('rough','Érdesség',0,1,.4),S('metal','Fémesség',0,1,0),S('detail','Felületi textúra',0,1,.15),S('floor','Árnyék a talajon',0,1,0),S('glow','Peremfény',0,3,.6),
   SEL('aa','Élsimítás',['Gyors','4× (lassabb)'],0),
   S('displace','Torzítás',0,1,.15),S('spin','Forgás',-2,2,.3),S('rx','Dőlés °',-180,180,20),S('ry','Fordulat °',-180,180,0),S('twist','Csavarás',-3,3,0),S('ring','Gyűrű',0,1,0),S('speed','Anyag tempója',0,3,.5),SEL('sceneL','Jelenetfény hat rá',['Nem','Igen'],1)],
  code:`uniform vec3 uLDir; uniform vec3 uLEnv; uniform vec3 uLCol; uniform float uLSoftK; uniform float uLSize; uniform float uLWrap;   // scene light (render.ts lightU)
+uniform float uLShape; uniform int uLN; uniform vec3 uXD[3]; uniform vec3 uXC[3]; uniform vec2 uXS[3];   // FÉNY2: main light shape, further lights (dir, colour, size+shape)
+${MAT_GLSL}
 mat3 gM;
 mat3 rX(float a){float c=cos(a),s=sin(a);return mat3(1.0,0.0,0.0,0.0,c,s,0.0,-s,c);}
 mat3 rY(float a){float c=cos(a),s=sin(a);return mat3(c,0.0,-s,0.0,1.0,0.0,s,0.0,c);}
@@ -59,10 +63,16 @@ float h1(float n){return fract(sin(n)*43758.5453);}
 float n3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.0-2.0*f);float n=i.x+i.y*57.0+i.z*113.0;
   return mix(mix(mix(h1(n),h1(n+1.0),f.x),mix(h1(n+57.0),h1(n+58.0),f.x),f.y),mix(mix(h1(n+113.0),h1(n+114.0),f.x),mix(h1(n+170.0),h1(n+171.0),f.x),f.y),f.z);}
 float fbm3(vec3 p){return n3(p)*0.6+n3(p*2.1+3.1)*0.3+n3(p*4.3+7.7)*0.1;}
+/* FÉNY2: a light's shape as seen in reflections (0 disc, 1 strip, 2 square, 3 ring), widened by roughness */
+float lShape(vec3 d,vec3 L,float sz,float sh,float rough){float c=dot(d,L); if(c<=0.0) return 0.0;
+  vec3 t1=normalize(cross(L,abs(L.y)<0.95?vec3(0.0,1.0,0.0):vec3(1.0,0.0,0.0))),t2=cross(L,t1); vec2 uv=vec2(dot(d,t1),dot(d,t2))/c;
+  float r=0.12+sz*0.3,bl=0.006+rough*rough*0.6,k;
+  if(sh<0.5) k=length(uv)-r; else if(sh<1.5) k=max(abs(uv.x)-r*0.28,abs(uv.y)-r*2.6); else if(sh<2.5) k=max(abs(uv.x),abs(uv.y))-r; else k=abs(length(uv)-r)-r*0.22;
+  return (1.0-smoothstep(-bl,bl,k))*2.6/(1.0+rough*6.0);}
 vec3 envMap(vec3 d,float rough){
   float sharp=mix(70.0,2.5,rough); float y=d.y; vec3 col; int e=int(p_env+0.5);
   if(e==0){col=mix(vec3(0.015),vec3(0.11),smoothstep(-0.6,1.0,y));
-    col+=vec3(1.0,0.98,0.95)*(uLCol/vec3(1.0,0.97,0.92))*2.4*pow(max(dot(d,uLEnv),0.0),mix(70.0,2.5,mix(rough,1.0,uLSize*0.6)));
+    col+=vec3(1.0,0.98,0.95)*(uLCol/vec3(1.0,0.97,0.92))*(uLShape>0.5?0.15:2.4)*pow(max(dot(d,uLEnv),0.0),mix(70.0,2.5,mix(rough,1.0,uLSize*0.6)));
     col+=vec3(0.85,0.92,1.0)*1.3*pow(max(dot(d,normalize(vec3(0.75,0.25,-0.45))),0.0),sharp*0.7);
     col+=vec3(0.9)*0.5*smoothstep(0.55,1.0,y);}
   else if(e==1){col=mix(vec3(0.95,0.45,0.22),vec3(0.12,0.16,0.38),smoothstep(-0.1,0.7,y))*mix(0.2,1.0,smoothstep(-0.6,0.05,y));
@@ -71,32 +81,61 @@ vec3 envMap(vec3 d,float rough){
     col+=pal(0.1)*2.2*pow(max(dot(d,normalize(vec3(0.5,0.6,0.6))),0.0),sharp);}
   else {float az=atan(d.z,d.x); float band=smoothstep(-0.35,0.2,y)*(1.0-smoothstep(0.5,0.9,y)); float w=0.08+rough*0.6;
     col=vec3(0.012)+vec3(1.0,0.22,0.6)*2.4*exp(-pow((az-1.2)/w,2.0))*band+vec3(0.2,0.75,1.0)*2.4*exp(-pow((az+1.9)/w,2.0))*band+vec3(0.6,0.4,1.0)*0.6*smoothstep(0.7,1.0,y);}
+  if(rough<0.98){if(uLShape>0.5) col+=uLCol*lShape(d,uLEnv,uLSize,uLShape,rough);
+    for(int i=0;i<3;i++){if(i>=uLN) break; col+=uXC[i]*lShape(d,uXD[i],uXS[i].x,uXS[i].y,rough);}}
   return col;}
 float softShadow(vec3 ro,vec3 rd){float res=1.0,tt=0.02;for(int i=0;i<32;i++){float hh=map(ro+rd*tt).x;res=min(res,uLSoftK*hh/tt);tt+=clamp(hh,0.02,0.25);if(res<0.004||tt>5.0)break;}return clamp(res,0.0,1.0);}
 float calcAO(vec3 pos,vec3 n){float occ=0.0,sca=1.0;for(int i=0;i<5;i++){float hh=0.02+0.11*float(i);float d=map(pos+n*hh).x;occ+=(hh-d)*sca;sca*=0.9;}return clamp(1.0-2.5*occ,0.0,1.0);}
+/* FÉNY2: camera ray. With the mirror floor on, the camera looks slightly down so the reflection is in frame */
+void camRay(vec2 p,out vec3 ro,out vec3 rd){
+  if(p_floorM<0.5){ro=vec3(0.0,0.0,3.5); rd=normalize(vec3(p,-1.8)); return;}
+  ro=vec3(0.0,1.3,4.6); vec3 f=normalize(vec3(0.0,-0.3,0.0)-ro),r=normalize(cross(f,vec3(0.0,1.0,0.0))),u=cross(r,f); rd=normalize(p.x*r+p.y*u+1.8*f);}
+/* FÉNY2: secondary rays for real reflection / refraction / floor mirror. gAlb<0: guess the colour from the palette */
+vec3 gP=vec3(0.0),gAlb=vec3(-1.0); float gPrim=0.0,gRough=0.5;
+vec4 tr2(vec3 ro,vec3 rd){float tt=0.01;
+  for(int i=0;i<64;i++){vec3 p=ro+rd*tt; float d=map(p).x;
+    if(d<0.0012*(1.0+tt)){vec3 n=calcN(p); vec3 a=gAlb.x<0.0?pal(0.3+n.y*0.2)*0.8:gAlb; float nl=max(dot(n,uLDir),0.0);
+      return vec4(a*(envMap(n,1.0)*0.9+uLCol*nl*1.2)+envMap(reflect(rd,n),max(gRough,0.25))*0.25,1.0);}
+    tt+=d*0.85; if(tt>9.0) break;}
+  return vec4(envMap(rd,gRough),0.0);}
+vec4 refrTrace(vec3 pos,vec3 rd,vec3 n){vec3 d=refract(rd,n,0.7); vec3 p=pos-n*0.004; float tt=0.0;
+  for(int i=0;i<48;i++){float s=-map(p+d*tt).x; if(s<0.001) break; tt+=max(s*0.9,0.004); if(tt>3.0) break;}
+  p+=d*tt; vec3 n2=-calcN(p); vec3 d2=refract(d,n2,1.0/0.7); if(dot(d2,d2)<0.01) d2=d;   // total internal reflection: leave undeviated (no inner bounces)
+  return tr2(p-n2*0.006,d2);}
 vec3 shadePBR(vec3 n,vec3 rd,vec3 alb,float rough,float metal,float ao,float sh){
   vec3 v=-rd; float nv=max(dot(n,v),0.0); vec3 F0=mix(vec3(0.04),alb,metal);
   vec3 F=F0+(1.0-F0)*pow(1.0-nv,5.0)*(1.0-rough*0.7);
-  vec3 spec=envMap(reflect(rd,n),rough)*F;
+  vec3 Rr=reflect(rd,n),envR=envMap(Rr,rough);
+  if(p_reflM>0.5&&gPrim>0.5&&rough<0.8){vec4 s2=tr2(gP+n*0.004,Rr); envR=mix(mix(envR,s2.rgb,s2.a),envR,smoothstep(0.35,0.8,rough));}
+  vec3 spec=envR*F;
   vec3 irr=envMap(n,1.0)*0.9+0.03;
   vec3 diff=alb*irr*(1.0-metal);
   vec3 L=uLDir; vec3 H=normalize(L+v); float nl=max((dot(n,L)+uLWrap)/(1.0+uLWrap),0.0); float nh=max(dot(n,H),0.0);
   float a2=pow(max(mix(rough,1.0,uLSize),0.05),4.0); float dd=nh*nh*(a2-1.0)+1.0; float D=a2/(PI*dd*dd);
   vec3 key=(alb*(1.0-metal)*0.6+F*D*0.25)*nl*mix(sh,1.0,uLWrap*0.6)*uLCol*1.6;
+  for(int i=0;i<3;i++){if(i>=uLN) break; vec3 Lx=uXD[i]; float nlx=max(dot(n,Lx),0.0); float nhx=max(dot(n,normalize(Lx+v)),0.0);
+    float a2x=pow(max(mix(rough,1.0,uXS[i].x),0.05),4.0); float ddx=nhx*nhx*(a2x-1.0)+1.0;
+    key+=(alb*(1.0-metal)*0.6+F*min(a2x/(PI*ddx*ddx),60.0)*0.25)*nlx*uXC[i]*1.6;}   // further lights: no shadow
   return (diff+spec)*mix(0.35,1.0,ao)*mix(0.55,1.0,sh)+key;}
 vec4 render(vec2 p){
   float t=uTime*p_speed;
-  vec3 ro=vec3(0.0,0.0,3.5); vec3 rd=normalize(vec3(p,-1.8));
+  vec3 ro,rd; camRay(p,ro,rd);
   float tt=0.0; float md=1e9; vec2 hit=vec2(0.0,-1.0);
   for(int i=0;i<110;i++){vec3 pos=ro+rd*tt; vec2 m=map(pos); md=min(md,m.x); if(m.x<0.0007*(1.0+tt)){hit=vec2(tt,m.y);break;} tt+=m.x*0.75; if(tt>9.0) break;}
   vec3 L=uLDir;
   if(hit.y<-0.5){
-    vec4 res=vec4(0.0);
+    vec4 res=vec4(0.0); float fsh=0.0; vec2 fq=vec2(0.0);
     if(p_floor>0.001&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; float sh=softShadow(fp+vec3(0.0,0.002,0.0),L); float ao=clamp(map(fp).x*1.2,0.0,1.0);
-      res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0);}
+      res.a=clamp((1.0-min(sh,0.25+0.75*ao))*p_floor*exp(-length(fp.xz)*0.35),0.0,1.0); fsh=res.a; fq=fp.xz;}
+    if(p_floorM>0.5&&rd.y<0.0){float tf=(-1.0-ro.y)/rd.y; vec3 fp=ro+rd*tf; vec4 m=tr2(fp+vec3(0.0,0.002,0.0),reflect(rd,vec3(0.0,1.0,0.0)));   // FÉNY2 floor mirror
+      float k=clamp(p_mirror*m.a*(0.35+0.65*pow(1.0-abs(rd.y),3.0))*exp(-length(fp.xz)*0.3),0.0,1.0); res.rgb=res.rgb*(1.0-k)+m.rgb*k; res.a=max(res.a,k);}
     float halo=exp(-max(md,0.0)*14.0)*p_glow*0.5; res.rgb+=pal(0.6)*halo; res.a=max(res.a,clamp(halo,0.0,1.0));
+    if(uMt>0.5) res=mix(res,matMiss(md,fsh,fq,3.5/(uRes.y*uScale*1.8)),uMs);
     return res;}
   vec3 pos=ro+rd*hit.x; vec3 n=calcN(pos); vec3 lq=gM*pos; vec3 v=-rd;
+  if(uMt>0.5){float ao0=calcAO(pos,n),sh0=softShadow(pos+n*0.003,L); vec3 g0=vec3(0.7)*(envMap(n,1.0)*0.9+0.03)*mix(0.35,1.0,ao0)*mix(0.55,1.0,sh0)+0.42*max((dot(n,L)+uLWrap)/(1.0+uLWrap),0.0)*mix(sh0,1.0,uLWrap*0.6)*uLCol*1.6;   // MAT1: host appearance (material3d)
+    gMat=matHit(dot(g0,vec3(0.2126,0.7152,0.0722)),max(dot(n,v),0.0),lq,gM*n,hit.x/(uRes.y*uScale*1.8),pal(0.3+lq.y*0.25)*g0*1.3,pos.y);
+    if(uMs>0.999) return gMat;}
   float fres=pow(1.0-max(dot(n,v),0.0),3.0);
   float rough=clamp(p_rough,0.02,1.0); float metal=p_metal; vec3 alb=vec3(0.8); vec3 emit=vec3(0.0); float a=1.0;
   if(p_detail>0.001){vec3 q=lq*10.0; float e=0.01;
@@ -110,25 +149,28 @@ vec4 render(vec2 p){
   else if(mt==2){float f=fbm(lq.xy*2.2+lq.z*1.3)*0.6+fbm(lq.yz*2.0+3.1)*0.4; float land=smoothstep(0.48,0.53,f);
     alb=mix(pal(0.6)*0.3,pal(0.12+f*0.6)*0.85,land); rough=mix(0.18,0.85,land);
     float cl=smoothstep(0.55,0.75,fbm(lq.xz*3.0+vec2(t*0.1,0.0)+lq.y)); alb=mix(alb,vec3(0.95),cl*0.7); rough=mix(rough,1.0,cl); emit=pal(0.6)*fres*0.5;}
-  else if(mt==3){float ln=smoothstep(0.85,1.0,sin(lq.y*70.0+t*4.0)*0.5+0.5); vec3 col=pal(0.55+lq.y*0.3)*(fres*1.6+ln*0.7+0.08); a=clamp(fres*1.2+ln*0.6+0.12,0.0,1.0); return vec4(col*a,a);}
+  else if(mt==3){float ln=smoothstep(0.85,1.0,sin(lq.y*70.0+t*4.0)*0.5+0.5); vec3 col=pal(0.55+lq.y*0.3)*(fres*1.6+ln*0.7+0.08); a=clamp(fres*1.2+ln*0.6+0.12,0.0,1.0); return MX(vec4(col*a,a));}
   else if(mt==4){alb=mix(vec3(0.95),pal(0.5),0.3); metal=1.0; rough=rough*0.5;}
   else if(mt==5){float f=fbm(lq.xy*3.0+lq.z*2.0+t*0.1); float hot=smoothstep(0.5,0.68,f); alb=vec3(0.06,0.05,0.05); rough=0.9; metal=0.0; emit=pal(0.04+hot*0.12)*3.0*hot;}
   else if(mt==6){float nv=max(dot(n,v),0.0); vec3 Fg=vec3(0.04)+0.96*pow(1.0-nv,5.0); vec3 rf=refract(rd,n,0.7);
-    vec3 col=envMap(rf,rough)*mix(vec3(1.0),pal(0.5),0.4)*0.8+envMap(reflect(rd,n),rough)*Fg*1.3; a=clamp(0.3+fres*1.1,0.0,1.0); return vec4(col*max(a,0.5),a);}
-  else if(mt==7){return vec4((n*0.5+0.5)*(0.65+0.35*diffK)+specK*0.3,1.0);}
-  else if(mt==8){float lv=floor(diffK*3.0+0.5)/3.0; vec3 col=pal(0.15+lv*0.5)*(0.25+lv)+step(0.97,specK)*0.8; col*=1.0-step(0.6,fres)*0.85; return vec4(col,1.0);}
+    vec4 cR=vec4(envMap(rf,rough),0.0); vec3 cS=envMap(reflect(rd,n),rough); a=clamp(0.3+fres*1.1,0.0,1.0);
+    if(p_reflM>0.5){gRough=rough; cR=refrTrace(pos,rd,n); vec4 s2=tr2(pos+n*0.004,reflect(rd,n)); cS=mix(cS,s2.rgb,s2.a); a=mix(a,1.0,cR.a);}   // FÉNY2 real refraction
+    vec3 col=cR.rgb*mix(vec3(1.0),pal(0.5),0.4)*0.8+cS*Fg*1.3; return MX(vec4(col*max(a,0.5),a));}
+  else if(mt==7){return MX(vec4((n*0.5+0.5)*(0.65+0.35*diffK)+specK*0.3,1.0));}
+  else if(mt==8){float lv=floor(diffK*3.0+0.5)/3.0; vec3 col=pal(0.15+lv*0.5)*(0.25+lv)+step(0.97,specK)*0.8; col*=1.0-step(0.6,fres)*0.85; return MX(vec4(col,1.0));}
   else if(mt==9){alb=mix(vec3(0.82,0.79,0.75),pal(0.5),0.35); rough=max(rough,0.7); metal=0.0;}
   else if(mt==10){alb=mix(vec3(0.93,0.92,0.95),pal(fres*0.7+n.y*0.2+t*0.03),0.45); rough=min(rough,0.3); metal=0.0; emit=pal(fres*0.8)*fres*0.25;}
   else {alb=pal(0.3+n.y*0.1)*0.55; rough=0.95; metal=0.0; emit=pal(0.35)*pow(1.0-max(dot(n,v),0.0),2.0)*0.8;}
   float ao=calcAO(pos,n); float sh=softShadow(pos+n*0.003,L);
+  gP=pos; gPrim=1.0; gAlb=alb; gRough=rough;
   vec3 col=shadePBR(n,rd,alb,rough,metal,ao,sh)+emit+pal(0.6)*fres*p_glow*0.25;
-  return vec4(col*a,a);}
+  return MX(vec4(col*a,a));}
 vec4 fx(){
-  vec2 p=P();
+  vec2 p=matWarp(P());
   gM=rX(p_rx*PI/180.0)*rY(p_ry*PI/180.0+uTime*p_spin);
-  if(p_aa<0.5) return render(p);
-  vec2 px=vec2(1.0/(uRes.y*uScale));
-  return (render(p+px*vec2(-0.25,-0.25))+render(p+px*vec2(0.25,-0.25))+render(p+px*vec2(-0.25,0.25))+render(p+px*vec2(0.25,0.25)))*0.25;
+  vec2 px=vec2(1.0/(uRes.y*uScale)); int ns=p_aa<0.5?1:4; vec4 acc=vec4(0.0);   // one call site: the raymarcher is inlined once (shader compile time)
+  for(int i=0;i<4;i++){if(i>=ns) break; vec2 o=ns==1?vec2(0.0):px*vec2(i==0||i==2?-0.25:0.25,i<2?-0.25:0.25); acc+=render(p+o);}
+  return ns==1?acc:acc*0.25;
 }`},
 gyroid:{kind:'3d',name:'Giroid-barlang',desc:'Végtelen 3D járat izzó membránfalakkal — beljebb repülsz.',main:['speed','scale','glow'],
  params:[S('speed','Sebesség',0,3,.4),S('scale','Sűrűség',.5,6,2.2),S('thick','Falvastagság',0,3,.6),S('roll','Gördülés',-3,3,1),S('glow','Fény',.2,4,1.2)],
@@ -139,5 +181,15 @@ gyroid:{kind:'3d',name:'Giroid-barlang',desc:'Végtelen 3D járat izzó membrán
   for(int i=0;i<70;i++){vec3 q=ro+rd*tt; float s=p_scale; float g=abs(dot(sin(q*s),cos(q.zxy*s)))/s-p_thick*0.05; float d=abs(g)+0.003;
     col+=pal(q.z*0.04+tt*0.03)*0.006/d*exp(-tt*0.12); tt+=d*0.8; if(tt>25.0) break;}
   return vec4(1.0-exp(-col*p_glow),1.0);
-}`}
+}`},
+inksketch:{kind:'fx',name:'Rajzolt toll',host:['obj3d','sdfscene','surface3d'],desc:'Ráhúzható Megjelenés 3D tárgyra: golyóstollal papírra satírozott rajz. A sötétebb részeken sűrűbb, keresztező vonalak, rezgő kontúr, a talajárnyék is satírozott. Felülírja a tárgy Anyagát; az Erősség csúszkával fokozatosan beúszik. (R3F Sketch Material ötlete, saját WebGL2 megvalósítás.)',
+ main:['ink','paper','density','width','press','contour'],
+ params:[COL('ink','Tollszín','#1d1f2a'),COL('paper','Papír','#f3f1ec'),S('density','Sűrűség',4,60,22),S('width','Vonalvastagság',0.05,0.5,0.2),S('press','Nyomás',0,1.5,0.9),S('contour','Kontúr',0,4,1.5),
+  S('boil','Élő vonal (rajz/mp)',0,12,0),S('orig','Eredeti szín',0,1,0),S('angle','Satír szöge °',-90,90,0),SEL('paperbg','Papír háttér',['Nem','Igen'],1)],
+ code:`vec4 fx(){return IN(vUv);}`},
+hologram:{kind:'fx',name:'Hologram',host:['obj3d','sdfscene','surface3d'],desc:'Ráhúzható Megjelenés 3D tárgyra: áttetsző, világító peremű test mozgó pásztázó csíkokkal, fénysávval, villódzással és időnként elcsúszó képsávokkal. Felülírja a tárgy Anyagát; az Erősség csúszkával fokozatosan beúszik.',
+ main:['color','alpha','rim','lines','scan','flick','glitch'],
+ params:[COL('color','Szín','#3fe8ff'),S('alpha','Fedés',0,1,0.8),S('rim','Perem élessége',0.5,6,2.2),S('lines','Csíksűrűség',0,60,18),S('scan','Pásztázás tempója',0,3,0.6),
+  S('flick','Villódzás',0,1,0.35),S('glitch','Elcsúszás',0,1,0.3),S('band','Fénysáv',0,2,1)],
+ code:`vec4 fx(){return IN(vUv);}`}
 };

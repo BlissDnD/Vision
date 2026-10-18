@@ -1,17 +1,31 @@
 /* M6 · Jelenetfény: one global key light for obj3d / sdfscene (render.ts lightU), direct controls first
  * ("lágyabb", "nagyobb csillanás", "melegebb"), global and per-layer switch, and glint drag on the canvas:
- * clicking a point of the object turns the light so that its highlight lands there. */
+ * clicking a point of the object turns the light so that its highlight lands there.
+ * FÉNY2: further lights (st.light.more) as chips; the active chip (R.lightSel) gets the sliders and the glint drag. */
 import { R } from './runtime';
 import { h } from './dom';
 import { BASEK, EFFECTS } from './effects/index';
-import { LIGHTP, st } from './state';
+import { LIGHTP, XLIGHT_MAX, makeXLight, st } from './state';
 import { ev, setVal } from './evaluation';
-import { ctlParam, ctlSlider, ctlSwitch, section } from './controls';
+import { ctlParam, ctlSelect, ctlSlider, ctlSwitch, section } from './controls';
+import { lightRGB } from './render';
 import { commit } from './history';
 import { markDirty } from './loop';
 
 export const usesLight = (L: any) => !!(L && (L.type === 'obj3d' || L.type === 'sdfscene' || L.type === 'cloud3d' || L.type === 'terrain3d'));
 const D = (k: string) => LIGHTP.find(d => d.k === k)!;
+R.lightSel = 0;   // 0 = main light, i = st.light.more[i-1]
+/** The light the sliders and the glint drag act on. */
+export function activeLight() { const m = st.light.more || []; if (R.lightSel > m.length) R.lightSel = 0; return R.lightSel ? m[R.lightSel - 1] : st.light; }
+const wrap = (a: number) => ((a + 540) % 360) - 180;
+/** Add a further light; each new one gets a different role relative to the main light: rim, cool fill, warm top. */
+export function addLight() {
+  const m = st.light.more || (st.light.more = []); if (m.length >= XLIGHT_MAX) return null; const az = st.light.p.az.v;
+  const P = [{ az: wrap(az + 180), el: 20, pow: .9, warm: -.2, size: .3, shape: 1 }, { az: wrap(az + 95), el: 8, pow: .45, warm: -.6, size: .6, shape: 2 }, { az: wrap(az - 100), el: 62, pow: .6, warm: .5, size: .2, shape: 3 }][m.length];
+  const x = makeXLight(P); m.push(x); st.light.on = true; R.lightSel = m.length; return x;
+}
+export function removeLight(i: number) { const m = st.light.more || []; if (i < 1 || i > m.length) return; m.splice(i - 1, 1); R.lightSel = Math.min(R.lightSel, m.length); if (R.lightSel === i) R.lightSel = 0; }
+const swatch = (o: any) => { const c = lightRGB(o.p.warm.v, 1).map((x: number) => Math.round(Math.min(1, x) * 255)); return `rgb(${c[0]},${c[1]},${c[2]})`; };
 
 /** Glint drag for a raymarched object: treat the object as a sphere around its screen centre (radius r, canvas-height units).
  * The highlight is where the normal halves light and view (camera looks down −z), so L = 2(n·v)n − v. */
@@ -23,7 +37,7 @@ export function lightFromGlint(cx: number, cy: number, r: number, px: number, py
 }
 export function glint3(L: any, p: { x: number, y: number }, t = R.time) {
   const s = ev(L.n.s, BASEK.s, t), cx = ev(L.n.x, BASEK.x, t), cy = ev(L.n.y, BASEK.y, t), r = Math.max(0.02, 0.39 * s);
-  const v = lightFromGlint(cx, cy, r, p.x, p.y); st.light.on = true; setVal(st.light.p.az, v.az); setVal(st.light.p.el, v.el); markDirty(); return v;
+  const v = lightFromGlint(cx, cy, r, p.x, p.y), A = activeLight(); st.light.on = true; setVal(A.p.az, v.az); setVal(A.p.el, v.el); markDirty(); return v;
 }
 
 export function lightSection(L: any) {
@@ -34,7 +48,16 @@ export function lightSection(L: any) {
     h('div', { class: 'btnrow' }, h('button', { class: 'btn' + (R.glint ? ' accent' : ''), 'aria-pressed': String(!!R.glint), title: 'Bekapcsolva a tárgyon húzva a fény úgy fordul, hogy a csillanás az egér alatt legyen.',
       onclick: () => { R.glint = !R.glint; re(); } }, R.glint ? 'Csillanás húzása: be' : 'Csillanás húzása a vásznon')),
   ];
-  for (const k of ['soft', 'size', 'warm', 'pow', 'az', 'el']) kids.push(ctlSlider(st.light.p[k], D(k)));
-  kids.push(h('p', { class: 'small' }, 'A fény közös: minden 3D tárgyra és 3D jelenetre hat, amelyeknél a „Jelenetfény hat rá” be van kapcsolva. A Gerincfelületnek saját stúdiófénye van (Fény csoport).'));
+  const more = st.light.more || [], A = activeLight();
+  const chip = (i: number, o: any, label: string) => h('button', { class: 'btn lchip' + (R.lightSel === i ? ' accent' : '') + (o.on ? '' : ' off'), 'aria-pressed': String(R.lightSel === i), 'data-light': String(i),
+    title: i ? 'További fény (árnyék nélkül). Kattints: ez lesz az aktív, a csúszkák és a csillanás-húzás ezt mozgatják.' : 'Fő fény (ez vet árnyékot).', onclick: () => { R.lightSel = i; re(); } },
+    h('span', { class: 'ldot', style: `display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:${swatch(o)}` }), label);
+  kids.push(h('div', { class: 'btnrow lchips' }, chip(0, st.light, 'Fő'), ...more.map((x: any, i: number) => chip(i + 1, x, String(i + 2))),
+    more.length < XLIGHT_MAX ? h('button', { class: 'btn', title: 'Új fény: elsőre ellenfény, aztán hideg kitöltő, majd meleg felső fény.', onclick: () => { addLight(); commit(); re(); } }, '+ Fény') : null));
+  if (R.lightSel) { const i = R.lightSel; kids.push(ctlSwitch('Ez a fény be', A.on, (v: boolean) => { A.on = v; commit(); re(); }),
+    h('div', { class: 'btnrow' }, h('button', { class: 'btn', onclick: () => { removeLight(i); commit(); re(); } }, 'Fény törlése'))); }
+  for (const k of R.lightSel ? ['size', 'warm', 'pow', 'az', 'el'] : ['soft', 'size', 'warm', 'pow', 'az', 'el']) kids.push(ctlSlider(A.p[k], D(k)));
+  kids.push(ctlSelect(A.p.shape, D('shape')));
+  kids.push(h('p', { class: 'small' }, 'A fény közös: minden 3D tárgyra és 3D jelenetre hat, amelyeknél a „Jelenetfény hat rá” be van kapcsolva. A további fények nem vetnek árnyékot; a formájuk a fényes felületeken tükörképként látszik. A Gerincfelületnek saját stúdiófénye van (Fény csoport).'));
   return section('Jelenetfény', 'light', true, ...kids);
 }

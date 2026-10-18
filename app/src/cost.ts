@@ -1,7 +1,7 @@
 import { cv, progError } from './gl';
 import { st } from './state';
 
-export const COST={surface3d:3,terrain3d:4,windflame:3,liquidglass:5,cloud3d:4,balloon:2,pdisp:2,gradient:1,plasma:1,liquid:1,moire:1,tunnel:1,hyper:1,grid:1,lava:1,flare:1,text:1,image:1,shape:1,sacred:2,nebula:2,aurora:2,kali:2,julia:2,blackhole:2,galaxy:2,waves:2,cells:2,fire:2,custom:2,gyroid:4,obj3d:5,
+export const COST={surface3d:3,terrain3d:4,windflame:3,liquidglass:5,cloud3d:4,balloon:2,inksketch:1,hologram:1,pdisp:2,gradient:1,plasma:1,liquid:1,moire:1,tunnel:1,hyper:1,grid:1,lava:1,flare:1,text:1,image:1,shape:1,sacred:2,nebula:2,aurora:2,kali:2,julia:2,blackhole:2,galaxy:2,waves:2,cells:2,fire:2,custom:2,gyroid:4,obj3d:5,
  planet:2,sky:2,space:2,bokeh:1,skygrad:1,sun:1,clouds:2,terrain:2,haze:1,bento:2,projector:2,mtext:1,reveal:1,particles:3,emitter:3,pathshape:1,textwrap:2,textextrude:4,textpath:1,sdfscene:6,blur:2,glow:2,radial:2,blob:3,lens:1,kaleido:1,feedback:1,fluid:3,fluidfx:3,swirl:1,warp:1,ripple:1,edge:1,mirror:1,polar:1,chroma:1,psycolor:1,grade:1,glitch:1,film:1,crt:1,castlight:2,texture:1,ascii:1,halftone:1,pixelart:1};
 export function itemError(it){if(it.type==='group')return it.children.some(itemError)||(it.fx||[]).some(itemError);return !!progError(it)||(it.fx||[]).some(itemError);}
 export function itemCost(it){const fx=(it.fx||[]).reduce((s,f)=>s+(f.vis?COST[f.type]||1:0),0);

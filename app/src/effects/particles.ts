@@ -30,7 +30,7 @@ emitter:{kind:'gen',name:'Részecske Forrás',emit:true,desc:'Saját emitter: po
   S('sizeEnd','Méret a végén (×)',0,4,.3),S('sizevar','Méret szórása',0,1,.5),S('spin','Pörgés',0,10,2),S('fade','Elhalványulás',0,1,.6),COL('c1','Saját szín','#ffd27a'),S('bright','Fényerő',0,4,1.2),
   SEL('pblend','Keverés',['Fény (összeadó)','Normál'],0)],code:''},
 sdfscene:{kind:'3d',name:'3D jelenet',desc:'Szerkeszthető 3D: legfeljebb 8 alapforma (gömb, doboz, tórusz, henger, kapszula, oktaéder), amelyeket hozzáadsz, kivonsz vagy metszel, és agyagszerűen összeolvasztasz.',
- main:['material','env','rough','metal','floor'],
+ main:['material','env','rough','metal','reflM','floor','floorM'],
  params:[SEL('material','Anyag',['Paletta','Agyag','Króm','Irizáló','Normál-színek'],1),SEL('env','Környezet',['Stúdió','Naplemente','Kozmikus','Neon'],0),S('rough','Érdesség',0,1,.5),S('metal','Fémesség',0,1,0),
-  S('floor','Árnyék a talajon',0,1,.6),S('glow','Peremfény',0,3,.4),SEL('aa','Élsimítás',['Gyors','4× (lassabb)'],0),S('spin','Forgás',-2,2,.15),S('rx','Dőlés °',-180,180,15),S('ry','Fordulat °',-180,180,0),SEL('sceneL','Jelenetfény hat rá',['Nem','Igen'],1)],code:''}
+  S('floor','Árnyék a talajon',0,1,.6),SEL('reflM','Tükröződés',['Környezet','Valódi (jelenet)'],0),SEL('floorM','Padló',['Árnyék','Tükör'],0),S('mirror','Padlótükör ereje',0,1,.6),S('glow','Peremfény',0,3,.4),SEL('aa','Élsimítás',['Gyors','4× (lassabb)'],0),S('spin','Forgás',-2,2,.15),S('rx','Dőlés °',-180,180,15),S('ry','Fordulat °',-180,180,0),SEL('sceneL','Jelenetfény hat rá',['Nem','Igen'],1)],code:''}
 };

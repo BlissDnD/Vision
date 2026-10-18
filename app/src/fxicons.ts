@@ -26,6 +26,8 @@ const P: Record<string, string> = {
   castlight: '<path d="M5 8h6v8H5z"/><path d="M11 8l9 6M11 16l9-2" opacity=".6"/>',
   film: '<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 3v18M16 3v18M4 8h4M4 16h4M16 8h4M16 16h4"/>',
   pdisp: '<circle cx="6" cy="12" r="1.3"/><circle cx="10" cy="8" r="1.3"/><circle cx="10" cy="16" r="1.3"/><circle cx="15" cy="6" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="15" cy="18" r="1"/><circle cx="20" cy="9" r=".8"/><circle cx="20" cy="15" r=".8"/>',
+  inksketch: '<path d="M4 20l3-1 11-11-2-2L5 17z"/><path d="M14 6l2 2M4 14l4-4M4 10l2-2M8 18l4-4"/>',
+  hologram: '<path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M5 10h14M5 14h14"/>',
   balloon: '<ellipse cx="12" cy="10" rx="6" ry="7"/><path d="M12 17l-1 2h2zM12 19c0 1-1 2 0 3"/>',
   custom: '<path d="M8 7 4 12l4 5M16 7l4 5-4 5M13.5 5l-3 14"/>',
   text: '<path d="M5 6V4h14v2M12 4v16M9 20h6"/>',

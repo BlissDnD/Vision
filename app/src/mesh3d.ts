@@ -12,6 +12,8 @@ import { R } from './runtime';
 import { compile, gl, IFMT, TYPE } from './gl';
 import { ev } from './evaluation';
 import { hexRGB } from './palettes';
+import { MAT_GLSL } from './effects/mat3d';
+import { matU, matVals } from './material3d';
 
 export const DEF_SPINE = [[-6.4, 4.4, 0.6], [-4.2, 3.0, -0.5], [-2.6, 1.2, -1.4], [-1.0, 0.14, -2.0], [0.7, 0.7, -2.6], [2.4, 1.9, -2.2], [3.9, 3.1, -1.2], [5.0, 4.4, 0.6], [5.8, 5.8, 3.0]];
 
@@ -111,12 +113,15 @@ vec3 envC(vec3 p, vec3 d, float r){                       // analytic studio, wi
 
 const MESH_VS = `#version 300 es
 layout(location=0) in vec3 aP; layout(location=1) in vec3 aN; layout(location=2) in vec4 aX;
-uniform mat4 uVP; uniform float uMirror; out vec3 vP; out vec3 vN; out vec4 vX;
-void main(){ vP = aP; vN = aN; vX = aX; vec3 q = uMirror > 0.5 ? vec3(aP.x, -aP.y, aP.z) : aP; gl_Position = uVP * vec4(q, 1.0); }`;
+uniform mat4 uVP; uniform float uMirror, uMt, uTime; uniform vec4 uMb; out vec3 vP; out vec3 vN; out vec4 vX;
+void main(){ vP = aP; vN = aN; vX = aX; vec3 q = uMirror > 0.5 ? vec3(aP.x, -aP.y, aP.z) : aP; gl_Position = uVP * vec4(q, 1.0);
+  if (uMt > 1.5 && uMb.y > 0.0) { float t = floor(uTime * 12.0);   // Hologram glitch: bands of the screen slip sideways now and then
+    if (fract(sin(t * 12.9898 + 7.0) * 43758.5453) > 0.86) { float b = floor(gl_Position.y / gl_Position.w * 9.0); gl_Position.x += (fract(sin(b * 78.233 + t) * 43758.5453) - 0.5) * 0.12 * uMb.y * gl_Position.w; } } }`;
 const MESH_FS = `#version 300 es
 precision highp float; in vec3 vP; in vec3 vN; in vec4 vX; out vec4 o;
-uniform vec3 uBase; uniform float uRough, uMetal, uCoat, uTint, uSilver, uDot, uDotS, uMirror, uExpo;
+uniform vec3 uBase; uniform float uRough, uMetal, uCoat, uTint, uSilver, uDot, uDotS, uMirror, uExpo, uTime;
 ${ENV}
+${MAT_GLSL}
 void main(){
   vec3 camP = uMirror > 0.5 ? vec3(uCam.x, -uCam.y, uCam.z) : uCam;   // the mirror shows the surface as seen from below the floor
   vec3 n = normalize(vN); vec3 v = normalize(camP - vP); if (dot(n, v) < 0.0) n = -n;
@@ -131,7 +136,10 @@ void main(){
   vec3 tc = base / max(max(base.r, base.g), max(base.b, 1e-3)), k = mix(vec3(1.0), tc, uTint * (1.0 - sil));   // "Vörös tükröződés"
   vec3 spec = envC(vP, Rf, rough) * F * k, dif = base * (1.0 - metal) * envC(vP, n, 1.0) * 0.9;
   float Fc = 0.04 + 0.96 * pow(1.0 - ct, 5.0); vec3 coat = envC(vP, Rf, 0.05) * Fc * uCoat * mix(vec3(1.0), tc, uTint * 0.75 * (1.0 - sil));
-  o = vec4(((dif + spec) * (1.0 - uCoat * Fc) + coat) * (uMirror > 0.5 ? 1.0 : uExpo), 1.0); }`;   // mirror stays raw: the floor applies the exposure once
+  o = vec4(((dif + spec) * (1.0 - uCoat * Fc) + coat) * (uMirror > 0.5 ? 1.0 : uExpo), 1.0);
+  if (uMt > 0.5 && uMirror < 0.5) {   // MAT1 host appearance: tone from a neutral grey shading of the same studio
+    vec3 g0 = vec3(0.7) * envC(vP, n, 1.0) * 0.9 + envC(vP, Rf, max(rough, 0.3)) * 0.06; float lum = dot(g0, vec3(0.2126, 0.7152, 0.0722)) * uExpo;
+    gMat = matHit(lum / (lum + 0.5) * 1.5, ct, vP, n, length(fwidth(vP)), o.rgb, vP.y * uMsc); o = MX(o); } }`;   // mirror stays raw: the floor applies the exposure once
 
 const FLOOR_VS = `#version 300 es
 layout(location=0) in vec3 aP; uniform mat4 uVP; out vec3 vP; void main(){ vP = aP; gl_Position = uVP * vec4(aP, 1.0); }`;
@@ -227,11 +235,14 @@ export function drawMesh(L: any, target: any, ctx: any, t: number, def: any) {
   const T = targets(ctx), M = meshFor(L, t, def), C = camOf(L, t, def, ctx.w / ctx.h);
   const P = (k: string) => ev(L.p[k], def.params.find((x: any) => x.k === k), t);
   const base = hexRGB(L.p.color.v).map((x: number) => Math.pow(x, 2.2)) as V3;   // sRGB picker → linear
-  const floorOn = Math.round(L.p.floor.v) > 0, bgOn = Math.round(L.p.bg.v) > 0;
+  const mv = matVals(L, t), matOn = !!mv && mv.s > 0.5;   // a material appearance replaces the studio floor and backdrop
+  const floorOn = !matOn && Math.round(L.p.floor.v) > 0, bgOn = !matOn && Math.round(L.p.bg.v) > 0;
+  const paper = matOn && mv!.mt === 1 && mv!.b[1] > 0.5 ? mv!.c2.map((x: number) => Math.pow(x, 2.2)) : null;
   const env = (p: any) => { gl.uniform3f(Uq(p, 'uCam'), C.eye[0], C.eye[1], C.eye[2]); const b = norm([0.05, 0.03, -1]); gl.uniform3f(Uq(p, 'uBack'), b[0], b[1], b[2]);
     gl.uniform3f(Uq(p, 'uFloorC'), base[0], base[1], base[2]); gl.uniform1f(Uq(p, 'uSky'), P('sky')); gl.uniform1f(Uq(p, 'uBackI'), P('backI'));
     gl.uniform1f(Uq(p, 'uExpo'), P('expo')); gl.uniform1f(Uq(p, 'uStripPos'), P('stripPos')); gl.uniform1f(Uq(p, 'uStripSize'), P('stripSize')); gl.uniform1f(Uq(p, 'uStripI'), P('stripI')); };
   const meshU = (mirror: number) => { const p = pr.mesh; gl.useProgram(p); env(p); gl.uniformMatrix4fv(Uq(p, 'uVP'), false, C.VP); gl.uniform1f(Uq(p, 'uMirror'), mirror);
+    gl.uniform1f(Uq(p, 'uTime'), t); matU(p, L, t, Uq, 0.12, true);
     gl.uniform3f(Uq(p, 'uBase'), base[0], base[1], base[2]); for (const k of ['rough', 'metal', 'coat', 'tint', 'silver', 'dot']) gl.uniform1f(Uq(p, 'u' + k[0].toUpperCase() + k.slice(1)), P(k));
     gl.uniform1f(Uq(p, 'uDotS'), P('dotS')); gl.bindVertexArray(M.vao); gl.drawElements(gl.TRIANGLES, M.count, gl.UNSIGNED_INT, 0); };
   gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL); gl.disable(gl.BLEND); gl.disable(gl.CULL_FACE);
@@ -239,7 +250,7 @@ export function drawMesh(L: any, target: any, ctx: any, t: number, def: any) {
   if (floorOn) { gl.bindFramebuffer(gl.FRAMEBUFFER, T.mF); gl.viewport(0, 0, T.mw, T.mh); gl.clearColor(0, 0, 0, 0); gl.clearDepth(1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     meshU(1); gl.bindTexture(gl.TEXTURE_2D, T.mT); gl.generateMipmap(gl.TEXTURE_2D); }
   // 2) main, MSAA
-  gl.bindFramebuffer(gl.FRAMEBUFFER, T.msF); gl.viewport(0, 0, ctx.w, ctx.h); gl.clearColor(0, 0, 0, 0); gl.clearDepth(1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, T.msF); gl.viewport(0, 0, ctx.w, ctx.h); if (paper) gl.clearColor(paper[0], paper[1], paper[2], 1); else gl.clearColor(0, 0, 0, 0); gl.clearDepth(1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   if (bgOn) { const p = pr.bg; gl.useProgram(p); env(p); gl.uniformMatrix4fv(Uq(p, 'uInvVP'), false, C.inv); gl.depthMask(false); gl.bindVertexArray(pr.quad); gl.drawArrays(gl.TRIANGLES, 0, 3); gl.depthMask(true); }
   if (floorOn) { const p = pr.floor; gl.useProgram(p); env(p); gl.uniformMatrix4fv(Uq(p, 'uVP'), false, C.VP); gl.uniform2f(Uq(p, 'uRes'), ctx.w, ctx.h);
     gl.uniform1f(Uq(p, 'uRefl'), P('refl')); gl.uniform1f(Uq(p, 'uBlur'), P('blur')); gl.uniform1f(Uq(p, 'uAOk'), P('ao')); gl.uniform4fv(Uq(p, 'uAO'), M.contacts);

@@ -192,6 +192,17 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 ## Körbeér (LP1, 2026-10-18)
 - `time.ts`: `loopLen()` (Loop be: `st.dur`; Jelenetsorban `R.seqLen`, a `seqFrame` írja; különben 0), `cyclesIn`, `snapRate`. A jelző `lp` (NParam: `mkN` őrzi; mozgás: `normMo` őrzi). Kiértékeléskor kerekít (`ev`, `moEval`), a tárolt `f`/`period` nem változik.
 - `motion.ts`: `snapP`, `spinSnap` (egész fordulat a `speed·amt`-ra), periodikus `smoothNoise(x,seed,per)`. `moLoopInfo` = felirat. Az alapértelmezett `lp=1` csak felhasználói létrehozáskor kerül be (∿ megnyitása új hullámmal, `attachMo`), Loop be állapotban.
+## FÉNY2 fények és tükrözés (2026-10-18)
+- `state.ts`: `LIGHTP` + `shape` (SEL), `XLIGHT_K`, `makeXLight`, `normLight` → `more[]` (max 3). `render.ts`: `xLights`, `lightRGB`; `lightU` tölti a `uLShape`, `uLN`, `uXD/uXC/uXS[3]` uniformokat (Felhő/Terep nem deklarálja, ott hatástalan).
+- obj3d-lib (a sdfscene is megkapja): `lShape` (fényforma a tükröződésben), `camRay` (Tükör padlónál emelt kamera), `tr2` (másodlagos sugár: szín + találat), `refrTrace` (belépés–kilépés, teljes belső visszaverődésnél egyenesen tovább). `shadePBR` a `gPrim/gP/gAlb/gRough` globálisokból tudja, hogy elsődleges találat-e.
+- Fordítási idő: a `fx()` AA-ciklusa egyetlen `render()` hívási hely; nehéz függvényt (tr2) ne hívj több helyről, mert minden hívás beinline-olódik.
+- `lightui.ts`: `R.lightSel`, `activeLight`, `addLight`, `removeLight`; `glint3` az aktív fényt írja.
+
+## MAT1 3D anyag-interfész (2026-10-18)
+- `effects/mat3d.ts` `MAT_GLSL`: uniformok `uMt` (0/1 toll/2 holo), `uMs` erősség, `uMsc` host-lépték (SDF 1, háló 0.12), `uMa/uMb` paramétercsomag, `uMc1/2` színek; `matHit` (találat), `matMiss` (SDF: sziluettkontúr, satírozott talajárnyék, papír), `matWarp` (holo glitch a sugáron), `MX()` keverés.
+- SDF-hostok (obj3d, sdfscene): a találatnál semleges szürke `shadePBR` fényessége a tónus; `uMs≈1` esetén korai visszatérés (nincs plusz költség), különben minden `return` `MX()`-en át. A sdfscene a `head` szeletelés miatt automatikusan megkapja.
+- Háló (surface3d): `MESH_FS` végén `matHit`, `MESH_VS`-ben holo glitch; aktív anyagnál (`matVals().s>0.5`) nincs tükörpadló/háttér, Rajzolt tollnál papírszínű törlés.
+- Új host-Megjelenéshez: kulcs a `MAT_TYPES`-ba + ág a `matVals`/`matHit`-be.
 
 ## Gesztus-mozgás (2026-10-18)
 - `gesture.ts`: egy `.moarrow` réteg (SVG pálya + `.mohit` húzható pálya, `.mohandle` vég, `.momid` ívfogó, `.motip` súgó, `.molab` címke, 8 `rect` szellemkép). `cur()` a Mozgás fülön kijelölt chipet követi (alapértelmezés: első chip, mint az inspectorban).

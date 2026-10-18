@@ -82,6 +82,26 @@ Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; a
 - Célzott teszt: `tests/lp_loop.js` zöld (t=0 és t=dur egyezik minden hullámformára és mozgásra, mentés, régi projekt). Teljes kör **41/41 zöld**, typecheck 0 hiba.
 - Próba: 1) 10 mp, Loop be, egy csúszkán ∿, Ütem 0,37: a felirat „4 kör / 10 mp”, a 10→0 váltásnál nincs ugrás; 2) projekthossz 7 mp: a körszám magától változik; 3) Lebegés, Ütem 3 mp: „3 kör / 10 mp”; 4) mentés → újranyitás.
 - A javaslatot a felhasználó kérésére Claude hagyta jóvá: `docs/javaslatok/MOZGAS-SAV-JAVASLATOK.md`.
+## Állapot: 2026-10-18 — FÉNY2 több fény, fényformák, valódi tükrözés, padlótükör (0.38.0-feny2)
+
+- **Fénycsipek** a Jelenetfény szekcióban: Fő + legfeljebb 3 további fény (+ Fény: ellenfény → hideg kitöltő → meleg felső). Az aktív csip kiemelt (színpötty = fényszín); a csúszkák és a csillanás-húzás az aktív fényt mozgatják. További fény: be/ki, törlés, árnyék nélkül.
+- **Fényformák** (Kör, Csík, Négyzet, Gyűrű): a fényes felületen tükörképként és csillanásként látszanak; a fő fénynél is választható (Kör = régi kép).
+- **obj3d / 3D jelenet:** Tükröződés: Valódi (jelenet) = második sugár, a tárgy önmagát tükrözi; Üveg + Valódi = belépő–kilépő törés. Padló: Tükör = tükörkép a padlón (erő, távolodva halványul), ekkor a kamera kissé felülről néz. A Vel többi rétege nem látszik a tükörben.
+- Shader-fordítás: az élsimítás egy hívási helyre került (headless első kép 135 → 9 mp), a kép pixelre azonos.
+- Új kész testek: Tükrös tóruszcsomó, Üvegkristály tükörpadlón. Mentés: `st.light.more`, `st.light.p.shape`, `reflM/floorM/mirror` alapértékkel, régi projekt változatlan.
+- Célzott teszt: `tests/feny2_lights.js` zöld, `tests/mat1_materials.js` zöld; typecheck 0; teljes kör 42/42 zöld. Javaslat: `docs/javaslatok/FENY2-FENYEK-TUKROZES-JAVASLAT.md` (önjóváhagyva).
+- Próba: 1) Krómkocka, + Fény, a 2. fény formája Csík; 2) csipet váltva húzd a csillanást; 3) Tükrös tóruszcsomó; 4) mentés → újranyitás.
+- Korlát: a tükörkép nem homályosodik érdesség szerint; az üveg sötét környezetben (Stúdió) sötét marad; a Gerincfelület/Felhő/Terep csak a fő fényt látja; fényjelölő a vásznon nincs; M1 Max frame-idő nincs mérve.
+
+## Állapot: 2026-10-18 — MAT1 3D anyagok: Rajzolt toll + Hologram (0.37.0-mat1)
+
+- **Anyag-interfész a 3D úton:** közös GLSL-blokk (`effects/mat3d.ts`) és uniform-beállító (`material3d.ts`) a 3D objektumhoz, 3D jelenethez és Gerincfelülethez; a host-Megjelenés felülírja a tárgy Anyagát, az Erősség fokozatosan keveri.
+- **Rajzolt toll** (Megjelenések): tárgytérbeli satírozás tónusszintekkel (ritka → kereszt → sűrű), papírszemcse, tintakihagyás, rezgő kontúr, satírozott talajárnyék; tollszín, papír, sűrűség, vastagság, nyomás, kontúr, élő vonal, eredeti szín, papír háttér.
+- **Hologram** (Megjelenések): áttetsző, világító perem, pásztázó csíkok, fénysáv, villódzás, elcsúszás (glitch). Gerincfelületen a stúdió és a tükörpadló kimarad alóla.
+- 3D polc új blokkja „Rajzolt és hologram”: Rajzolt tóruszcsomó, Rajzolt hóember, Hologram-fej, Hologram-szalag. Mentési formátum nem változott (az anyag a meglévő `fx` listában), migráció nincs.
+- Célzott teszt: `tests/mat1_materials.js` zöld; typecheck 0 hiba; teljes kör 41/41 zöld. Javaslat: `docs/javaslatok/MAT1-ANYAGOK-JAVASLAT.md` (a felhasználó távollétében önjóváhagyva).
+- Próba: 1) 3D → Rajzolt tóruszcsomó: satírozott rajz, a sötét oldalon sűrűbb; 2) Hologram húzása a Gerincfelületre; 3) Erősség 0→1 kulcsozva; 4) mentés → újranyitás.
+- Korlát: a kontúr perem + sziluett (nem geometriai él); a hologram hátlapjai nem látszanak; Terep/Felhő/2D nem célpont; M1 Max frame-idő nincs mérve.
 
 ## Állapot: 2026-10-18 — G1 Gesztus-mozgás (0.36.0-g1)
 
