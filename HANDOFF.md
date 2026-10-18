@@ -3,6 +3,8 @@
 Előbb a `CLAUDE.md`-t olvasd el (szabályok, térkép, parancsok). Ez a fájl csak azt mondja meg, **hol tartunk és mi a következő lépés**.
 
 ## Állapot egy mondatban
+**XF1 Mozgás átadása + Sorrend festése (0.38.0-xf1, 2026-10-18, mozgás-sáv):** a Mozgáskártyáról festéssel átadható a mozgás más rétegekre (Ritmus/Út/Teljes, Késés), előnézettel, követő kapcsolattal, terjedési blokkal a Sávokon. Headless teszttel demonstrálva (`tests/xf_transfer.js`); felhasználói próba hátra (`PROGRESS.md`). Új modul: `xfer.ts`.
+
 **LP1 Körbeér (0.37.0-lp1, 2026-10-18, mozgás-sáv, `claude/happy-feynman-192ba3` ág):** Körbeér kapcsoló az LFO-n és a folyamatos mozgásokon: egész számú kör a loopban, varratmentes loop-export. Headless teszttel demonstrálva (`tests/lp_loop.js`), teljes kör 41/41; felhasználói próba hátra (`PROGRESS.md`). Következő ebben a sávban: XF1 Mozgás átadása + Sorrend festése, majd KO1 Koreográfia gomb (javaslatok: `docs/javaslatok/MOZGAS-SAV-JAVASLATOK.md`, a felhasználó kérésére önjóváhagyással).
 
 **G1 Gesztus-mozgás (0.36.0-g1, 2026-10-18):** a mozgást a vásznon mutatod meg: módosítós nyíl (⌘ tempó/karakter, ⌥ ív, ⇧ 15°), szellemképek húzás közben, címke csak módosítóval, saját fogantyú az öt folyamatos mozgásnak, pályahúzás = előnézeti tekerés. Headless teszttel demonstrálva (`tests/g1_gesture.js`), felhasználói próba hátra (`PROGRESS.md` legfelül).

@@ -14,7 +14,7 @@ import { AUD, audioRestart } from './signals';
 import { markDirty } from './loop';
 import { toast } from './modals';
 import { addCue, blockOf, removeCue, shiftBlock, stretchBlock } from './retime';
-import { MO, moClip, moParam } from './motion';
+import { MO, XF_GETS, effMo, moClip, moParam, xfSrc } from './motion';
 import { lottieMeta } from './lottie';
 
 export const tlHeadEl=$('#tlHead'),tlTrack=$('#tlTrack');
@@ -142,12 +142,14 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
     if(open){
       // Mozgássávok: one clip row per motion (layer ▸ motion ▸ param ▸ keys)
       for(const m of mos){const key=L.id+'|'+m.id,mopen=R.tlxOpenIds.has(key);const cl=h('div',{class:'tlx-lane tlx-molane'});
-        const C:any=m.t==='spring'?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v,r:0,timed:true}:moClip(m);const b=C.b??Math.max(st.dur,vb);
+        // XF1: a linked motion is drawn where it really runs (source fields + delay) and edited at the source; m.dl shifts any motion
+        const E:any=m.src?effMo(m,L):m,lk=!!m.src,dl=E?+E.dl||0:0;const C0:any=!E?{a:0,b:0,r:0}:E.t==='spring'?{a:E.p.at.v,b:E.p.at.v+E.p.dur.v,r:0,timed:true}:moClip(E);
+        const C:any={...C0,a:C0.a+dl,b:C0.b==null?null:C0.b+dl};const b=C.b??Math.max(st.dur,vb);
         if(!(b<va||C.a>vb)){const l=Math.max(0,X(C.a)),r=Math.min(100,X(b));const rp=C.r/(b-C.a||1)*100;
-          const clip=h('i',{class:'tlx-clip'+(m.on===false?' off':'')+(C.b==null?' open':''),style:`left:${l}%;width:${Math.max(.6,r-l)}%;--ri:${C.a>0?rp:0}%;--ro:${C.b!=null?rp:0}%`,
-            title:`${MO[m.t].name} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég (jelenet vége után is fut)':fmtT(C.b)} · húzás: eltolás · szélek: kezdés / vége${C.timed?'':' (a végét a jelenet végéig húzva nyitott lesz)'}`});
+          const XS=lk?xfSrc(m):null;const clip=h('i',{class:'tlx-clip'+(m.on===false||!E?' off':'')+(C.b==null?' open':'')+(lk?' xf':''),style:`left:${l}%;width:${Math.max(.6,r-l)}%;--ri:${C.a>0?rp:0}%;--ro:${C.b!=null?rp:0}%`,
+            title:lk?`${MO[m.t].name} · ${XS?`${XF_GETS[XS.xf?XS.xf.md|0:0]} ettől: ${XS.L.name}`:'a forrás megszűnt'} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)} · a forrásnál szerkeszthető`:`${MO[m.t].name} · ${fmtT(C.a)} – ${C.b==null?'nyitott vég (jelenet vége után is fut)':fmtT(C.b)} · húzás: eltolás · szélek: kezdés / vége${C.timed?'':' (a végét a jelenet végéig húzva nyitott lesz)'}`});
           const ea=h('b',{class:'tlx-ce a',title:'Kezdés'}),eb=h('b',{class:'tlx-ce b',title:C.timed?'Időtartam':'Vége (a jelenet végéig húzva: nyitott vég)'});clip.append(ea,h('span',null,MO[m.t].name),eb);
-          clip.onpointerdown=ev=>clipDrag(ev,L,m,cl,ev.target===ea?'a':ev.target===eb?'b':'move');cl.appendChild(clip);}
+          clip.onpointerdown=ev=>{if(lk){ev.stopPropagation();R.selId=L.id;R.moSel[L.id]=m.id;R.itab='motion';renderAll();return;}clipDrag(ev,L,m,cl,ev.target===ea?'a':ev.target===eb?'b':'move');};cl.appendChild(clip);}
         const qs=paramList({mo:[m]}).map(q=>({...q,kinds:animKinds(q.o),short:q.d?q.d.l:q.label}));
         const ch=h('button',{class:'tlx-chev'+(mopen?' open':''),type:'button','aria-expanded':String(mopen),'aria-label':(mopen?'Elrejtés: ':'Paraméterek: ')+MO[m.t].name,title:'A mozgás paraméterei (kulcsok)'},'›');
         ch.onclick=ev=>{ev.stopPropagation();mopen?R.tlxOpenIds.delete(key):R.tlxOpenIds.add(key);renderTracks();};
@@ -155,6 +157,7 @@ export function renderTracks(){const P=$('#tlx');if(!P||!R.tlxOpen)return;const 
         const nm=h('div',{class:'tlx-name tlx-moname',style:`padding-left:${14+d*14}px`,title:MO[m.t].name},ch,h('span',null,MO[m.t].name),nk?h('span',{class:'tlx-sym',title:nk+' kulcs'},'◆'):null);
         nm.onclick=()=>{R.selId=L.id;R.moSel[L.id]=m.id;R.itab='motion';renderAll();};
         body.appendChild(h('div',{class:'tlx-row tlx-morow'+(L.vis?'':' off')},nm,cl));
+        if(m.xf&&m.xf.ids.length)body.appendChild(spreadRow(L,m,C,d,va,vb,X));
         if(mopen)for(const q of qs)if(!(q.d&&q.d.type==='sel'))prow(q,d+2);}
       for(const q of prs)prow(q,d);}}
   body.appendChild(h('i',{class:'tlx-ph',id:'tlxPh'}));
@@ -223,6 +226,20 @@ export function mediaDrag(ev,L,lane){ev.stopPropagation();ev.preventDefault();co
     tgt.style.left=Math.max(0,(L.media.start-va)/(vb-va)*100)+'%';markDirty();};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(moved){commit();renderInsp();renderTimeline();}
     else seekTo(a0);};}
+/** XF1 terjedési blokk under a source motion: from its start to the last target's start (+ the timed duration); ticks = targets
+ *  in painted order; the right edge stretches the delay (Késés), a click re-opens the painting. */
+function spreadRow(L,m,C,d,va,vb,X){const X0=m.xf,n=X0.ids.length,du=C.timed?C.b-C.a:0,a=C.a,b=a+n*X0.gap+du;const lane=h('div',{class:'tlx-lane tlx-molane'});
+  const nm=h('div',{class:'tlx-name tlx-moname tlx-xfname',style:`padding-left:${28+d*14}px`,title:'A mozgás terjedése a festett sorrendben'},h('span',null,`Terjedés · ${n} cél`));
+  if(!(b<va||a>vb)){const l=Math.max(0,X(a)),r=Math.min(100,X(Math.max(b,a+.05)));
+    const blk=h('i',{class:'tlx-clip tlx-spread',style:`left:${l}%;width:${Math.max(.6,r-l)}%`,title:`Terjedés: ${n} cél · ${String(X0.gap).replace('.',',')} mp / cél · ${['Ritmus','Út','Teljes'][X0.md|0]} · kattintás: sorrend újrafestése · jobb szél: késés nyújtása`});
+    for(let i=1;i<=n;i++)blk.appendChild(h('u',{style:`left:${(i*X0.gap)/(Math.max(.05,b-a))*100}%`},String(i)));
+    const eb=h('b',{class:'tlx-ce b',title:'Késés nyújtása'});blk.appendChild(eb);
+    blk.onpointerdown=ev=>{ev.stopPropagation();ev.preventDefault();if(ev.target!==eb){if(R.xfStart)R.xfStart(L,m);return;}
+      try{blk.setPointerCapture(ev.pointerId);}catch(_){}const g0=X0.gap,r0=lane.getBoundingClientRect();
+      blk.onpointermove=e=>{if(!(r0.width>0))return;const dt=(e.clientX-ev.clientX)/r0.width*(vb-va);X0.gap=Math.max(0,Math.round((g0+dt/n)*100)/100);const bb=a+n*X0.gap+du;blk.style.width=Math.max(.6,X(Math.max(bb,a+.05))-l)+'%';markDirty();};
+      blk.onpointerup=()=>{blk.onpointermove=blk.onpointerup=null;commit();renderInsp();renderTimeline();toast(`Késés: ${String(X0.gap).replace('.',',')} mp / cél`);};};
+    lane.appendChild(blk);}
+  return h('div',{class:'tlx-row tlx-morow tlx-xfrow'+(L.vis?'':' off')},nm,lane);}
 /** Drag a motion clip: move it, or its start ('a') / end ('b'). The timed Rugalmas beúszás moves at / stretches dur;
  *  a continuous motion's end dragged to the scene end becomes open-ended again. */
 export function clipDrag(ev,L,m,lane,mode){ev.stopPropagation();ev.preventDefault();const tgt=ev.currentTarget;try{tgt.setPointerCapture(ev.pointerId);}catch(_){}const [va,vb]=viewAB();
@@ -233,7 +250,7 @@ export function clipDrag(ev,L,m,lane,mode){ev.stopPropagation();ev.preventDefaul
     if(mode==='move'){const a=Math.max(0,R3(a0+dt));if(sp)m.p.at.v=a;else{if(a>0)m.a=a;else delete m.a;if(b0!=null)m.b=R3(b0+(a-a0));}}
     else if(mode==='a'){const lim=(sp?b0:(b0??Infinity))-.1;const a=Math.max(0,Math.min(lim,R3(a0+dt)));if(sp){m.p.at.v=a;m.p.dur.v=R3(b0-a);}else if(a>0)m.a=a;else delete m.a;}
     else{const b=Math.max(a0+.1,R3(ref+dt));if(sp)m.p.dur.v=R3(b-a0);else if(b>=D-1e-3)delete m.b;else m.b=b;}
-    markDirty();const C=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m);const bb=C.b??Math.max(D,vb);tgt.style.left=Math.max(0,(C.a-va)/(vb-va)*100)+'%';tgt.style.width=Math.max(.6,(Math.min(vb,bb)-Math.max(va,C.a))/(vb-va)*100)+'%';tgt.classList.toggle('open',C.b==null);};
+    markDirty();const C0=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m),dl=+m.dl||0,C={a:C0.a+dl,b:C0.b==null?null:C0.b+dl};const bb=C.b??Math.max(D,vb);tgt.style.left=Math.max(0,(C.a-va)/(vb-va)*100)+'%';tgt.style.width=Math.max(.6,(Math.min(vb,bb)-Math.max(va,C.a))/(vb-va)*100)+'%';tgt.classList.toggle('open',C.b==null);};
   tgt.onpointerup=()=>{tgt.onpointermove=tgt.onpointerup=null;if(!moved){seekTo(a0);renderTracks();return;}commit();renderInsp();renderTimeline();
     const C=sp?{a:m.p.at.v,b:m.p.at.v+m.p.dur.v}:moClip(m);toast(`${MO[m.t].name}: ${fmtT(C.a)} – ${C.b==null?'nyitott vég':fmtT(C.b)}`);};}
 R.blockSel=new Set();

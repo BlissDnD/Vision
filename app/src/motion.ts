@@ -4,7 +4,7 @@
  *  Rugalmas beúszás uses Anime.js easing (spring / outBack) through this adapter — the Vel clock stays the only clock. */
 import { spring, eases } from 'animejs';
 import { S, SEL } from './effects/helpers';
-import { mkN, st, uid } from './state';
+import { findItem, mkN, st, uid } from './state';
 import { ev, keyVal, setKey } from './evaluation';
 import { R } from './runtime';
 import { cyclesIn, loopLen, snapRate } from './time';
@@ -122,14 +122,56 @@ export function moLoopInfo(m: any): string | null {
   return s;
 }
 
+/* ---------- XF1 Mozgás átadása (row 26): a source motion m.xf = {md, gap, ids} hands its Ritmus / Út / Teljes to target layers;
+ * a target motion m.src = {l, m} is read through at evaluation time (effMo), so later edits on the source are followed and
+ * nothing is copied in secret. Target i (1-based in ids) runs dl = i·gap later; m.dl is a plain time offset of any motion. */
+export const XF_MODES = ['Ritmus', 'Út', 'Teljes'];
+export const XF_GETS = ['Ritmust kap', 'Utat kap', 'Teljes mozgást kap'];
+const XF_TIME = ['at', 'dur', 'char', 'period', 'rate', 'speed', 'phase'];
+const XF_SPACE = ['dist', 'ang', 'bend', 'amp', 'radius', 'dir', 'rot', 'from', 'fade'];
+const XF_SCALE = ['dist', 'amp', 'radius'];
+/** Does a target in mode md take parameter k from the source? */
+export const xfTakes = (md: number, k: string) => md === 2 || (md === 0 ? XF_TIME.includes(k) : md === 1 && XF_SPACE.includes(k));
+/** The source {L, m, xf} of a linked motion (the live preview R.xfPv wins); null when the source is gone. */
+export function xfSrc(m: any): any {
+  if (!m || !m.src) return null; const P = R.xfPv;
+  if (P && P.m.id === m.src.m) return { L: P.L, m: P.m, xf: P };
+  const r = findItem(m.src.l), M = r && (r.it.mo || []).find((x: any) => x.id === m.src.m); return M ? { L: r.it, m: M, xf: M.xf } : null;
+}
+const scaleN = (n: any, f: number) => n ? { ...n, v: n.v * f, k: n.k && n.k.map((x: any) => ({ ...x, v: x.v * f })) } : n;
+/** The motion as it is evaluated on layer L: itself, or (linked) the source's fields by mode + delay; null = not active. */
+export function effMo(m: any, L: any): any {
+  if (!m.src) return m; const S = xfSrc(m); if (!S) return m;          // source deleted: the target keeps its own values
+  const xf = S.xf, i = xf && L ? xf.ids.indexOf(L.id) : -1; if (i < 0) return null;
+  const md = xf.md | 0, SM = S.m, E: any = { id: m.id, t: SM.t, on: m.on !== false && SM.on !== false, p: { ...m.p }, ry: m.ry, a: m.a, b: m.b, lp: m.lp, dl: (+SM.dl || 0) + (i + 1) * (+xf.gap || 0) };
+  const sc = md === 1 && L.n && S.L.n ? Math.max(.25, Math.min(4, (L.n.s ? L.n.s.v : 1) / Math.max(1e-3, S.L.n.s ? S.L.n.s.v : 1))) : 1;
+  for (const k in SM.p) if (xfTakes(md, k) || (k === 'amt' && md === 2)) E.p[k] = sc !== 1 && XF_SCALE.includes(k) ? scaleN(SM.p[k], sc) : SM.p[k];
+  for (const q of MO[SM.t].params) if (!E.p[q.k]) E.p[q.k] = mkN(q.def);
+  if (!E.p.amt) E.p.amt = mkN(1);
+  if (md !== 1) { E.ry = SM.ry; E.a = SM.a; E.b = SM.b; E.lp = SM.lp; }
+  return E;
+}
+/** Leválasztás: the linked motion becomes an ordinary one with the values it shows now (incl. its delay). */
+export function xfDetach(L: any, m: any) {
+  const E = effMo(m, L); const S = xfSrc(m); if (E && E !== m) { m.p = {}; for (const k in E.p) m.p[k] = mkN(E.p[k]); m.t = E.t; for (const f of ['ry', 'a', 'b', 'lp']) { if (E[f] != null) m[f] = E[f]; else delete m[f]; } if (E.dl) m.dl = Math.round(E.dl * 1000) / 1000; }
+  delete m.src; if (S && S.m.xf) { S.m.xf.ids = S.m.xf.ids.filter((id: string) => id !== L.id); if (!S.m.xf.ids.length) delete S.m.xf; }
+}
+/** Preview of an unaccepted transfer: a virtual linked motion on a target that has none from this source yet. */
+function xfVirtual(L: any): any {
+  const P = R.xfPv; if (!P || !L || !L.id || !P.ids.includes(L.id) || (L.mo || []).some((x: any) => x.src && x.src.m === P.m.id)) return null;
+  P.v = P.v || {}; return P.v[L.id] || (P.v[L.id] = { id: 'xfpv', t: P.m.t, on: true, p: makeMo(P.m.t).p, src: { l: P.L.id, m: P.m.id } });
+}
+
 /** Combined motion of a layer at time t: {op, dx, dy, sc, rot (deg)}; null when it has none. aud = a motion previewed on hover. */
 export function moEval(L: any, t0: number, aud?: any): any {
-  const list = aud ? [...(L.mo || []), aud.mo] : L.mo; if (!list || !list.length) return null;
+  const vx = R.xfPv ? xfVirtual(L) : null;
+  const list = aud || vx ? [...(L.mo || []), ...(aud ? [aud.mo] : []), ...(vx ? [vx] : [])] : L.mo; if (!list || !list.length) return null;
   const r = { op: 1, dx: 0, dy: 0, sc: 1, rot: 0 }; let any = false;
-  for (const m of list) {
+  for (const m0 of list) {
+    const m = m0 && m0.src ? effMo(m0, L) : m0;
     if (!m || m.on === false || !MO[m.t]) continue; any = true;
     // a shelf motion previewed on hover runs on its own clock (the timed one repeats), so it is visible even when paused
-    let t = t0; if (aud && m === aud.mo) { const ta = (performance.now() - aud.t0) / 1000; t = m.t === 'spring' ? ta % (m.p.dur.v + .9) : ta; }
+    let t = t0 - (+m.dl || 0); if (aud && m === aud.mo) { const ta = (performance.now() - aud.t0) / 1000; t = m.t === 'spring' ? ta % (m.p.dur.v + .9) : ta; }
     const W = m.t === 'spring' ? null : moTime(m, t), T = W ? W.tau : t, a = V(m, 'amt', t) * (W && m.t !== 'spin' ? W.amp : 1), Ln = aud && m === aud.mo ? 0 : moLoopLen(m);
     switch (m.t) {
       case 'float': { const w = Math.sin(TAU * (T / snapP(Math.max(.05, V(m, 'period', t)), Ln) + V(m, 'phase', t))) * V(m, 'amp', t) * a, g = V(m, 'ang', t) * Math.PI / 180; r.dx += Math.cos(g) * w; r.dy += Math.sin(g) * w; break; }
@@ -156,9 +198,10 @@ export function moEval(L: any, t0: number, aud?: any): any {
  *  then remove the motion. Returns the number of keys written (the caller commits once = one undo step). */
 export function bakeMo(L: any, m: any) {
   const i = (L.mo || []).indexOf(m); if (i < 0) return 0;
-  const C = m.t === 'spring' ? [Math.max(0, m.p.at.v), m.p.at.v + m.p.dur.v] : (() => { const c = moClip(m); return [c.a, c.b ?? Math.max(c.a + .1, st.dur)]; })();
+  const M0 = m.src ? effMo(m, L) || m : m, dl = +M0.dl || 0;
+  const C = (M0.t === 'spring' ? [Math.max(0, M0.p.at.v), M0.p.at.v + M0.p.dur.v] : (() => { const c = moClip(M0); return [c.a, c.b ?? Math.max(c.a + .1, st.dur)]; })()).map(x => x + dl);
   const n = Math.max(2, Math.min(3000, Math.ceil((C[1] - C[0]) * 30))), ts = Array.from({ length: n + 1 }, (_, j) => Math.round((C[0] + (C[1] - C[0]) * j / n) * 1000) / 1000);
-  const one = { mo: [{ ...m, on: true }] }, S0 = ts.map(t => moEval(one, t));
+  const one = { mo: [{ ...M0, src: undefined, on: true }] }, S0 = ts.map(t => moEval(one, t));
   const base = (o: any, t: number) => o.k && o.k.length ? keyVal(o.k, t) : o.v;
   const CH: [string, (b: number, r: any) => number, number][] = [['x', (b, r) => b + r.dx, .0015], ['y', (b, r) => b + r.dy, .0015], ['s', (b, r) => b * r.sc, .002], ['r', (b, r) => b + r.rot, .15], ['opacity', (b, r) => Math.max(0, Math.min(1, b * r.op)), .004]];
   let cnt = 0;
@@ -192,7 +235,10 @@ export function syncKLoop(L: any) {
 R.normMo = (L: any) => { if (!Array.isArray(L.mo)) { if (L.mo != null) delete L.mo; return; }
   L.mo = L.mo.filter((m: any) => m && MO[m.t]).map((m: any) => { const b: any = makeMo(m.t); b.id = m.id || b.id; b.on = m.on !== false; for (const k in b.p) if (m.p && m.p[k] && isFinite(m.p[k].v)) b.p[k] = mkN(m.p[k]);
     // v1.1 fields only when present (no silent defaults written into the project)
-    if (isFinite(m.a) && m.a > 0) b.a = +m.a; if (m.lp) b.lp = 1; if (m.b != null && isFinite(m.b)) b.b = +m.b;
+    if (isFinite(m.a) && m.a > 0) b.a = +m.a; if (m.lp) b.lp = 1;
+    if (isFinite(m.dl) && m.dl) b.dl = +m.dl;
+    if (m.src && typeof m.src.l === 'string' && typeof m.src.m === 'string') b.src = { l: m.src.l, m: m.src.m };
+    const x = m.xf; if (x && Array.isArray(x.ids) && x.ids.length) b.xf = { md: Math.max(0, Math.min(2, x.md | 0)), gap: Math.max(0, Math.min(5, +x.gap || 0)), ids: x.ids.filter((id: any) => typeof id === 'string') }; if (m.b != null && isFinite(m.b)) b.b = +m.b;
     const y = m.ry; if (y && y.k > 0 && Array.isArray(y.pts) && y.pts.length === RY_N && y.pts.every((v: any) => isFinite(v)))
       b.ry = { k: Math.min(5, Math.round(y.k)), cyc: Math.max(.2, Math.min(60, +y.cyc || 5)), tgt: y.tgt === 1 ? 1 : 0, rnd: y.rnd ? 1 : 0, seed: +y.seed || 1, pts: y.pts.map((v: number) => Math.max(0, Math.min(2, +v))) };
     return b; }); };

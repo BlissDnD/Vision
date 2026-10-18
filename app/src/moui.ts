@@ -4,7 +4,7 @@
 import { R } from './runtime';
 import { $, h } from './dom';
 import { LIB } from './library';
-import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, moLoopInfo, ryVal, ryValU, setRy } from './motion';
+import { MO, MO_ORDER, AMT, RY_N, RY_PRE, bakeMo, makeMo, moClip, moIcon, moLoopInfo, ryVal, ryValU, setRy, xfSrc, xfTakes } from './motion';
 import { findItem, sel, st } from './state';
 import { S, SEL } from './effects/index';
 import { ctlSelect, ctlSlider, ctlSwitch, section } from './controls';
@@ -126,8 +126,11 @@ export function motionsUI(L: any) {
     const eye = h('button', { class: 'eye', 'aria-label': 'Be/ki', title: m.on === false ? 'Bekapcsolás' : 'Kikapcsolás' }, m.on === false ? '○' : '●'); eye.onclick = () => { m.on = m.on === false; commit(); renderInsp(); markDirty(); };
     const del = h('button', { class: 'eye', 'aria-label': 'Eltávolítás', title: 'Eltávolítás' }, '×'); del.onclick = () => { mos.splice(i, 1); commit(); renderInsp(); markDirty(); };
     const ic = row.children[leg.length + i];
+    // XF1: a linked motion shows only its own fields (the rest comes from the source); own(0) = rhythm/loop/clip are its own
+    const XS = m.src ? xfSrc(m) : null, xmd = XS && XS.xf ? XS.xf.md | 0 : -1;
+    const own = (w: number, k?: string) => xmd < 0 ? true : w === 0 ? xmd === 1 : k === 'amt' ? xmd !== 2 : !xfTakes(xmd, k!);
     kids.push(h('div', { class: 'fxi' }, h('header', null, h('span', { class: 'ln' }, d.name), eye, del),
-      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), d.cont ? rhythmUI(L, m) : null, ...d.params.map((q: any) => moCtl(m, q, d.cont ? () => loopTip(m) : undefined)), d.cont ? loopRow(m) : null, ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }),
+      h('div', { class: 'fxb' }, h('p', { class: 'small' }, d.desc), R.xfSection ? R.xfSection(L, m) : null, d.cont && !own(0) ? null : d.cont ? rhythmUI(L, m) : null, ...d.params.filter((q: any) => own(1, q.k)).map((q: any) => moCtl(m, q, d.cont ? () => loopTip(m) : undefined)), d.cont && own(0) ? loopRow(m) : null, own(1, 'amt') ? ctlSlider(m.p.amt, { ...AMT }, { onInput: () => ring(ic, m.p.amt.v) }) : null,
         m.t === 'spring' ? h('p', { class: 'small' }, 'Tipp: a vásznon a nyíl végét húzva állítod, honnan érkezik; ⌘ + fel/le a tempó, ⌘ + oldalra a karakter, ⌥ vagy a nyíl közepe: ív, ⇧: 15°-os szögek.') : null,
         h('button', { class: 'btn mobake', type: 'button', title: 'A mozgást valódi X / Y / Méret / Szög / Átlátszóság kulcsokká alakítja (a mozgás eltűnik; ⌘Z visszavonja)', onclick: () => {
           const n = bakeMo(L, m); delete R.moSel[L.id]; commit(); renderAll(); markDirty(); toast(`${d.name} → ${n} kulcskocka a réteg saját értékein · ⌘Z visszavonja`); } }, 'Kulcsokká alakítás')))); }

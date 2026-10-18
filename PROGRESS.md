@@ -2,6 +2,16 @@
 
 Mérföldkövenkénti napló (legújabb felül). Belépési pont: `CLAUDE.md`; aktuális állapot: `HANDOFF.md`; funkcióállapot: `FUNKCIO-LELTAR.md`.
 
+## Állapot: 2026-10-18 — XF1 Mozgás átadása + Sorrend festése (0.38.0-xf1)
+
+- Mozgáskártya → **⇢ Átadás / Sorrend festése**: végighúzol (vagy rákattintasz) a vásznon a többi elemen. Az érintés sorrendje lesz a lépcső sorrendje, a számjelvények (1, 2, 3) ezt mutatják. A kártyán **Ritmus** (alap: a forrás időzítése és karaktere, saját irány és távolság) / **Út** (a forrás iránya, távolsága és íve, méretarányosan) / **Teljes** választható, plusz **Késés** (mp / cél).
+- Elfogadásig csak előnézet (a projekt nem változik), az Elfogadás egy undo-lépés. Esc vagy Mégse esetén nem marad nyom.
+- A cél Mozgás fülén ez áll: „Ritmust kap ettől: Címszó”. Csak a saját mezői szerkeszthetők, a forrás javítását követi; a **Leválasztás** önálló mozgássá alakítja ugyanazzal a mozgással (`m.dl` késéssel).
+- A Sávokon a forrás alatt egy **Terjedés · N cél** blokk jelenik meg (sorszámjelekkel). A jobb széle nyújtja a késést, kattintásra a sorrend újrafesthető. A célsorok csíkozva látszanak. A forráslistából a × egy célt kivesz; a hiányzó (törölt) célt a blokk jelzi, nem törli.
+- Célzott teszt: `tests/xf_transfer.js` zöld; teljes kör **42/42 zöld**, typecheck 0 hiba.
+- Próba: 1) három-négy szövegréteg, az elsőn Rugalmas beúszás; 2) Mozgás fül → Átadás, fesd végig a többit, Elfogadás: mind a saját helyére érkezik lépcsőzve; 3) a Sávokon húzd a Terjedés blokk jobb szélét; az első mozgás Időtartamát átírva a többi követi; 4) mentés → újranyitás, ⌘Z.
+- Korlát: csak ráhúzott Mozgások adhatók át (kulcsanimáció és Megjelenés-reakció nem); a célok rétegek (egy szövegrétegen belüli szavak nem); a célok a felső szintű rétegek; Jelenetsorban a forrás a szerkesztett jelenetből jön.
+
 ## Állapot: 2026-10-18 — LP1 Körbeér (0.37.0-lp1)
 
 - **Körbeér** kapcsoló az LFO-panelen (∿) és az öt folyamatos mozgás kártyáján. Bekapcsolt Loopnál az új hullámokon és mozgásokon alapból be van kapcsolva. A tempó egész számú körre igazodik a projekt (Jelenetsorban a jelenet) hosszában, a felirat mutatja („4 kör / 10 mp”). A tárolt Ütem nem íródik át.

@@ -148,6 +148,11 @@ tools/                a 2026-10-17-i egyfájlos → modul migráció szkriptjei 
 - `random.ts`: `pickScene(reroll)` (max. 6 próba / 700 ms), `runRandom(fresh, reroll?)`, `rndVote`, `#rndFb` sáv; `pickW(rng,list,ax,cat,keys)` ízlésszorzóval, `generateScene().keys` az összetevőkkel; receptszabályok az `X()` ráadásokban.
 - `taste.ts`: `TASTE` (`latomas2.rndTaste`), szavazatszámok kulcsonként → `tasteMul` (1,15^tetszik · 0,8^ronda, 0,3–2); `projectJSON` felső szintű `taste`, `applyProject` → `tasteMerge` (kulcsonként max, idempotens).
 
+## Mozgás átadása (XF1, 2026-10-18)
+- Adat: forrásmozgás `m.xf={md,gap,ids}`, célmozgás `m.src={l,m}`, bármely mozgás `m.dl` (időeltolás, a `moEval` `t-dl`-lel számol). `effMo(m,L)` kiértékeléskor rakja össze a célt (`xfTakes`: Ritmus = idő/karakter mezők + ry/a/b/lp, Út = térmezők `n.s`-arányosan, Teljes = minden); `null` = nincs a sorban.
+- `xfer.ts`: kártya + festés (capture-fázisú pointer a `#wrap`-on, geometriai találat `gizmoRadius`-szal), `R.xfPv` előnézet (`xfVirtual` virtuális célmozgás, a projekt nem változik), `xfAccept` egy `commit`, `R.updXf` sorszámjelvények, `xfSection` a Mozgás fülre (`moui` hívja `R.xfSection`-ön át).
+- `timeline.ts` `spreadRow`: Terjedés blokk (jobb szél = `gap`), a célsor az effektív helyén, csíkozva, nem húzható. `gesture.ts` a célmozgásra nem ad fogantyút.
+
 ## Körbeér (LP1, 2026-10-18)
 - `time.ts`: `loopLen()` (Loop be: `st.dur`; Jelenetsorban `R.seqLen`, a `seqFrame` írja; különben 0), `cyclesIn`, `snapRate`. A jelző `lp` (NParam: `mkN` őrzi; mozgás: `normMo` őrzi). Kiértékeléskor kerekít (`ev`, `moEval`), a tárolt `f`/`period` nem változik.
 - `motion.ts`: `snapP`, `spinSnap` (egész fordulat a `speed·amt`-ra), periodikus `smoothNoise(x,seed,per)`. `moLoopInfo` = felirat. Az alapértelmezett `lp=1` csak felhasználói létrehozáskor kerül be (∿ megnyitása új hullámmal, `attachMo`), Loop be állapotban.

@@ -47,6 +47,7 @@ import './polyhaven';
 import './textbar';
 import './moui';
 import './gesture';
+import './xfer';
 import './tap';
 import './version';
 import './boot';
