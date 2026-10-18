@@ -145,3 +145,7 @@ The user's latest instruction applies English default language to the **entire V
 ## Új UI/UX-visszajelzés — 2026-10-18 (Codex)
 
 A felhasználó a működést alapvetően jónak, a színeket jónak tartja, de a teljes UI túl zsúfolt. Rögzítve: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 6. fejezet, hét tartós képi referenciával. Közvetlen görbeszerkesztés és rajz → sima görbe, ritmusikonok, Tempó/Erő kapcsoló, színek csak a Színek alatt, paraméterhez illő vezérlők (szél: iránykör), levágásjavítás, ikonos toolbar és következetes kategóriaszínek; egész appra Apple-jellegű design system javasolt. Hiba a `BUGS.md`-ben is. Csak dokumentálva; következő lépés konkrét design system/UI-javaslat, implementáció külön jóváhagyással.
+
+## Material Design 3 választás — 2026-10-18 (Codex)
+
+A felhasználó Material Design alapot választott. Ez felülírja a korábbi Apple/shadcn alapirányt. Kutatás, Vel-komponensmegfeleltetés, tervezett közös CSS/TS-fájlok és bevezetési sorrend: `docs/spec/VEL-MATERIAL-DESIGN-SYSTEM.md`. Csak terv; következő: konkrét komponensbemutató-szelet javaslata. A Material Web maintenance státusz miatt a Material-spec és a kész csomag kiválasztása külön döntés.

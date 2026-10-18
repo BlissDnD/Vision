@@ -58,3 +58,7 @@
 - Először a ritmus-/görbekártyán, a színpanelen, a részletes paramétersorokon és a toolbaron érdemes ellenőrizni a rendszert. Az implementáció előtt külön konkrét javaslat kell.
 
 **Képi referenciák:** `docs/referenciak/ui-feedback-2026-10-18/01.png`–`07.png`, a felhasználó hét képernyőkivágása a fenti problémákról (sorrendben: mozgás/ritmus, színösszesítő, színpanel, szélirány-csúszka, levágott felirat, zsúfolt részletek, toolbar).
+
+## 7. Alapirány véglegesítése
+
+A felhasználó a Material Design 3-at választotta az Apple-jellegű alap helyett. A fenti kezelhetőségi igények megmaradnak. Komponensmegfeleltetés és fájlterv: `VEL-MATERIAL-DESIGN-SYSTEM.md`. Még nincs implementálva.
