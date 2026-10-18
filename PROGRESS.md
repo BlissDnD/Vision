@@ -7,7 +7,7 @@
 - Scope clarified by user: the entire Vel interface must become English by default, not just Help.
 - Added whole-app migration/compatibility handoff; English Help topics and 128 static tooltip descriptions use stable IDs.
 - The remaining Hungarian UI/catalog copy is pending. No claim of completed English locale or `lang=en` yet.
-- Targeted Help checks 28/28; typecheck and build pass.
+- Targeted Help checks 28/28; full browser suite 57/57; typecheck and build pass.
 
 # Vel — PROGRESS
 
