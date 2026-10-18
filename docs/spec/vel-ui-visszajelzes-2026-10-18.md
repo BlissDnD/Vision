@@ -61,4 +61,4 @@
 
 ## 7. Alapirány véglegesítése
 
-A felhasználó a Material Design 3-at választotta az Apple-jellegű alap helyett. A fenti kezelhetőségi igények megmaradnak. Komponensmegfeleltetés és fájlterv: `VEL-MATERIAL-DESIGN-SYSTEM.md`. Még nincs implementálva.
+A felhasználó a Material Design 3-at választotta az Apple-jellegű alap helyett, **majd később a Web Awesome-ot (WA1) – ez az érvényes**. A fenti kezelhetőségi igények megmaradnak. Komponensmegfeleltetés és fájlterv: `VEL-MATERIAL-DESIGN-SYSTEM.md`. Még nincs implementálva.

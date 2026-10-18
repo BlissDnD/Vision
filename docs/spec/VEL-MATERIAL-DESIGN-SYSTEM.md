@@ -1,5 +1,7 @@
 # Vel — Material Design 3 alapú design system
 
+> **FELÜLÍRVA (2026-10-18, felhasználói döntés): a UI-alap nem Material 3, hanem Web Awesome** (WA1: `docs/final-updates/MILESTONE-WA1.md`, `claude/project-organization-ui-update-746ad1` ág). A Material-anyag csak történeti hivatkozás.
+
 Dátum: 2026-10-18. Felhasználói döntés: Material Design legyen az alap. Ez felülírja a korábbi Apple-jellegű alapirányt és a shadcn-ajánlást; a cluttermentes, intuitív kezelés követelménye megmarad.
 Állapot: kutatás és terv; nincs új UI implementálva. A meglévő UI-visszajelzés 6. fejezete továbbra is követelményforrás.
 

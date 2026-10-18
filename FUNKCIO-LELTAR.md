@@ -82,7 +82,7 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 
 **Migration progress:** 300 Library items, chrome/dialogs, 82 Appearance types and 8 Motion types use stable English display copy. Stored identifiers are preserved. Remaining panels, built-in recipes and system messages require migration and rendered-app review.
 
-**Material 3 UI-starter (2026-10-18):** `prototypes/material-ui/AGENTS.md` — a 21./30. sorhoz külön működő komponensalap, nem integrált appfunkció. 19/19 célzott próba és strict typecheck zöld. Claude-véglegesítés és panelenkénti migráció hátra; a teljes UI állapota ettől nem kész.
+**Material 3 UI-starter (2026-10-18; ELAVULT – a döntés Web Awesome/WA1):** `prototypes/material-ui/AGENTS.md` — a 21./30. sorhoz külön működő komponensalap, nem integrált appfunkció. 19/19 célzott próba és strict typecheck zöld. Claude-véglegesítés és panelenkénti migráció hátra; a teljes UI állapota ettől nem kész.
 
 **English migration update (2026-10-18):** 300 built-in Library entries have separate English display copy, with legacy IDs/search preserved and covered by a targeted test. Full UI translation and final audit remain open.
 

@@ -150,11 +150,17 @@ The user's latest instruction applies English default language to the **entire V
 
 A felhasználó a működést alapvetően jónak, a színeket jónak tartja, de a teljes UI túl zsúfolt. Rögzítve: `docs/spec/vel-ui-visszajelzes-2026-10-18.md` 6. fejezet, hét tartós képi referenciával. Közvetlen görbeszerkesztés és rajz → sima görbe, ritmusikonok, Tempó/Erő kapcsoló, színek csak a Színek alatt, paraméterhez illő vezérlők (szél: iránykör), levágásjavítás, ikonos toolbar és következetes kategóriaszínek; egész appra Apple-jellegű design system javasolt. Hiba a `BUGS.md`-ben is. Csak dokumentálva; következő lépés konkrét design system/UI-javaslat, implementáció külön jóváhagyással.
 
-## Material Design 3 választás — 2026-10-18 (Codex)
+## UI-alap: Web Awesome (WA1), nem Material 3 — 2026-10-18
+
+**FELÜLÍRVA (2026-10-18, felhasználói döntés): a UI-alap nem Material 3, hanem Web Awesome** (WA1: `docs/final-updates/MILESTONE-WA1.md`, `claude/project-organization-ui-update-746ad1` ág). A Material-anyag csak történeti hivatkozás.
+
+Jelenleg: WA1 (ikonos toolbar, új téma, közös vezérlők a Mozgás kártyán) fut a `claude/project-organization-ui-update-746ad1` ágon, párhuzamosan az angol lokalizációval. A `prototypes/material-ui/` nem a követendő irány.
+
+## (Elavult) Material Design 3 választás — 2026-10-18 (Codex)
 
 A felhasználó Material Design alapot választott. Ez felülírja a korábbi Apple/shadcn alapirányt. Kutatás, Vel-komponensmegfeleltetés, tervezett közös CSS/TS-fájlok és bevezetési sorrend: `docs/spec/VEL-MATERIAL-DESIGN-SYSTEM.md`. Csak terv; következő: konkrét komponensbemutató-szelet javaslata. A Material Web maintenance státusz miatt a Material-spec és a kész csomag kiválasztása külön döntés.
 
-## Material 3 agent-alapcsomag — 2026-10-18 (Codex)
+## (Elavult) Material 3 agent-alapcsomag — 2026-10-18 (Codex)
 
 A felhasználó kérésére elkészült a Claude-ban véglegesítendő alap: `prototypes/material-ui/AGENTS.md` és `README.md`. Közös tokenek, CSS, típusos natív DOM-vezérlők, 11 hivatalos Material Symbols + licenc; offline `index.html`, Mozgás/Színek/Részletek példák. Görberajz/simítás/reset és iránykör működik prototípusként; Vel undo/mentés/renderer nincs bekötve. Strict typecheck/build és 19/19 célzott headless próba zöld, 320–1280 px túlcsordulás nélkül. Következő: felhasználói próba és Claude-véglegesítés, majd külön panelintegráció. Nem a teljes kész design system.
 
