@@ -300,3 +300,10 @@ Korábbi bejegyzések (U1, M7 … M1): `docs/archiv/PROGRESS-korabbi.md`.
 - `docs/claude-handoff/help-mode/00-START-HERE.md`: forrásra illesztett Help mód terv a 0.45.0-cat1 alapnál.
 - Rögzítés, fogalomlánc, fókusz/modal/érintés szabályok, tartalomszerződés, négy szelet és elfogadási esetek.
 - Csak dokumentáció; appkód/build nem változott, UI-próba nem futott.
+
+### 2026-10-18 — Help mód implementáció-előkészítés (Codex)
+- A felhasználó külön kérte: működő előkészítés, Claude ellenőriz és commitol. Nincs saját commit/stage.
+- `help.ts`, `helpdata.ts`, workspace/stílus bekötés; 16 téma, 11 cél, generikus rövidszöveg-fallback.
+- Rögzített/fogalomkártyák, Escape/F1/fókusz, Mi ez?, keskeny és modalnézet; projektírás nélkül.
+- Typecheck + normál build zöld; Help 27/27 széles és keskeny nézetben; teljes kör 57/57 zöld.
+- Ellenőrzések és határok: `docs/claude-handoff/help-mode/CHECK-RESULTS.md`. Felhasználói látványpróba hátra.

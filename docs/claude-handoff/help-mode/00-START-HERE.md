@@ -1,6 +1,6 @@
 # HELP-01 — intuitív, egymásba nyitható Help mód
 
-**Dátum:** 2026-10-18. **Állapot:** előkészített terv, nincs implementáció és nincs futási/vizuális ellenőrzés. A felhasználó most Claude számára kér leírást és előkészítést. A tényleges fejlesztés a Vel mérföldkő-jóváhagyási rendjében induljon.
+**Dátum:** 2026-10-18. **Az alábbi szöveg az eredeti terv.** A felhasználó újabb kérésére működő Help-alap és kezdő fogalomtár készült, commit nélkül. Aktuális belépés: [Claude review és commit](CLAUDE-REVIEW-AND-COMMIT.md), ellenőrzési eredmények: [CHECK-RESULTS.md](CHECK-RESULTS.md). A terv nem minden tartalmi bővítése implementált; a tényleges határt az új átadó rögzíti.
 
 ## 1. Mit akarunk elérni?
 

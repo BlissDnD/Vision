@@ -131,3 +131,7 @@ Elkészült: `docs/spec/VEL-TELJES-ELEMLELTAR-ES-FEJLESZTESI-OTLETTAR-2026-10-18
 ## Help mód — előkészített terv (2026-10-18)
 
 `docs/claude-handoff/help-mode/00-START-HERE.md`: kapcsolható bővebb hover, rögzíthető kártya, explicit fogalom-/effektlinkek, Vissza/Escape, legfeljebb két látható kártya, billentyűzet és érintéses Mi ez?. A meglévő workspace-tooltipra építendő, jelenetmódosítás nélkül. Négy fejlesztési szelet és tartalom-/runtime-agenthatárok; csak terv, implementáció nem kezdődött.
+
+## Help mód — commitra előkészítve (2026-10-18)
+
+`docs/claude-handoff/help-mode/CLAUDE-REVIEW-AND-COMMIT.md`: a felhasználó kérésére működő Help-alap és 16 témás kezdő fogalomtár készült; rögzítés, kapcsolódó kártyák, Escape/F1, egyszeri Mi ez?, keskeny és modalnézet. Nem teljes paraméterkézikönyv. Szándékosan nincs commit, Claude ellenőrizze és commitolja; tesztek: Help 27/27 két ablakméretben, teljes kör 57/57, typecheck/build zöld (`CHECK-RESULTS.md`).

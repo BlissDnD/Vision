@@ -17,7 +17,7 @@
 | Rendering / GL | render.ts, gl.ts, glsl.ts, mesh3d.ts (real meshes), cloud.ts, partfx.ts |
 | Presets / ChatGPT format | presetfmt.ts (text), describe.ts buildFromSpec, presets.ts |
 
-## Modulok (111 fájl)
+## Modulok (113 fájl)
 | Fájl | KB | Cél | Exportok | R-hookok (beállítja) |
 |---|---|---|---|---|
 | `abar.ts` | 6 |  | abarItems, libById, addToBar, renderBar, layoutMenu | cat |
@@ -64,6 +64,8 @@
 | `globals.d.ts` | 0 |  |  |  |
 | `glsl.ts` | 3 | shared GLSL header (HEAD: uniforms + helpers P(), pal(), noise…) and vertex shader | VS, HEAD, HEAD_LINES |  |
 | `gradui.ts` | 5 |  | myPals, gradFromPal, gradEditor, gradSwatches, PAL_COUNT |  |
+| `help.ts` | 12 | Help mode: transient/pinned linked cards, keyboard and one-shot touch inspection. UI only. | helpModeOn, helpPicking, helpOpen, closeHelp, setHelpMode, setHelpPicking, showHelpFor, pinHelp, openHelpTerm, backHelp, installHelp |  |
+| `helpdata.ts` | 7 | Contextual help: reviewed Hungarian topics and explicit links. No project or DOM dependencies. | HelpPart, HelpTopic, HELP_TOPICS, helpTopic, HELP_BINDINGS, validateHelpTopics |  |
 | `history.ts` | 6 | snapshot/commit/undo/redo, autosave, projectJSON/applyProject/loadProject | snapshot, commit, restore, undo, redo, updUndo, usedAssets, usedVectorAssets, stateJSON, projectJSON, scheduleSave, applyProject, loadProject, loadMsg … (+4) | hist, hi, selId, saveT, time, lastLoad, renderAll |
 | `inspector.ts` | 24 | right panel: renderInsp (tabs Tartalom/Szín/Mozgás/Effektek/Elhelyezés), timing, sdf objects | renderInsp, timingSection, FPS_OPTS, fpsObj, sdfObjectsSection, placement, ITABS, setITab, layerAnimated, tempoRow, motionSummary | liveCtl, liveFields, liveKed, liveSel, itab, renderInsp, setITab |
 | `itemops.ts` | 4 | insert/remove/duplicate/group items, addFromLib/attachFx | insertItem, addFromLib, attachFx, removeItem, delSel, dupSel, moveSel, groupSel, ungroup, moveItemTo | selId |

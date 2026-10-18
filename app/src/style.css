@@ -623,3 +623,17 @@ textarea.txt{resize:vertical;font-family:inherit;color:var(--fg);line-height:1.4
 .abtn{height:26px;min-width:26px;padding:0 7px;border-radius:7px;border:0;background:var(--fill2);color:var(--fg);font-size:11.5px;cursor:pointer;white-space:nowrap}
 .abtn:hover{background:var(--fill)}
 .seg.topics{flex-wrap:wrap;margin-top:4px}.seg.topics button{font-size:11px;padding:2px 8px}
+
+/* HELP-01: UI-only, non-modal linked help cards. No canvas/export styles. */
+.help-card{position:fixed;z-index:85;width:310px;max-width:calc(100vw - 16px);max-height:min(65vh,520px);overflow:auto;overscroll-behavior:contain;box-sizing:border-box;padding:12px;border:1px solid var(--sep);border-radius:12px;background:var(--chrome);color:var(--fg);box-shadow:var(--shadow);backdrop-filter:blur(20px);font-size:12px;line-height:1.5;user-select:text}
+.help-card[hidden]{display:none!important}
+.help-head{display:flex;align-items:center;gap:8px}.help-head strong{flex:1;font-size:13px}
+.help-card button{font:inherit;cursor:pointer;color:inherit;background:var(--fill);border:1px solid var(--sep);border-radius:6px;padding:4px 7px}
+.help-card button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.help-card p{margin:8px 0}.help-card ul{padding-left:18px;margin:8px 0}.help-card li+li{margin-top:5px}
+.help-links{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.help-links button{text-decoration:underline;text-underline-offset:3px;background:transparent}
+.help-card small{display:block;margin-top:10px;opacity:.75}
+#helpModeBtn[aria-pressed="true"],#helpPickBtn[aria-pressed="true"]{outline:1px solid var(--accent);color:var(--accent)}
+@media(max-width:719px){.help-card{max-height:55vh}}
+
+.help-card .help-inline{display:inline;padding:0;border:0;border-radius:2px;background:transparent;text-decoration:underline;text-underline-offset:3px}

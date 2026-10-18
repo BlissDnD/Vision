@@ -75,3 +75,5 @@ Jelölés: **T** = csak terv / nincs a kódban · **R** = részben működik · 
 **FORM → ShapeGen [T,2026-10-18]:** `docs/claude-handoff/shapegen/00-START-HERE.md`. Új belső fül négy generátorral és megőrzött rajz/geometry/asset funkciókkal; Add from Gen/Library, Solo/Scene/Split, visszavonható célapply, paraméteres Library és újraszerkesztés.89 tételes mátrix,8 munkacsomag. Terv, nincs implementálva; a csatolt forrásátadó nem tartalmazza a FORM-kódot.
 
 **Help mód (2026-10-18): tervezett.** `docs/claude-handoff/help-mode/00-START-HERE.md`: bővített hover + rögzíthető és fogalomlinkekkel bejárható súgó. Nem implementált funkció.
+
+**Help mód frissítés:** működő alap és kezdő fogalomtár elkészült, Claude-review/commit és felhasználói próba előtt. Teljes effekt-/paramétersúgó még nincs. Átadó: `docs/claude-handoff/help-mode/CLAUDE-REVIEW-AND-COMMIT.md`; bizonyíték: `CHECK-RESULTS.md` ugyanott.

@@ -1,6 +1,7 @@
 /* U3 workspace chrome: library/layers splitter, one tooltip style for every titled control, toggleable shortcut panel.
    Pure UI: never touches the project (no commit). Per-viewer choices live in localStorage. */
 import { $, h } from './dom';
+import { helpModeOn, installHelp } from './help';
 
 export const SHORTCUTS: [string, [string, string][]][] = [
   ['Idő', [['Szóköz', 'Lejátszás / szünet'], ['Home', 'Vissza az elejére'], [', .', 'Előző / következő kulcskocka'], ['J', 'Jelzés az aktuális időre'], ['T', 'Koppintás: kosár élesítése'], ['J (élesítve)', 'Koppintás: a következő elem belép']]],
@@ -44,6 +45,7 @@ export function tipNodes(text: string) {
 }
 function hideTip() { clearTimeout(tipTimer); tipFor = null; if (tip) tip.hidden = true; }
 function showTip(el: Element) {
+  if (helpModeOn()) { hideTip(); return; }
   const text = (el as HTMLElement).dataset.tip; if (!text || !el.isConnected) return;
   if (!tip) { tip = h('div', { class: 'vtip', role: 'tooltip' }); document.body.appendChild(tip); }
   tip.replaceChildren(...tipNodes(text)); tip.hidden = false;
@@ -59,6 +61,7 @@ export function adoptTitle(el: Element) {
   if (!el.getAttribute('aria-label') && !(el.textContent || '').trim()) el.setAttribute('aria-label', t);
 }
 document.addEventListener('pointerover', e => {
+  if (helpModeOn()) { hideTip(); return; }
   const el = (e.target as Element).closest && (e.target as Element).closest('[title],[data-tip]');
   if (!el) { hideTip(); return; }
   adoptTitle(el); if (el === tipFor) return;
@@ -76,3 +79,5 @@ export function setKeyHelp(on: boolean) { kh.hidden = !on; kb.setAttribute('aria
 export const keyHelpOn = () => !kh.hidden;
 kb.onclick = () => setKeyHelp(kh.hidden);
 setKeyHelp(ls('vel.keys') === '1');
+
+installHelp();
