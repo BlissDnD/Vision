@@ -21,7 +21,7 @@ export function fitCanvas(){markDirty();const r=wrap.getBoundingClientRect();con
 new ResizeObserver(fitCanvas).observe(wrap);
 R.tool='move';R.gizmoOn=true;
 export function setTool(t){R.tool=t;document.querySelectorAll<HTMLElement>('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===t)));
-  if(t==='orbit'){const L=sel();if(!L||(L.type!=='obj3d'&&L.type!=='sdfscene'&&L.type!=='surface3d'&&L.type!=='cloud3d'))toast('Válassz ki egy 3D objektumot vagy 3D jelenetet, majd húzd a vásznon a forgatáshoz.');}}
+  if(t==='orbit'){const L=sel();if(!L||(L.type!=='obj3d'&&L.type!=='sdfscene'&&L.type!=='surface3d'&&L.type!=='cloud3d'&&L.type!=='terrain3d'))toast('Válassz ki egy 3D objektumot vagy 3D jelenetet, majd húzd a vásznon a forgatáshoz.');}}
 document.querySelectorAll<HTMLElement>('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
 $('#gizmoBtn').onclick=()=>{R.gizmoOn=!R.gizmoOn;$('#gizmoBtn').setAttribute('aria-pressed',String(R.gizmoOn));};
 $('#fsBtn').onclick=toggleFS;
@@ -29,7 +29,7 @@ export function toggleFS(){const el=$('.stage');try{if(document.fullscreenElemen
 export function toAsp(e){const r=cv.getBoundingClientRect();const {W,H}=outSize();return {x:((e.clientX-r.left)/r.width-.5)*(W/H),y:.5-(e.clientY-r.top)/r.height};}
 R.drag=null;
 wrap.addEventListener('pointerdown',e=>{if(e.button!==0||R.seqPlay||e.target.closest('.hudbar,.hud,.tl,.tlx,.kmenu,.scn,.textbar'))return;const L=sel();if(!L)return;wrap.setPointerCapture(e.pointerId);
-  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d'||L.type==='cloud3d';const mode=hnd||(R.tool==='orbit'&&is3?'orbit':isSurf(L)?(R.glint?'glint':'pan'):(R.glint&&usesLight(L)&&!hnd?'glint3':'move'));
+  const hnd=e.target.dataset&&e.target.dataset.h;const is3=L.type==='obj3d'||L.type==='sdfscene'||L.type==='surface3d'||L.type==='cloud3d'||L.type==='terrain3d';const mode=hnd||((R.tool==='orbit'&&is3)||L.type==='terrain3d'?'orbit':isSurf(L)?(R.glint?'glint':'pan'):(R.glint&&usesLight(L)&&!hnd?'glint3':'move'));
   R.drag={mode,p0:toAsp(e),c0:[e.clientX,e.clientY],x:curV(L.n.x),y:curV(L.n.y),s:curV(L.n.s),rx:L.p&&L.p.rx?curV(L.p.rx):0,ry:L.p&&L.p.ry?curV(L.p.ry):0,m:1};
   {if(st.cam.on&&L.type!=='group'&&kindOf(L)!=='fx'){const sv=R.CAMON;R.CAMON=true;const r=camApply(L,R.time,R.drag.x,R.drag.y,1,0);R.CAMON=sv;R.drag.m=Math.max(.01,r[2]);R.drag.scx=r[0];R.drag.scy=r[1];}}
   if(mode==='pan')R.drag.cam=panStart(L);
@@ -44,9 +44,9 @@ wrap.addEventListener('pointermove',e=>{if(!R.drag)return;markDirty();const L=se
   if(R.drag.mode==='move'){setVal(L.n.x,R.drag.x+(p.x-R.drag.p0.x)/R.drag.m);setVal(L.n.y,R.drag.y+(p.y-R.drag.p0.y)/R.drag.m);}
   else if(R.drag.mode==='s'){const d0=Math.hypot(R.drag.p0.x-cx,R.drag.p0.y-cy)||.01;setVal(L.n.s,Math.max(.02,R.drag.s*Math.hypot(p.x-cx,p.y-cy)/d0));}
   else if(R.drag.mode==='r'){let r=90-Math.atan2(p.y-cy,p.x-cx)*180/Math.PI;r=((r+180)%360+360)%360-180;if(e.shiftKey)r=Math.round(r/15)*15;setVal(L.n.r,r);}
-  else if(R.drag.mode==='orbit'){setVal(L.p.ry,((R.drag.ry+(e.clientX-R.drag.c0[0])*.5+180)%360+360)%360-180);setVal(L.p.rx,Math.max(-180,Math.min(180,R.drag.rx+(e.clientY-R.drag.c0[1])*.5)));syncCtl();}});
+  else if(R.drag.mode==='orbit'){setVal(L.p.ry,((R.drag.ry+(e.clientX-R.drag.c0[0])*.5+180)%360+360)%360-180);setVal(L.p.rx,Math.max(L.type==='terrain3d'?-5:-180,Math.min(L.type==='terrain3d'?85:180,R.drag.rx+(e.clientY-R.drag.c0[1])*.5)));syncCtl();}});
 export const endDrag=()=>{if(R.drag){if(R.drag.mode==='glint'&&!R.drag.gok)toast('Ide a mennyezeti fénycsík nem tud csillanást tenni (ez a rész lefelé vagy oldalra néz). Próbáld a felület egy felfelé forduló részén.');R.drag=null;commit();renderTimeline();}};wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
-R.wheelT=undefined;wrap.addEventListener('wheel',e=>{if((e.target as HTMLElement).closest('.tlx,.hudbar,.tl,.textbar'))return;const L=sel();if(!L)return;e.preventDefault();markDirty();if(isSurf(L)){wheelDist(L,e.deltaY);syncCtl();clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);return;}setVal(L.n.s,Math.max(.02,Math.min(20,curV(L.n.s)*Math.exp(-e.deltaY*.0012))));clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);},{passive:false});
+R.wheelT=undefined;wrap.addEventListener('wheel',e=>{if((e.target as HTMLElement).closest('.tlx,.hudbar,.tl,.textbar'))return;const L=sel();if(!L)return;e.preventDefault();markDirty();if(isSurf(L)||L.type==='terrain3d'){wheelDist(L,e.deltaY);syncCtl();clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);return;}setVal(L.n.s,Math.max(.02,Math.min(20,curV(L.n.s)*Math.exp(-e.deltaY*.0012))));clearTimeout(R.wheelT);R.wheelT=setTimeout(commit,300);},{passive:false});
 wrap.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('text/x-latomas-lib')){e.preventDefault();$('#dropHint').hidden=false;}});
 wrap.addEventListener('dragleave',e=>{if(!wrap.contains(e.relatedTarget))$('#dropHint').hidden=true;});
 wrap.addEventListener('drop',e=>{e.preventDefault();$('#dropHint').hidden=true;const lib=e.dataTransfer.getData('text/x-latomas-lib');if(!lib)return;const [c,i]=lib.split(':');
@@ -65,7 +65,7 @@ export function primDrag(L,drag,p,e){const o=L.prims[L.psel];if(!o)return;markDi
   else if(drag.mode==='r'){const c=sdfProj(L,R.time);let r=90-Math.atan2(p.y-c.y,p.x-c.x)*180/Math.PI;r=((r+180)%360+360)%360-180;if(e.shiftKey)r=Math.round(r/15)*15;o.ry=r;}
   syncCtl();}
 export function gizmoRadius(L,t){const s=ev(L.n.s,BASEK.s,t);if(L.type==='shape')return L.p.size.v*s*Math.max(1,L.p.aspect.v);if(L.type==='obj3d')return .39*s;if(L.type==='text'||L.type==='mtext'){const m=textCache.get(L.id);return m?.5*s*Math.min(4,m.w/m.h):.5*s;}if(L.type==='image')return .55*s;return .3*s;}
-export function updGizmo(t){const g=$('#gizmo');const L=sel();if(!L||R.seqPlay||!R.gizmoOn||!L.vis||R.tool==='orbit'||isSurf(L)){g.hidden=true;return;}g.hidden=false;
+export function updGizmo(t){const g=$('#gizmo');const L=sel();if(!L||R.seqPlay||!R.gizmoOn||!L.vis||R.tool==='orbit'||isSurf(L)||L.type==='terrain3d'){g.hidden=true;return;}g.hidden=false;
   const cr=cv.getBoundingClientRect(),wr=wrap.getBoundingClientRect();const {W,H}=outSize();
   let x=ev(L.n.x,BASEK.x,t),y=ev(L.n.y,BASEK.y,t),rr=(ev(L.n.r,BASEK.r,t)+L.n.spin.v*t),rw=gizmoRadius(L,t);
   const SPj=sdfProj(L,t);if(SPj){x=SPj.x;y=SPj.y;rw=SPj.r;rr=SPj.rot;}

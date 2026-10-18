@@ -9,6 +9,7 @@ import { ev, hasK } from './evaluation';
 import { mediaFor } from './text';
 import { blobPrep } from './blob';
 import { drawMesh } from './mesh3d';
+import { drawTerrain } from './terrain3d';
 import { pdMix, pdUniforms } from './partfx';
 import { ctlSlider, ctlSwitch } from './controls';
 import { commit } from './history';
@@ -218,7 +219,7 @@ export function renderList(items,set,ctx,t0,clear){
       else{gl.bindFramebuffer(gl.FRAMEBUFFER,w0.f);gl.viewport(0,0,ctx.w,ctx.h);gl.useProgram(XFORM);gl.uniform2f(U(XFORM,'uRes'),ctx.w,ctx.h);setXform(XFORM,L,t);bindTex(0,acc.t);gl.uniform1i(U(XFORM,'uInput'),0);gl.drawArrays(gl.TRIANGLES,0,3);}
       out=runChain(L.fx,w0.t,w0,set,ctx,t);
     }else if(kind==='fx'){out=runChain([L,...L.fx],set.A.t,set.A,set,ctx,t);}
-    else{const w0=set.W[0];if(EFFECTS[L.type].mesh)drawMesh(L,w0,ctx,t,EFFECTS[L.type]);else if(EFFECTS[L.type].points)drawPoints(L,w0,ctx,t,set.A.t);else drawFx(L,w0,ctx,t,set.A.t,null,0);out=runChain(L.fx,w0.t,w0,set,ctx,t);}
+    else{const w0=set.W[0];if(EFFECTS[L.type].mesh)drawMesh(L,w0,ctx,t,EFFECTS[L.type]);else if(EFFECTS[L.type].terrain)drawTerrain(L,w0,ctx,t,EFFECTS[L.type],lightU);else if(EFFECTS[L.type].points)drawPoints(L,w0,ctx,t,set.A.t);else drawFx(L,w0,ctx,t,set.A.t,null,0);out=runChain(L.fx,w0.t,w0,set,ctx,t);}
     if(R.CAMON&&kind!=='fx'&&kind!=='group'){const c=camXf(L,t);if(c&&c.blur>.05)out=runChain([dofLayer(L.id,c.blur)],out.t,out,set,ctx,t);}
     const useMask=L.clip&&baseOK;
     if(!L.maskOnly){

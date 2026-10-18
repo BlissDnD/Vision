@@ -170,7 +170,7 @@ function progs() { if (PR) return PR === 'err' ? null : PR;
   catch (e) { console.warn('Gerincfelület shader:', e); PR = 'err'; R.meshErr = String(e); return null; } }
 
 /* ---------------- per-context targets ---------------- */
-function targets(ctx: any) {
+export function targets(ctx: any) {
   let T = ctx.mesh; if (T && T.w === ctx.w && T.h === ctx.h) return T;
   if (T) { gl.deleteFramebuffer(T.msF); gl.deleteRenderbuffer(T.msC); gl.deleteRenderbuffer(T.msD); gl.deleteFramebuffer(T.mF); gl.deleteTexture(T.mT); gl.deleteRenderbuffer(T.mD); }
   const w = ctx.w, h = ctx.h, ns = Math.min(4, gl.getParameter(gl.MAX_SAMPLES) || 1);

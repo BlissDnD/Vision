@@ -22,7 +22,7 @@ import { lightSection, usesLight } from './lightui';
 
 export function renderInsp(){
   if(R.updTextbar)R.updTextbar();
-  {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'||L0.type==='surface3d'||L0.type==='cloud3d'));}
+  {const L0=sel();const ob=document.querySelector('[data-tool=orbit]');if(ob)ob.classList.toggle('hint3d',!!L0&&(L0.type==='obj3d'||L0.type==='sdfscene'||L0.type==='surface3d'||L0.type==='cloud3d'||L0.type==='terrain3d'));}
   renderTimeline();const P=$('#insp');P.innerHTML='';R.liveCtl=[];R.liveFields=[];R.liveKed=[];R.liveSel=[];
   const L=sel();
   if(!L){P.appendChild(h('div',{class:'empty'},'Válassz ki egy réteget, vagy kezdj egy recepttel a lenti könyvtárból.'));return;}
